@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oracle Data Display</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            /* ให้เต็มหน้าจอ */
+            margin: 0;
+            background-color: rgba(230, 230, 232, 0.464);
+        }
+        
+        #container {
+            
+            position: fixed;
+            margin-left: 300px;
+            margin-bottom: 600px;
+        }
+        
+        #container1 {
+            position: fixed;
+            margin-left: 300px;
+            margin-bottom: 520px;
+        }
+        
+        #container2 {
+            position: fixed;
+            font-size: 16px;
+            padding: 10px;
+            margin-left: 270px;
+            margin-bottom: 440px;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 268px;
+            width: 85%;
+            height: 10px;
+            padding: 1rem 0;
+            /* Adjust the padding as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(66, 168, 215, 0.774);
+            box-shadow: 0 0.75rem 1rem 0 rgba(0, 0, 0, 0.1);
+            /* Removed shadow on the left */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.125);
+            z-index: 1000;
+            /* Adjust the z-index as needed */
+        }
+        
+        .main {
+            margin-top: -1px;
+            /* Adjust the margin-top to accommodate the header height */
+            width: 75px;
+            max-width: 300px;
+            height: 493px;
+            /* Stretch to the full height */
+            padding: 8rem 6rem;
+            display: grid;
+            align-items: center;
+            position: fixed;
+            background: rgb(255, 255, 255);
+            box-shadow: 0 0.75rem 1rem 0 rgba(0, 0, 0, 0.1);
+            margin-right: auto;
+            /* Make the div align to the left */
+            
+            margin-right: 1222px;
+        }
+        
+        .imgpttlogo {
+            left: 10px;
+            width: 25%;
+            margin-bottom: 610px;
+            position: absolute;
+            /* You can adjust the thickness and color of the underline here */
+        }
+        
+        .button-arrow {
+            position: absolute;
+            right: 20px;
+            /* Adjust the right distance for the arrow */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .small-button {
+            position: absolute;
+            font-size: 12px;
+            padding: 6px 10px;
+            margin: 5px;
+            margin-left: 330px;
+            margin-bottom: 360px;
+            position: fixed;
+        }
+    
+        .scrollable-container {
+            width: 100%;
+            height: 500px; /* Set your desired height */
+            overflow: auto;
+            margin-top: 200px;
+            margin-right: 0px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: small;
+            
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main" id="main">
+        <img class="imgpttlogo" src="https://companieslogo.com/img/orig/PTT-R.BK-236c5257.png?t=1691911291" alt="" />
+        <h2 style="
+          font-family: Georgia, 'Times New Roman', Times, serif;
+          display: grid;
+          margin-bottom: 630px;
+          position: absolute;
+          left: 100px;
+          color: red;
+        ">
+            AMR NEW
+        </h2>
+
+        <p style="
+          color: rgb(152, 154, 156);
+          margin-bottom: 580px;
+          position: absolute;
+          left: 100px;
+          border-bottom: 1px solid #858282;
+        ">
+            version 1.0
+        </p>
+        <!-- NEW -->
+
+        <select style="
+          position: absolute;
+          left: 0px;
+          top: 200px;
+          width: 100%;
+          height: 50px;
+          padding: 10px 20px;
+          background: rgba(66, 168, 215, 0.774);
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-size: medium;
+          font-family: Georgia, 'Times New Roman', Times, serif;
+        " onchange="navigateToPage(this.value)">
+        <option value="">REPORT</option>
+        <option value="page1.html">View Billing Data</option>
+        <option value="page2.html">Option 2</option>
+        <option value="page3.html">Option 3</option>
+
+      </select>
+
+        <select style="
+        position: absolute;
+        left: 0px;
+        top: 255px;
+        width: 100%;
+        height: 50px;
+        padding: 10px 20px;
+        background: rgba(66, 168, 215, 0.774);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: medium;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      " onchange="navigateToPage(this.value)">
+      <option value="">BLACK UP</option>
+      <option value="page1.html">Option 1</option>
+      <option value="page2.html">Option 2</option>
+      <option value="page3.html">Option 3</option>
+
+    </select>
+
+        <select style="
+      position: absolute;
+      left: 0px;
+      top: 310px;
+      width: 100%;
+      height: 50px;
+      padding: 10px 20px;
+      background: rgba(66, 168, 215, 0.774);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: medium;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    " onchange="navigateToPage(this.value)">
+    <option value="">SITE MANAGMANT</option>
+    <option value="page1.html">Option 1</option>
+    <option value="page2.html">Option 2</option>
+    <option value="page3.html">Option 3</option>
+    <option value="page4.html">Option 4</option>
+    <option value="page5.html">Option 5</option>
+    <option value="page6.html">Option 6</option>
+    <option value="page7.html">Option 7</option>
+
+  </select>
+
+        <select style="
+    position: absolute;
+    left: 0px;
+    top: 365px;
+    width: 100%;
+    height: 50px;
+    padding: 10px 20px;
+    background: rgba(66, 168, 215, 0.774);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: medium;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  " onchange="navigateToPage(this.value)">
+  <option value="">USER</option>
+  <option value="page1.html">USER NEW</option>
+  <option value="page1.html">USER EDIT</option>
+  
+
+
+
+
+</select>
+
+        <select style="
+  position: absolute;
+  left: 0px;
+  top: 420px;
+  width: 100%;
+  height: 50px;
+  padding: 10px 20px;
+  background: rgba(66, 168, 215, 0.774);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: medium;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+" onchange="navigateToPage(this.value)">
+<option value="">MANUAL POLL</option>
+<option value="page1.html">Option 1</option>
+<option value="page2.html">Option 2</option>
+
+</select>
+        <!-- NEW -->
+        <script>
+            function navigateToPage(selectedValue) {
+                if (selectedValue) {
+                    window.location.href = selectedValue;
+                }
+            }
+        </script>
+        <!-- NEW -->
+    </div>
+    <div class="header" id="header">
+        <h2 style="
+          font-family: Georgia, 'Times New Roman', Times, serif;
+          color: rgb(0, 0, 0);
+        ">
+            Automatic Meter Reading System
+        </h2>
+    </div>
+
+
+
+    <h4 style="margin-bottom: 650px; margin-right: 400px;">View Billing Data</h4>
+    <div id="container">
+        <label for="selectRegion">REGION:</label>
+        <select id="selectRegion">
+            {% for row in results %}
+                <option value="{{ row[1] }}">{{ row[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>    
+    
+    <div id="container1">
+        <label for="selectSite">SITE:</label>
+        <select id="selectSite">
+            {% for row in site_results %}
+                <option value="{{ row[1] }}">{{ row[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    
+    <div id="container2">
+        <label for="datepicker">Select Date:</label>
+        <input type="date" id="datepicker">
+    </div>
+    
+    <button class="small-button" onclick="searchData()">Search</button>
+    <div id="data-container"></div>
+
+    <div class="scrollable-container">
+        <table>
+            <tr>
+                {% for column in column_names %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    
+
+
+
+   
+</body>
+<script>
+    // Use jQuery for the date picker change event
+    $('#datepicker').on('change', function () {
+        var selectedDate = $(this).val();
+        alert('Selected Date: ' + selectedDate);
+        // Perform actions with the selected date
+    });
+
+    function fetchData() {
+        $.ajax({
+            type: 'POST',
+            url: '/fetch_data',
+            success: function (response) {
+                // Update the data container with the fetched data
+                $('#data-container').html(response);
+            }
+        });
+    }
+   
+
+</script>
+
+</html>
