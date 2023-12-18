@@ -14,14 +14,14 @@ import pandas as pd
 import random
 import string
 
-app = Flask(__name__)
-# ตั้งค่า database URI และ SECRET_KEY ให้ Flask app
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SECRET_KEY'] = 'your_secret_key'  # Change to your own secret key
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app = Flask(__name__)
+# # ตั้งค่า database URI และ SECRET_KEY ให้ Flask app
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+# app.config['SECRET_KEY'] = 'your_secret_key'  # Change to your own secret key
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 # db.create_all()
 # mail = Mail(app)
 
@@ -39,8 +39,8 @@ password = 'root'
 # MAIL_PASSWORD = 'Csgop@90'
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '1112'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+# app.config['SECRET_KEY'] = '1112'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 # app.config['MAIL_SERVER'] = MAIL_SERVER
 # app.config['MAIL_PORT'] = MAIL_PORT
 # app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
@@ -48,8 +48,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 # app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 
-def generate_token():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+# def generate_token():
+#     return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
 
 # def send_reset_email(user):
