@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- <link rel="stylesheet" href="style.css">  -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
     <style>
         /* Added styles for footer */
         .footer {
@@ -285,32 +286,51 @@
             <div class="loading-text">Searching...</div>
         </div>
 
-        <div class="main" id="main">
-            <h1 class="details">Search Results</h1>
+<div class="main" id="main">
+    <h1 class="details">Search Results</h1>
 
-            <div class="scrollable-container">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <!-- แสดงชื่อคอลัมน์ -->
-                            {% for col_name in column_names %}
-                            <th>{{ col_name }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- แสดงข้อมูลแถว -->
-                        {% for row in data_rows %}
-                        <tr>
-                            {% for value in row %}
-                            <td>{{ value }}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="scrollable-container">
+        <table class="styled-table" id="searchTable">
+            <thead>
+                <tr>
+                    {% for col_name in column_names %}
+                    <th>{{ col_name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data_rows %}
+                <tr>
+                    {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Script jQuery สำหรับตาราง -->
+<script>
+    $(document).ready(function () {
+        // ทำให้ตารางเป็น DataTable
+        $('#searchTable').DataTable({
+            // เพิ่มการตั้งค่าต่าง ๆ ตามความต้องการ
+            // ตัวอย่างเช่น:
+            // "paging": false,
+            // "info": false,
+            // "searching": false,
+            // "ordering": false,
+            // ...
+
+            // แสดงข้อความ "Loading..." เมื่อตารางกำลังโหลดข้อมูล
+            "language": {
+                "loadingRecords": "Loading..."
+            }
+        });
+    });
+</script>
         <!-- เพิ่มส่วนของ footer ที่ถูกเพิ่ม -->
         <div class="footer">
             <p>&copy; 2023 Prompt. All rights reserved.</p>
