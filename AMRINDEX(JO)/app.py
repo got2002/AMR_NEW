@@ -6,7 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User  # Import the User model from models.py
+# from models import User  # Import the User model from models.py
 from forms import LoginForm, RegisterForm, EditUserForm  # Import the forms
 
 import cx_Oracle
