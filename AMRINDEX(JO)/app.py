@@ -114,6 +114,14 @@ app = Flask(__name__)
 #     return render_template('reset_password.html', token=token)
 
 
+@app.route('/')
+def home():
+    return render_template('search_result.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -332,23 +340,23 @@ def your_api_endpoint():
 #     return render_template('edit_user.html', user=user)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
 
-        # ค้นหาผู้ใช้จากฐานข้อมูล
-        user = User.query.filter_by(username=username).first()
+#         # ค้นหาผู้ใช้จากฐานข้อมูล
+#         user = User.query.filter_by(username=username).first()
 
-        if user and check_password_hash(user.password, password):
-            session['user_id'] = user.id  # เก็บ user ID ใน session
-            flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Invalid username or password.', 'danger')
+#         if user and check_password_hash(user.password, password):
+#             session['user_id'] = user.id  # เก็บ user ID ใน session
+#             flash('Login successful!', 'success')
+#             return redirect(url_for('dashboard'))
+#         else:
+#             flash('Invalid username or password.', 'danger')
 
-    return render_template('login.html')
+#     return render_template('login.html')
 
 # Register route
 
@@ -515,26 +523,26 @@ def login():
 # # เพิ่ม route สำหรับส่งข้อมูลผู้ใช้
 
 
-@app.route('/get_users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    user_data = [{'username': user.username} for user in users]
-    return jsonify({'users': user_data})
+# @app.route('/get_users', methods=['GET'])
+# def get_users():
+#     users = User.query.all()
+#     user_data = [{'username': user.username} for user in users]
+#     return jsonify({'users': user_data})
 
 # Function to authenticate user
 
 
-def authenticate_user(username, password):
-    user = User.query.filter_by(username=username).first()
-    if user and check_password_hash(user.password, password):
-        return user
-    return None
+# def authenticate_user(username, password):
+#     user = User.query.filter_by(username=username).first()
+#     if user and check_password_hash(user.password, password):
+#         return user
+#     return None
 
 # Function to get user by ID
 
 
-def get_user_by_id(user_id):
-    return User.query.get(user_id)
+# def get_user_by_id(user_id):
+#     return User.query.get(user_id)
 
 # Function to update user information
 
@@ -551,15 +559,15 @@ def get_user_by_id(user_id):
 # ตัวอย่างการใช้ฟังก์ชัน get_user_by_id ในการดึงข้อมูลผู้ใช้
 
 
-@app.route('/profile')
-def profile():
-    user_id = session.get('user_id')
-    if user_id:
-        # ใช้ฟังก์ชัน get_user_by_id เพื่อดึงข้อมูลผู้ใช้โดยใช้ ID
-        user = get_user_by_id(user_id)
-        if user:
-            return render_template('profile.html', user=user)
-    return redirect(url_for('login'))
+# @app.route('/profile')
+# def profile():
+#     user_id = session.get('user_id')
+#     if user_id:
+#         # ใช้ฟังก์ชัน get_user_by_id เพื่อดึงข้อมูลผู้ใช้โดยใช้ ID
+#         user = get_user_by_id(user_id)
+#         if user:
+#             return render_template('profile.html', user=user)
+#     return redirect(url_for('login'))
 # ตัวอย่างการใช้ฟังก์ชัน update_user ในการอัพเดตข้อมูลผู้ใช้
 
 
@@ -581,47 +589,47 @@ def profile():
 #     return redirect(url_for('profile'))
 
 
-# ออกจากระบบ
-@app.route('/logout')
-def logout():
-    session.pop('user_id', None)  # ลบข้อมูล user_id ออกจาก session
-    flash('You have been logged out.', 'info')
-    return redirect(url_for('login'))
+# # ออกจากระบบ
+# @app.route('/logout')
+# def logout():
+#     session.pop('user_id', None)  # ลบข้อมูล user_id ออกจาก session
+#     flash('You have been logged out.', 'info')
+#     return redirect(url_for('login'))
 
 # หน้า Dashboard
 
 
-@app.route('/dashboard')
-def dashboard():
-    if 'user_id' in session:
-        user_id = session['user_id']
-        user = User.query.get(user_id)
-        return render_template('dashboard.html', user=user)
-    else:
-        flash('Please log in to access this page.', 'warning')
-        return redirect(url_for('login'))
+# @app.route('/dashboard')
+# def dashboard():
+#     if 'user_id' in session:
+#         user_id = session['user_id']
+#         user = User.query.get(user_id)
+#         return render_template('dashboard.html', user=user)
+#     else:
+#         flash('Please log in to access this page.', 'warning')
+#         return redirect(url_for('login'))
 
 
-@app.route('/welcome')
-def welcome():
-    # ตัวอย่าง: ดึงข้อมูล user_id จาก session
-    user_id = session.get('user_id')
-    if user_id is None:
-        # ถ้าไม่มี user_id ใน session แสดงว่าผู้ใช้ไม่ได้ลงชื่อเข้าใช้
-        return redirect(url_for('login'))
-    # ต่อไปนี้คุณสามารถใช้ user_id เพื่อดึงข้อมูลผู้ใช้หรือทำอย่างอื่นต่อไป
-    total_users = User.query.count()
-    return render_template('welcome.html', total_users=total_users)
+# @app.route('/welcome')
+# def welcome():
+#     # ตัวอย่าง: ดึงข้อมูล user_id จาก session
+#     user_id = session.get('user_id')
+#     if user_id is None:
+#         # ถ้าไม่มี user_id ใน session แสดงว่าผู้ใช้ไม่ได้ลงชื่อเข้าใช้
+#         return redirect(url_for('login'))
+#     # ต่อไปนี้คุณสามารถใช้ user_id เพื่อดึงข้อมูลผู้ใช้หรือทำอย่างอื่นต่อไป
+#     total_users = User.query.count()
+#     return render_template('welcome.html', total_users=total_users)
 
 
-@app.route('/forgot_password')
-def forgot_password():
-    return render_template('forgot_password.html')
+# @app.route('/forgot_password')
+# def forgot_password():
+#     return render_template('forgot_password.html')
 
 
-@app.route('/success')
-def success():
-    return 'Login successful!'
+# @app.route('/success')
+# def success():
+#     return 'Login successful!'
 
 
 # ปรับแต่งให้ Flask app รันด้วย debug mode
