@@ -246,7 +246,7 @@
                 alt="AMR Logo" />
         </div>
         <h2>AMR Tool</h2>
-        <p class="version">Version 1.1</p>
+        <p class="version">Version 1.4</p>
 
         <div class="container">
             <label for="inputRegion">REGION:</label>
@@ -424,52 +424,6 @@
 
             displayCurrentDate();
         </script>
-        <!-- <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
-                get_users();
-            });
-
-            function get_users() {
-                // ส่ง request ไปยัง /get_users
-                fetch('/get_users')
-                    .then(response => response.json())
-                    .then(data => {
-                        // เติมค่าลงใน dropdown
-                        const dropdown = document.getElementById('username_delete');
-                        dropdown.innerHTML = ''; // เคลียร์ค่าเดิม
-                        data.users.forEach(user => {
-                            const option = document.createElement('option');
-                            option.value = user.username;
-                            option.textContent = user.username;
-                            dropdown.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-
-            function filterUsernames() {
-                var input, filter, select, option, a, i, txtValue;
-                input = document.getElementById("searchUsername");
-                filter = input.value.toUpperCase();
-                select = document.getElementById("username_delete");
-                option = select.getElementsByTagName("option");
-                for (i = 0; i < option.length; i++) {
-                    a = option[i];
-                    txtValue = a.textContent || a.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        option[i].style.display = "";
-                    } else {
-                        option[i].style.display = "none";
-                    }
-                }
-            }
-
-            function confirmDelete() {
-                var username = document.getElementById("searchUsername").value;
-                return confirm("Are you sure you want to delete the user: " + username + "?");
-            }
-        </script> -->
 </body>
 
 </html>
