@@ -22,7 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db = SQLAlchemy(app)
-db.create_all()
+# db.create_all()
 mail = Mail(app)
 
 # ส่วนที่ขาดหายไปใน fetch_data
@@ -66,52 +66,52 @@ If you did not make this request then simply ignore this email and no changes wi
     mail.send(msg)
 
 
-@app.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password():
-    if request.method == 'POST':
-        email = request.form['email']
-        user = User.query.filter_by(email=email).first()
+# @app.route('/forgot_password', methods=['GET', 'POST'])
+# def forgot_password():
+#     if request.method == 'POST':
+#         email = request.form['email']
+#         user = User.query.filter_by(email=email).first()
 
-        if user:
-            token = generate_token()
-            user.reset_token = token
-            db.session.commit()
+#         if user:
+#             token = generate_token()
+#             user.reset_token = token
+#             db.session.commit()
 
-            send_reset_email(user)
+#             send_reset_email(user)
 
-            flash(
-                'An email has been sent with instructions to reset your password.', 'info')
-            return redirect(url_for('login'))
-        else:
-            flash('Email not found. Please try again.', 'danger')
+#             flash(
+#                 'An email has been sent with instructions to reset your password.', 'info')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Email not found. Please try again.', 'danger')
 
-    return render_template('forgot_password.html')
+#     return render_template('forgot_password.html')
 
 
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    user = User.query.filter_by(reset_token=token).first()
+# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+# def reset_password(token):
+#     user = User.query.filter_by(reset_token=token).first()
 
-    if not user:
-        flash('Invalid or expired reset token. Please try again.', 'danger')
-        return redirect(url_for('forgot_password'))
+#     if not user:
+#         flash('Invalid or expired reset token. Please try again.', 'danger')
+#         return redirect(url_for('forgot_password'))
 
-    if request.method == 'POST':
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+#     if request.method == 'POST':
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
 
-        if password == confirm_password:
-            user.password = password
-            user.reset_token = None
-            db.session.commit()
+#         if password == confirm_password:
+#             user.password = password
+#             user.reset_token = None
+#             db.session.commit()
 
-            flash(
-                'Password reset successful! You can now log in with your new password.', 'success')
-            return redirect(url_for('login'))
-        else:
-            flash('Password and Confirm Password do not match.', 'danger')
+#             flash(
+#                 'Password reset successful! You can now log in with your new password.', 'success')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Password and Confirm Password do not match.', 'danger')
 
-    return render_template('reset_password.html', token=token)
+#     return render_template('reset_password.html', token=token)
 
 
 def fetch_data(query, params=None):
@@ -253,83 +253,83 @@ def your_api_endpoint():
 # สร้างโมเดล User
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    role = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(50), unique=True, nullable=False)
+#     email = db.Column(db.String(100), unique=True, nullable=False)
+#     role = db.Column(db.String(20), nullable=False)
+#     password = db.Column(db.String(100), nullable=False)
 
-# เพิ่มผู้ใช้ใหม่
+# # เพิ่มผู้ใช้ใหม่
 
 
-@app.route('/add-user', methods=['GET', 'POST'])
-def add_user():
-    if request.method == 'POST':
-        new_username = request.form['new_username']
-        new_email = request.form['new_email']
-        new_role = request.form['new_role']
-        new_password = request.form['new_password']
+# @app.route('/add-user', methods=['GET', 'POST'])
+# def add_user():
+#     if request.method == 'POST':
+#         new_username = request.form['new_username']
+#         new_email = request.form['new_email']
+#         new_role = request.form['new_role']
+#         new_password = request.form['new_password']
 
-        # ตรวจสอบว่ามีชื่อผู้ใช้หรืออีเมลนี้ในฐานข้อมูลแล้วหรือไม่
-        existing_user = User.query.filter(
-            (User.username == new_username) | (User.email == new_email)).first()
+#         # ตรวจสอบว่ามีชื่อผู้ใช้หรืออีเมลนี้ในฐานข้อมูลแล้วหรือไม่
+#         existing_user = User.query.filter(
+#             (User.username == new_username) | (User.email == new_email)).first()
 
-        if existing_user:
-            flash(
-                'Username or Email already exists. Please choose different ones.', 'danger')
-        else:
-            # สร้างผู้ใช้ใหม่
-            new_user = User(username=new_username, email=new_email,
-                            role=new_role, password=new_password)
-            db.session.add(new_user)
-            db.session.commit()
-            flash('User added successfully!', 'success')
-            # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากเพิ่มผู้ใช้
-            return redirect('/add-user')
+#         if existing_user:
+#             flash(
+#                 'Username or Email already exists. Please choose different ones.', 'danger')
+#         else:
+#             # สร้างผู้ใช้ใหม่
+#             new_user = User(username=new_username, email=new_email,
+#                             role=new_role, password=new_password)
+#             db.session.add(new_user)
+#             db.session.commit()
+#             flash('User added successfully!', 'success')
+#             # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากเพิ่มผู้ใช้
+#             return redirect('/add-user')
 
-    # ชื่อเทมเพลตให้ตรงกับชื่อไฟล์ HTML ที่เก็บ form
-    return render_template('add_user.html')
+#     # ชื่อเทมเพลตให้ตรงกับชื่อไฟล์ HTML ที่เก็บ form
+#     return render_template('add_user.html')
 
 # ลบผู้ใช้
 
 
-@app.route('/delete-user/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get(user_id)
+# @app.route('/delete-user/<int:user_id>', methods=['DELETE'])
+# def delete_user(user_id):
+#     user = User.query.get(user_id)
 
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        flash('User deleted successfully!', 'success')
-        # ส่ง JSON response กลับไปยัง client
-        return jsonify({'message': 'User deleted successfully'})
+#     if user:
+#         db.session.delete(user)
+#         db.session.commit()
+#         flash('User deleted successfully!', 'success')
+#         # ส่ง JSON response กลับไปยัง client
+#         return jsonify({'message': 'User deleted successfully'})
 
-    # ส่ง JSON response กลับไปยัง client ว่าไม่พบผู้ใช้
-    return jsonify({'message': 'User not found'}), 404
+#     # ส่ง JSON response กลับไปยัง client ว่าไม่พบผู้ใช้
+#     return jsonify({'message': 'User not found'}), 404
 
 
-# แก้ไขข้อมูลผู้ใช้
-@app.route('/edit-user/<int:user_id>', methods=['GET', 'POST'])
-def edit_user(user_id):
-    user = User.query.get(user_id)
+# # แก้ไขข้อมูลผู้ใช้
+# @app.route('/edit-user/<int:user_id>', methods=['GET', 'POST'])
+# def edit_user(user_id):
+#     user = User.query.get(user_id)
 
-    if request.method == 'POST':
-        user.username = request.form['username']
-        user.email = request.form['email']
-        user.role = request.form['is_admin']
+#     if request.method == 'POST':
+#         user.username = request.form['username']
+#         user.email = request.form['email']
+#         user.role = request.form['is_admin']
 
-        new_password = request.form['password']
-        if new_password:
-            user.password = new_password
+#         new_password = request.form['password']
+#         if new_password:
+#             user.password = new_password
 
-        db.session.commit()
-        flash('User updated successfully!', 'success')
-        # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากแก้ไขผู้ใช้
-        return redirect('/edit-user/{}'.format(user_id))
+#         db.session.commit()
+#         flash('User updated successfully!', 'success')
+#         # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากแก้ไขผู้ใช้
+#         return redirect('/edit-user/{}'.format(user_id))
 
-    # ชื่อเทมเพลตให้ตรงกับชื่อไฟล์ HTML ที่เก็บ form
-    return render_template('edit_user.html', user=user)
+#     # ชื่อเทมเพลตให้ตรงกับชื่อไฟล์ HTML ที่เก็บ form
+#     return render_template('edit_user.html', user=user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -353,33 +353,33 @@ def login():
 # Register route
 
 
-# การลงทะเบียนผู้ใช้
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+# # การลงทะเบียนผู้ใช้
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         email = request.form['email']
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
 
-        # ตรวจสอบว่ามีชื่อผู้ใช้หรืออีเมลนี้ในฐานข้อมูลแล้วหรือไม่
-        existing_user = User.query.filter_by(username=username).first()
+#         # ตรวจสอบว่ามีชื่อผู้ใช้หรืออีเมลนี้ในฐานข้อมูลแล้วหรือไม่
+#         existing_user = User.query.filter_by(username=username).first()
 
-        if existing_user:
-            flash('Username already exists. Please choose a different one.', 'danger')
-        elif password != confirm_password:
-            flash('Passwords do not match. Please try again.', 'danger')
-        else:
-            # ทำการเข้ารหัสรหัสผ่านและบันทึกข้อมูลผู้ใช้ในฐานข้อมูล
-            hashed_password = generate_password_hash(password)
-            new_user = User(username=username, email=email,
-                            password=hashed_password)
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Registration successful! You can now log in.', 'success')
-            return redirect(url_for('login'))
+#         if existing_user:
+#             flash('Username already exists. Please choose a different one.', 'danger')
+#         elif password != confirm_password:
+#             flash('Passwords do not match. Please try again.', 'danger')
+#         else:
+#             # ทำการเข้ารหัสรหัสผ่านและบันทึกข้อมูลผู้ใช้ในฐานข้อมูล
+#             hashed_password = generate_password_hash(password)
+#             new_user = User(username=username, email=email,
+#                             password=hashed_password)
+#             db.session.add(new_user)
+#             db.session.commit()
+#             flash('Registration successful! You can now log in.', 'success')
+#             return redirect(url_for('login'))
 
-    return render_template('register.html')
+#     return render_template('register.html')
 
 # Update user route
 
@@ -412,107 +412,107 @@ def update_user():
     return redirect(url_for('some_page'))
 
 
-# ส่วนที่ขาดหายไปใน reset_password
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    user = User.query.filter_by(reset_token=token).first()
+# # ส่วนที่ขาดหายไปใน reset_password
+# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+# def reset_password(token):
+#     user = User.query.filter_by(reset_token=token).first()
 
-    if not user:
-        flash('Invalid or expired reset token. Please try again.', 'danger')
-        return redirect(url_for('forgot_password'))
+#     if not user:
+#         flash('Invalid or expired reset token. Please try again.', 'danger')
+#         return redirect(url_for('forgot_password'))
 
-    if request.method == 'POST':
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+#     if request.method == 'POST':
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
 
-        if password == confirm_password:
-            # บันทึกรหัสผ่านใหม่ลงในฐานข้อมูล
-            user.password = password
-            user.reset_token = None
-            db.session.commit()
+#         if password == confirm_password:
+#             # บันทึกรหัสผ่านใหม่ลงในฐานข้อมูล
+#             user.password = password
+#             user.reset_token = None
+#             db.session.commit()
 
-            flash(
-                'Password reset successful! You can now log in with your new password.', 'success')
-            return redirect(url_for('login'))
-        else:
-            flash('Password and Confirm Password do not match.', 'danger')
+#             flash(
+#                 'Password reset successful! You can now log in with your new password.', 'success')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Password and Confirm Password do not match.', 'danger')
 
-    return render_template('reset_password.html', token=token)
+#     return render_template('reset_password.html', token=token)
 
 
-# สร้างโมเดล Site
-class Site(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    url = db.Column(db.String(200), unique=True, nullable=False)
-    description = db.Column(db.Text)
+# # สร้างโมเดล Site
+# class Site(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), unique=True, nullable=False)
+#     url = db.Column(db.String(200), unique=True, nullable=False)
+#     description = db.Column(db.Text)
 
-# หน้าหลัก Manage Sites
-@app.route('/manage-sites')
-def manage_sites():
-    sites = Site.query.all()
-    return render_template('manage_sites.html', sites=sites)
+# # หน้าหลัก Manage Sites
+# @app.route('/manage-sites')
+# def manage_sites():
+#     sites = Site.query.all()
+#     return render_template('manage_sites.html', sites=sites)
 
-# เพิ่ม Site
-@app.route('/add-site', methods=['GET', 'POST'])
-def add_site():
-    if request.method == 'POST':
-        name = request.form['name']
-        url = request.form['url']
-        description = request.form['description']
+# # เพิ่ม Site
+# @app.route('/add-site', methods=['GET', 'POST'])
+# def add_site():
+#     if request.method == 'POST':
+#         name = request.form['name']
+#         url = request.form['url']
+#         description = request.form['description']
 
-        new_site = Site(name=name, url=url, description=description)
-        db.session.add(new_site)
-        db.session.commit()
-        flash('Site added successfully!', 'success')
-        return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากเพิ่ม Site
+#         new_site = Site(name=name, url=url, description=description)
+#         db.session.add(new_site)
+#         db.session.commit()
+#         flash('Site added successfully!', 'success')
+#         return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากเพิ่ม Site
 
-    return render_template('add_site.html')
+#     return render_template('add_site.html')
 
-# แก้ไข Site
-@app.route('/edit-site/<int:site_id>', methods=['GET', 'POST'])
-def edit_site(site_id):
-    site = Site.query.get(site_id)
+# # แก้ไข Site
+# @app.route('/edit-site/<int:site_id>', methods=['GET', 'POST'])
+# def edit_site(site_id):
+#     site = Site.query.get(site_id)
 
-    if request.method == 'POST':
-        site.name = request.form['name']
-        site.url = request.form['url']
-        site.description = request.form['description']
+#     if request.method == 'POST':
+#         site.name = request.form['name']
+#         site.url = request.form['url']
+#         site.description = request.form['description']
 
-        db.session.commit()
-        flash('Site updated successfully!', 'success')
-        return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากแก้ไข Site
+#         db.session.commit()
+#         flash('Site updated successfully!', 'success')
+#         return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากแก้ไข Site
 
-    return render_template('edit_site.html', site=site)
+#     return render_template('edit_site.html', site=site)
 
 # ลบ Site
-@app.route('/remove-site/<int:site_id>', methods=['POST'])
-def remove_site(site_id):
-    site = Site.query.get(site_id)
+# @app.route('/remove-site/<int:site_id>', methods=['POST'])
+# def remove_site(site_id):
+#     site = Site.query.get(site_id)
 
-    if site:
-        db.session.delete(site)
-        db.session.commit()
-        flash('Site deleted successfully!', 'success')
+#     if site:
+#         db.session.delete(site)
+#         db.session.commit()
+#         flash('Site deleted successfully!', 'success')
 
-    return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากลบ Site
+#     return redirect('/manage-sites')  # เปลี่ยนเป็น URL ที่ต้องการให้กลับหลังจากลบ Site
 
-@app.route('/delete-user', methods=['DELETE'])
-def delete_user():
-    data = request.get_json()
-    username = data.get('username')
+# @app.route('/delete-user', methods=['DELETE'])
+# def delete_user():
+#     data = request.get_json()
+#     username = data.get('username')
 
-    # ค้นหาผู้ใช้ที่ต้องการลบจากฐานข้อมูล
-    user = User.query.filter_by(username=username).first()
+#     # ค้นหาผู้ใช้ที่ต้องการลบจากฐานข้อมูล
+#     user = User.query.filter_by(username=username).first()
 
-    if user:
-        # ลบผู้ใช้
-        db.session.delete(user)
-        db.session.commit()
-        return jsonify({'success': True})
-    else:
-        return jsonify({'success': False})
-# เพิ่ม route สำหรับส่งข้อมูลผู้ใช้
+#     if user:
+#         # ลบผู้ใช้
+#         db.session.delete(user)
+#         db.session.commit()
+#         return jsonify({'success': True})
+#     else:
+#         return jsonify({'success': False})
+# # เพิ่ม route สำหรับส่งข้อมูลผู้ใช้
 
 
 @app.route('/get_users', methods=['GET'])
@@ -539,14 +539,14 @@ def get_user_by_id(user_id):
 # Function to update user information
 
 
-def update_user(user, new_data):
-    # Example: Update username, email, and is_admin
-    user.username = new_data.get('username', user.username)
-    user.email = new_data.get('email', user.email)
-    user.is_admin = new_data.get('is_admin', user.is_admin)
-    # Add more fields as needed
+# def update_user(user, new_data):
+#     # Example: Update username, email, and is_admin
+#     user.username = new_data.get('username', user.username)
+#     user.email = new_data.get('email', user.email)
+#     user.is_admin = new_data.get('is_admin', user.is_admin)
+#     # Add more fields as needed
 
-    db.session.commit()
+#     db.session.commit()
 
 # ตัวอย่างการใช้ฟังก์ชัน get_user_by_id ในการดึงข้อมูลผู้ใช้
 
