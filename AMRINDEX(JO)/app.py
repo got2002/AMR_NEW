@@ -1,5 +1,6 @@
 # app.py
 # from flask_mail import Mail, Message
+from io import BytesIO
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -8,7 +9,9 @@ from wtforms import StringField, PasswordField, SubmitField
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from models import User  # Import the User model from models.py
 # from forms import LoginForm, RegisterForm, EditUserForm  # Import the forms
-
+import base64
+import matplotlib.pyplot as plt
+import numpy as np
 import cx_Oracle
 import pandas as pd
 import random
@@ -254,6 +257,30 @@ def your_api_endpoint():
 
     # ส่ง JSON response กลับไปยัง client
     return jsonify({'tag_options': tag_options})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # สร้างโมเดล User
 
