@@ -118,8 +118,7 @@ app = Flask(__name__)
 def home():
     return render_template('search_result.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 
 def fetch_data(query, params=None):
