@@ -30,7 +30,7 @@ password = 'root'
 
 @app.route('/')
 def home():
-    return render_template('Search.html')
+    return render_template('search_result.html')
 
 def fetch_data(query, params=None):
     try:
@@ -71,7 +71,7 @@ def get_tags():
 
 
 @app.route('/')
-def Search():
+def search_result():
     # SQL query to fetch unique PL_REGION_ID values
     region_query = """
     SELECT * FROM AMR_REGION 
@@ -151,7 +151,7 @@ def Search():
                      if isinstance(x, str) else x)
 
     # ส่ง DataFrame ไปยัง HTML template
-    return render_template('Search.html', tables=[df.to_html(classes='data')],
+    return render_template('search_result.html', tables=[df.to_html(classes='data')],
                            titles=df.columns.values,
                            selected_date=selected_date,
                            selected_tag=selected_tag,
