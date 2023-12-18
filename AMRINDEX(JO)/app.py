@@ -1,13 +1,13 @@
 # app.py
-from flask_mail import Mail, Message
+# from flask_mail import Mail, Message
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
-from werkzeug.security import generate_password_hash, check_password_hash
+# from wtforms.validators import DataRequired, Email, EqualTo, Length
+# from werkzeug.security import generate_password_hash, check_password_hash
 # from models import User  # Import the User model from models.py
-from forms import LoginForm, RegisterForm, EditUserForm  # Import the forms
+# from forms import LoginForm, RegisterForm, EditUserForm  # Import the forms
 
 import cx_Oracle
 import pandas as pd
