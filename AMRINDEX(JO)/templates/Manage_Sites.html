@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Sites</title>
+    <style>
+        /* เพิ่ม CSS เพื่อปรับแต่งสไตล์ของหน้าเว็บไซต์ที่ต้องการ */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- เนื้อหาของหน้าเว็บไซต์ -->
+<h1>Manage Sites</h1>
+<ul>
+  {% for site in sites %}
+    <li>{{ site.name }} - <a href="/edit-site/{{ site.id }}">Edit</a> | 
+    <form action="/remove-site/{{ site.id }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Remove</button>
+    </form>
+    </li>
+  {% endfor %}
+</ul>
+<a href="/add-site">Add Site</a>
+
+<!-- แบบฟอร์มสำหรับเพิ่มเว็บไซต์ -->
+<h1>Add Site</h1>
+<form method="post" action="/add-site">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="text" name="name" placeholder="Site Name" required><br>
+    <input type="text" name="url" placeholder="Site URL" required><br>
+    <textarea name="description" placeholder="Site Description"></textarea><br>
+    <button type="submit">Add Site</button>
+</form>
+
+<!-- แบบฟอร์มสำหรับแก้ไขเว็บไซต์ -->
+<h1>Edit Site</h1>
+<form method="post" action="/edit-site/{{ site.id }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="text" name="name" value="{{ site.name }}" required><br>
+    <input type="text" name="url" value="{{ site.url }}" required><br>
+    <textarea name="description">{{ site.description }}</textarea><br>
+    <button type="submit">Update Site</button>
+</form>
+
+</body>
+</html>
