@@ -32,10 +32,6 @@ password = 'root'
 def home():
     return render_template('search_result.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
