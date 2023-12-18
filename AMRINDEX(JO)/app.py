@@ -1,5 +1,6 @@
 # app.py
 # from flask_mail import Mail, Message
+from io import BytesIO
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -8,7 +9,9 @@ from wtforms import StringField, PasswordField, SubmitField
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from models import User  # Import the User model from models.py
 # from forms import LoginForm, RegisterForm, EditUserForm  # Import the forms
-
+import base64
+import matplotlib.pyplot as plt
+import numpy as np
 import cx_Oracle
 import pandas as pd
 import random
@@ -48,70 +51,7 @@ app = Flask(__name__)
 # app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 
-# def generate_token():
-#     return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
-
-# def send_reset_email(user):
-#     token = user.reset_token
-#     reset_url = url_for('reset_password', token=token, _external=True)
-
-#     msg = Message('Password Reset Request',
-#                   sender=app.config['MAIL_USERNAME'], recipients=[user.email])
-#     msg.body = f'''To reset your password, visit the following link:
-# {reset_url}
-
-# If you did not make this request then simply ignore this email and no changes will be made.
-# '''
-#     mail.send(msg)
-
-
-# @app.route('/forgot_password', methods=['GET', 'POST'])
-# def forgot_password():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         user = User.query.filter_by(email=email).first()
-
-#         if user:
-#             token = generate_token()
-#             user.reset_token = token
-#             db.session.commit()
-
-#             send_reset_email(user)
-
-#             flash(
-#                 'An email has been sent with instructions to reset your password.', 'info')
-#             return redirect(url_for('login'))
-#         else:
-#             flash('Email not found. Please try again.', 'danger')
-
-#     return render_template('forgot_password.html')
-
-
-# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
-# def reset_password(token):
-#     user = User.query.filter_by(reset_token=token).first()
-
-#     if not user:
-#         flash('Invalid or expired reset token. Please try again.', 'danger')
-#         return redirect(url_for('forgot_password'))
-
-#     if request.method == 'POST':
-#         password = request.form['password']
-#         confirm_password = request.form['confirm_password']
-
-#         if password == confirm_password:
-#             user.password = password
-#             user.reset_token = None
-#             db.session.commit()
-
-#             flash(
-#                 'Password reset successful! You can now log in with your new password.', 'success')
-#             return redirect(url_for('login'))
-#         else:
-#             flash('Password and Confirm Password do not match.', 'danger')
-
-#     return render_template('reset_password.html', token=token)
 
 
 @app.route('/')
@@ -254,6 +194,93 @@ def your_api_endpoint():
 
     # ส่ง JSON response กลับไปยัง client
     return jsonify({'tag_options': tag_options})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def generate_token():
+#     return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+
+
+# def send_reset_email(user):
+#     token = user.reset_token
+#     reset_url = url_for('reset_password', token=token, _external=True)
+
+#     msg = Message('Password Reset Request',
+#                   sender=app.config['MAIL_USERNAME'], recipients=[user.email])
+#     msg.body = f'''To reset your password, visit the following link:
+# {reset_url}
+
+# If you did not make this request then simply ignore this email and no changes will be made.
+# '''
+#     mail.send(msg)
+
+
+# @app.route('/forgot_password', methods=['GET', 'POST'])
+# def forgot_password():
+#     if request.method == 'POST':
+#         email = request.form['email']
+#         user = User.query.filter_by(email=email).first()
+
+#         if user:
+#             token = generate_token()
+#             user.reset_token = token
+#             db.session.commit()
+
+#             send_reset_email(user)
+
+#             flash(
+#                 'An email has been sent with instructions to reset your password.', 'info')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Email not found. Please try again.', 'danger')
+
+#     return render_template('forgot_password.html')
+
+
+# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+# def reset_password(token):
+#     user = User.query.filter_by(reset_token=token).first()
+
+#     if not user:
+#         flash('Invalid or expired reset token. Please try again.', 'danger')
+#         return redirect(url_for('forgot_password'))
+
+#     if request.method == 'POST':
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
+
+#         if password == confirm_password:
+#             user.password = password
+#             user.reset_token = None
+#             db.session.commit()
+
+#             flash(
+#                 'Password reset successful! You can now log in with your new password.', 'success')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Password and Confirm Password do not match.', 'danger')
+
+#     return render_template('reset_password.html', token=token)
+
 
 # สร้างโมเดล User
 
