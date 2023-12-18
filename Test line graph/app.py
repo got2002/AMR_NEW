@@ -244,7 +244,7 @@ def home():
     # แปลงรูปภาพเป็น base64
     graph_url_3 = base64.b64encode(img_3.getvalue()).decode('utf8')
 
-    return render_template('index.html', graph_url_1=graph_url_1, graph_url_2=graph_url_2, graph_url_3=graph_url_3)
+    return render_template('Search.html', graph_url_1=graph_url_1, graph_url_2=graph_url_2, graph_url_3=graph_url_3)
 
 
 if __name__ == '__main__':
