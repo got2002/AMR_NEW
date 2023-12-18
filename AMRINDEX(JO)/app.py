@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 # db.create_all()
-mail = Mail(app)
+# mail = Mail(app)
 
 # ส่วนที่ขาดหายไปใน fetch_data
 hostname = 'localhost'
@@ -32,38 +32,38 @@ service_name = 'orcl'
 username = 'root'
 password = 'root'
 
-MAIL_SERVER = 'Nattapong@pims.co.th'
-MAIL_PORT = 587
-MAIL_USE_TLS = True
-MAIL_USERNAME = 'Nattapong@pims.co.th'
-MAIL_PASSWORD = 'Csgop@90'
+# MAIL_SERVER = 'Nattapong@pims.co.th'
+# MAIL_PORT = 587
+# MAIL_USE_TLS = True
+# MAIL_USERNAME = 'Nattapong@pims.co.th'
+# MAIL_PASSWORD = 'Csgop@90'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1112'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['MAIL_SERVER'] = MAIL_SERVER
-app.config['MAIL_PORT'] = MAIL_PORT
-app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
-app.config['MAIL_USERNAME'] = MAIL_USERNAME
-app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
+# app.config['MAIL_SERVER'] = MAIL_SERVER
+# app.config['MAIL_PORT'] = MAIL_PORT
+# app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
+# app.config['MAIL_USERNAME'] = MAIL_USERNAME
+# app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 
 def generate_token():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
 
 
-def send_reset_email(user):
-    token = user.reset_token
-    reset_url = url_for('reset_password', token=token, _external=True)
+# def send_reset_email(user):
+#     token = user.reset_token
+#     reset_url = url_for('reset_password', token=token, _external=True)
 
-    msg = Message('Password Reset Request',
-                  sender=app.config['MAIL_USERNAME'], recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{reset_url}
+#     msg = Message('Password Reset Request',
+#                   sender=app.config['MAIL_USERNAME'], recipients=[user.email])
+#     msg.body = f'''To reset your password, visit the following link:
+# {reset_url}
 
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-    mail.send(msg)
+# If you did not make this request then simply ignore this email and no changes will be made.
+# '''
+#     mail.send(msg)
 
 
 # @app.route('/forgot_password', methods=['GET', 'POST'])
@@ -384,32 +384,32 @@ def login():
 # Update user route
 
 
-@app.route('/update-user', methods=['POST'])
-def update_user():
-    form = EditUserForm(request.form)
+# @app.route('/update-user', methods=['POST'])
+# def update_user():
+#     form = EditUserForm(request.form)
 
-    if form.validate():
-        username = form.username.data
-        email = form.email.data
-        is_admin = form.is_admin.data
-        new_password = form.password.data
+#     if form.validate():
+#         username = form.username.data
+#         email = form.email.data
+#         is_admin = form.is_admin.data
+#         new_password = form.password.data
 
-        user_id = session.get('user_id')  # Get user ID from session
-        if user_id:
-            user = get_user_by_id(user_id)
-            if user:
-                new_data = {
-                    'username': username,
-                    'email': email,
-                    'is_admin': is_admin
-                    # Add more fields if needed
-                }
-                update_user(user, new_data)
-                flash('User updated successfully!', 'success')
-                return redirect(url_for('some_page'))
+#         user_id = session.get('user_id')  # Get user ID from session
+#         if user_id:
+#             user = get_user_by_id(user_id)
+#             if user:
+#                 new_data = {
+#                     'username': username,
+#                     'email': email,
+#                     'is_admin': is_admin
+#                     # Add more fields if needed
+#                 }
+#                 update_user(user, new_data)
+#                 flash('User updated successfully!', 'success')
+#                 return redirect(url_for('some_page'))
 
-    flash('Invalid data. Please try again.', 'danger')
-    return redirect(url_for('some_page'))
+#     flash('Invalid data. Please try again.', 'danger')
+#     return redirect(url_for('some_page'))
 
 
 # # ส่วนที่ขาดหายไปใน reset_password
@@ -563,22 +563,22 @@ def profile():
 # ตัวอย่างการใช้ฟังก์ชัน update_user ในการอัพเดตข้อมูลผู้ใช้
 
 
-@app.route('/update_profile', methods=['POST'])
-def update_profile():
-    user_id = session.get('user_id')
-    if user_id:
-        user = get_user_by_id(user_id)
-        if user:
-            new_data = {
-                'username': request.form.get('username'),
-                'email': request.form.get('email'),
-                'is_admin': request.form.get('is_admin')
-                # เพิ่มเติมตามต้องการ
-            }
-            # ใช้ฟังก์ชัน update_user เพื่ออัพเดตข้อมูลผู้ใช้
-            update_user(user, new_data)
-            flash('Profile updated successfully!', 'success')
-    return redirect(url_for('profile'))
+# @app.route('/update_profile', methods=['POST'])
+# def update_profile():
+#     user_id = session.get('user_id')
+#     if user_id:
+#         user = get_user_by_id(user_id)
+#         if user:
+#             new_data = {
+#                 'username': request.form.get('username'),
+#                 'email': request.form.get('email'),
+#                 'is_admin': request.form.get('is_admin')
+#                 # เพิ่มเติมตามต้องการ
+#             }
+#             # ใช้ฟังก์ชัน update_user เพื่ออัพเดตข้อมูลผู้ใช้
+#             update_user(user, new_data)
+#             flash('Profile updated successfully!', 'success')
+#     return redirect(url_for('profile'))
 
 
 # ออกจากระบบ
