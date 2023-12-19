@@ -368,22 +368,16 @@
                         });
                     }
 
+                    // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
                     function getBorderColor(datasetIndex) {
-                        // สร้างฟังก์ชันนี้เพื่อกำหนดสีของกราฟเส้นตาม datasetIndex
-                        // สามารถให้สีแตกต่างกันไปตามที่คุณต้องการ
-                        // ยกตัวอย่างเช่น:
                         const colors = ['red', 'blue', 'green', 'orange'];
 
-                        // ตรวจสอบว่า datasetIndex อยู่ในช่วงของ array colors หรือไม่
                         if (datasetIndex >= 1 && datasetIndex <= colors.length) {
-                            // คืนค่าสีที่ตรงกับ datasetIndex
                             return colors[datasetIndex - 1];
                         } else {
-                            // ถ้า datasetIndex ไม่ได้อยู่ในช่วงของ array colors ให้ให้สี default
-                            return 'black'; // หรือคุณสามารถเลือกสีอื่น ๆ ที่คุณต้องการ
+                            return 'black';
                         }
                     }
-
 
                     // ... (Other existing functions)
                 </script>
@@ -483,7 +477,7 @@
 
             displayCurrentDate();
         </script>
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
                 get_users();
@@ -528,7 +522,7 @@
                 var username = document.getElementById("searchUsername").value;
                 return confirm("Are you sure you want to delete the user: " + username + "?");
             }
-        </script>
+        </script> -->
 
 </body>
 
