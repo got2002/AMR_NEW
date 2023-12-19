@@ -233,7 +233,25 @@
                 </button>
 
             </div>
-
+            <form method="get" action="/">
+                <label for="tcp_ip">Region</label>
+                <select class="form-group" id="region_dropdown" name="region_dropdown" style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                   
+                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                    {% for region in region_options %}
+                        <option value="{{ region }}" {% if selected_region == region %}selected{% endif %} >{{ region }}</option>
+                    {% endfor %}
+                    
+                </select>
+                
+                <label for="tag_dropdown">Site</label>
+                <select id="tag_dropdown" name="tag_dropdown" style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                    {% for tag in tag_options %}
+                        <option value="{{ tag }}" {% if selected_tag == tag %}selected{% endif %}>{{ tag }}</option>
+                    {% endfor %}
+                </select>
+            </form>
             <div class="container-fluid" id="containerfluid">
                 <div class="row">
                     <div class="col-sm-6 offset-sm-3 pt-4">
@@ -241,7 +259,8 @@
                         <form method="POST" id="modbusForm">
 
 
-
+                           
+                            
 
                             <div class="form-group" style="display: none;  ">
                                 <label for="slave_id" style="margin-bottom: 100px;">Slave ID</label>
@@ -466,6 +485,55 @@
 
 
     <script>
+
+        
+      // Wait for the document to be ready
+      $(document).ready(function() {
+        $('#date_picker').datepicker({
+            format: 'mm/yyyy',
+            startView: 'months',
+            minViewMode: 'months',
+            autoclose: true
+        });
+    });
+
+    function clearFilters() {
+        $('#date_picker').val('');
+        $('#tag_dropdown').val('');
+        $('#region_dropdown').val('');
+        $('form').submit();
+    }
+
+    $(document).ready(function(){
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function(){
+        // Get the selected region value
+        var selectedRegion = $(this).val();
+
+        // Make an Ajax request to get updated tag options based on the selected region
+        $.ajax({
+            type: 'GET',
+            url: '/get_tags',
+            data: {'selected_region': selectedRegion},
+            success: function(response){
+                // Sort tag options alphabetically starting from 'a'
+                response.tag_options.sort(function(a, b) {
+                    return a.localeCompare(b);
+                });
+
+                // Update tag dropdown options
+                var tagDropdown = $('#tag_dropdown');
+                tagDropdown.empty();
+                $.each(response.tag_options, function(index, tagOption){
+                    tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                });
+            },
+            error: function(error){
+                console.log('Error fetching tag options:', error);
+            }
+        });
+    });
+});
         function clearForm() {
             // Clear starting address field
             document.getElementById("starting_address").value = "";
