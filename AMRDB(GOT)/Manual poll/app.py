@@ -18,14 +18,15 @@ def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[2:]  # Convert the value to binary string excluding the '0b' prefix
     return binary_string.zfill(bytes_per_value * 8)  # Zero-fill to fit the number of bits based on bytes_per_value
 
-@app.route('/')
+@app.route('/index')
 def index():
    
     global tcp_ip, tcp_port
     return render_template('index.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[],
                            is_16bit=False, communication_traffic=communication_traffic)
 
-@app.route('/', methods=['POST'])
+@app.route('/index', methods=['POST'])
+
 def read_data():
     
     global change_to_32bit_counter  # Use the global variable
@@ -33,7 +34,10 @@ def read_data():
     slave_id = int(request.form['slave_id'])
     function_code = int(request.form['function_code'])
     if request.form['starting_address'] == 'custom':
-        starting_address = int(request.form['custom_starting_address'])
+        if 'custom_starting_address' in request.form:
+            starting_address = int(request.form['custom_starting_address'])
+        else:
+            starting_address = 0  # หรือใส่ค่าเริ่มต้นที่คุณต้องการ
     else:
         starting_address = int(request.form['starting_address'])
     quantity = int(request.form['quantity'])
@@ -102,10 +106,6 @@ def read_data():
 
         
        
-        
-            
-        
-        
         
         
         address = starting_address + i * 2
@@ -245,10 +245,7 @@ def read_data():
     values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
 
 # หากต้องการแปลงเฉพาะแถวแรก สามารถทำได้เช่นนี้:
-    if len(values) > 0:
-        first_value = values[0]
-        unix_timestamp = datetime.fromtimestamp(first_value).strftime('%Y-%m-%d %H:%M:%S')
-        data_list[0]['value'] = unix_timestamp
+
 
     session['tcp_ip'] = tcp_ip
     session['tcp_port'] = tcp_port
@@ -263,20 +260,15 @@ def read_data():
             value_16bit = data_16bit['value'] * 2  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({'address': address_16bit, 'value': value_16bit})
     if 'action_actaris' in request.form: 
-        if len(data_list) >= 8:
-            data_list[3], data_list[7] = data_list[7], data_list[3]
-        if len(data_list) > 3:
-            del data_list[3]
-        if len(data_list) >= 6:
-            data_list[4], data_list[5] = data_list[5], data_list[4]
-        if len(data_list) > 3:
-            del data_list[3]
-        if len(data_list) >= 8:
-            data_list[5], data_list[7] = data_list[7], data_list[5]
-        if len(data_list) > 4:
-            del data_list[4]
-        if len(data_list) > 6:
-            data_list[4], data_list[5] = data_list[5], data_list[4]
+        
+        data_list[3], data_list[7] = data_list[7], data_list[3]
+        del data_list[3]
+        
+        data_list[4], data_list[5] = data_list[5], data_list[4]
+        del data_list[3]
+        data_list[5], data_list[7] = data_list[7], data_list[5]
+        del data_list[4]
+        data_list[4], data_list[5] = data_list[5], data_list[4]
     if 'action_configuration' in request.form:
                
       
@@ -287,20 +279,17 @@ def read_data():
             del data_list[2]  
         if len(data_list) >= 5:
             data_list[3], data_list[4] = data_list[4], data_list[3]
-        if len(data_list) >= 23:
-            data_list[6], data_list[22] = data_list[22], data_list[6] 
-        if len(data_list) > 7:
-            del data_list[7] 
-        if len(data_list) >= 24:
-            data_list[7], data_list[23] = data_list[23], data_list[7] 
+        data_list[6], data_list[22] = data_list[22], data_list[6] 
+        del data_list[7] 
+        data_list[7], data_list[23] = data_list[23], data_list[7] 
         
-        
+   
+
 
     return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity, is_16bit=is_16bit,
-                           communication_traffic=communication_traffic,data=data,)
-
-    
+                           communication_traffic=communication_traffic, data=data,
+                          )
 
 
 def handle_actaris_action(i, address):
