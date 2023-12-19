@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +63,7 @@
                         <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{session['tcp_ip']}}" required>
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="tcp_port">TCP Port</label>
                         <select class="form-control" id="tcp_port" name="tcp_port" required>
@@ -79,6 +78,7 @@
                             <option value="4002">4002</option>
                             <option value="4003">4003</option>
                             <option value="4004">4004</option>
+                            <option value="4004">6000</option>
                         </select>
                     </div>
 
@@ -110,168 +110,162 @@
 
                         <button type="submit" name="action_configuration" value="configuration">Configuration</button>
                 </form>
-            </div>
-            <div class="col-sm-3 t pt-2">
+                </div>
+                <div class="col-sm-3 t pt-2">
 
 
-                </form>
-            </div>
-            <div class="col-sm-9">
-                <div class="table-responsive" style="max-height: 650px;">
-                    <h2 class="text-center">แสดงข้อมูล</h2>
-                    {% if data_list %}
-                    <h2>Data for {{ selected_date }}</h2>
-                    <table class="table table-hover">
-                        <thead>
-                            
-             <tr>
-                                <th>Description</th>
-                                <th>Value</th>
-                                <th>Address</th>
-                                
-                                <th>HEX Value</th>
-                                <th>Binary Value</th>
-                                
-                                <th> float_value</th>
-                               
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for data in data_list %}
-                            <tr>
-                                <td>{{ data['description'] }}</td>
-                                <td>{{ data['value'] }}</td>
-                                <td>{{ data['address'] }}</td>
-                                
-                                <td>{{ data['hex_value'] }}</td>
-                                <td>{{ data['binary_value'] }}</td>
-                                
-                                <td>
-                                    {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084] %} {{ data['signed_value'] }}
-                                    <!-- แสดง signed_value สำหรับ signed หรือ Ulong -->
-                                    {% else %} {{ data['float_value'] }}
-                                    <!-- แสดง float_value สำหรับ float และอื่น ๆ -->
-                                    {% endif %}
-                                </td>
-                               
-               
+                    </form>
+                </div>
+                <div class="col-sm-9">
+                    <div class="table-responsive" style="max-height: 650px;">
+                        <h2 class="text-center">แสดงข้อมูล</h2>
+                        {% if data_list %}
+                        <h2>Data for {{ selected_date }}</h2>
+                        <table class="table table-hover">
+                            <thead>
 
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Value</th>
+                                    <th>Address</th>
 
-                    {% endif %}
+                                    <th>HEX Value</th>
+                                    <th>Binary Value</th>
+
+                                    <th> float_value</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in data_list %}
+                                <tr>
+                                    <td>{{ data['description'] }}</td>
+                                    <td>{{ data['value'] }}</td>
+                                    <td>{{ data['address'] }}</td>
+
+                                    <td>{{ data['hex_value'] }}</td>
+                                    <td>{{ data['binary_value'] }}</td>
+
+                                    <td>
+                                        {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
+                                        %} {{ data['signed_value'] }}
+                                        <!-- แสดง signed_value สำหรับ signed หรือ Ulong -->
+                                        {% else %} {{ data['float_value'] }}
+                                        <!-- แสดง float_value สำหรับ float และอื่น ๆ -->
+                                        {% endif %}
+                                    </td>
+
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="communication-traffic">
-        <h3>Communication Traffic</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Direction</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in communication_traffic %}
-                <tr>
-                    <td>{{ data['direction'] }}</td>
-                    <td>{{ data['data'] }}</td>
-                </tr>
-                
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="communication-traffic">
+            <h3>Communication Traffic</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Direction</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in communication_traffic %}
+                    <tr>
+                        <td>{{ data['direction'] }}</td>
+                        <td>{{ data['data'] }}</td>
+                    </tr>
 
-    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-    <script>
-       
-        function clearForm() {
-            document.getElementById("slave_id").value = "";
-            document.getElementById("function_code").value = "";
-            document.getElementById("starting_address").value = "";
-            document.getElementById("quantity").value = "";
+        </div>
+
+        <script>
+            function clearForm() {
+                document.getElementById("slave_id").value = "";
+                document.getElementById("function_code").value = "";
+                document.getElementById("starting_address").value = "";
+                document.getElementById("quantity").value = "";
 
 
-            var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
-            communicationTrafficTable.innerHTML = "";
+                var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
+                communicationTrafficTable.innerHTML = "";
 
-            // Clear the response data
-            var responseDataTable = document.querySelector(".table.table-hover tbody");
-            responseDataTable.innerHTML = "";
-        }
+                // Clear the response data
+                var responseDataTable = document.querySelector(".table.table-hover tbody");
+                responseDataTable.innerHTML = "";
+            }
 
-        // เพิ่มฟังก์ชันสำหรับเปลี่ยนเป็น 16-bit
-        function changeTo16Bit() {
-            document.getElementById("is_16bit").value = "true";
-            const startingAddressInput = document.getElementById("starting_address");
-            const quantityInput = document.getElementById("quantity");
+            // เพิ่มฟังก์ชันสำหรับเปลี่ยนเป็น 16-bit
+            function changeTo16Bit() {
+                document.getElementById("is_16bit").value = "true";
+                const startingAddressInput = document.getElementById("starting_address");
+                const quantityInput = document.getElementById("quantity");
 
-            startingAddressInput.max = 65535;
-            quantityInput.max = 65535;
+                startingAddressInput.max = 65535;
+                quantityInput.max = 65535;
 
-        }
+            }
 
-        function changeTo32Bit() {
-            document.getElementById("is_16bit").value = "false";
-            const startingAddressInput = document.getElementById("starting_address");
-            const quantityInput = document.getElementById("quantity");
+            function changeTo32Bit() {
+                document.getElementById("is_16bit").value = "false";
+                const startingAddressInput = document.getElementById("starting_address");
+                const quantityInput = document.getElementById("quantity");
 
-            startingAddressInput.max = 4294967295;
-            quantityInput.max = 4294967295;
+                startingAddressInput.max = 4294967295;
+                quantityInput.max = 4294967295;
 
-        }
-
-        
-        function updateTable(data_list) {
-    const responseDataTable = document.querySelector(".table.table-hover tbody");
-    responseDataTable.innerHTML = "";
-
-    for (const data of data_list) {
-        const newRow = document.createElement("tr");
-        const addressCell = document.createElement("td");
-        addressCell.textContent = data.address;
-        newRow.appendChild(addressCell);
-
-        const valueCell = document.createElement("td");
-        valueCell.textContent = data.value;
-        newRow.appendChild(valueCell);
-
-        const hexValueCell = document.createElement("td");
-        hexValueCell.textContent = "0x" + Number(data.value).toString(16).toUpperCase(); // Convert to HEX and display
-        newRow.appendChild(hexValueCell);
-
-        const floatCell = document.createElement("td");
-        if (data.is_16bit || [8000, 7003, 20482, 32].includes(data.address)) {
-            floatCell.textContent = data.signed_value;
-        } else if (data.float_value.includes('e')) {
-            const floatValue = parseFloat(data.float_value);
-            floatCell.textContent = floatValue.toExponential(); // Convert back to exponential notation
-        } else {
-            floatCell.textContent = data.float_value;
-        }
-        newRow.appendChild(floatCell);
-
-        responseDataTable.appendChild(newRow);
-    }
-}
+            }
 
 
-    
-    </script>
-    <!-- ส่วนของการเรียกใช้ Bootstrap 4 JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js" integrity="sha384-bnBEpT0F5Fqx3pZlqVuAZMOLEH7B5P9RVoCkAPbQp9r1fB2MWXHI5I0aRUWoJ6fG" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            function updateTable(data_list) {
+                const responseDataTable = document.querySelector(".table.table-hover tbody");
+                responseDataTable.innerHTML = "";
+
+                for (const data of data_list) {
+                    const newRow = document.createElement("tr");
+                    const addressCell = document.createElement("td");
+                    addressCell.textContent = data.address;
+                    newRow.appendChild(addressCell);
+
+                    const valueCell = document.createElement("td");
+                    valueCell.textContent = data.value;
+                    newRow.appendChild(valueCell);
+
+                    const hexValueCell = document.createElement("td");
+                    hexValueCell.textContent = "0x" + Number(data.value).toString(16).toUpperCase(); // Convert to HEX and display
+                    newRow.appendChild(hexValueCell);
+
+                    const floatCell = document.createElement("td");
+                    if (data.is_16bit || [8000, 7003, 20482, 32].includes(data.address)) {
+                        floatCell.textContent = data.signed_value;
+                    } else if (data.float_value.includes('e')) {
+                        const floatValue = parseFloat(data.float_value);
+                        floatCell.textContent = floatValue.toExponential(); // Convert back to exponential notation
+                    } else {
+                        floatCell.textContent = data.float_value;
+                    }
+                    newRow.appendChild(floatCell);
+
+                    responseDataTable.appendChild(newRow);
+                }
+            }
+        </script>
+        <!-- ส่วนของการเรียกใช้ Bootstrap 4 JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js" integrity="sha384-bnBEpT0F5Fqx3pZlqVuAZMOLEH7B5P9RVoCkAPbQp9r1fB2MWXHI5I0aRUWoJ6fG" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
-
-
-
