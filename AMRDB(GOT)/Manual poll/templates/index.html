@@ -56,7 +56,7 @@
             padding: 2rem;
             font-family: var(--font-family);
             background-color: #FFDEE9;
-            background-image: linear-gradient(0deg, #f5ecd0 0%, #B5FFFC 100%);
+            background-image: linear-gradient(0deg, #ffffff 0%, #bef2f2 100%);
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -79,8 +79,9 @@
         }
         
         .container-fluid {
-            margin-top: -28px;
-            width: 67%;
+            margin-top: 50px;
+            width: 10%;
+            margin-right: 3000px;
         }
         
         .form-group label {
@@ -105,8 +106,8 @@
         .btn-container {
             position: absolute;
             margin-left: 434px;
-            margin-top: -350px;
             width: 205px;
+            margin-top: -245px;
         }
         
         .btn-buttonElster {
@@ -189,8 +190,8 @@
         
         .col-sm-9 {
             display: grid;
-            top: 322.5px;
-            right: 100px;
+            top: 10px;
+            right: 0px;
         }
         
         #communicationTrafficContainer {
@@ -199,348 +200,8 @@
         
         #colSm9Container {
             display: grid;
-        }
-        
-        #showModbusFormButton {
-            display: none;
-        }
-        
-        .Settings {
-            display: none;
-        }
-        
-        .Settings h1 {
             position: relative;
-            margin-top: 240px;
-        }
-        
-        .header-links li {
-            color: white;
-            display: inline;
-            float: right;
-            padding: 15px;
-            font-size: 14px;
-        }
-        
-        .header-links a {
-            color: #757575;
-            -webkit-transition: all 0.2s ease-in;
-        }
-        
-        .header-links a:hover {
-            color: #d6c43a !important;
-        }
-        
-        .list-container {
-            position: relative;
-        }
-        
-        .list-container.active .more-button-list {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .list-container.active .more-button-list-item {
-            -webkit-animation: fadeInItem 0.6s 0.2s forwards;
-            animation: fadeInItem 0.6s 0.2s forwards;
-        }
-        
-        .list-container.active .more-button-list-item:nth-child(2) {
-            -webkit-animation-delay: 0.4s;
-            animation-delay: 0.4s;
-        }
-        
-        .list-container.active .more-button-list-item:nth-child(3) {
-            -webkit-animation-delay: 0.6s;
-            animation-delay: 0.6s;
-        }
-        
-        .list-container.active .more-button-list-item:nth-child(4) {
-            -webkit-animation-delay: 0.8s;
-            animation-delay: 0.8s;
-        }
-        
-        .list-container.active .more-button {
-            -webkit-animation: onePulse 0.6s forwards linear;
-            animation: onePulse 0.6s forwards linear;
-        }
-        
-        .list-container.active .menu-icon-wrapper {
-            transform: rotate(-45deg);
-        }
-        
-        .list-container.active .menu-icon-line.first {
-            transform: rotate(-90deg) translateX(1px);
-        }
-        
-        .list-container.active .menu-icon-line.last {
-            transform: rotate(-90deg) translateX(-1px);
-        }
-        
-        .more-button-list {
-            display: flex;
-            left: 90px;
-            flex-direction: row;
-            border-radius: 8px;
-            list-style-type: none;
-            width: 160px;
-            height: 80px;
-            padding: 0;
-            padding: 6px;
-            position: absolute;
-            right: 24px;
-            bottom: 122px;
-            opacity: 1;
-            transform: scale(1);
-            transform-origin: bottom right;
-            transition: all 0.3s ease 0.1s;
-        }
-        
-        .more-button-list li {
-            opacity: 1;
-        }
-        
-        .more-button-list-item {
-            display: flex;
-            align-items: center;
-            color: #d6c43a;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            transition: 0.2s ease-in;
-            transform: translatex(-10px);
-        }
-        
-        .more-button-list-item:hover {
-            color: #5cb3ff;
-        }
-        
-        .more-button-list-item:after {}
-        
-        .more-button-list-item:last-child:after {
-            display: none;
-        }
-        
-        .more-button-list-item svg {
-            width: 18px;
-            height: 18px;
-            margin-left: 14px;
-        }
-        
-        .more-button-list-item span {
-            display: inline-block;
-            line-height: 20px;
-            font-size: 12px;
-            margin-left: 6px;
-        }
-        
-        @-webkit-keyframes onePulse {
-            0% {
-                box-shadow: 0px 0px 0px 0px rgba(92, 103, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0px 0px 0px 12px rgba(92, 103, 255, 0.1);
-            }
-            100% {
-                box-shadow: 0px 0px 0px 4px rgba(92, 103, 255, 0.3);
-            }
-        }
-        
-        @keyframes onePulse {
-            0% {
-                box-shadow: 0px 0px 0px 0px rgba(92, 103, 255, 0.3);
-            }
-            50% {
-                box-shadow: 0px 0px 0px 12px rgba(92, 103, 255, 0.1);
-            }
-            100% {
-                box-shadow: 0px 0px 0px 4px rgba(92, 103, 255, 0.3);
-            }
-        }
-        
-        @-webkit-keyframes fadeInItem {
-            100% {
-                transform: translatex(0px);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes fadeInItem {
-            100% {
-                transform: translatex(0px);
-                opacity: 1;
-            }
-        }
-        
-        .socials {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .social-link {
-            color: #fff;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            text-decoration: none;
-            margin-right: 12px;
-        }
-        
-        .menu-icon-wrapper {
-            border-radius: 2px;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: transform 330ms ease-out;
-        }
-        
-        .menu-icon-line {
-            background-color: #fff;
-            border-radius: 2px;
-            width: 100%;
-            height: 2px;
-        }
-        
-        .menu-icon-line.half {
-            width: 50%;
-        }
-        
-        .menu-icon-line.first {
-            transition: transform 300ms cubic-bezier(0.52, -0.8, 0.52, 0.52);
-            transform-origin: right;
-        }
-        
-        .menu-icon-line.last {
-            align-self: flex-end;
-            transition: transform 300ms cubic-bezier(0.52, -0.8, 0.52, 0.52);
-            transform-origin: left;
-        }
-        
-        .home {
-            display: block;
-        }
-        
-        .SETTINGS {
-            display: none;
-        }
-        
-        .databass {
-            display: none;
-        }
-        
-        .about {
-            display: none;
-        }
-        
-        .overlay {
-            display: block;
-        }
-        
-        .home h1 {
-            position: absolute;
-            display: grid;
-            top: 150px;
-            right: 565px;
-            font-size: 55px;
-            color: #d6c43a;
-        }
-        
-        .card-grid {
-            display: grid;
-            display: flex;
-            grid-template-columns: repeat(1, 1fr);
-            grid-column-gap: var(--spacing-l);
-            grid-row-gap: var(--spacing-l);
-            max-width: var(--width-container);
-            width: 115%;
-            height: 190px;
-            bottom: 200px;
-            margin-left: -40px;
-        }
-        
-        .card-grid h3 {
-            display: flex;
-            font-size: larger;
-        }
-        
-        @media(min-width: 540px) {
-            .card-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media(min-width: 960px) {
-            .card-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
-        .card {
-            display: flex;
-            list-style: none;
-            position: relative;
-        }
-        
-        .card:before {
-            content: '';
-            display: block;
-            padding-bottom: 150%;
-            width: 100%;
-        }
-        
-        .card__background {
-            display: grid;
-            background-size: cover;
-            background-position: center;
-            border-radius: var(--spacing-l);
-            bottom: 0;
-            filter: brightness(0.90) saturate(2) contrast(0.85);
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transform-origin: center;
-            trsnsform: scale(1) translateZ(0);
-            transition: filter 200ms linear, transform 200ms linear;
-        }
-        
-        .card:hover .card__background {
-            transform: scale(1.05) translateZ(0);
-        }
-        
-        .card-grid:hover>.card:not(:hover) .card__background {
-            filter: brightness(0.9) saturate(0) contrast(1.2) blur(160px);
-        }
-        
-        .card__content {
-            left: 0;
-            padding: var(--spacing-l);
-            position: absolute;
-            top: 0;
-        }
-        
-        .card__category {
-            display: flex;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: var(--spacing-s);
-            text-transform: uppercase;
-        }
-        
-        .card__heading {
-            display: flex;
-            color: var(--text-lighter);
-            font-size: 1.9rem;
-            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.0);
-            line-height: 1.4;
-            word-spacing: 100vw;
+            margin-bottom: 10px;
         }
         
         .btn-primary1 {
@@ -558,17 +219,6 @@
 
 
 
-
-
-
-    <div class="SETTINGS" id="SETTINGS1">
-        <h1>SETTINGS</h1>
-    </div>
-
-    <div class="databass" id="databass1">
-        <h1>databass</h1>
-
-    </div>
 
 
 
@@ -605,7 +255,7 @@
 
 
 
-                            <div class="form-group" style="display: none;">
+                            <div class="form-group" style="display: none;  ">
                                 <label for="slave_id" style="margin-bottom: 100px;">Slave ID</label>
                                 <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
                             </div>
@@ -721,7 +371,7 @@
 
                         </form>
                     </div>
-                    <div class="btn-warning">
+                    <div class="btn-warning" style="top: 100px; position: relative;">
                         <button type="button" class="btn btn-warning" onclick="clearForm()" id="clearFormButton" style="height: 34px; width: 190px; margin-left: 434px; margin-top: -300px; border: none;border-radius: 0.5rem;">Clear</button>
                     </div>
 
@@ -735,11 +385,6 @@
 
 
 
-                        <form id="showModbusFormButton">
-                            <!-- Your Modbus form content here -->
-                            <button type="submit" class="btn" style=" margin-top: 15px;  margin-left: -1px;width: 60px; height:30px ; font-size: x-small; border: none;border-radius: 0.5rem;">back</i></button>
-
-                        </form>
 
                     </div>
                 </div>
@@ -748,10 +393,6 @@
             <!-- partial -->
 
         </div>
-    </div>
-
-    <div id="loading" style="display: none;">
-        Loading...
     </div>
 
     </div>
@@ -957,17 +598,6 @@
 
             }
         }
-
-
-        // แสดงปฏิทินเมื่อคลิกปุ่ม Date
-        document.getElementById("dateButton").addEventListener("click", function() {
-            flatpickr("#datePickerContainer", {
-                inline: true,
-                onChange: function(selectedDates, dateStr, instance) {
-                    document.getElementById("selectedDate").value = dateStr;
-                }
-            });
-        });
     </script>
     <!-- ส่วนของการเรียกใช้ Bootstrap 4 JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" async></script>
