@@ -11,8 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Libre+Baskerville&display=swap');
         /* Added styles for footer */
         .footer {
             text-align: center;
@@ -72,7 +71,8 @@
 
         body {
             background-color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Crimson Text', serif;
+            font-family: 'Libre Baskerville', serif;
             color: #333;
             margin: 0;
             display: flex;
@@ -104,11 +104,18 @@
             width: 120px;
         }
 
+        h1 {
+
+            font-size: 200%;
+            font-family: 'Libre Baskerville', serif;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
         h2 {
 
             font-size: 250%;
-            font-family: 'Anton', sans-serif;
-            font-family: 'DM Serif Display', serif;
+            font-family: 'Libre Baskerville', serif;
             color: #ff0202;
             margin-bottom: 20px;
         }
@@ -278,9 +285,7 @@
             <strong>Date:</strong> <span id="searchedDate"></span>
         </div>
 
-
         <div class="current-date" id="currentDate"></div>
-
 
         <div class="main" id="main">
             <h1 class="details">Search Results</h1>
