@@ -478,53 +478,6 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const colSm9Container = document.getElementById("colSm9Container");
-            const communicationTrafficContainer = document.getElementById("communicationTrafficContainer");
-            const overlay = document.getElementById("overlay");
-            const showModbusFormButton = document.getElementById("showModbusFormButton");
-            const showCommunicationButton = document.getElementById("showCommunicationButton");
-            const modbus1 = document.getElementById("modbus1");
-            const clearFormButton = document.getElementById("clearFormButton");
-            const modbusForm = document.getElementById("modbusForm");
-            const containerfluid = document.getElementById("containerfluid");
-            const home1 = document.getElementById("home1");
-            const event = document.getElementById("event");
-            const loadingElement = document.getElementById("loading");
-            const showDataButton = document.getElementById("showDataButton");
-
-
-            showDataButton.addEventListener("click", function() {
-
-                //event.preventDefault();
-                clearFormButton.style.display = "none";
-                colSm9Container.style.display = "block";
-                communicationTrafficContainer.style.display = "block";
-                overlay.style.margin = "0px 3110px 0px 0px";
-                showModbusFormButton.style.display = "block";
-                modbusForm.style.display = "none";
-                home1.style.display = "none";
-                card1.style.display = "none";
-                modbusForm.style.display = "none";
-
-            });
-            showModbusFormButton.addEventListener("click", function() {
-                modbusForm.style.display = "block";
-                clearFormButton.style.display = "block";
-                overlay.style.display = "block";
-                colSm9Container.style.display = "none";
-                communicationTrafficContainer.style.display = "none";
-                showModbusFormButton.style.display = "none";
-                overlay.style.display = "flex";
-                overlay.style.margin = "0px 0px 0px 0px";
-
-            });
-        });
-
-
-
-
         function clearForm() {
             document.getElementById("slave_id").value = "";
             document.getElementById("function_code").value = "";
