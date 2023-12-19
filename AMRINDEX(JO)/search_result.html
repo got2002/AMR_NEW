@@ -5,13 +5,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AMR Tool</title>
+    <title>Billing Data</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display&display=swap');
+
         /* Added styles for footer */
         .footer {
             text-align: center;
@@ -104,22 +105,17 @@
         }
 
         h2 {
-            font-family: 'Georgia', 'Times New Roman', Times, serif;
-            color: #ff5050;
-            margin-bottom: 10px;
-        }
 
-        .version {
-            margin-bottom: 15px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            font-size: 14px;
-            color: #888;
+            font-size: 250%;
+            font-family: 'Anton', sans-serif;
+            font-family: 'DM Serif Display', serif;
+            color: #ff0202;
+            margin-bottom: 20px;
         }
 
         .container {
             margin-bottom: 20px;
-            text-align: left;
+            text-align: auto;
         }
 
         label {
@@ -209,9 +205,9 @@
 
         .loading-circle {
             border: 8px solid #3498db;
-            /* เปลี่ยนสีขอบวงกลมตามที่ต้องการ */
+            /* สีขอบวงกลม */
             border-top: 8px solid #f3f3f3;
-            /* เปลี่ยนสีขอบด้านบนของวงกลมตามที่ต้องการ */
+            /* สีขอบด้านบนของวงกลม */
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -245,23 +241,28 @@
             <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
                 alt="AMR Logo" />
         </div>
-        <h2>AMR Search</h2>
+        <h2>AMR Billing Data</h2>
 
         <div class="container">
             <label for="inputRegion">REGION:</label>
-            <input type="text" id="inputRegion" placeholder="Enter region...">
+            <input type="text" id="inputRegion" placeholder="Enter region..."
+                style="width: calc(50% - 22px); margin-bottom: 10px;">
         </div>
 
         <div class="container">
             <label for="inputSite">SITE:</label>
-            <input type="text" id="inputSite" placeholder="Enter site...">
+            <input type="text" id="inputSite" placeholder="Enter site..."
+                style="width: calc(50% - 22px); margin-bottom: 10px;">
         </div>
 
         <div class="container">
             <label for="datepicker">Select Date:</label>
-            <input type="date" id="datepicker" style="width: calc(100% - 22px); margin-bottom: 10px;">
+            <input type="date" id="datepicker" style="width: calc(50% - 22px); margin-bottom: 10px;">
         </div>
-
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-circle"></div>
+            <div class="loading-text">Searching...</div>
+        </div>
         <!-- Warning message container -->
         <div class="container" id="warningContainer" style="display: none;">
             <p>Please select all the required information before searching.</p>
@@ -280,10 +281,6 @@
 
         <div class="current-date" id="currentDate"></div>
 
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="loading-circle"></div>
-            <div class="loading-text">Searching...</div>
-        </div>
 
         <div class="main" id="main">
             <h1 class="details">Search Results</h1>
@@ -389,7 +386,32 @@
             <p>&copy; 2023 Prompt. All rights reserved.</p>
         </div>
         <!-- สิ้นสุดส่วนของ footer -->
+        <script>
+            function displaySearchResults(data) {
+                // รับข้อมูลที่ได้จากการค้นหาและแสดงผลลัพธ์ในตาราง
 
+                var tableBody = document.querySelector('.styled-table tbody');
+                tableBody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
+
+                data.forEach(rowData => {
+                    var row = document.createElement('tr');
+                    rowData.forEach(value => {
+                        var cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+                    tableBody.appendChild(row);
+                });
+
+                // แสดงรายละเอียดที่ค้นหา
+                document.getElementById('searchedRegion').textContent = inputRegion;
+                document.getElementById('searchedSite').textContent = inputSite;
+                document.getElementById('searchedDate').textContent = selectedDate;
+
+                // หยุดการหมุนและซ่อน loadingOverlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+        </script>
         <script>
             function searchData() {
                 var inputRegion = document.getElementById('inputRegion').value;
@@ -477,6 +499,7 @@
 
             displayCurrentDate();
         </script>
+
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
