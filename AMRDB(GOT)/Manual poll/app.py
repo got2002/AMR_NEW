@@ -3,7 +3,7 @@ from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
-from flask import Flask, render_template, request, session,send_file, redirect, url_for
+from flask import Flask, render_template, request, session,send_file, redirect, url_for,jsonify
 import socket
 import struct
 from pymodbus.utilities import computeCRC
@@ -14,12 +14,32 @@ from sqlalchemy import desc
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate
 
+import cx_Oracle
 
+app = Flask(__name__)
 
+# กำหนดการเชื่อมต่อฐานข้อมูล
+username = 'root'
+password = 'root'
+hostname = '192.168.102.192'
+port = '1521'
+service_name = 'orcl'
 
-
-
-
+def fetch_data(query, params=None):
+    try:
+        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        with cx_Oracle.connect(username, password, dsn) as connection:
+            with connection.cursor() as cursor:
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                results = cursor.fetchall()
+        return results
+    except cx_Oracle.Error as e:
+        error, = e.args
+        print("Oracle Error:", error)
+        return []
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
@@ -27,18 +47,9 @@ communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
 
 
-
-
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[2:]  # Convert the value to binary string excluding the '0b' prefix
     return binary_string.zfill(bytes_per_value * 8)  # Zero-fill to fit the number of bits based on bytes_per_value
-
-
-
-
-
-
-
 
 
 @app.route('/')
@@ -50,11 +61,41 @@ def index():
                            is_16bit=False, communication_traffic=communication_traffic)
 
 
+@app.route('/get_tags', methods=['GET'])
+def get_tags():
+    selected_region = request.args.get('region_dropdown')  # Change to form data key
 
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
+
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+
+    return jsonify({'tag_options': tag_options})
 
 @app.route('/', methods=['POST'])
 
 def read_data():
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Fetch tag options based on the selected region
+    
+    
     
     global change_to_32bit_counter  # Use the global variable
 
@@ -127,14 +168,7 @@ def read_data():
     
     for i, value in enumerate(values):
        
-      
-        
-            
 
-        
-       
-        
-        
         address = starting_address + i * 2
                
         hex_value = hex(value)  # Convert the decimal value to HEX
@@ -319,7 +353,7 @@ def read_data():
 
     return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity, is_16bit=is_16bit,
-                           communication_traffic=communication_traffic, data=data,
+                           communication_traffic=communication_traffic, data=data,region_options=region_options
                            )
 
 
