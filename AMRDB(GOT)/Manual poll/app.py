@@ -22,7 +22,6 @@ from flask_migrate import Migrate
 
 
 app = Flask(__name__)
-
 app.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
@@ -42,7 +41,7 @@ def convert_to_binary_string(value, bytes_per_value):
 
 
 
-@app.route('/index')
+@app.route('/')
 
 def index():
    
@@ -53,7 +52,7 @@ def index():
 
 
 
-@app.route('/index', methods=['POST'])
+@app.route('/', methods=['POST'])
 
 def read_data():
     
