@@ -245,8 +245,7 @@
             <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
                 alt="AMR Logo" />
         </div>
-        <h2>AMR Tool</h2>
-        <p class="version">Version 1.1</p>
+        <h2>AMR Search</h2>
 
         <div class="container">
             <label for="inputRegion">REGION:</label>
@@ -369,10 +368,15 @@
                         });
                     }
 
+                    // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
                     function getBorderColor(datasetIndex) {
-                        // สร้างฟังก์ชันนี้เพื่อกำหนดสีของกราฟเส้นตาม datasetIndex
-                        // สามารถให้สีแตกต่างกันไปตามที่คุณต้องการ
-                        // ยกตัวอย่างเช่น return ['red', 'blue', 'green', 'orange'][datasetIndex - 1];
+                        const colors = ['red', 'blue', 'green', 'orange'];
+
+                        if (datasetIndex >= 1 && datasetIndex <= colors.length) {
+                            return colors[datasetIndex - 1];
+                        } else {
+                            return 'black';
+                        }
                     }
 
                     // ... (Other existing functions)
