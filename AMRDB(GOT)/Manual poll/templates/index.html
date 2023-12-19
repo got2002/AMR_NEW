@@ -201,7 +201,7 @@
         #colSm9Container {
             display: grid;
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: -14px;
         }
         
         .btn-primary1 {
@@ -215,18 +215,6 @@
 </head>
 
 <body>
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- Canvas -->
     <canvas id="orbcanvas" class="orb-canvas"></canvas>
     <!-- Overlay -->
@@ -400,7 +388,7 @@
 
     <div id="colSm9Container" class="col-sm-9">
         <div class="table-responsive " style="width:100%; height: 100px; margin-right: 3500px;margin-top: 100px;">
-            <h4 class="text-center">แสดงข้อมูล</h4>
+
             {% if data_list %}
             <h4>Data for {{ selected_date }}</h4>
             <table class="table table-hover">
@@ -479,20 +467,16 @@
 
     <script>
         function clearForm() {
-            document.getElementById("slave_id").value = "";
-            document.getElementById("function_code").value = "";
+            // Clear starting address field
             document.getElementById("starting_address").value = "";
-            document.getElementById("quantity").value = "";
 
-
+            // Clear communication traffic table
             var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
-            communicationTrafficTable.innerHTML = "";
+            communicationTrafficTable.innerHTML = "<tr><td colspan='your_number_of_columns'>No data available</td></tr>";
 
-            // Clear the response data
+            // Clear response data table
             var responseDataTable = document.querySelector(".table.table-hover tbody");
-            responseDataTable.innerHTML = "";
-
-
+            responseDataTable.innerHTML = "<tr><td colspan='your_number_of_columns'>No data available</td></tr>";
         }
 
 
@@ -520,6 +504,8 @@
 
         function updateTable(data_list) {
             const responseDataTable = document.querySelector(".table.table-hover tbody");
+
+            // Clear existing content in the table
             responseDataTable.innerHTML = "";
 
             for (const data of data_list) {
@@ -533,7 +519,7 @@
                 newRow.appendChild(valueCell);
 
                 const hexValueCell = document.createElement("td");
-                hexValueCell.textContent = "0x" + Number(data.value).toString(16).toUpperCase(); // Convert to HEX and display
+                hexValueCell.textContent = "0x" + Number(data.value).toString(16).toUpperCase();
                 newRow.appendChild(hexValueCell);
 
                 const floatCell = document.createElement("td");
@@ -541,14 +527,13 @@
                     floatCell.textContent = data.signed_value;
                 } else if (data.float_value.includes('e')) {
                     const floatValue = parseFloat(data.float_value);
-                    floatCell.textContent = floatValue.toExponential(); // Convert back to exponential notation
+                    floatCell.textContent = floatValue.toExponential();
                 } else {
                     floatCell.textContent = data.float_value;
                 }
                 newRow.appendChild(floatCell);
 
                 responseDataTable.appendChild(newRow);
-
             }
         }
     </script>
