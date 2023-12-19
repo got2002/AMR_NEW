@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AMR Tool</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- <link rel="stylesheet" href="style.css">  -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
     <style>
         /* Added styles for footer */
         .footer {
@@ -241,12 +242,11 @@
 <body>
     <div class="main" id="main">
         <div class="img-container">
-            <img class="imgpttlogo"
-                src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
+            <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
                 alt="AMR Logo" />
         </div>
         <h2>AMR Tool</h2>
-        <p class="version">Version 1.4</p>
+        <p class="version">Version 1.1</p>
 
         <div class="container">
             <label for="inputRegion">REGION:</label>
@@ -286,51 +286,100 @@
             <div class="loading-text">Searching...</div>
         </div>
 
-<div class="main" id="main">
-    <h1 class="details">Search Results</h1>
+        <div class="main" id="main">
+            <h1 class="details">Search Results</h1>
 
-    <div class="scrollable-container">
-        <table class="styled-table" id="searchTable">
-            <thead>
-                <tr>
-                    {% for col_name in column_names %}
-                    <th>{{ col_name }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data_rows %}
-                <tr>
-                    {% for value in row %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+            <div class="scrollable-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <!-- แสดงชื่อคอลัมน์ -->
+                            {% for col_name in column_names %}
+                            <th>{{ col_name }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- แสดงข้อมูลแถว -->
+                        {% for row in data_rows %}
+                        <tr>
+                            {% for value in row %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h1 class="details">Line Graph</h1>
+                <!-- Add Canvas elements for each line chart -->
+                <canvas id="correctedChart"></canvas>
+                <canvas id="uncorrectedChart"></canvas>
+                <canvas id="pressureChart"></canvas>
+                <canvas id="temperatureChart"></canvas>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        setDefaultDate();
+                        createLineCharts();
+                    });
 
-<!-- Script jQuery สำหรับตาราง -->
-<script>
-    $(document).ready(function () {
-        // ทำให้ตารางเป็น DataTable
-        $('#searchTable').DataTable({
-            // เพิ่มการตั้งค่าต่าง ๆ ตามความต้องการ
-            // ตัวอย่างเช่น:
-            // "paging": false,
-            // "info": false,
-            // "searching": false,
-            // "ordering": false,
-            // ...
+                    function createLineCharts() {
+                        createLineChart('correctedChart', 'CORRECTED', 1);
+                        createLineChart('uncorrectedChart', 'UNCORRECTED', 2);
+                        createLineChart('pressureChart', 'Pressure', 3);
+                        createLineChart('temperatureChart', 'Temperature', 4);
+                    }
 
-            // แสดงข้อความ "Loading..." เมื่อตารางกำลังโหลดข้อมูล
-            "language": {
-                "loadingRecords": "Loading..."
-            }
-        });
-    });
-</script>
+                    function createLineChart(canvasId, label, datasetIndex) {
+                        var table = document.getElementById('searchTable');
+                        var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                        var chartData = {
+                            labels: [],
+                            datasets: [
+                                {
+                                    label: label,
+                                    data: [],
+                                    borderColor: getBorderColor(datasetIndex),
+                                    borderWidth: 2,
+                                    fill: false
+                                }
+                            ]
+                        };
+
+                        for (var i = 0; i < rows.length; i++) {
+                            var cells = rows[i].getElementsByTagName('td');
+                            chartData.labels.push(cells[0].textContent);
+                            chartData.datasets[0].data.push(parseFloat(cells[datasetIndex].textContent));
+                        }
+
+                        var ctx = document.getElementById(canvasId).getContext('2d');
+                        var lineChart = new Chart(ctx, {
+                            type: 'line',
+                            data: chartData,
+                            options: {
+                                scales: {
+                                    x: {
+                                        type: 'linear',
+                                        position: 'bottom'
+                                    },
+                                    y: {
+                                        min: 0
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    function getBorderColor(datasetIndex) {
+                        // สร้างฟังก์ชันนี้เพื่อกำหนดสีของกราฟเส้นตาม datasetIndex
+                        // สามารถให้สีแตกต่างกันไปตามที่คุณต้องการ
+                        // ยกตัวอย่างเช่น return ['red', 'blue', 'green', 'orange'][datasetIndex - 1];
+                    }
+
+                    // ... (Other existing functions)
+                </script>
+
+            </div>
+        </div>
         <!-- เพิ่มส่วนของ footer ที่ถูกเพิ่ม -->
         <div class="footer">
             <p>&copy; 2023 Prompt. All rights reserved.</p>
@@ -424,6 +473,53 @@
 
             displayCurrentDate();
         </script>
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
+                get_users();
+            });
+
+            function get_users() {
+                // ส่ง request ไปยัง /get_users
+                fetch('/get_users')
+                    .then(response => response.json())
+                    .then(data => {
+                        // เติมค่าลงใน dropdown
+                        const dropdown = document.getElementById('username_delete');
+                        dropdown.innerHTML = ''; // เคลียร์ค่าเดิม
+                        data.users.forEach(user => {
+                            const option = document.createElement('option');
+                            option.value = user.username;
+                            option.textContent = user.username;
+                            dropdown.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function filterUsernames() {
+                var input, filter, select, option, a, i, txtValue;
+                input = document.getElementById("searchUsername");
+                filter = input.value.toUpperCase();
+                select = document.getElementById("username_delete");
+                option = select.getElementsByTagName("option");
+                for (i = 0; i < option.length; i++) {
+                    a = option[i];
+                    txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        option[i].style.display = "";
+                    } else {
+                        option[i].style.display = "none";
+                    }
+                }
+            }
+
+            function confirmDelete() {
+                var username = document.getElementById("searchUsername").value;
+                return confirm("Are you sure you want to delete the user: " + username + "?");
+            }
+        </script> -->
+
 </body>
 
 </html>
