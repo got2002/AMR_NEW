@@ -15,36 +15,35 @@
 </head>
 <body>
 
-<form method="get" action="/">
-    <label for="date_picker">Select Date:</label>
-    <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
-
-    <label for="tag_dropdown">Select Tag:</label>
-<select id="tag_dropdown" name="tag_dropdown">
-    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-    {% for tag in tag_options %}
-        <option value="{{ tag }}" {% if selected_tag == tag %}selected{% endif %}>{{ tag }}</option>
-    {% endfor %}
-</select>
-
-
-    <select id="region_dropdown" name="region_dropdown">
-        <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-        {% for region in region_options %}
-            <option value="{{ region }}" {% if selected_region == region %}selected{% endif %}>{{ region }}</option>
-        {% endfor %}
-    </select>
+    <form method="get" action="/">
+        <label for="date_picker">Select Date:</label>
+        <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
     
-    <button type="submit">Apply Filters</button>
-    <button type="button" onclick="clearFilters()">Clear Filters</button>
-</form>
-
+        <label for="tag_dropdown">Select Tag:</label>
+        <select id="tag_dropdown" name="tag_dropdown">
+            <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+            {% for tag in tag_options %}
+                <option value="{{ tag }}" {% if selected_tag == tag %}selected{% endif %}>{{ tag }}</option>
+            {% endfor %}
+        </select>
+    
+        <select id="region_dropdown" name="region_dropdown">
+            <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+            {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region == region %}selected{% endif %}>{{ region }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit" {% if not selected_date and not selected_tag and not selected_region %}disabled{% endif %}>Apply Filters</button>
+        <button type="button" onclick="clearFilters()">Clear Filters</button>
+    </form>
+    
 {{ tables[0]|safe }}  {# Assuming tables is a list with a single element containing the table HTML #}
 
 
 
 <script>
+    
     // Wait for the document to be ready
     $(document).ready(function() {
         $('#date_picker').datepicker({
