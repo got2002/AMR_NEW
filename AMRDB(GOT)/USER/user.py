@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 import cx_Oracle
 
@@ -7,10 +7,10 @@ app = Flask(__name__)
 # กำหนดการเชื่อมต่อฐานข้อมูล
 username = 'root'
 password = 'root'
-hostname = 'localhost'
+hostname = '192.168.102.192'
 port = '1521'
 service_name = 'orcl'
-
+app.secret_key = 'your_secret_key'
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -42,7 +42,6 @@ def execute_query(query, params=None):
         error, = e.args
         print("Oracle Error:", error)
         return False
-
 # หน้าแสดงรายการผู้ใช้
 @app.route('/')
 def index():
@@ -61,10 +60,15 @@ def add_user_route():
 
         query = 'INSERT INTO AMR_USER (description, user_name, password, user_level) VALUES (:1, :2, :3, :4)'
         params = (description, user_name, password, user_level)
-        execute_query(query, params)
-        return redirect(url_for('index'))
+
+        if execute_query(query, params):
+            flash('User added successfully!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Failed to add user. Please try again.', 'error')
 
     return render_template('add_user.html')
+
 
 
 if __name__ == '__main__':
