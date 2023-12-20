@@ -36,8 +36,37 @@
             /* ตำแหน่งข้อความ */
         }
 
+        input,
+        select {
+            font-family: 'Noto Sans Thai', sans-serif;
+            width: 70%;
+            /* ปรับขนาดของกล่อง */
+            padding: 12px;
+            /* ปรับขนาดของกล่อง */
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            /* ปรับขนาดของกล่อง */
+            font-size: 16px;
+            margin-bottom: 15px;
+            /* ปรับระยะห่าง */
+            background-image: linear-gradient(to top, #c4c9ca 0%, #ffffff00 100%);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            transition: background-size 0.3s;
+        }
+        input:disabled,
+        select:disabled {
+            background-color: #eee;
+        }
+
+        input:focus,
+        select:focus {
+            background-size: 100% 100%;
+        }
         .label {
-            text-align: center;
+
             font-size: 18px;
             margin-bottom: 8px;
             display: block;
@@ -352,32 +381,15 @@
         }
 
         label {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             display: block;
-            font-size: 16px;
-            color: #333;
+            font-size: 18px;
+            /* ปรับขนาดตัวอักษร */
+            color: #555;
+            /* เปลี่ยนสีตัวอักษร */
             font-weight: bold;
         }
 
-        input {
-            font-family: 'Noto Sans Thai', sans-serif;
-            padding: 12px;
-            width: 100%;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-bottom: 10px;
-            background-image: linear-gradient(to top, #4caf4f60 100%, #4caf50 0%);
-            background-position: 0 100%;
-            background-repeat: no-repeat;
-            background-size: 100% 2px;
-            transition: background-size 0.3s;
-        }
-
-        input:focus {
-            background-size: 100% 100%;
-        }
 
         button {
             padding: 15px 25px;
@@ -507,17 +519,17 @@
         </div>
         <h2>AMR BILLING DATA</h2>
 
-        <div class="container">
+        <div class="form-group">
             <label class="label" for="inputRegion">Region :</label>
             <input class="input-field" type="text" id="inputRegion" placeholder="Enter region...">
         </div>
 
-        <div class="container">
+        <div class="form-group">
             <label class="label" for="inputSite">Site :</label>
             <input class="input-field" type="text" id="inputSite" placeholder="Enter site...">
         </div>
 
-        <div class="container">
+        <div class="form-group">
             <label class="label" for="datepicker">Select Date :</label>
             <input class="input-field" type="date" id="datepicker">
         </div>
@@ -716,9 +728,7 @@
             }
         </script>
         <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
-
         <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
-
         </script>
         </script>
 
