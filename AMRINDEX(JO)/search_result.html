@@ -5,13 +5,66 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Billing Data</title>
+    <title>BILLING DATA</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Libre+Baskerville&display=swap');
+
+        /* Reset some default styles */
+        body,
+        h1, 
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .input-field {
+            width: calc(100% - 22px);
+            padding: 12px;
+            box-sizing: border-box;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #3498db;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            border-color: #3498db;
+        }
+
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
 
         /* Added styles for footer */
         .footer {
@@ -28,7 +81,6 @@
             color: #666;
         }
 
-        /* สไตล์ของตาราง */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -36,45 +88,82 @@
             margin-top: 20px;
         }
 
-        /* สไตล์ของหัวตาราง */
         th {
             background-color: #f2f2f2;
             padding: 15px;
             text-align: left;
         }
 
-        /* สไตล์ของข้อมูลในเซลล์ */
         td {
             border: 1px solid #ddd;
             padding: 15px;
             text-align: left;
         }
 
-        /* สไตล์เวลาเมื่อ hover ที่เซลล์ */
         td:hover {
             background-color: #f5f5f5;
         }
 
+        /* Add your CSS styles for the table here */
         .details {
-            margin-top: 10px;
-            font-size: 16px;
-            color: #333;
+            padding-top: 20px;
+            border-top: 3px solid #a7a5a582;
+            font-size: 150%;
+            font-family: 'Libre Baskerville', serif;
+            color: #eb2d2d;
+            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
-        .details strong {
+        .details1 {
+            font-size: 140%;
+            font-family: 'Libre Baskerville', serif;
             color: #2600ff;
-            /* สีข้อความที่มี strong tag */
+            margin-bottom: 0px;
+            margin-top: 10px;
         }
 
-        .details span {
+        .details1 strong {
+            color: #2600ff;
+        }
+
+        .details1 span {
             font-weight: bold;
         }
 
+        .scrollable-container {
+            overflow: auto;
+            max-height: 400px;
+            /* Set a max height for the scrollable container */
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+        }
+
+        .styled-table td:hover {
+            background-color: #f5f5f5;
+        }
+
+
         body {
-            background-color: #f0f0f0;
             font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
             color: #333;
-            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -93,19 +182,54 @@
             box-sizing: border-box;
         }
 
-        /* .img-container {
-            border: 2px solid #ddd;
-            border-radius: 8px;
+        .img-container {
+            border: 3px solid #b1b1b1c2;
+            background-color: #ffffff;
+            border-radius: 5px;
             padding: 10px;
             margin-bottom: 20px;
-        } */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+
+
+        .img-container img {
+            max-width: 100%;
+            /* ทำให้รูปภาพไม่เกินขอบของ .img-container */
+            border-radius: 5px;
+        }
 
         .imgpttlogo {
-            width: 120px;
+
+            width: 100px;
+            /* เปลี่ยน your_color_here เป็นสีที่คุณต้องการ */
+            animation: fadeInOut 2s infinite alternate;
+            /* เพิ่ม Animation ด้วย fadeInOut, 2s คือระยะเวลา, infinite คือเล่นวนไปเรื่อย ๆ, alternate คือเล่นในทิศทางกลับ */
+        }
+
+        @keyframes fadeInOut {
+            from {
+                opacity: 1;
+                transform: translateY(-6px);
+                /* เลื่อนขึ้นไปข้างบน */
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                /* กลับไปที่ตำแหน่งเริ่มต้น */
+            }
+        }
+
+
+        .main1 {
+            padding: 20px;
         }
 
         h1 {
-
             font-size: 200%;
             font-family: 'Libre Baskerville', serif;
             color: #000000;
@@ -113,7 +237,6 @@
         }
 
         h2 {
-
             font-size: 250%;
             font-family: 'Libre Baskerville', serif;
             color: #ff0202;
@@ -123,24 +246,26 @@
         .container {
             margin-bottom: 20px;
             text-align: auto;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         label {
             margin-bottom: 5px;
             display: block;
-            font-size: 14px;
-            color: #555;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
         }
 
         input {
-            padding: 10px;
+            padding: 12px;
             width: 100%;
             box-sizing: border-box;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
-            margin-bottom: 5px;
-            /* เพิ่มการกรองข้อมูลเมื่อมีการกรอกข้อมูล */
+            margin-bottom: 10px;
             background-image: linear-gradient(to top, #4caf4f60 100%, #4caf50 0%);
             background-position: 0 100%;
             background-repeat: no-repeat;
@@ -149,10 +274,8 @@
         }
 
         input:focus {
-            /* เพิ่มการกรองข้อมูลเมื่อได้รับการโฟกัส */
             background-size: 100% 100%;
         }
-
 
         button {
             padding: 15px 25px;
@@ -161,27 +284,46 @@
             cursor: pointer;
             font-size: 16px;
             transition: 0.3s;
+            margin-bottom: 10px;
+            margin-top: 15px;
         }
 
+        /* ปุ่มค้นหา */
         button.search-button {
             background-color: #4caf50;
             color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         button.search-button:hover {
             background-color: #45a049;
+            transform: scale(1.05);
+            /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
         }
 
+        /* ปุ่มล้างข้อมูล */
         button.clear-button {
             background-color: #ff6666;
             color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         button.clear-button:hover {
             background-color: #ff5050;
+            transform: scale(1.05);
+            /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
         }
 
-        /* New style for the warning message */
         #warningContainer {
             margin-top: 20px;
             color: #ff0000;
@@ -197,28 +339,35 @@
         .loading-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: rgba(255, 255, 255, 0.8);
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        canvas {
+            border: 2px solid #8b9398;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        canvas:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
         .loading-circle {
-            border: 8px solid #3498db;
-            /* สีขอบวงกลม */
+            border: 8px solid #4c545a;
             border-top: 8px solid #f3f3f3;
-            /* สีขอบด้านบนของวงกลม */
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            animation: spin 1s linear infinite;
+            animation: fadeInOut 2s infinite alternate;
             margin-bottom: 10px;
         }
 
@@ -237,39 +386,38 @@
             color: #333;
             margin-top: 10px;
         }
-
-        /* เพิ่มสไตล์เพิ่มเติมตามความต้องการ */
     </style>
 </head>
 
 <body>
+
     <div class="main" id="main">
-        <div class="img-container">
-            <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
-                alt="AMR Logo" />
+        <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
+            alt="AMR Logo" />
+        <div class="container">
         </div>
-        <h2>AMR Billing Data</h2>
+        <h2>AMR BILLING DATA</h2>
 
         <div class="container">
-            <label for="inputRegion">REGION:</label>
-            <input type="text" id="inputRegion" placeholder="Enter region..."
-                style="width: calc(50% - 22px); margin-bottom: 10px;">
-        </div>
-
-        <div class="container">
-            <label for="inputSite">SITE:</label>
-            <input type="text" id="inputSite" placeholder="Enter site..."
-                style="width: calc(50% - 22px); margin-bottom: 10px;">
+            <label class="label" for="inputRegion">REGION:</label>
+            <input class="input-field" type="text" id="inputRegion" placeholder="Enter region...">
         </div>
 
         <div class="container">
-            <label for="datepicker">Select Date:</label>
-            <input type="date" id="datepicker" style="width: calc(50% - 22px); margin-bottom: 10px;">
+            <label class="label" for="inputSite">SITE:</label>
+            <input class="input-field" type="text" id="inputSite" placeholder="Enter site...">
         </div>
+
+        <div class="container">
+            <label class="label" for="datepicker">Select Date:</label>
+            <input class="input-field" type="date" id="datepicker">
+        </div>
+
         <div class="loading-overlay" id="loadingOverlay">
             <div class="loading-circle"></div>
             <div class="loading-text">Searching...</div>
         </div>
+
         <!-- Warning message container -->
         <div class="container" id="warningContainer" style="display: none;">
             <p>Please select all the required information before searching.</p>
@@ -277,40 +425,53 @@
 
         <button class="clear-button" onclick="clearForm()">Clear</button>
         <button class="search-button" onclick="searchData()">Search</button>
-
+        <div class="current-date" id="currentDate"></div>
         <h1 class="details">Searched Details</h1>
-        <div class="details">
-            <strong>Region:</strong> <span id="searchedRegion"></span><br>
-            <strong>Site:</strong> <span id="searchedSite"></span><br>
-            <strong>Date:</strong> <span id="searchedDate"></span>
+        <div class="details1">
+            <strong>Region :</strong> <span id="searchedRegion"></span><br>
+            <strong>Site :</strong> <span id="searchedSite"></span><br>
+            <strong>Date :</strong> <span id="searchedDate"></span>
         </div>
 
-        <div class="current-date" id="currentDate"></div>
+
 
         <div class="main1" id="main1">
             <h1 class="details">Search Results</h1>
 
             <div class="scrollable-container">
                 <table class="styled-table" id="searchTable">
+
                     <thead>
                         <tr>
                             <!-- แสดงชื่อคอลัมน์ -->
-                            {% for col_name in column_names %}
-                            <th>{{ col_name }}</th>
-                            {% endfor %}
+                            <th>PL_REGION_ID</th>
+                            <th>TAG_ID</th>
+                            <th>Meter ID</th>
+                            <th>DATA_DATE</th>
+                            <th>CORRECTED</th>
+                            <th>UNCORRECTED</th>
+                            <th>Pressure</th>
+                            <th>Temperature</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- แสดงข้อมูลแถว -->
                         {% for row in data_rows %}
                         <tr>
-                            {% for value in row %}
-                            <td>{{ value }}</td>
-                            {% endfor %}
+                            <td>{{ row.PL_REGION_ID }}</td>
+                            <td>{{ row.TAG_ID }}</td>
+                            <td>{{ row.meter_id }}</td>
+                            <td>{{ row.DATA_DATE }}</td>
+                            <td>{{ row.CORRECTED }}</td>
+                            <td>{{ row.UNCORRECTED }}</td>
+                            <td>{{ row.Pressure }}</td>
+                            <td>{{ row.Temperature }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="container">
                 <h1 class="details">Line Graph</h1>
                 <!-- Add Canvas elements for each line chart -->
                 <canvas id="correctedChart"></canvas>
@@ -367,7 +528,19 @@
                                     y: {
                                         min: 0
                                     }
-                                }
+                                },
+                                animation: {
+                                    duration: 1000, // ระยะเวลาของ animation (มีหน่วยเป็นมิลลิวินาที)
+                                },
+                                tooltips: {
+                                    enabled: true, // เปิด tooltips
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: true, // แสดง legend
+                                        position: 'top', // ตำแหน่งของ legend (top, bottom, left, right)
+                                    },
+                                },
                             }
                         });
                     }
@@ -389,12 +562,11 @@
                 </script>
 
             </div>
+            <div class="footer">
+                <p>&copy; 2023 Prompt. All rights reserved.</p>
+            </div>
         </div>
-        <!-- เพิ่มส่วนของ footer ที่ถูกเพิ่ม -->
-        <div class="footer">
-            <p>&copy; 2023 Prompt. All rights reserved.</p>
-        </div>
-        <!-- สิ้นสุดส่วนของ footer -->
+
         <script>
             function displaySearchResults(data) {
                 // รับข้อมูลที่ได้จากการค้นหาและแสดงผลลัพธ์ในตาราง
@@ -434,7 +606,9 @@
                     // เพิ่มการเรียก API หรือการทำงานด้วยข้อมูลที่ค้นหา
                     // เปลี่ยน URL_API เป็น URL ของ API ที่คุณใช้
 
+                    // เปลี่ยน SQL Query ใน fetch(url) เพื่อกรองตามวันที่
                     var url = `URL_API?region=${inputRegion}&site=${inputSite}&date=${selectedDate}`;
+
 
                     fetch(url)
                         .then(response => response.json())
@@ -573,7 +747,7 @@
                 const colors = ['red', 'blue', 'green', 'orange'];
                 var inputRegion = document.getElementById('inputRegion').value;
                 var inputSite = document.getElementById('inputSite').value;
-                
+
 
                 if (datasetIndex >= 1 && datasetIndex <= colors.length) {
                     return colors[datasetIndex - 1];
@@ -582,6 +756,7 @@
                 }
             }
         </script>
+
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
