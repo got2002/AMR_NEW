@@ -1,16 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-
+import os
 import cx_Oracle
 
 app = Flask(__name__)
 
-# กำหนดการเชื่อมต่อฐานข้อมูล
+# Database connection details
 username = 'root'
 password = 'root'
 hostname = '192.168.102.192'
 port = '1521'
 service_name = 'orcl'
-app.secret_key = 'your_secret_key'
+
+# Set the Flask secret key from the environment variable
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'fallback_secret_key')
+
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -42,14 +45,15 @@ def execute_query(query, params=None):
         error, = e.args
         print("Oracle Error:", error)
         return False
-# หน้าแสดงรายการผู้ใช้
+
+# User list page
 @app.route('/')
 def index():
     query = 'SELECT * FROM AMR_USER'
     users = fetch_data(query)
     return render_template('user.html', users=users)
 
-# หน้าเพิ่มผู้ใช้
+# Add user page
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user_route():
     if request.method == 'POST':
@@ -69,10 +73,5 @@ def add_user_route():
 
     return render_template('add_user.html')
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
