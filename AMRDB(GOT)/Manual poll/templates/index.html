@@ -251,7 +251,58 @@
                         <option value="{{ tag }}" {% if selected_tag == tag %}selected{% endif %}>{{ tag }}</option>
                     {% endfor %}
                 </select>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>RUN</th>
+                            <th>IP</th>
+                            <th>SITE</th>
+                            <th>PORT</th>
+                            <th>TYPE</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Sample data, replace with your dynamic data -->
+                        <tr>
+                            <td><input type="checkbox" name="run_checkbox" class="run-checkbox"></td>
+                            <td>A</td>
+                            <td>192.168.1.1</td>
+                            <td>AAT</td>
+                            <td>2402</td>
+                            <td>ACTARIS</td>
+                            <td><button style="height: 30px;
+                                font-size: x-small;
+                                border-radius: 0.5rem;
+                                border: none;
+                                cursor: pointer;
+                                padding: 5px 10px;">Click</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="run_checkbox" class="run-checkbox"></td>
+                            <td>B</td>
+                            <td>192.168.1.2</td>
+                            <td>AAT</td>
+                            <td>2404</td>
+                            <td>ELSTER</td>
+                            <td><button style="height: 30px;
+                                font-size: x-small;
+                                border-radius: 0.5rem;
+                                border: none;
+                                cursor: pointer;
+                                padding: 5px 10px;">Click</button></td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+                
             </form>
+
+
+
+
             <div class="container-fluid" id="containerfluid">
                 <div class="row">
                     <div class="col-sm-6 offset-sm-3 pt-4">
@@ -481,14 +532,24 @@
 
     </div>
 
-
-
-
     <script>
+        // JavaScript to allow selecting only one checkbox at a time
+        const checkboxes = document.querySelectorAll('.run-checkbox');
+    
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
 
-        
-      // Wait for the document to be ready
-      $(document).ready(function() {
+<script>
+    // Wait for the document to be ready
+    $(document).ready(function() {
         $('#date_picker').datepicker({
             format: 'mm/yyyy',
             startView: 'months',
@@ -534,6 +595,13 @@
         });
     });
 });
+</script>
+
+
+
+
+    <script>
+////////////////////////////////////////////////////////////////////////////////
         function clearForm() {
             // Clear starting address field
             document.getElementById("starting_address").value = "";
@@ -604,6 +672,38 @@
                 responseDataTable.appendChild(newRow);
             }
         }
+
+        $(document).ready(function(){
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function(){
+        // Get the selected region value
+        var selectedRegion = $(this).val();
+
+        // Make an Ajax request to get updated tag options based on the selected region
+        $.ajax({
+            type: 'GET',
+            url: '/get_tags',
+            data: {'selected_region': selectedRegion},
+            success: function(response){
+                // Sort tag options alphabetically starting from 'a'
+                response.tag_options.sort(function(a, b) {
+                    return a.localeCompare(b);
+                });
+
+                // Update tag dropdown options
+                var tagDropdown = $('#tag_dropdown');
+                tagDropdown.empty();
+                $.each(response.tag_options, function(index, tagOption){
+                    tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                });
+            },
+            error: function(error){
+                console.log('Error fetching tag options:', error);
+            }
+        });
+    });
+});
+
     </script>
     <!-- ส่วนของการเรียกใช้ Bootstrap 4 JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" async></script>
