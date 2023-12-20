@@ -64,32 +64,23 @@
     $(document).ready(function(){
     // Event listener for region dropdown change
     $('#region_dropdown').change(function(){
-        // Get the selected region value
-        var selectedRegion = $(this).val();
+    console.log('Region dropdown changed');
+    var selectedRegion = $(this).val();
 
-        // Make an Ajax request to get updated tag options based on the selected region
-        $.ajax({
-            type: 'GET',
-            url: '/get_tags',
-            data: {'selected_region': selectedRegion},
-            success: function(response){
-                // Sort tag options alphabetically starting from 'a'
-                response.tag_options.sort(function(a, b) {
-                    return a.localeCompare(b);
-                });
+    $.ajax({
+        type: 'GET',
+        url: '/get_tags',
+        data: {'selected_region': selectedRegion},
+        success: function(response){
+            console.log('Ajax request successful', response);
 
-                // Update tag dropdown options
-                var tagDropdown = $('#tag_dropdown');
-                tagDropdown.empty();
-                $.each(response.tag_options, function(index, tagOption){
-                    tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                });
-            },
-            error: function(error){
-                console.log('Error fetching tag options:', error);
-            }
-        });
+            // Rest of your code to update tag dropdown options
+        },
+        error: function(error){
+            console.log('Error fetching tag options:', error);
+        }
     });
+});
 });
 </script>
 
