@@ -1,25 +1,41 @@
+# app.py
 
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-
 import cx_Oracle
 import pandas as pd
 import random
 import string
 
 app = Flask(__name__)
+# ตั้งค่า database URI และ SECRET_KEY ให้ Flask app
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+# app.config['SECRET_KEY'] = 'your_secret_key'  # Change to your own secret key
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+
+# ส่วนที่ขาดหายไปใน fetch_data
 hostname = 'localhost'
 port = '1521'
 service_name = 'orcl'
 username = 'root'
 password = 'root'
 
-# กำหนดหน้าแรกที่แสดง
+# MAIL_SERVER = 'Nattapong@pims.co.th'
+# MAIL_PORT = 587
+# MAIL_USE_TLS = True
+# MAIL_USERNAME = 'Nattapong@pims.co.th'
+# MAIL_PASSWORD = 'Csgop@90'
+
+# หน้าหลัก
 @app.route('/')
 def home():
-    return render_template('search_result.html')
-
+    return render_template('search_result.html', data=sample_data)
+# ตัวอย่างข้อมูล
+sample_data = {
+    'title': 'Welcome to My AMR BY TEAM TUL',
+    'description': 'This is the home page of my AMR.'
+}
 
 def fetch_data(query, params=None):
     try:
@@ -134,11 +150,10 @@ def search_result():
     df = pd.DataFrame(results, columns=[
         'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
     ])
-
-    # # ลบคอลัมน์ที่ไม่ต้องการ
-    # df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-    # df = df.applymap(lambda x: x.replace('\n', '')
-    #                  if isinstance(x, str) else x)
+    # ลบคอลัมน์ที่ไม่ต้องการ
+    df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
+    df = df.applymap(lambda x: x.replace('\n', '')
+                     if isinstance(x, str) else x)
 
     # ส่ง DataFrame ไปยัง HTML template
     return render_template('search_result.html', tables=[df.to_html(classes='data')],
