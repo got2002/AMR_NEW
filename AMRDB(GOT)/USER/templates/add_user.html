@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+</head>
+<body>
+    <h1>Add User</h1>
+    <form method="post" action="{{ url_for('add_user_route') }}">
+        <label for="description">Description:</label>
+        <input type="text" name="description" required><br>
+
+        <label for="user_name">Username:</label>
+        <input type="text" name="user_name" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label for="user_level">User Level:</label>
+        <input type="number" name="user_level" required><br>
+
+        <input type="submit" value="Add User">
+    </form>
+
+    <a href="{{ url_for('index') }}">Back to User List</a>
+</body>
+</html>
