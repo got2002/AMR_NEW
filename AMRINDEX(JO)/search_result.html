@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BILLING DATA</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Libre+Baskerville&display=swap');
+
+        /* Reset some default styles */
+        body,
+        h1, 
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .input-field {
+            width: calc(100% - 22px);
+            padding: 12px;
+            box-sizing: border-box;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #3498db;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            border-color: #3498db;
+        }
+
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        /* Added styles for footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        /* Additional styles for the footer text */
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Add your CSS styles for the table here */
+        .details {
+            padding-top: 20px;
+            border-top: 3px solid #a7a5a582;
+            font-size: 150%;
+            font-family: 'Libre Baskerville', serif;
+            color: #eb2d2d;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .details1 {
+            font-size: 140%;
+            font-family: 'Libre Baskerville', serif;
+            color: #2600ff;
+            margin-bottom: 0px;
+            margin-top: 10px;
+        }
+
+        .details1 strong {
+            color: #2600ff;
+        }
+
+        .details1 span {
+            font-weight: bold;
+        }
+
+        .scrollable-container {
+            overflow: auto;
+            max-height: 400px;
+            /* Set a max height for the scrollable container */
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .styled-table th {
+            background-color: #f2f2f2;
+        }
+
+        .styled-table td:hover {
+            background-color: #f5f5f5;
+        }
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main {
+            width: 80%;
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .img-container {
+            border: 3px solid #b1b1b1c2;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+
+
+        .img-container img {
+            max-width: 100%;
+            /* ทำให้รูปภาพไม่เกินขอบของ .img-container */
+            border-radius: 5px;
+        }
+
+        .imgpttlogo {
+
+            width: 100px;
+            /* เปลี่ยน your_color_here เป็นสีที่คุณต้องการ */
+            animation: fadeInOut 2s infinite alternate;
+            /* เพิ่ม Animation ด้วย fadeInOut, 2s คือระยะเวลา, infinite คือเล่นวนไปเรื่อย ๆ, alternate คือเล่นในทิศทางกลับ */
+        }
+
+        @keyframes fadeInOut {
+            from {
+                opacity: 1;
+                transform: translateY(-6px);
+                /* เลื่อนขึ้นไปข้างบน */
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                /* กลับไปที่ตำแหน่งเริ่มต้น */
+            }
+        }
+
+
+        .main1 {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 200%;
+            font-family: 'Libre Baskerville', serif;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 250%;
+            font-family: 'Libre Baskerville', serif;
+            color: #ff0202;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            margin-bottom: 20px;
+            text-align: auto;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            background-image: linear-gradient(to top, #4caf4f60 100%, #4caf50 0%);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            transition: background-size 0.3s;
+        }
+
+        input:focus {
+            background-size: 100% 100%;
+        }
+
+        button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        /* ปุ่มค้นหา */
+        button.search-button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button.search-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+            /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
+        }
+
+        /* ปุ่มล้างข้อมูล */
+        button.clear-button {
+            background-color: #ff6666;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button.clear-button:hover {
+            background-color: #ff5050;
+            transform: scale(1.05);
+            /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
+        }
+
+        #warningContainer {
+            margin-top: 20px;
+            color: #ff0000;
+            display: none;
+        }
+
+        .current-date {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        canvas {
+            border: 2px solid #8b9398;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        canvas:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading-circle {
+            border: 8px solid #4c545a;
+            border-top: 8px solid #f3f3f3;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: fadeInOut 2s infinite alternate;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main" id="main">
+        <img class="imgpttlogo" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
+            alt="AMR Logo" />
+        <div class="container">
+        </div>
+        <h2>AMR BILLING DATA</h2>
+
+        <div class="container">
+            <label class="label" for="inputRegion">REGION:</label>
+            <input class="input-field" type="text" id="inputRegion" placeholder="Enter region...">
+        </div>
+
+        <div class="container">
+            <label class="label" for="inputSite">SITE:</label>
+            <input class="input-field" type="text" id="inputSite" placeholder="Enter site...">
+        </div>
+
+        <div class="container">
+            <label class="label" for="datepicker">Select Date:</label>
+            <input class="input-field" type="date" id="datepicker">
+        </div>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-circle"></div>
+            <div class="loading-text">Searching...</div>
+        </div>
+
+        <!-- Warning message container -->
+        <div class="container" id="warningContainer" style="display: none;">
+            <p>Please select all the required information before searching.</p>
+        </div>
+
+        <button class="clear-button" onclick="clearForm()">Clear</button>
+        <button class="search-button" onclick="searchData()">Search</button>
+        <div class="current-date" id="currentDate"></div>
+        <h1 class="details">Searched Details</h1>
+        <div class="details1">
+            <strong>Region :</strong> <span id="searchedRegion"></span><br>
+            <strong>Site :</strong> <span id="searchedSite"></span><br>
+            <strong>Date :</strong> <span id="searchedDate"></span>
+        </div>
+
+
+
+        <div class="main1" id="main1">
+            <h1 class="details">Search Results</h1>
+
+            <div class="scrollable-container">
+                <table class="styled-table" id="searchTable">
+
+                    <thead>
+                        <tr>
+                            <!-- แสดงชื่อคอลัมน์ -->
+                            <th>PL_REGION_ID</th>
+                            <th>TAG_ID</th>
+                            <th>Meter ID</th>
+                            <th>DATA_DATE</th>
+                            <th>CORRECTED</th>
+                            <th>UNCORRECTED</th>
+                            <th>Pressure</th>
+                            <th>Temperature</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- แสดงข้อมูลแถว -->
+                        {% for row in data_rows %}
+                        <tr>
+                            <td>{{ row.PL_REGION_ID }}</td>
+                            <td>{{ row.TAG_ID }}</td>
+                            <td>{{ row.meter_id }}</td>
+                            <td>{{ row.DATA_DATE }}</td>
+                            <td>{{ row.CORRECTED }}</td>
+                            <td>{{ row.UNCORRECTED }}</td>
+                            <td>{{ row.Pressure }}</td>
+                            <td>{{ row.Temperature }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="container">
+                <h1 class="details">Line Graph</h1>
+                <!-- Add Canvas elements for each line chart -->
+                <canvas id="correctedChart"></canvas>
+                <canvas id="uncorrectedChart"></canvas>
+                <canvas id="pressureChart"></canvas>
+                <canvas id="temperatureChart"></canvas>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        setDefaultDate();
+                        createLineCharts();
+                    });
+
+                    function createLineCharts() {
+                        createLineChart('correctedChart', 'CORRECTED', 1);
+                        createLineChart('uncorrectedChart', 'UNCORRECTED', 2);
+                        createLineChart('pressureChart', 'Pressure', 3);
+                        createLineChart('temperatureChart', 'Temperature', 4);
+                    }
+
+                    function createLineChart(canvasId, label, datasetIndex) {
+                        var inputRegion = document.getElementById('inputRegion').value;
+                        var inputSite = document.getElementById('inputSite').value;
+                        var table = document.getElementById('searchTable');
+                        var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                        var chartData = {
+                            labels: [],
+                            datasets: [
+                                {
+                                    label: label,
+                                    data: [],
+                                    borderColor: getBorderColor(datasetIndex),
+                                    borderWidth: 2,
+                                    fill: false
+                                }
+                            ]
+                        };
+
+                        for (var i = 0; i < rows.length; i++) {
+                            var cells = rows[i].getElementsByTagName('td');
+                            chartData.labels.push(cells[0].textContent);
+                            chartData.datasets[0].data.push(parseFloat(cells[datasetIndex].textContent));
+                        }
+
+                        var ctx = document.getElementById(canvasId).getContext('2d');
+                        var lineChart = new Chart(ctx, {
+                            type: 'line',
+                            data: chartData,
+                            options: {
+                                scales: {
+                                    x: {
+                                        type: 'linear',
+                                        position: 'bottom'
+                                    },
+                                    y: {
+                                        min: 0
+                                    }
+                                },
+                                animation: {
+                                    duration: 1000, // ระยะเวลาของ animation (มีหน่วยเป็นมิลลิวินาที)
+                                },
+                                tooltips: {
+                                    enabled: true, // เปิด tooltips
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: true, // แสดง legend
+                                        position: 'top', // ตำแหน่งของ legend (top, bottom, left, right)
+                                    },
+                                },
+                            }
+                        });
+                    }
+
+                    // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
+                    function getBorderColor(datasetIndex) {
+                        const colors = ['red', 'blue', 'green', 'orange'];
+                        var inputRegion = document.getElementById('inputRegion').value;
+                        var inputSite = document.getElementById('inputSite').value;
+
+                        if (datasetIndex >= 1 && datasetIndex <= colors.length) {
+                            return colors[datasetIndex - 1];
+                        } else {
+                            return 'black';
+                        }
+                    }
+
+                    // ... (Other existing functions)
+                </script>
+
+            </div>
+            <div class="footer">
+                <p>&copy; 2023 Prompt. All rights reserved.</p>
+            </div>
+        </div>
+
+        <script>
+            function displaySearchResults(data) {
+                // รับข้อมูลที่ได้จากการค้นหาและแสดงผลลัพธ์ในตาราง
+
+                var tableBody = document.querySelector('.styled-table tbody');
+                tableBody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
+
+                data.forEach(rowData => {
+                    var row = document.createElement('tr');
+                    rowData.forEach(value => {
+                        var cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+                    tableBody.appendChild(row);
+                });
+
+                // แสดงรายละเอียดที่ค้นหา
+                document.getElementById('searchedRegion').textContent = inputRegion;
+                document.getElementById('searchedSite').textContent = inputSite;
+                document.getElementById('searchedDate').textContent = selectedDate;
+
+                // หยุดการหมุนและซ่อน loadingOverlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+        </script>
+        <script>
+            function searchData() {
+                var inputRegion = document.getElementById('inputRegion').value;
+                var inputSite = document.getElementById('inputSite').value;
+                var selectedDate = document.getElementById('datepicker').value;
+
+                if (inputRegion && inputSite && selectedDate) {
+                    document.getElementById('warningContainer').style.display = 'none';
+                    document.getElementById('loadingOverlay').style.display = 'flex';
+
+                    // เพิ่มการเรียก API หรือการทำงานด้วยข้อมูลที่ค้นหา
+                    // เปลี่ยน URL_API เป็น URL ของ API ที่คุณใช้
+
+                    // เปลี่ยน SQL Query ใน fetch(url) เพื่อกรองตามวันที่
+                    var url = `URL_API?region=${inputRegion}&site=${inputSite}&date=${selectedDate}`;
+
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('loadingOverlay').style.display = 'none';
+                            displaySearchResults(data);
+                        })
+                        .catch(error => {
+                            document.getElementById('loadingOverlay').style.display = 'none';
+                            console.error('Error:', error);
+                            alert('Error occurred during the search. Please try again.');
+                        });
+                } else {
+                    document.getElementById('warningContainer').style.display = 'block';
+                }
+            }
+
+            function displaySearchResults(data) {
+                // รับข้อมูลที่ได้จากการค้นหาและแสดงผลลัพธ์ในตาราง
+                var inputRegion = document.getElementById('inputRegion').value;
+                var inputSite = document.getElementById('inputSite').value;
+                var selectedDate = document.getElementById('datepicker').value;
+                var tableBody = document.querySelector('.styled-table tbody');
+                tableBody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
+
+                data.forEach(rowData => {
+                    var row = document.createElement('tr');
+                    rowData.forEach(value => {
+                        var cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+                    tableBody.appendChild(row);
+                });
+
+                // แสดงรายละเอียดที่ค้นหา
+                document.getElementById('searchedRegion').textContent = inputRegion;
+                document.getElementById('searchedSite').textContent = inputSite;
+                document.getElementById('searchedDate').textContent = selectedDate;
+            }
+
+            function clearForm() {
+                // เรียกใช้ฟังก์ชันที่เคลียร์ฟอร์ม
+                document.getElementById('inputRegion').value = '';
+                document.getElementById('inputSite').value = '';
+                document.getElementById('datepicker').value = '';
+
+                document.getElementById('warningContainer').style.display = 'none';
+                document.getElementById('searchedRegion').textContent = '';
+                document.getElementById('searchedSite').textContent = '';
+                document.getElementById('searchedDate').textContent = '';
+
+                // เคลียร์ตารางผลลัพธ์การค้นหา
+                var tableBody = document.querySelector('.styled-table tbody');
+                tableBody.innerHTML = '';
+            }
+
+            function displayCurrentDate() {
+                var currentDate = new Date();
+                var options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timeZoneName: 'short'
+                };
+                var formattedDate = currentDate.toLocaleDateString('en-US', options);
+                document.getElementById('currentDate').textContent = 'Time: ' + formattedDate + ' GMT+7';
+            }
+
+            displayCurrentDate();
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                setDefaultDate();
+                createLineCharts();
+            });
+
+            function createLineCharts() {
+                createLineChart('correctedChart', 'CORRECTED', 1);
+                createLineChart('uncorrectedChart', 'UNCORRECTED', 2);
+                createLineChart('pressureChart', 'Pressure', 3);
+                createLineChart('temperatureChart', 'Temperature', 4);
+            }
+
+            function createLineChart(canvasId, label, datasetIndex) {
+
+                var table = document.getElementById('searchTable');
+                var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                var chartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: label,
+                            data: [],
+                            borderColor: getBorderColor(datasetIndex),
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                };
+
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    chartData.labels.push(cells[0].textContent);
+                    chartData.datasets[0].data.push(parseFloat(cells[datasetIndex].textContent));
+                }
+
+                var ctx = document.getElementById(canvasId).getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom'
+                            },
+                            y: {
+                                min: 0
+                            }
+                        }
+                    }
+                });
+            }
+
+            function setDefaultDate() {
+                // เพิ่มโค้ดที่ต้องการสำหรับการตั้งค่าวันที่เริ่มต้น
+            }
+
+            // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
+            function getBorderColor(datasetIndex) {
+                const colors = ['red', 'blue', 'green', 'orange'];
+                var inputRegion = document.getElementById('inputRegion').value;
+                var inputSite = document.getElementById('inputSite').value;
+
+
+                if (datasetIndex >= 1 && datasetIndex <= colors.length) {
+                    return colors[datasetIndex - 1];
+                } else {
+                    return 'black';
+                }
+            }
+        </script>
+
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
+                get_users();
+            });
+
+            function get_users() {
+                // ส่ง request ไปยัง /get_users
+                fetch('/get_users')
+                    .then(response => response.json())
+                    .then(data => {
+                        // เติมค่าลงใน dropdown
+                        const dropdown = document.getElementById('username_delete');
+                        dropdown.innerHTML = ''; // เคลียร์ค่าเดิม
+                        data.users.forEach(user => {
+                            const option = document.createElement('option');
+                            option.value = user.username;
+                            option.textContent = user.username;
+                            dropdown.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function filterUsernames() {
+                var input, filter, select, option, a, i, txtValue;
+                input = document.getElementById("searchUsername");
+                filter = input.value.toUpperCase();
+                select = document.getElementById("username_delete");
+                option = select.getElementsByTagName("option");
+                for (i = 0; i < option.length; i++) {
+                    a = option[i];
+                    txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        option[i].style.display = "";
+                    } else {
+                        option[i].style.display = "none";
+                    }
+                }
+            }
+
+            function confirmDelete() {
+                var username = document.getElementById("searchUsername").value;
+                return confirm("Are you sure you want to delete the user: " + username + "?");
+            }
+        </script> -->
+
+</body>
+
+</html>
