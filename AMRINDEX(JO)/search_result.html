@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Libre+Baskerville&display=swap');
+
         /* Added styles for footer */
         .footer {
             text-align: center;
@@ -71,8 +72,7 @@
 
         body {
             background-color: #f0f0f0;
-            font-family: 'Crimson Text', serif;
-            font-family: 'Libre Baskerville', serif;
+            font-family: 'Arial', sans-serif;
             color: #333;
             margin: 0;
             display: flex;
@@ -287,11 +287,11 @@
 
         <div class="current-date" id="currentDate"></div>
 
-        <div class="main" id="main">
+        <div class="main1" id="main1">
             <h1 class="details">Search Results</h1>
 
             <div class="scrollable-container">
-                <table class="styled-table">
+                <table class="styled-table" id="searchTable">
                     <thead>
                         <tr>
                             <!-- แสดงชื่อคอลัมน์ -->
@@ -331,6 +331,8 @@
                     }
 
                     function createLineChart(canvasId, label, datasetIndex) {
+                        var inputRegion = document.getElementById('inputRegion').value;
+                        var inputSite = document.getElementById('inputSite').value;
                         var table = document.getElementById('searchTable');
                         var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
                         var chartData = {
@@ -373,6 +375,8 @@
                     // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
                     function getBorderColor(datasetIndex) {
                         const colors = ['red', 'blue', 'green', 'orange'];
+                        var inputRegion = document.getElementById('inputRegion').value;
+                        var inputSite = document.getElementById('inputSite').value;
 
                         if (datasetIndex >= 1 && datasetIndex <= colors.length) {
                             return colors[datasetIndex - 1];
@@ -450,7 +454,9 @@
 
             function displaySearchResults(data) {
                 // รับข้อมูลที่ได้จากการค้นหาและแสดงผลลัพธ์ในตาราง
-
+                var inputRegion = document.getElementById('inputRegion').value;
+                var inputSite = document.getElementById('inputSite').value;
+                var selectedDate = document.getElementById('datepicker').value;
                 var tableBody = document.querySelector('.styled-table tbody');
                 tableBody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
 
@@ -504,7 +510,78 @@
 
             displayCurrentDate();
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                setDefaultDate();
+                createLineCharts();
+            });
 
+            function createLineCharts() {
+                createLineChart('correctedChart', 'CORRECTED', 1);
+                createLineChart('uncorrectedChart', 'UNCORRECTED', 2);
+                createLineChart('pressureChart', 'Pressure', 3);
+                createLineChart('temperatureChart', 'Temperature', 4);
+            }
+
+            function createLineChart(canvasId, label, datasetIndex) {
+
+                var table = document.getElementById('searchTable');
+                var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+                var chartData = {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: label,
+                            data: [],
+                            borderColor: getBorderColor(datasetIndex),
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                };
+
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    chartData.labels.push(cells[0].textContent);
+                    chartData.datasets[0].data.push(parseFloat(cells[datasetIndex].textContent));
+                }
+
+                var ctx = document.getElementById(canvasId).getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom'
+                            },
+                            y: {
+                                min: 0
+                            }
+                        }
+                    }
+                });
+            }
+
+            function setDefaultDate() {
+                // เพิ่มโค้ดที่ต้องการสำหรับการตั้งค่าวันที่เริ่มต้น
+            }
+
+            // ฟังก์ชันสำหรับกำหนดสีของกราฟเส้น
+            function getBorderColor(datasetIndex) {
+                const colors = ['red', 'blue', 'green', 'orange'];
+                var inputRegion = document.getElementById('inputRegion').value;
+                var inputSite = document.getElementById('inputSite').value;
+                
+
+                if (datasetIndex >= 1 && datasetIndex <= colors.length) {
+                    return colors[datasetIndex - 1];
+                } else {
+                    return 'black';
+                }
+            }
+        </script>
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // เรียกใช้งาน get_users เมื่อหน้าเว็บโหลดเสร็จ
