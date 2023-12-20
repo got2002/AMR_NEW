@@ -1,5 +1,4 @@
 # app.py
-
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 import cx_Oracle
 import pandas as pd
@@ -30,12 +29,7 @@ password = 'root'
 # หน้าหลัก
 @app.route('/')
 def home():
-    return render_template('search_result.html', data=sample_data)
-# ตัวอย่างข้อมูล
-sample_data = {
-    'title': 'Welcome to My AMR BY TEAM TUL',
-    'description': 'This is the home page of my AMR.'
-}
+    return render_template('search_result.html',)
 
 def fetch_data(query, params=None):
     try:
@@ -163,7 +157,6 @@ def search_result():
                            selected_region=selected_region,
                            region_options=region_options,
                            tag_options=tag_options)
-
 
 @app.route('/your_api_endpoint')
 def your_api_endpoint():
