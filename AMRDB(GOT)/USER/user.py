@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import cx_Oracle
+import hashlib
 
 app = Flask(__name__)
 
@@ -13,6 +14,10 @@ service_name = 'orcl'
 
 # Set the Flask secret key from the environment variable
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'fallback_secret_key')
+
+def md5_hash(input_string):
+    # เข้ารหัสรหัสผ่านโดยใช้ MD5
+    return hashlib.md5(input_string.encode()).hexdigest()
 
 def fetch_data(query, params=None):
     try:
@@ -62,8 +67,14 @@ def add_user_route():
         password = request.form['password']
         user_level = request.form['user_level']
 
-        query = 'INSERT INTO AMR_USER (description, user_name, password, user_level) VALUES (:1, :2, :3, :4)'
-        params = (description, user_name, password, user_level)
+        # เข้ารหัสรหัสผ่านโดยใช้ MD5
+        hashed_password = md5_hash(password)
+
+        # แปลงเป็น RAWTOHEX ก่อนที่จะบันทึกลงใน Oracle
+        hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(hashed_password)
+
+        query = 'INSERT INTO AMR_USER (description, user_name, password, user_level) VALUES (:1, :2, {}, :4)'.format(hashed_password_hex)
+        params = (description, user_name, user_level)
 
         if execute_query(query, params):
             flash('User added successfully!', 'success')
