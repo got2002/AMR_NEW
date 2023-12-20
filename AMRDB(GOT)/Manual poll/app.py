@@ -1,10 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
-from flask import Flask, render_template, request, session,send_file, redirect, url_for
+from flask import Flask, render_template, request, session,send_file, redirect, url_for,jsonify
 import socket
 import struct
 from pymodbus.utilities import computeCRC
@@ -15,209 +14,153 @@ from sqlalchemy import desc
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', [validators.DataRequired()])
-    password = PasswordField('Password', [validators.DataRequired()])
-    submit = SubmitField('Login')
-
-
-db = SQLAlchemy()
-
-class ModbusData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255))
-    address = db.Column(db.Integer)
-    value = db.Column(db.Float)
-    hex_value = db.Column(db.String(255))
-    binary_value = db.Column(db.String(255))
-    float_value = db.Column(db.Float)
-    signed_value = db.Column(db.Float)
-    is_16bit_value = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String(255))  # Add a 'name' column
-
-    def __init__(self, description, address, value, hex_value, binary_value, float_value, signed_value, is_16bit_value=False, name=None):
-        self.description = description
-        self.address = address
-        self.value = value
-        self.hex_value = hex_value
-        self.binary_value = binary_value
-        self.float_value = float_value
-        self.signed_value = signed_value
-        self.is_16bit_value = is_16bit_value
-        self.name = name  # Set the 'name' when creating a ModbusData object
-
-
-class ModbusData16bit(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255))
-    address = db.Column(db.Integer)
-    value = db.Column(db.Float)
-    hex_value = db.Column(db.String(255))
-    binary_value = db.Column(db.String(255))
-    float_value = db.Column(db.Float)
-    signed_value = db.Column(db.Float)
-    name = db.Column(db.String(255))  # Add a field for the name
-
-
-class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
-
-
+import cx_Oracle
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # ชื่อฐานข้อมูล SQLite ของคุณ
-db.init_app(app)
-with app.app_context():
-    db.create_all()
-    login_manager = LoginManager()
-login_manager.login_view = 'login'  # Set the login view (the route name for the login page)
-login_manager.init_app(app)
+
+# กำหนดการเชื่อมต่อฐานข้อมูล
+username = 'root'
+password = 'root'
+hostname = '192.168.102.192'
+port = '1521'
+service_name = 'orcl'
+
+def fetch_data(query, params=None):
+    try:
+        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        with cx_Oracle.connect(username, password, dsn) as connection:
+            with connection.cursor() as cursor:
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                results = cursor.fetchall()
+        return results
+    except cx_Oracle.Error as e:
+        error, = e.args
+        print("Oracle Error:", error)
+        return []
+
+app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
-migrate = Migrate(app, db)
-@login_manager.user_loader
-def load_user(user_id):
-    # Replace this with your actual user loading logic
-    # You might want to query your database to retrieve the user by ID
-    return User(user_id)
 
-def generate_data_excel(data_list):
-    df = pd.DataFrame(data_list)
-    excel_filename = 'data_for_table.xlsx'
-    df.to_excel(excel_filename, index=False)
-    return excel_filename
 
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[2:]  # Convert the value to binary string excluding the '0b' prefix
     return binary_string.zfill(bytes_per_value * 8)  # Zero-fill to fit the number of bits based on bytes_per_value
 
 
+@app.route('/')
 
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()  # สร้างฟอร์ม login
-
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        # ตรวจสอบว่าชื่อผู้ใช้และรหัสผ่านตรงกับค่าที่คุณต้องการ
-        if username == 'admin' and password == 'admin':
-            # สร้าง User object ขึ้นมา
-            user = User(username)
-            login_user(user)  # Log the user in
-            return redirect(url_for('home'))  # Redirect to a protected page
-        else:
-            flash('Invalid username or password', 'error')
-
-    return render_template('login.html', form=form)
-
-
-
-
-@app.route('/home')
-@login_required
-def home():
-    # This route is accessible only to authenticated users
-    return render_template('home.html')
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()  # Log the user out
-    return redirect(url_for('login'))
-
-
-@app.route('/index')
-@login_required
 def index():
-   
-    global tcp_ip, tcp_port
-    return render_template('index.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[],
-                           is_16bit=False, communication_traffic=communication_traffic)
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+    query = """
+    SELECT
+        AMR_PL_GROUP.PL_REGION_ID,
+        AMR_FIELD_ID.TAG_ID,
+        amr_field_id.meter_id,
+        AMR_BILLING_DATA.DATA_DATE as DATA_DATE,
+        AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
+        AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
+        AMR_BILLING_DATA.AVR_PF as Pressure,
+        AMR_BILLING_DATA.AVR_TF as Temperature
+    FROM
+        AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
+    WHERE
+        AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+        AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+        AND AMR_BILLING_DATA.METER_STREAM_NO like '1'
+        {date_condition}
+        {tag_condition}
+        {region_condition}
+    """
 
-
-@app.route('/settings')
-@login_required
-def settings():
-    return render_template('settings.html')
-
-@app.route('/about')
-@login_required
-def about():
-    return render_template('about.html')
-
-from datetime import datetime
-
-@app.route('/search', methods=['GET'])
-@login_required
-def search():
-    search_query = request.args.get('search_query', '')
+    # Get selected values from the dropdowns
+    date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
     
-    if search_query:
-        try:
-            search_date = datetime.strptime(search_query, '%Y-%m-%d')
-            data = ModbusData.query.filter(ModbusData.date_field == search_date).all()
-            save_data_to_database(data)  # บันทึกข้อมูลที่ค้นหาเข้าฐานข้อมูล
-        except ValueError:
-            data = ModbusData.query.filter(
-                (ModbusData.description.ilike(f"%{search_query}%")) |
-                (ModbusData.address.ilike(f"%{search_query}%"))
-            ).all()
-    else:
-        data = []  # ถ้าไม่มีการค้นหาในกรณีนี้คืนรายการว่าง
+    selected_date = request.args.get('date_dropdown')
+    selected_tag = request.args.get('tag_dropdown')
+    selected_region = request.args.get('region_dropdown')
 
-    return render_template('databass.html', data=data, search_query=search_query)
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Fetch tag options based on the selected region
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
 
 
-@app.route('/all_data', methods=['GET'])
-@login_required
-def all_data():
-    data = ModbusData.query.all()
-    return render_template('databass.html', data=data, search_query='')
+    if selected_date:
+        # ปรับ format ใน date_condition เพื่อให้ตรงกับรูปแบบที่ datepicker กำหนด
+        date_condition = f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+
+    if selected_tag:
+        tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(date_condition=date_condition, tag_condition=tag_condition, region_condition=region_condition)
+
+    # ใช้ fetch_data function ในการดึงข้อมูล
+    results = fetch_data(query)
+
+    # ใช้ pandas ในการสร้าง DataFrame
+    df = pd.DataFrame(results, columns=[
+        'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
+    ])
+    # ลบคอลัมน์ที่ไม่ต้องการ
+    df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
+    df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
+
+    # ส่ง DataFrame ไปยัง HTML template
+    return render_template('billingdata.html', tables=[df.to_html(classes='data')],
+                       titles=df.columns.values,
+                       selected_date=selected_date,
+                       selected_tag=selected_tag,
+                       selected_region=selected_region,
+                       region_options=region_options,
+                       tag_options=tag_options)
 
 
+@app.route('/get_tags', methods=['GET'])
+def get_tags():
+    selected_region = request.args.get('region_dropdown')  # Change to form data key
 
-@app.route('/images/<filename>')
-def get_image(filename):
-    return send_from_directory('static/images', filename)
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
 
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
 
+    return jsonify({'tag_options': tag_options})
 
+@app.route('/', methods=['POST'])
 
-
-@app.route('/databass')
-@login_required
-def databass():
-    search_query = request.args.get('search_query', '')
-    show_all = request.args.get('show_all')
-
-    data = None  # เริ่มต้นเป็น None
-
-    show_all = request.args.get('show_all')
-
-    if show_all == 'all':
-        # Query the database for all data when 'show_all' is provided
-        data = ModbusData.query.all()
-    elif search_query:
-        try:
-            search_date = datetime.strptime(search_query, '%Y-%m-%d')
-            data = ModbusData.query.filter(ModbusData.date_field == search_date).all()
-        except ValueError:
-            pass
-    else:
-        data = []  # ถ้าไม่มีการค้นหาเเล้วคืนรายการว่าง
-
-    return render_template('databass.html', data=data, search_query=search_query)
-
-
-
-@app.route('/index', methods=['POST'])
-@login_required
 def read_data():
+   
+    
+    
     
     global change_to_32bit_counter  # Use the global variable
 
@@ -290,14 +233,7 @@ def read_data():
     
     for i, value in enumerate(values):
        
-      
-        
-            
 
-        
-       
-        
-        
         address = starting_address + i * 2
                
         hex_value = hex(value)  # Convert the decimal value to HEX
@@ -473,66 +409,17 @@ def read_data():
         del data_list[7] 
         data_list[7], data_list[23] = data_list[23], data_list[7] 
         
-    save_data_to_database(data_list)
+   
     
 
    
-    data_excel_file = generate_data_excel(data_list)
     
-    if 'download_data_excel' in request.form:
-        return send_file(data_excel_file, as_attachment=True)
 
 
     return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity, is_16bit=is_16bit,
-                           communication_traffic=communication_traffic, data=data,
-                           data_excel_file=data_excel_file)
-
-def save_data_to_database(data_list):
-    try:
-        for item in data_list:
-            if item.get('is_16bit_value'):
-                modbus_data_16bit = ModbusData16bit(
-                    description=f"{item['description']} ",
-                    address=item['address'],
-                    value=item['value'],
-                    hex_value=f"{item['value']:X}",
-                    binary_value=convert_to_binary_string(item['value'], 2),
-                    float_value=None,
-                    signed_value=item['signed_value'],
-                    is_16bit_value=True
-                   
-                    
-                )
-                db.session.add(modbus_data_16bit)
-            else:
-                # Here, we check if float_value is provided and not a string like '16-bit signed: 0, float: 0'
-                if isinstance(item['float_value'], (float, int)):
-                    float_value = item['float_value']
-                else:
-                    float_value = None
-                
-                modbus_data = ModbusData(
-                    description=item['description'],
-                    address=item['address'],
-                    value=item['value'],
-                    hex_value=item['hex_value'],
-                    binary_value=item['binary_value'],
-                    float_value=float_value,  # Use the corrected float_value
-                    signed_value=item['signed_value'],
-                    is_16bit_value=False
-                )
-                db.session.add(modbus_data)
-
-        db.session.commit()
-        print("Data successfully saved to the database.")
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error saving data to the database: {str(e)}")
-
-
-
-
+                           communication_traffic=communication_traffic, data=data
+                           )
 
 
 def handle_actaris_action(i, address):
