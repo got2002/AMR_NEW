@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 200vh;
+            overflow-y: scroll;
+            /* เพิ่มการเลื่อนหน้าจอ */
+        }
+
+        @media screen and (max-width: 400px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 80%;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #ff5050;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            background-image: linear-gradient(to top, #4caf50 0%, #4caf4f60 100%);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            transition: background-size 0.3s;
+        }
+
+        input:disabled,
+        select:disabled {
+            background-color: #eee;
+        }
+
+        input:focus,
+        select:focus {
+            background-size: 100% 100%;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+
+
+        /* เพิ่มการเลื่อนหน้าจอ */
+        body {
+            overflow-y: scroll;
+        }
+
+        /* ปรับขนาด font ให้เหมาะสม */
+        @media screen and (max-width: 400px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        button#confirmButton,
+        button#cancelButton {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        button#confirmButton {
+            background-color: #f44336;
+            /* สีแดง */
+            border: none;
+            transition: 0.3s;
+        }
+
+        button#confirmButton:hover {
+            background-color: #d32f2f;
+            /* สีแดงเข้ม */
+        }
+
+        button#cancelButton {
+            background-color: #607d8b;
+            /* สีเทา */
+            border: none;
+            transition: 0.3s;
+        }
+
+        button#cancelButton:hover {
+            background-color: #455a64;
+            /* สีเทาเข้ม */
+        }
+
+        /* CSS เพื่อปรับตำแหน่งของปุ่ม Logout */
+        .logout-button {
+            float: left;
+            margin-top: -340%;
+            /* ทำให้ปุ่มอยู่ด้านขวา */
+            margin-left: 1450%;
+            /* เพิ่มระยะห่างจากขอบขวาของหน้าจอ */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <!-- ตำแหน่งที่คุณต้องการให้ปุ่ม Logout ปรากฎ -->
+        <div class="logout-button">
+            <a href="login.html">Logout</a>
+        </div>
+    </div>
+    
+    <div class="form-container">
+        <h2>Edit User</h2>
+        <form method="post" action="/update-user">
+            <input id="csrf_token" name="csrf_token" type="hidden" value="...">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="is_admin">Role</label>
+                <select id="is_admin" name="is_admin">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="form-group">
+                <button type="submit">Update</button>
+            </div>
+        </form>
+
+        <h2>Add User</h2>
+        <form method="post" action="/add-user">
+            <input id="csrf_token" name="csrf_token" type="hidden" value="...">
+
+            <div class="form-group">
+                <label for="new_username">New Username</label>
+                <input type="text" id="new_username" name="new_username" required>
+            </div>
+            <div class="form-group">
+                <label for="new_email">New Email</label>
+                <input type="email" id="new_email" name="new_email" required>
+            </div>
+            <div class="form-group">
+                <label for="new_role">Role</label>
+                <select id="new_role" name="new_role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="new_password">Password</label>
+                <input type="password" id="new_password" name="new_password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Add User</button>
+            </div>
+        </form>
+
+        <body>
+            <h2>Delete User</h2>
+            <form onsubmit="return false;">
+                <div class="form-group">
+                    <label for="searchUsername">Enter Username to Delete</label>
+                    <input type="text" id="searchUsername" oninput="toggleButtons()" placeholder="Search username...">
+                </div>
+                <div class="form-group">
+                    <button id="confirmButton" onclick="confirmDelete()" style="display: none;">Confirm</button>
+                    <button id="cancelButton" onclick="cancelDelete()" style="display: none;">Cancel</button>
+                </div>
+            </form>
+    </div>
+
+
+    <script>
+        function toggleButtons() {
+            var username = document.getElementById("searchUsername").value.trim();
+            var confirmButton = document.getElementById("confirmButton");
+            var cancelButton = document.getElementById("cancelButton");
+
+            if (username !== "") {
+                confirmButton.style.display = "inline-block";
+                cancelButton.style.display = "inline-block";
+            } else {
+                confirmButton.style.display = "none";
+                cancelButton.style.display = "none";
+            }
+        }
+
+        function confirmDelete() {
+            var username = document.getElementById("searchUsername").value.trim();
+            var confirmation = confirm("Are you sure you want to delete the user: " + username + "?");
+            if (confirmation) {
+                alert("User '" + username + "' has been deleted.");
+                // เพิ่มโค้ดส่วนอื่น ๆ ที่ต้องการเมื่อยืนยันการลบ
+            } else {
+                alert("Deletion canceled.");
+            }
+            resetForm();
+        }
+
+        function cancelDelete() {
+            alert("Deletion canceled.");
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById("searchUsername").value = "";
+            document.getElementById("confirmButton").style.display = "none";
+            document.getElementById("cancelButton").style.display = "none";
+        }
+    </script>
+</body>
+
+
+
+<!-- Footer Section -->
+<div class="footer">
+    <p>&copy; 2023 Prompt. All rights reserved.</p>
+</div>
+<!-- End Footer Section -->
+
+</body>
+
+</html>

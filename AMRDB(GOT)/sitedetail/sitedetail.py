@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import pandas as pd
 import cx_Oracle
 
@@ -56,43 +56,45 @@ WHERE
     """
 
     # Get selected values from the dropdowns
-    
-    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-    
-    
     selected_region = request.args.get('region_dropdown')
 
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
-    # Fetch tag options based on the selected region
-    
+    # Initialize the query with a condition that is always true
+    region_condition = "AND 1 = 1"
 
-   
+    # Fetch tag options based on the selected region
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
     # Modify the query with the selected conditions
-    query = query.format( region_condition=region_condition)
+    query = query.format(region_condition=region_condition)
 
-    # ใช้ fetch_data function ในการดึงข้อมูล
-    results = fetch_data(query)
+    # Check if a region is selected before executing the query
+    if selected_region:
+        # ใช้ fetch_data function ในการดึงข้อมูล
+        results = fetch_data(query)
 
-    # ใช้ pandas ในการสร้าง DataFrame
-    df = pd.DataFrame(results, columns=[
-        'ID', 'SITE', 'PHASE', 'IP ADDRESS', 'TYPE'
+        # ใช้ pandas ในการสร้าง DataFrame
+        df = pd.DataFrame(results, columns=[
+            'ID', 'SITE', 'PHASE', 'IP ADDRESS', 'TYPE'
+        ])
+        # ลบคอลัมน์ที่ไม่ต้องการ
+        df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
 
-    ])
-    # ลบคอลัมน์ที่ไม่ต้องการ
-    
-    df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
+        # Sort DataFrame by the 'SITE' column (adjust as needed)
+        df = df.sort_values(by='SITE')
 
-    # ส่ง DataFrame ไปยัง HTML template
-    return render_template('sitedetail.html', tables=[df.to_html(classes='data')],
-                       titles=df.columns.values,
-                       selected_region=selected_region,
-                       region_options=region_options,
-                       )
+        # ส่ง DataFrame ไปยัง HTML template
+        return render_template('sitedetail.html', tables=[df.to_html(classes='data')],
+                            titles=df.columns.values,
+                            selected_region=selected_region,
+                            region_options=region_options)
+    else:
+        # Render the template without executing the query
+        return render_template('sitedetail.html', selected_region=selected_region, region_options=region_options, tables=[])
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -39,7 +39,7 @@ def get_tags():
     
     tag_results = fetch_data(tag_query, params={'region_id': selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
-
+    tag_options.sort()
     return jsonify({'tag_options': tag_options})
 @app.route('/')
 def index():
@@ -105,28 +105,34 @@ def index():
         tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-
+    region_condition = "AND 1 = 1"
     # Modify the query with the selected conditions
     query = query.format(date_condition=date_condition, tag_condition=tag_condition, region_condition=region_condition)
-
+    if selected_region:
     # ใช้ fetch_data function ในการดึงข้อมูล
-    results = fetch_data(query)
+        results = fetch_data(query)
 
-    # ใช้ pandas ในการสร้าง DataFrame
-    df = pd.DataFrame(results, columns=[
-        'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
-    ])
-    # ลบคอลัมน์ที่ไม่ต้องการ
-    df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-    df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
+        # ใช้ pandas ในการสร้าง DataFrame
+        df = pd.DataFrame(results, columns=[
+            'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
+        ])
+        # ลบคอลัมน์ที่ไม่ต้องการ
+        df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
+        df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
 
-    # ส่ง DataFrame ไปยัง HTML template
-    return render_template('billingdata.html', tables=[df.to_html(classes='data')],
-                       titles=df.columns.values,
-                       selected_date=selected_date,
-                       selected_tag=selected_tag,
-                       selected_region=selected_region,
-                       region_options=region_options,
-                       tag_options=tag_options)
+
+        # ส่ง DataFrame ไปยัง HTML template
+        return render_template('billingdata.html', tables=[df.to_html(classes='data')],
+                        titles=df.columns.values,
+                        selected_date=selected_date,
+                        selected_tag=selected_tag,
+                        selected_region=selected_region,
+                        region_options=region_options,
+                        tag_options=tag_options)
+
+
+    else:
+                # Render the template without executing the query
+        return render_template('billingdata.html', selected_date=selected_date,selected_region=selected_region,selected_tag=selected_tag, region_options=region_options, tag_options=tag_options, tables=[])
 if __name__ == '__main__':
     app.run(debug=True)
