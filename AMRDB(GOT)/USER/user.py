@@ -84,5 +84,45 @@ def add_user_route():
 
     return render_template('add_user.html')
 
+# Edit user page
+@app.route('/edit_user', methods=['GET', 'POST'])
+def edit_user_route():
+    # ดึงข้อมูลผู้ใช้จากฐานข้อมูลตาม user_id
+    query = 'SELECT * FROM AMR_USER'
+    user_data = fetch_data(query, ())
+
+    if not user_data:
+        flash('User not found!', 'error')
+        return redirect(url_for('index'))
+
+    # ถ้ามีการส่งค่า POST (คือการบันทึกการแก้ไข)
+    if request.method == 'POST':
+        # ดึงข้อมูลจากฟอร์มแก้ไข
+        description = request.form['description']
+        user_name = request.form['user_name']
+        password = request.form['password']
+        user_level = request.form['user_level']
+
+        # เข้ารหัสรหัสผ่านโดยใช้ MD5
+        hashed_password = md5_hash(password)
+
+        # แปลงเป็น RAWTOHEX ก่อนที่จะบันทึกลงใน Oracle
+        hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(hashed_password)
+
+        # สร้างคำสั่ง SQL สำหรับการแก้ไขข้อมูลผู้ใช้
+        update_query = 'UPDATE AMR_USER SET description = :1, user_name = :2, password = {}, user_level = :4 WHERE user_id = :5'.format(hashed_password_hex)
+        update_params = (description, user_name, user_level, user_id)
+
+        # ทำการ execute คำสั่ง SQL และ commit การแก้ไข
+        if execute_query(update_query, update_params):
+            flash('User updated successfully!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Failed to update user. Please try again.', 'error')
+
+    # ถ้าไม่มีการส่งค่า POST (แสดงหน้าแก้ไข)
+    return render_template('edit_user.html', user=user_data[0])
+
+
 if __name__ == '__main__':
     app.run(debug=True)
