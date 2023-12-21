@@ -2,34 +2,14 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 import cx_Oracle
 import pandas as pd
-import random
-import string
 
 app = Flask(__name__)
-# ตั้งค่า database URI และ SECRET_KEY ให้ Flask app
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-# app.config['SECRET_KEY'] = 'your_secret_key'  # Change to your own secret key
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
-
-# ส่วนที่ขาดหายไปใน fetch_data
 hostname = 'localhost'
 port = '1521'
 service_name = 'orcl'
 username = 'root'
 password = 'root'
-
-# MAIL_SERVER = 'Nattapong@pims.co.th'
-# MAIL_PORT = 587
-# MAIL_USE_TLS = True
-# MAIL_USERNAME = 'Nattapong@pims.co.th'
-# MAIL_PASSWORD = 'Csgop@90'
-
-# หน้าหลัก
-@app.route('/')
-def home():
-    return render_template('search_result.html',)
 
 def fetch_data(query, params=None):
     try:
@@ -47,31 +27,24 @@ def fetch_data(query, params=None):
         print("Oracle Error:", error)
         return []
 
-# ส่วนที่ขาดหายไปใน get_tags
-
-
-@app.route('/get_tags', methods=['GET'])
-def get_tags():
-    selected_region = request.args.get('selected_region')
-
-    tag_query = """
-    SELECT DISTINCT TAG_ID
-    FROM AMR_FIELD_ID
-    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
-    """
-
-    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
-    tag_options = [str(tag[0]) for tag in tag_results]
-
-    return jsonify({'tag_options': tag_options})
-
-# ปรับแต่งส่วนที่ขาดหายไปใน index
-
-
 @app.route('/')
-def search_result():
-    # SQL query to fetch unique PL_REGION_ID values
+def home():
+    return render_template('search_result.html')
+
+@app.route('/goback')
+def go_back():
+    return redirect('/')
+
+@app.route('/Homepage')
+def Homepage():
+    return render_template('Homepage.html')
+
+@app.route('/search_result')
+def show_search_result():
+    data_rows = [
+        {'DATA_DATE': '', 'PL_REGION_ID': '', 'TAG_ID': '', 'meter_id': '', 'CORRECTED': 0, 'UNCORRECTED': 0, 'Pressure': 0, 'Temperature': 0},
+    ]
+
     region_query = """
     SELECT * FROM AMR_REGION 
     """
@@ -81,11 +54,9 @@ def search_result():
     JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
     WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
     """
-    # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
-    # SQL query for main data
     query = """
     SELECT
         AMR_PL_GROUP.PL_REGION_ID,
@@ -107,7 +78,6 @@ def search_result():
         {region_condition}
     """
 
-    # Get selected values from the dropdowns
     date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
     tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
     region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
@@ -116,40 +86,30 @@ def search_result():
     selected_tag = request.args.get('tag_dropdown')
     selected_region = request.args.get('region_dropdown')
 
-    # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
-    # Fetch tag options based on the selected region
     tag_results = fetch_data(tag_query, params={'region_id': selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
 
     if selected_date:
-        # ปรับ format ใน date_condition เพื่อให้ตรงกับรูปแบบที่ datepicker กำหนด
         date_condition = f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-
     if selected_tag:
         tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    # Modify the query with the selected conditions
     query = query.format(date_condition=date_condition,
                          tag_condition=tag_condition, region_condition=region_condition)
 
-    # ใช้ fetch_data function ในการดึงข้อมูล
     results = fetch_data(query)
 
-    # ใช้ pandas ในการสร้าง DataFrame
     df = pd.DataFrame(results, columns=[
         'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
     ])
-    # ลบคอลัมน์ที่ไม่ต้องการ
     df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-    df = df.applymap(lambda x: x.replace('\n', '')
-                     if isinstance(x, str) else x)
+    df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
 
-    # ส่ง DataFrame ไปยัง HTML template
     return render_template('search_result.html', tables=[df.to_html(classes='data')],
                            titles=df.columns.values,
                            selected_date=selected_date,
@@ -160,14 +120,24 @@ def search_result():
 
 @app.route('/your_api_endpoint')
 def your_api_endpoint():
-    # ตัวอย่างข้อมูลที่จะส่งกลับในรูปแบบ JSON
     tag_options = ['tag1', 'tag2', 'tag3']
-
-    # ส่ง JSON response กลับไปยัง client
     return jsonify({'tag_options': tag_options})
 
+@app.route('/get_tags', methods=['GET'])
+def get_tags():
+    selected_region = request.args.get('selected_region')
 
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
 
-# ปรับแต่งให้ Flask app รันด้วย debug mode
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+
+    return jsonify({'tag_options': tag_options})
+
 if __name__ == '__main__':
     app.run(debug=True)
