@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&family=Oxygen&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Labrada&display=swap');
@@ -39,7 +39,7 @@
         input,
         select {
             font-family: 'Noto Sans Thai', sans-serif;
-            width: 70%;
+            width: 100%;
             /* ปรับขนาดของกล่อง */
             padding: 12px;
             /* ปรับขนาดของกล่อง */
@@ -56,6 +56,7 @@
             background-size: 100% 2px;
             transition: background-size 0.3s;
         }
+
         input:disabled,
         select:disabled {
             background-color: #eee;
@@ -65,6 +66,7 @@
         select:focus {
             background-size: 100% 100%;
         }
+
         .label {
 
             font-size: 18px;
@@ -246,7 +248,7 @@
             padding-top: 25px;
             width: 300px;
             /* เปลี่ยน your_color_here เป็นสีที่คุณต้องการ */
-            animation: fadeInOut2 1.5s infinite alternate;
+
 
             /* เพิ่ม Animation ด้วย fadeInOut, 2s คือระยะเวลา, infinite คือเล่นวนไปเรื่อย ๆ, alternate คือเล่นในทิศทางกลับ */
         }
@@ -326,6 +328,13 @@
                 transform: translateY(0);
                 /* กลับไปที่ตำแหน่งเริ่มต้น */
             }
+        }
+
+        .main4 {
+            width: 100%;
+            margin: 20px auto;
+            text-align: right;
+            padding: 20px;
         }
 
         .main3 {
@@ -510,8 +519,16 @@
 </head>
 
 <body>
+    <div class="main4" id="main4">
+
+        <a href="{{ url_for('go_back') }}">Go Back</a>
+
+</body>
+
+<body>
 
     <div class="main" id="main">
+
         <img class="imgpttlogo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="AMR Logo" />
@@ -530,9 +547,15 @@
         </div>
 
         <div class="form-group">
-            <label class="label" for="datepicker">Select Date :</label>
-            <input class="input-field" type="date" id="datepicker">
+            <label class="label" for="start_datepicker">Start Date:</label>
+            <input class="input-field" type="date" id="start_datepicker" name="start_date">
         </div>
+
+        <div class="form-group">
+            <label class="label" for="end_datepicker">End Date:</label>
+            <input class="input-field" type="date" id="end_datepicker" name="end_date">
+        </div>
+
 
         <div class="loading-overlay" id="loadingOverlay">
             <div class="loading-circle"></div>
@@ -560,9 +583,9 @@
 
             <h1 class="details">🔎 Search Results</h1>
             <div class="search-details">
-                <strong>Region:</strong> <span id="searchedRegion"></span><br>
-                <strong>Site:</strong> <span id="searchedSite"></span><br>
-                <strong>Date:</strong> <span id="searchedDate"></span>
+                <strong>Region :</strong> <span id="searchedRegion"></span><br>
+                <strong>Site :</strong> <span id="searchedSite"></span><br>
+                <strong>Date :</strong> <span id="searchedDate"></span>
             </div>
             <!-- <div class="scrollable-container"> -->
             <table class="styled-table" id="searchTable">
@@ -726,15 +749,26 @@
                     return 'black';
                 }
             }
+            document.getElementById("start_datepicker").addEventListener("change", function () {
+                var startDate = document.getElementById("start_datepicker").value;
+                console.log("Start Date: " + startDate);
+            });
+
+            document.getElementById("end_datepicker").addEventListener("change", function () {
+                var endDate = document.getElementById("end_datepicker").value;
+                console.log("End Date: " + endDate);
+            });
         </script>
         <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
         <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
         </script>
+
         </script>
 
     </div>
 
     </div>
+
     </div>
 
 
@@ -766,10 +800,13 @@
         }
     </script>
     <script>
+
         function searchData() {
             var inputRegion = document.getElementById('inputRegion').value;
             var inputSite = document.getElementById('inputSite').value;
-            var selectedDate = document.getElementById('datepicker').value;
+            var startDate = document.getElementById("start_datepicker").value;
+            var endDate = document.getElementById("end_datepicker").value;
+
 
             if (inputRegion && inputSite && selectedDate) {
                 document.getElementById('warningContainer').style.display = 'none';
@@ -779,9 +816,8 @@
                 // เปลี่ยน URL_API เป็น URL ของ API ที่คุณใช้
 
                 // เปลี่ยน SQL Query ใน fetch(url) เพื่อกรองตามวันที่
-                var url = `URL_API?region=${inputRegion}&site=${inputSite}&date=${selectedDate}`;
-
-
+                var url = `URL_API?region=${inputRegion}&site=${inputSite}&start_date=${startDate}&end_date=${endDate}`;
+                
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
