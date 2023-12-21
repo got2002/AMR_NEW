@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the AMR</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* Change to column to align items vertically */
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            width: 80%;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px; /* Add margin bottom to create space */
+        }
+
+        h2 {
+            color: #ff5e5e;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        /* Menu Styles */
+        .menu-container {
+            min-height: 100vh;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+            font-size: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align menu to the left */
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            border-radius: 8px;
+            z-index: 1;
+            width: 200px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            background-color: #ffcc0000;
+            right: 0px;
+            left: 400px; /* Adjusting dropdown position */
+            top: 55%;
+        }
+
+        /* Show dropdown on hover or focus */
+        .menu li:hover .menu-dropdown,
+        .menu li:focus-within .menu-dropdown {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .menu a {
+            padding: 15px 20px;
+            margin: 0;
+            border-bottom: 2px solid transparent;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            transition: background-color 0.3s, transform 0.2s;
+            border-bottom: 10px solid rgba(255, 255, 255, 0.1);
+            background-color: #4CAF50; /* Changed button color */
+            border-radius: 8px;
+            transform: scale(1);
+        }
+
+        /* Hover effect on menu items */
+        .menu a:hover {
+            background-color: #2E8B57; /* Changed hover color */
+            transform: scale(1.05);
+            border-bottom: 10px solid rgba(255, 255, 255, 0.3);
+        }
+
+    /* CSS ของ Announcement Section */
+    .announcement-container {
+        background-color: #f0f0f0; /* สีพื้นหลังของกล่องแสดงประกาศ */
+        border: 1px solid #ccc;
+        border-radius: 12px; /* เพิ่มขอบเขตของมุมกล่อง */
+        padding: 20px;
+        margin: 20px auto;
+        text-align: left;
+        width: 70%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงาใต้กล่อง */
+    }
+
+    .announcement-container h3 {
+        color: #ff5e5e;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .announcement-container p {
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+        /* Footer Styles */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+        }
+        /* Additional Adjustments */
+        .logo {
+            max-width: 15%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Media Query for responsiveness (if needed) */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <img src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" alt="Logo" class="logo">
+        <h2>Welcome to the AMR</h2>
+        <div class="menu-container">
+        <!-- End Announcement Section -->
+
+            <ul class="menu">
+                <li><a href="#user-management">Manage Users</a>
+                    <div class="menu-dropdown">
+                        <a class="menu-item" href="UserManagement.html">User Management</a>
+                    </div>
+                </li>
+                <li><a href="#notification-system">Manage Sites</a>
+                    <div class="menu-dropdown">
+                        <a class="menu-item" href="#submenu1">Add Site</a>
+                        <a class="menu-item" href="#submenu2">Edit Site</a>
+                        <a class="menu-item" href="#submenu3">Remove Site</a>
+                    </div>
+                </li>
+                <li><a href="#data-management">Reports</a>
+                    <div class="menu-dropdown">
+                        <a class="menu-item" href="search_result.html">View Billing Data</a>
+                        <a class="menu-item" href="#submenu2">Daily Summary</a>
+                        <a class="menu-item" href="#submenu3">Poling Status</a>
+                        <a class="menu-item" href="#submenu1">View EVC Status</a>
+                        <a class="menu-item" href="#submenu2">Monthly Summery</a>
+                        <a class="menu-item" href="#submenu3">New Site Detail</a>
+                    </div>
+                </li>
+                <li><a href="#access-management">Polling Actions</a>
+                    <div class="menu-dropdown">
+                        <a class="menu-item" href="#submenu1">Manual Poling</a>
+                        <a class="menu-item" href="#submenu2">Write Config</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2023 Prompt. All rights reserved.</p>
+    </div>
+    <!-- End Footer Section -->
+</body>
+
+</html>
