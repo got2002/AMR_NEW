@@ -1,0 +1,50 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css"> <!-- เชื่อมต่อกับไฟล์ CSS -->
+</head>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<body>
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" alt="Logo" class="logo">
+        </div>
+
+        <form method="post" class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Login</button>
+            </div>
+        </form>
+        <!-- เพิ่มปุ่ม "สมัคร" -->
+        <div class="form-group">
+            <a href="register.html" class="register.html">Register</a>
+        </div>
+
+        <!-- เพิ่มลิงก์ "ลืมรหัส" -->
+        <div class="form-group">
+            <a href="forgot_password.html" class="forgot_password.html">Forgot Password</a>
+        </div>
+        </form>
+        <!-- Footer Section -->
+            <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
+        </div>
+        <!-- End Footer Section -->
+    </div>
+</body>
+
+</html>

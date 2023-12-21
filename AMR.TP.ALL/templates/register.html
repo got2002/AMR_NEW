@@ -1,0 +1,139 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 80%;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #ff5050;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            background-image: linear-gradient(to top, #4caf50 0%, #4caf4f60 100%);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            transition: background-size 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            background-size: 100% 100%;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .login-link {
+            margin-top: 10px;
+            color: #4caf50;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Register</h2>
+        <form method="post">
+            <input id="csrf_token" name="csrf_token" type="hidden" value="...">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+        <a href="login.html" class="login.html">Already have an account? Login here.</a>
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy; 2023 Prompt. All rights reserved.</p>
+        </div>
+        <!-- End Footer Section -->
+    </div>
+</body>
+
+</html>
