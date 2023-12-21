@@ -1,0 +1,10 @@
+.flash-messages .success {
+    color: green;
+    font-weight: bold;
+}
+
+/* Styling for error messages */
+.flash-messages .error {
+    color: red;
+    font-weight: bold;
+}
