@@ -1,4 +1,5 @@
-<!-- edit_user.html -->
+<!-- templates/edit_user.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
 </head>
+
 <body>
-    <h1>Edit User</h1>
-    <form method="post" action="">
-        <!-- Your form fields for editing user details -->
+    <form method="post" action="{{ url_for('edit_user_route')}}">
+        <label for="description">Description:</label>
+        <input type="text" name="description" value="{{ user[0].description }}" required><br>
+    
+        <label for="user_name">Username:</label>
+        <input type="text" name="user_name" value="{{ user[0].user_name }}" required><br>
+    
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Enter new password (if changed)"><br>
+    
+        <label for="user_level">User Level:</label>
+        <input type="number" name="user_level" value="{{ user[0].user_level }}" required><br>
+    
         <button type="submit">Save Changes</button>
     </form>
+    <a href="{{ url_for('index') }}">Back to User List</a>
 </body>
 </html>
