@@ -1,10 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
 from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
-from flask import Flask, render_template, request, session,send_file, redirect, url_for
+from flask import Flask, render_template, request, session,send_file, redirect, url_for,jsonify
 import socket
 import struct
 from pymodbus.utilities import computeCRC
@@ -15,124 +14,25 @@ from sqlalchemy import desc
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', [validators.DataRequired()])
-    password = PasswordField('Password', [validators.DataRequired()])
-    submit = SubmitField('Login')
-
-
-db = SQLAlchemy()
-
-class ModbusData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255))
-    address = db.Column(db.Integer)
-    value = db.Column(db.Float)
-    hex_value = db.Column(db.String(255))
-    binary_value = db.Column(db.String(255))
-    float_value = db.Column(db.Float)
-    signed_value = db.Column(db.Float)
-    is_16bit_value = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String(255))  # Add a 'name' column
-
-    def __init__(self, description, address, value, hex_value, binary_value, float_value, signed_value, is_16bit_value=False, name=None):
-        self.description = description
-        self.address = address
-        self.value = value
-        self.hex_value = hex_value
-        self.binary_value = binary_value
-        self.float_value = float_value
-        self.signed_value = signed_value
-        self.is_16bit_value = is_16bit_value
-        self.name = name  # Set the 'name' when creating a ModbusData object
-
-
-class ModbusData16bit(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255))
-    address = db.Column(db.Integer)
-    value = db.Column(db.Float)
-    hex_value = db.Column(db.String(255))
-    binary_value = db.Column(db.String(255))
-    float_value = db.Column(db.Float)
-    signed_value = db.Column(db.Float)
-    name = db.Column(db.String(255))  # Add a field for the name
-
-
-class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
-
-
+import cx_Oracle
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # ชื่อฐานข้อมูล SQLite ของคุณ
-db.init_app(app)
-with app.app_context():
-    db.create_all()
-    login_manager = LoginManager()
-login_manager.login_view = 'login'  # Set the login view (the route name for the login page)
-login_manager.init_app(app)
+
+# กำหนดการเชื่อมต่อฐานข้อมูล
+
+app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
-migrate = Migrate(app, db)
-@login_manager.user_loader
-def load_user(user_id):
-    # Replace this with your actual user loading logic
-    # You might want to query your database to retrieve the user by ID
-    return User(user_id)
 
-def generate_data_excel(data_list):
-    df = pd.DataFrame(data_list)
-    excel_filename = 'data_for_table.xlsx'
-    df.to_excel(excel_filename, index=False)
-    return excel_filename
 
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[2:]  # Convert the value to binary string excluding the '0b' prefix
     return binary_string.zfill(bytes_per_value * 8)  # Zero-fill to fit the number of bits based on bytes_per_value
 
 
+@app.route('/')
 
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()  # สร้างฟอร์ม login
-
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        # ตรวจสอบว่าชื่อผู้ใช้และรหัสผ่านตรงกับค่าที่คุณต้องการ
-        if username == 'admin' and password == 'admin':
-            # สร้าง User object ขึ้นมา
-            user = User(username)
-            login_user(user)  # Log the user in
-            return redirect(url_for('home'))  # Redirect to a protected page
-        else:
-            flash('Invalid username or password', 'error')
-
-    return render_template('login.html', form=form)
-
-
-
-
-@app.route('/home')
-@login_required
-def home():
-    # This route is accessible only to authenticated users
-    return render_template('home.html')
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()  # Log the user out
-    return redirect(url_for('login'))
-
-
-@app.route('/index')
-@login_required
 def index():
    
     global tcp_ip, tcp_port
@@ -140,85 +40,12 @@ def index():
                            is_16bit=False, communication_traffic=communication_traffic)
 
 
-@app.route('/settings')
-@login_required
-def settings():
-    return render_template('settings.html')
-
-@app.route('/about')
-@login_required
-def about():
-    return render_template('about.html')
-
-from datetime import datetime
-
-@app.route('/search', methods=['GET'])
-@login_required
-def search():
-    search_query = request.args.get('search_query', '')
-    
-    if search_query:
-        try:
-            search_date = datetime.strptime(search_query, '%Y-%m-%d')
-            data = ModbusData.query.filter(ModbusData.date_field == search_date).all()
-            save_data_to_database(data)  # บันทึกข้อมูลที่ค้นหาเข้าฐานข้อมูล
-        except ValueError:
-            data = ModbusData.query.filter(
-                (ModbusData.description.ilike(f"%{search_query}%")) |
-                (ModbusData.address.ilike(f"%{search_query}%"))
-            ).all()
-    else:
-        data = []  # ถ้าไม่มีการค้นหาในกรณีนี้คืนรายการว่าง
-
-    return render_template('databass.html', data=data, search_query=search_query)
 
 
-@app.route('/all_data', methods=['GET'])
-@login_required
-def all_data():
-    data = ModbusData.query.all()
-    return render_template('databass.html', data=data, search_query='')
+@app.route('/', methods=['POST'])
 
-
-
-@app.route('/images/<filename>')
-def get_image(filename):
-    return send_from_directory('static/images', filename)
-
-
-
-
-
-@app.route('/databass')
-@login_required
-def databass():
-    search_query = request.args.get('search_query', '')
-    show_all = request.args.get('show_all')
-
-    data = None  # เริ่มต้นเป็น None
-
-    show_all = request.args.get('show_all')
-
-    if show_all == 'all':
-        # Query the database for all data when 'show_all' is provided
-        data = ModbusData.query.all()
-    elif search_query:
-        try:
-            search_date = datetime.strptime(search_query, '%Y-%m-%d')
-            data = ModbusData.query.filter(ModbusData.date_field == search_date).all()
-        except ValueError:
-            pass
-    else:
-        data = []  # ถ้าไม่มีการค้นหาเเล้วคืนรายการว่าง
-
-    return render_template('databass.html', data=data, search_query=search_query)
-
-
-
-@app.route('/index', methods=['POST'])
-@login_required
 def read_data():
-    
+   
     global change_to_32bit_counter  # Use the global variable
 
     slave_id = int(request.form['slave_id'])
@@ -290,14 +117,7 @@ def read_data():
     
     for i, value in enumerate(values):
        
-      
-        
-            
 
-        
-       
-        
-        
         address = starting_address + i * 2
                
         hex_value = hex(value)  # Convert the decimal value to HEX
@@ -473,66 +293,17 @@ def read_data():
         del data_list[7] 
         data_list[7], data_list[23] = data_list[23], data_list[7] 
         
-    save_data_to_database(data_list)
+   
     
 
    
-    data_excel_file = generate_data_excel(data_list)
     
-    if 'download_data_excel' in request.form:
-        return send_file(data_excel_file, as_attachment=True)
 
 
     return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity, is_16bit=is_16bit,
-                           communication_traffic=communication_traffic, data=data,
-                           data_excel_file=data_excel_file)
-
-def save_data_to_database(data_list):
-    try:
-        for item in data_list:
-            if item.get('is_16bit_value'):
-                modbus_data_16bit = ModbusData16bit(
-                    description=f"{item['description']} ",
-                    address=item['address'],
-                    value=item['value'],
-                    hex_value=f"{item['value']:X}",
-                    binary_value=convert_to_binary_string(item['value'], 2),
-                    float_value=None,
-                    signed_value=item['signed_value'],
-                    is_16bit_value=True
-                   
-                    
-                )
-                db.session.add(modbus_data_16bit)
-            else:
-                # Here, we check if float_value is provided and not a string like '16-bit signed: 0, float: 0'
-                if isinstance(item['float_value'], (float, int)):
-                    float_value = item['float_value']
-                else:
-                    float_value = None
-                
-                modbus_data = ModbusData(
-                    description=item['description'],
-                    address=item['address'],
-                    value=item['value'],
-                    hex_value=item['hex_value'],
-                    binary_value=item['binary_value'],
-                    float_value=float_value,  # Use the corrected float_value
-                    signed_value=item['signed_value'],
-                    is_16bit_value=False
-                )
-                db.session.add(modbus_data)
-
-        db.session.commit()
-        print("Data successfully saved to the database.")
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error saving data to the database: {str(e)}")
-
-
-
-
+                           communication_traffic=communication_traffic, data=data
+                           )
 
 
 def handle_actaris_action(i, address):
