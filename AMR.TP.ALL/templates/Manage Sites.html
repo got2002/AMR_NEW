@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Sites</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* แก้ไข min-height เพื่อให้หน้าเว็บเต็มหน้าจอ */
+            overflow-y: auto; /* แก้ไข overflow-y เพื่อให้มีการเลื่อนเว็บได้ */
+            font-size: 16px; /* ปรับขนาด font ทั่วไป */
+        }
+
+        h1, h2 {
+            color: #ff5050;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4caf50;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            padding: 30px; /* เพิ่ม padding ให้กับ .form-container */
+            box-sizing: border-box;
+            width: 80%;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* ปรับ margin-bottom ให้กลุ่มฟอร์มห่างกันมากขึ้น */
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 15px; /* ปรับ margin-bottom ของ input, select, และ textarea */
+            background-image: linear-gradient(to top, #4caf50 0%, #4caf4f60 100%);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 2px;
+            transition: background-size 0.3s;
+        }
+
+        input:disabled,
+        select:disabled {
+            background-color: #eee;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            background-size: 100% 100%;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button#confirmButton,
+        button#cancelButton {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        button#confirmButton {
+            background-color: #f44336;
+            /* สีแดง */
+            border: none;
+            transition: 0.3s;
+        }
+
+        button#confirmButton:hover {
+            background-color: #d32f2f;
+            /* สีแดงเข้ม */
+        }
+
+        button#cancelButton {
+            background-color: #607d8b;
+            /* สีเทา */
+            border: none;
+            transition: 0.3s;
+        }
+
+        button#cancelButton:hover {
+            background-color: #455a64;
+            /* สีเทาเข้ม */
+        }
+    </style>
+</head>
+<body>
+
+<!-- เนื้อหาของหน้าเว็บไซต์ -->
+<h1>Manage Sites</h1>
+<ul>
+  {% for site in sites %}
+    <li>{{ site.name }} - <a href="/edit-site/{{ site.id }}">Edit</a> | 
+    <form action="/remove-site/{{ site.id }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Remove</button>
+    </form>
+    </li>
+  {% endfor %}
+</ul>
+<a href="/add-site">Add Site</a>
+
+<!-- แบบฟอร์มสำหรับเพิ่มเว็บไซต์ -->
+<h2>Add Site</h2>
+<div class="form-container">
+    <form method="post" action="/add-site">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="name">Site Name:</label>
+            <input type="text" name="name" id="name" placeholder="Enter site name" required>
+        </div>
+        <div class="form-group">
+            <label for="url">Site URL:</label>
+            <input type="text" name="url" id="url" placeholder="Enter site URL" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Site Description:</label>
+            <textarea name="description" id="description" placeholder="Enter site description"></textarea>
+        </div>
+        <button type="submit">Add Site</button>
+    </form>
+</div>
+
+<!-- แบบฟอร์มสำหรับแก้ไขเว็บไซต์ -->
+<h2>Edit Site</h2>
+<div class="form-container">
+    <form method="post" action="/edit-site/{{ site.id }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="editName">Site Name:</label>
+            <input type="text" name="name" id="editName" value="{{ site.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="editUrl">Site URL:</label>
+            <input type="text" name="url" id="editUrl" value="{{ site.url }}" required>
+        </div>
+        <div class="form-group">
+            <label for="editDescription">Site Description:</label>
+            <textarea name="description" id="editDescription">{{ site.description }}</textarea>
+        </div>
+        <button type="submit">Update Site</button>
+    </form>
+</div>
+
+</body>
+</html>
