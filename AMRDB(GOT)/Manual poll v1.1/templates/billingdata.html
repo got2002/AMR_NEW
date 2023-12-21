@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual poll</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .form-container {
+            margin: 20px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+    <h1>Manual poll</h1>
+
+    <div class="form-container">
+        <form action="/" method="get">
+
+            <label for="region_dropdown">Region:</label>
+            <select name="region_dropdown" id="region_dropdown">
+                {% for region_option in region_options %}
+                    <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
+                {% endfor %}
+            </select>
+            <label for="tag_dropdown">Site:</label>
+            <select name="tag_dropdown" id="tag_dropdown">
+                {% for tag_option in tag_options %}
+                    <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    {% if tables %}
+        <h2>Search Results</h2>
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    {% endif %}
+
+    <script>
+        $(document).ready(function () {
+            // Event listener for region dropdown change
+            $('#region_dropdown').change(function () {
+                console.log('Region dropdown changed');
+                var selectedRegion = $(this).val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_tags',
+                    data: { 'selected_region': selectedRegion },
+                    success: function (response) {
+                        console.log('Ajax request successful', response);
+
+                        // Sort tag options alphabetically
+                        response.tag_options.sort();
+
+                        // Update tag dropdown options based on the sorted response
+                        var tagDropdown = $('#tag_dropdown');
+                        tagDropdown.empty(); // Clear existing options
+
+                        // Add new options based on the sorted response
+                        for (var i = 0; i < response.tag_options.length; i++) {
+                            var tagOption = response.tag_options[i];
+                            tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error fetching tag options:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
