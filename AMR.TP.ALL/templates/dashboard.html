@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .dashboard-container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .menu-container {
+            margin-bottom: 20px;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: space-around;
+            background-color: #4caf50;
+            /* Green background color */
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 15px;
+            background-color: #f5f5f5;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Your additional CSS styles go here */
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            // Your JavaScript code here
+            // Example code for handling date-time picker
+            $("#maintenance-time").datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                controlType: 'select',
+                oneLine: true
+            });
+
+            // Additional script for handling notifications or other features
+
+            // Add click event handler for menu items
+            $(".menu a").click(function (event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                // Get the href attribute of the clicked link
+                var targetSection = $(this).attr("href");
+
+                // Open the target section in a new window or tab
+                window.open(targetSection, '_blank');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome to the Admin Dashboard</h2>
+
+        <div class="menu-container">
+            <ul class="menu">
+                <li><a href="user-management.html"><i class="fas fa-users"></i> User Management</a></li>
+                <li><a href="notification-system.html"><i class="fas fa-bell"></i> Notification System</a></li>
+                <li><a href="data-management.html"><i class="fas fa-database"></i> Data Management</a></li>
+                <!-- Add more menu items as needed -->
+            </ul>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-title">Total Users</div>
+                <!-- Display total users here using Flask or other backend framework -->
+            </div>
+            <!-- Add more stat boxes for additional statistics -->
+        </div>
+
+        <!-- Other sections or content as needed -->
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy;Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT</p>
+        </div>
+        <!-- End Footer Section -->
+    </div>
+</body>
+
+</html>
