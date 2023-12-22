@@ -26,6 +26,8 @@ def fetch_data(query, params=None):
         error, = e.args
         print("Oracle Error:", error)
         return []
+
+
 @app.route('/get_tags', methods=['GET'])
 def get_tags():
     selected_region = request.args.get('selected_region')
@@ -41,6 +43,7 @@ def get_tags():
     tag_options = [str(tag[0]) for tag in tag_results]
     tag_options.sort()
     return jsonify({'tag_options': tag_options})
+
 @app.route('/')
 def index():
     # SQL query to fetch unique PL_REGION_ID values
@@ -134,5 +137,6 @@ def index():
     else:
                 # Render the template without executing the query
         return render_template('billingdata.html', selected_date=selected_date,selected_region=selected_region,selected_tag=selected_tag, region_options=region_options, tag_options=tag_options, tables=[])
+
 if __name__ == '__main__':
     app.run(debug=True)
