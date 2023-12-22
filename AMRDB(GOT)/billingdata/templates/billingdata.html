@@ -577,6 +577,7 @@
                 <p>Please select all the required information before searching.</p>
             </div>
         </form>
+<<<<<<< HEAD
         <table>
             <thead>
                 <tr>
@@ -610,6 +611,35 @@
 
 
  
+=======
+        {% if tables %}
+        <table>
+            <!-- your table header here -->
+            <tbody>
+                {% for row in tables %}
+                    <tr>
+                        <!-- access individual elements of the row -->
+                        <td>{{ row.DATA_DATE }}</td>
+                        <td>{{ row.CORRECTED }}</td>
+                        <td>{{ row.UNCORRECTED }}</td>
+                        <td>{{ row.Pressure }}</td>
+                        <td>{{ row.Temperature }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data available</p>
+    {% endif %}
+
+        <body>
+
+            </script>
+            <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
+                class="footer">
+            <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
+            </script>
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
 
 
 
@@ -625,6 +655,7 @@
 
 
 
+<<<<<<< HEAD
 
 </script>
 
@@ -680,8 +711,63 @@
         });
     });
 </script>
+=======
+            </script>
+            <script>
 
-</body>
+
+                // Wait for the document to be ready
+                $(document).ready(function () {
+                    $('#date_picker').datepicker({
+                        format: 'mm/yyyy',
+                        startView: 'months',
+                        minViewMode: 'months',
+                        autoclose: true
+                    });
+                });
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
+
+                function clearFilters() {
+                    $('#date_picker').val('');
+                    $('#tag_dropdown').val('');
+                    $('#region_dropdown').val('');
+                    $('form').submit();
+                }
+
+                $(document).ready(function () {
+                    // Event listener for region dropdown change
+                    $('#region_dropdown').change(function () {
+                        console.log('Region dropdown changed');
+                        var selectedRegion = $(this).val();
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/get_tags',
+                            data: { 'selected_region': selectedRegion },
+                            success: function (response) {
+                                console.log('Ajax request successful', response);
+
+                                // Clear existing options in the tag dropdown
+                                $('#tag_dropdown').empty();
+
+                                // Add the 'All' option
+                                $('#tag_dropdown').append('<option value="" selected>All</option>');
+
+                                // Add new tag options based on the response
+                                for (var i = 0; i < response.tag_options.length; i++) {
+                                    var tag = response.tag_options[i];
+                                    $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                                }
+                            },
+                            error: function (error) {
+                                console.log('Error fetching tag options:', error);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+        </body>
 
 </html>
 
