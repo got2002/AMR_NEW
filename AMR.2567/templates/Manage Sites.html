@@ -174,7 +174,7 @@
 
     <!-- เนื้อหาของหน้าเว็บไซต์ -->
     <h1>Manage Sites</h1>
-    <ul>
+    <!-- <ul>
         {% for site in sites %}
         <li>{{ site.name }} - <a href="/edit-site/{{ site.id }}">Edit</a> |
             <form action="/remove-site/{{ site.id }}" method="post">
@@ -183,13 +183,13 @@
             </form>
         </li>
         {% endfor %}
-    </ul>
+    </ul> -->
     <a href="/add-site">Add Site</a>
 
     <!-- แบบฟอร์มสำหรับเพิ่มเว็บไซต์ -->
     <h2>Add Site</h2>
     <div class="form-container">
-        <form method="post" action="/add-site">
+        <!-- <form method="post" action="/add-site">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="name">Site Name:</label>
@@ -203,14 +203,14 @@
                 <label for="description">Site Description:</label>
                 <textarea name="description" id="description" placeholder="Enter site description"></textarea>
             </div>
-            <button type="submit">Add Site</button>
+            <button type="submit">Add Site</button> -->
         </form>
     </div>
 
     <!-- แบบฟอร์มสำหรับแก้ไขเว็บไซต์ -->
     <h2>Edit Site</h2>
     <div class="form-container">
-        <form method="post" action="/edit-site/{{ site.id }}">
+        <!-- <form method="post" action="/edit-site/{{ site.id }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="editName">Site Name:</label>
@@ -225,7 +225,7 @@
                 <textarea name="description" id="editDescription">{{ site.description }}</textarea>
             </div>
             <button type="submit">Update Site</button>
-        </form>
+        </form> -->
 
     </div>
             <!-- Footer Section -->
