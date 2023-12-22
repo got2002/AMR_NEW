@@ -191,7 +191,6 @@
             font-size: 13px;
             color: #666;
         }
-
     </style>
 </head>
 
@@ -202,9 +201,8 @@
 </body>
 
 <body>
-    
+
     <div class="main">
-        
         <div class="form-container">
             <h2>Edit User</h2>
             <form method="post" action="/update-user">
@@ -275,52 +273,50 @@
                     </div>
                     <button id="cancelButton" onclick="cancelDelete()" style="display: none;">Cancel</button>
         </div>
-</form>
+        </form>
+        <!-- Footer Section -->
+        <div class="footer">
+            &copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT
+        </div>
+        <!-- End Footer Section -->
+        <script>
+            function toggleButtons() {
+                var username = document.getElementById("searchUsername").value.trim();
+                var confirmButton = document.getElementById("confirmButton");
+                var cancelButton = document.getElementById("cancelButton");
 
+                if (username !== "") {
+                    confirmButton.style.display = "inline-block";
+                    cancelButton.style.display = "inline-block";
+                } else {
+                    confirmButton.style.display = "none";
+                    cancelButton.style.display = "none";
+                }
+            }
 
-</div>
+            function confirmDelete() {
+                var username = document.getElementById("searchUsername").value.trim();
+                var confirmation = confirm("Are you sure you want to delete the user: " + username + "?");
+                if (confirmation) {
+                    alert("User '" + username + "' has been deleted.");
+                    // เพิ่มโค้ดส่วนอื่น ๆ ที่ต้องการเมื่อยืนยันการลบ
+                } else {
+                    alert("Deletion canceled.");
+                }
+                resetForm();
+            }
 
-<div class="footer">
-    <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
-</div>
-<script>
-    function toggleButtons() {
-        var username = document.getElementById("searchUsername").value.trim();
-        var confirmButton = document.getElementById("confirmButton");
-        var cancelButton = document.getElementById("cancelButton");
+            function cancelDelete() {
+                alert("Deletion canceled.");
+                resetForm();
+            }
 
-        if (username !== "") {
-            confirmButton.style.display = "inline-block";
-            cancelButton.style.display = "inline-block";
-        } else {
-            confirmButton.style.display = "none";
-            cancelButton.style.display = "none";
-        }
-    }
-
-    function confirmDelete() {
-        var username = document.getElementById("searchUsername").value.trim();
-        var confirmation = confirm("Are you sure you want to delete the user: " + username + "?");
-        if (confirmation) {
-            alert("User '" + username + "' has been deleted.");
-            // เพิ่มโค้ดส่วนอื่น ๆ ที่ต้องการเมื่อยืนยันการลบ
-        } else {
-            alert("Deletion canceled.");
-        }
-        resetForm();
-    }
-
-    function cancelDelete() {
-        alert("Deletion canceled.");
-        resetForm();
-    }
-
-    function resetForm() {
-        document.getElementById("searchUsername").value = "";
-        document.getElementById("confirmButton").style.display = "none";
-        document.getElementById("cancelButton").style.display = "none";
-    }
-</script>
+            function resetForm() {
+                document.getElementById("searchUsername").value = "";
+                document.getElementById("confirmButton").style.display = "none";
+                document.getElementById("cancelButton").style.display = "none";
+            }
+        </script>
 </body>
 
 
