@@ -20,7 +20,7 @@ p {
     color: #333;
     /* เปลี่ยนเป็นสีที่คุณต้องการ */
     text-align: center;
-    /* ตำแหน่งข้อความ */
+
 }
 
 input,
@@ -332,6 +332,7 @@ body {
     text-align: left;
     padding: 20px;
     box-sizing: border-box;
+    
 
 }
 
