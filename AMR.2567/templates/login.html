@@ -77,47 +77,66 @@
             display: block;
             color: #333;
         }
+
+        .main8 {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .main3 {
+            width: 100%;
+            max-width: 350px;
+            margin: 20px auto;
+            background: #ffffff;
+            text-align: left;
+            padding: 20px;
+            box-sizing: border-box;
+        }
     </style>
 
 </head>
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <body>
-    <div class="login-container">
-        <div class="logo-container">
-            <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="Logo" class="imgpttlogo">
-        </div>
+    <div class="main3">
+        <div class="login-container">
+            <div class="logo-container">
+                <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+                    alt="Logo" class="imgpttlogo">
+            </div>
 
-        <form method="post" class="login-form">
+            <form method="post" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <div class="main8">
+                    <div class="form-group">
+                        <button type="submit" class="submit-button">Login</button>
+                    </div>
+            </form>
+            <!-- เพิ่มปุ่ม "สมัคร" -->
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" required>
+                <a href="register.html" class="register.html">Register</a>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="submit-button">Login</button>
-            </div>
-        </form>
-        <!-- เพิ่มปุ่ม "สมัคร" -->
-        <div class="form-group">
-            <a href="register.html" class="register.html">Register</a>
-        </div>
 
-        <!-- เพิ่มลิงก์ "ลืมรหัส" -->
-        <div class="form-group">
-            <a href="forgot_password.html" class="forgot_password.html">Forgot Password</a>
+            <!-- เพิ่มลิงก์ "ลืมรหัส" -->
+            <div class="form-group">
+                <a href="forgot_password.html" class="forgot_password.html">Forgot Password</a>
+            </div>
+            </form>
+            <!-- Footer Section -->
+            <div class="footer">
+                &copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT
+            </div>
+            <!-- End Footer Section -->
         </div>
-        </form>
-        <!-- Footer Section -->
-        <div class="footer">
-            <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
-        </div>
-        <!-- End Footer Section -->
-    </div>
 
 </body>
 
