@@ -1,4 +1,5 @@
 # app.py
+import mailbox
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
@@ -202,7 +203,7 @@ def send_reset_email(user):
 
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
-    mail.send(msg)
+    mailbox.send(msg)
 
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
