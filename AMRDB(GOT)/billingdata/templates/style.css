@@ -1,4 +1,3 @@
-
 .logo-container {
     text-align: center;
     margin-bottom: 20px;
@@ -8,12 +7,14 @@
     max-width: 30%;
     height: auto;
 }
+
 .main4 {
     width: 100%;
     margin: 20px auto;
     text-align: right;
     padding: 20px;
 }
+
 body {
     background-color: #f0f0f0;
     font-family: 'Arial', sans-serif;
@@ -24,6 +25,7 @@ body {
     justify-content: center;
     min-height: 100vh;
 }
+
 .label {
 
     font-size: 18px;
@@ -31,6 +33,7 @@ body {
     display: block;
     color: #333;
 }
+
 .login-container {
     width: 80%;
     max-width: 400px;
@@ -77,6 +80,7 @@ select {
     background-size: 100% 2px;
     transition: background-size 0.3s;
 }
+
 input:disabled,
 select:disabled {
     background-color: #eee;
@@ -105,4 +109,20 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Added styles for footer */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+}
+
+/* Additional styles for the footer text */
+.footer p {
+    margin-top: auto;
+    margin: 5px;
+    font-size: 13px;
+    color: #666;
 }
