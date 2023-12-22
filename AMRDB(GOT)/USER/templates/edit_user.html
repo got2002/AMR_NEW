@@ -1,30 +1,72 @@
-<!-- templates/edit_user.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
+    <title>Edit User & Password</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
-
 <body>
-    <h1>Edit user</h1>
-    <form method="post" action="{{ url_for('edit_user_route')}}">
+
+<h1>Edit User & Password</h1>
+
+<!-- Dropdown for selecting users -->
+<select id="myDropdown">
+</select>
+
+<!-- Form for editing user details -->
+<div id="details">
+    <form id="editForm" method="post" action="{{ url_for('edit_user_route') }}">
         <label for="description">Description:</label>
-        <input type="text" name="description" value="{{ user[0].description }}" required><br>
-    
-        <label for="user_name">Username:</label>
-        <input type="text" name="user_name" value="{{ user[0].user_name }}" required><br>
-    
+        <input type="text" id="description" name="description" readonly><br>
+        <label for="user_name">User Name:</label>
+        <input type="text" id="user_name" name="user_name" readonly><br>
         <label for="password">Password:</label>
-        <input type="password" name="password" placeholder="Enter new password (if changed)"><br>
-    
+        <input type="password" id="password" name="password"><br>
         <label for="user_level">User Level:</label>
-        <input type="number" name="user_level" value="{{ user[0].user_level }}" required><br>
-    
+        <input type="text" id="user_level" name="user_level"><br>
+     
+        <!-- Update button -->
         <button type="submit">Save Changes</button>
     </form>
+    
+    <!-- Back to User List link -->
     <a href="{{ url_for('index') }}">Back to User List</a>
+
+</div>
+
+<script>
+$(document).ready(function(){
+    // Load data from server
+    $.getJSON('/get_data', function(data) {
+        // Populate dropdown with data
+        var dropdown = $('#myDropdown');
+        $.each(data, function(index, value) {
+            var optionText = value.description + " - " + value.user_name + " (" + value.user_level + ")";
+            var optionValue = JSON.stringify(value);
+            dropdown.append($('<option>').text(optionText).attr('value', optionValue));
+        });
+
+        // Set initial details
+        var initialData = data[0];
+        displayDetails(initialData);
+    });
+
+    // Function to display details when an item is selected
+    $('#myDropdown').change(function() {
+        var selectedData = JSON.parse($(this).val());
+        displayDetails(selectedData);
+    });
+
+    // Function to display details
+    function displayDetails(selectedData) {
+        $('#details #description').val(selectedData.description);
+        $('#details #user_name').val(selectedData.user_name);
+        $('#details #password').val(""); // Clear password field for security
+        $('#details #user_level').val(selectedData.user_level);
+    }
+});
+</script>
+
 </body>
 </html>
