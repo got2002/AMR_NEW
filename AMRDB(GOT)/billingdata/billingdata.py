@@ -27,9 +27,13 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
+<<<<<<< HEAD
 
 
 @app.route("/get_tags", methods=["GET"])
+=======
+@app.route('/get_tags', methods=['GET'])
+>>>>>>> 0422056793ba8b88f7241bf046e2a7fd47135730
 def get_tags():
     selected_region = request.args.get("selected_region")
 
@@ -43,10 +47,15 @@ def get_tags():
     tag_results = fetch_data(tag_query, params={"region_id": selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
     tag_options.sort()
+<<<<<<< HEAD
     return jsonify({"tag_options": tag_options})
 
 
 @app.route("/")
+=======
+    return jsonify({'tag_options': tag_options})
+@app.route('/')
+>>>>>>> 0422056793ba8b88f7241bf046e2a7fd47135730
 def index():
     results = []  # Initialize results to an empty list
     # SQL query to fetch unique PL_REGION_ID values
@@ -158,6 +167,7 @@ def index():
             tag_options=tag_options,
         )
     else:
+<<<<<<< HEAD
         return render_template(
             "billingdata.html",
             titles=[],
@@ -169,4 +179,9 @@ def index():
             )
 
 if __name__ == "__main__":
+=======
+                # Render the template without executing the query
+        return render_template('billingdata.html', selected_date=selected_date,selected_region=selected_region,selected_tag=selected_tag, region_options=region_options, tag_options=tag_options, tables=[])
+if __name__ == '__main__':
+>>>>>>> 0422056793ba8b88f7241bf046e2a7fd47135730
     app.run(debug=True)
