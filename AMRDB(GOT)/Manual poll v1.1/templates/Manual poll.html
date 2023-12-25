@@ -160,14 +160,62 @@
             <input type="submit" value="Submit">
         </form>
     </div>
+    <form method="POST" action="/process_selected_rows" onsubmit="hideTable()">
+        <div id="table-container" style="display: none;">
+            <table border="1" class="dataframe data">
+                <thead>
+                    <tr style="text-align: right; ">
+                        <th>Select</th>
+                        <th>RUN</th>
+                        <th>Region</th>
+                        <th>Sitename</th>
+                        <th>NoRun</th>
+                        <th>METERID</th>
+                        <th>VCtype</th>
+                        <th>IPAddress</th>
+                        <th>Port</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data_list %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_rows" value="{{ loop.index0 }}"></td>
+                            <td>{{ row['RUN'] }}</td>
+                            <td>{{ row['Region'] }}</td>
+                            <td>{{ row['Sitename'] }}</td>
+                            <td>{{ row['NoRun'] }}</td>
+                            <td>{{ row['METERID'] }}</td>
+                            <td>{{ row['VCtype'] }}</td>
+                            <td>{{ row['IPAddress'] }}</td>
+                            <td>{{ row['Port'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+    
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+            });
+        });
+    });
 
-    {% if tables %}
-        <h2>Search Results</h2>
-        {% for table in tables %}
-            {{ table|safe }}
-        {% endfor %}
-    {% endif %}
-
+    function showTable() {
+        var tableContainer = document.getElementById("table-container");
+        tableContainer.style.display = "none";
+    }
+    </script>
+   
     <script>
         $(document).ready(function () {
             // Event listener for region dropdown change
@@ -202,7 +250,14 @@
             });
         });
     </script>
-
+    <script>
+        // Check if data_list is not empty, then display the table
+        // Check if data_list is not empty, then display the table
+        var data_list = {{ data_list | tojson | safe }};
+        if (data_list && data_list.length > 0) {
+            document.getElementById('table-container').style.display = 'block';
+        }
+    </script>
 
 
  <!-- Canvas -->
@@ -281,23 +336,9 @@
 
 
                          <div class="form-group">
-                             <label for="tcp_port">TCP Port</label>
-                             <select class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;">
-                   <option value="">Select a TCP Port</option>
-                   <option value="2101">2101</option>
-                   <option value="2102">2102</option>
-                   <option value="2103">2103</option>
-                   <option value="2104">2104</option>
-                   <option value="2402">2402</option>
-                   <option value="2404">2404</option>
-                   <option value="4001">4001</option>
-                   <option value="4002">4002</option>
-                   <option value="4003">4003</option>
-                   <option value="4004">4004</option>
-                   <option value="6000">6000</option>
-               </select>
-
-                         </div>
+                            <label for="tcp_port">TCP Port</label>
+                            <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" placeholder="Enter TCP Port">
+                        </div>
 
 
 
@@ -382,95 +423,142 @@
 
 
  <div id="colSm9Container" class="col-sm-9">
-     <div class="table-responsive " style="width:25%; height: 100px; margin-right: 3500px;margin-top: 100px;">
+    <div class="table-responsive" style="width:25%; height: 100px; margin-right: 3500px;margin-top: 100px;">
 
-         {% if data_list %}
-         <h4>Data for {{ selected_date }}</h4>
-         <table class="table table-hover">
-             <thead>
+        {% if data_list %}
+        <h4>Data for {{ selected_date }}</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Address</th>
+                    <th>HEX Value</th>
+                    <th>Binary Value</th>
+                    <th>float_value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data_list %}
+                <tr>
+                    <td>{{ data['description'] }}</td>
+                    <td>{{ data['value'] }}</td>
+                    <td>{{ data['address'] }}</td>
+                    <td>{{ data['hex_value'] }}</td>
+                    <td>{{ data['binary_value'] }}</td>
+                    <td>
+                        {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
+                        %} {{ data['signed_value'] }}
+                        <!-- Display signed_value for signed or Ulong -->
+                        {% else %} {{ data['float_value'] }}
+                        <!-- Display float_value for float and others -->
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h4>Data is not available</h4>
+        {% endif %}
+    </div>
+</div>
 
-                 <tr>
-                     <th>Description</th>
-                     <th>Value</th>
-                     <th>Address</th>
-
-                     <th>HEX Value</th>
-                     <th>Binary Value</th>
-
-                     <th> float_value</th>
-
-                 </tr>
-             </thead>
-             <tbody>
-                 {% for data in data_list %}
-                 <tr>
-                     <td>{{ data['description'] }}</td>
-                     <td>{{ data['value'] }}</td>
-                     <td>{{ data['address'] }}</td>
-
-                     <td>{{ data['hex_value'] }}</td>
-                     <td>{{ data['binary_value'] }}</td>
-
-                     <td>
-                         {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
-                         %} {{ data['signed_value'] }}
-                         <!-- แสดง signed_value สำหรับ signed หรือ Ulong -->
-                         {% else %} {{ data['float_value'] }}
-                         <!-- แสดง float_value สำหรับ float และอื่น ๆ -->
-                         {% endif %}
-                     </td>
-
-
-
-                 </tr>
-                 {% endfor %}
-             </tbody>
-         </table>
-
-         {% endif %}
-     </div>
- </div>
+{% if communication_traffic %}
+    <div id="communicationTrafficContainer" class="communication-traffic">
+        <h4>Communication Traffic</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Direction</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in communication_traffic %}
+                    <tr>
+                        <td>{{ data['direction'] }}</td>
+                        <td>{{ data['data'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
 
 
 
 
 
- <div id="communicationTrafficContainer" class="communication-traffic">
-     <h4>Communication Traffic</h4>
-     <table class="table table-bordered">
-         <thead>
-             <tr>
-                 <th>Direction</th>
-                 <th>Data</th>
-             </tr>
-         </thead>
-         <tbody>
-             {% for data in communication_traffic %}
-             <tr>
-                 <td>{{ data['direction'] }}</td>
-                 <td>{{ data['data'] }}</td>
-             </tr>
 
-             {% endfor %}
-         </tbody>
-     </table>
-
- </div>
 
  <script>
-     // JavaScript to allow selecting only one checkbox at a time
-     const checkboxes = document.querySelectorAll('.run-checkbox');
- 
-     checkboxes.forEach(checkbox => {
-         checkbox.addEventListener('change', () => {
-             checkboxes.forEach(otherCheckbox => {
-                 if (otherCheckbox !== checkbox) {
-                     otherCheckbox.checked = false;
-                 }
-             });
-         });
-     });
- </script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
+        const tcpIpInput = document.getElementById('tcp_ip');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+
+                if (checkbox.checked) {
+                    // Read the IPAddress value from the corresponding row
+                    const rowIndex = checkbox.value;
+                    const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(8)`).textContent;
+
+                    // Update the TCP IP input field with the IPAddress value
+                    tcpIpInput.value = ipAddress;
+                } else {
+                    // If no checkbox is selected, clear the TCP IP input field
+                    tcpIpInput.value = "";
+                }
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
+        const tcpPortInput = document.getElementById('tcp_port');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+
+                if (checkbox.checked) {
+                    // Read the Port value from the corresponding row
+                    const rowIndex = checkbox.value;
+                    const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(9)`).textContent;
+
+                    // Update the TCP Port input element with the Port value
+                    updateTcpPortInput(port);
+                } else {
+                    // If no checkbox is selected, reset the TCP Port input element
+                    resetTcpPortInput();
+                }
+            });
+        });
+
+        function updateTcpPortInput(port) {
+            // Set the value of the input element to the Port value
+            tcpPortInput.value = port;
+        }
+
+        function resetTcpPortInput() {
+            // Reset the value of the input element
+            tcpPortInput.value = "";
+        }
+    });
+</script>
+
 
 
 
