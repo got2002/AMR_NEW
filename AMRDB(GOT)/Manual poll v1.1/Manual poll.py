@@ -15,14 +15,13 @@ from werkzeug.security import generate_password_hash
 from sqlalchemy import desc
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate
-import logging
+
 import cx_Oracle
 
 
 app = Flask(__name__)   
 app.secret_key = "your_secret_key_here"
 # Replace these values with your actual database credentials
-logging.basicConfig(level=logging.DEBUG)
 username = 'root'
 password = 'root'
 hostname = '192.168.102.192'
@@ -45,9 +44,6 @@ def fetch_data(query, params=None):
         print("Oracle Error:", error)
         return []
 
-
-
-
 @app.route('/get_tags', methods=['GET'])
 def get_tags():
     selected_region = request.args.get('selected_region')
@@ -69,7 +65,7 @@ def get_tags():
 
 @app.route('/')
 def index():
-   
+    try:
         region_query = """
         SELECT * FROM AMR_REGION 
         """
@@ -133,24 +129,25 @@ def index():
         if selected_region:
             region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-            query = query.format(tag_condition=tag_condition, region_condition=region_condition)
-        if selected_region:
-            results = fetch_data(query)
+        query = query.format(tag_condition=tag_condition, region_condition=region_condition)
 
-            df = pd.DataFrame(results, columns=[
-                'RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'
-            ])
-            
-            return render_template('Manual poll.html', tables=[df.to_html(classes='data')],
-                                titles=df.columns.values,
-                                selected_tag=selected_tag,
-                                selected_region=selected_region,
-                                region_options=region_options,
-                                tag_options=tag_options)
-        else:
-                # Render the template without executing the query
-            return render_template('Manual poll.html',selected_tag=selected_tag,selected_region=selected_region,  region_options=region_options, tag_options=tag_options, tables=[])
-  
+        results = fetch_data(query)
+
+        df = pd.DataFrame(results, columns=[
+            'RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'
+        ])
+        
+        return render_template('Manual poll.html', tables=[df.to_html(classes='data')],
+                               titles=df.columns.values,
+                               selected_tag=selected_tag,
+                               selected_region=selected_region,
+                               region_options=region_options,
+                               tag_options=tag_options)
+    except Exception as e:
+        # Log the error for debugging purposes
+        print("Error:", str(e))
+        return "An error occurred."
+
 
 
 communication_traffic = []

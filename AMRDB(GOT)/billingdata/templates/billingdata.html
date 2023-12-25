@@ -24,18 +24,7 @@
         padding: 0;
     }
 
-    p {
-        padding: 12px;
-        border-top: 3px solid #a7a5a582;
-        font-family: 'Noto Sans Thai', sans-serif;
-        /* เปลี่ยนเป็นแบบอักษรที่คุณต้องการ */
-        font-size: 14px;
-        /* เปลี่ยนเป็นขนาดที่คุณต้องการ */
-        color: #333;
-        /* เปลี่ยนเป็นสีที่คุณต้องการ */
-        text-align: center;
-        /* ตำแหน่งข้อความ */
-    }
+
 
     input,
     select {
@@ -523,6 +512,22 @@
         width: 300px;
 
     }
+
+    /* Added styles for footer */
+    .footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #ccc;
+    }
+
+    /* Additional styles for the footer text */
+    .footer p {
+        margin-top: auto;
+        margin: 5px;
+        font-size: 13px;
+        color: #666;
+    }
 </style>
 
 
@@ -541,10 +546,13 @@
         <h2>Billing data</h2>
 
         <form method="get" action="/">
-
-            <label for="date_picker">Select Date :</label>
-            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
+            <label for="region_dropdown">Select Region :</label>
+            <select id="region_dropdown" name="region_dropdown">
+                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
+                {% endfor %}
+            </select>
             <label for="tag_dropdown">Select Site :</label>
             <select id="tag_dropdown" name="tag_dropdown">
                 <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
@@ -553,17 +561,11 @@
                 {% endfor %}
             </select>
 
-            <label for="tag_dropdown">Select Region :</label>
-            <select id="region_dropdown" name="region_dropdown">
-                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                {% for region in region_options %}
-                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
-                {% endfor %}
-            </select>
+            <label for="date_picker">Select Date :</label>
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
-            <button class="btn btn-primary" type="submit">Apply Filters</button>
-            <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear Filters</button>
-
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear</button>
 
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loading-circle"></div>
@@ -575,6 +577,41 @@
                 <p>Please select all the required information before searching.</p>
             </div>
         </form>
+<<<<<<< HEAD
+        <table>
+            <thead>
+                <tr>
+                    <h1>Billing data</h1>
+                    {% for title in titles %}
+                    <th>{{ title }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in tables %}
+                <tr>
+                    <td>{{ row['DATA_DATE'] }}</td>
+                    <td>{{ row['CORRECTED'] }}</td>
+                    <td>{{ row['UNCORRECTED'] }}</td>
+                    <td>{{ row['Pressure'] }}</td>
+                    <td>{{ row['Temperature'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+
+        </table>
+        
+        <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
+        <div class="footer">
+        <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
+    </div>
+
+</body>
+
+
+ 
+=======
         {% if tables %}
         <table>
             <!-- your table header here -->
@@ -602,6 +639,7 @@
                 class="footer">
             <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
             </script>
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
 
 
 
@@ -617,6 +655,63 @@
 
 
 
+<<<<<<< HEAD
+
+</script>
+
+<script>
+
+
+    // Wait for the document to be ready
+    $(document).ready(function () {
+        $('#date_picker').datepicker({
+            format: 'mm/yyyy',
+            startView: 'months',
+            minViewMode: 'months',
+            autoclose: true
+        });
+    });
+
+    function clearFilters() {
+        $('#date_picker').val('');
+        $('#tag_dropdown').val('');
+        $('#region_dropdown').val('');
+        $('form').submit();
+    }
+
+    $(document).ready(function () {
+        // Event listener for region dropdown change
+        $('#region_dropdown').change(function () {
+            console.log('Region dropdown changed');
+            var selectedRegion = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/get_tags',
+                data: { 'selected_region': selectedRegion },
+                success: function (response) {
+                    console.log('Ajax request successful', response);
+
+                    // Clear existing options in the tag dropdown
+                    $('#tag_dropdown').empty();
+
+                    // Add the 'All' option
+                    $('#tag_dropdown').append('<option value="" selected>All</option>');
+
+                    // Add new tag options based on the response
+                    for (var i = 0; i < response.tag_options.length; i++) {
+                        var tag = response.tag_options[i];
+                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                    }
+                },
+                error: function (error) {
+                    console.log('Error fetching tag options:', error);
+                }
+            });
+        });
+    });
+</script>
+=======
             </script>
             <script>
 
@@ -630,6 +725,7 @@
                         autoclose: true
                     });
                 });
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
 
                 function clearFilters() {
                     $('#date_picker').val('');
