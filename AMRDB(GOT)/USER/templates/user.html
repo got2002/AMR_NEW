@@ -23,7 +23,7 @@
     <a href="{{ url_for('add_user_route') }}">Add User</a><br>
     <a href="{{ url_for('edit_user_route') }}">Edit User</a><br>
     
-    <!-- Inside your HTML template -->
+   <!-- Inside your HTML template -->
 {% with messages = get_flashed_messages() %}
 {% if messages %}
     <ul class="flash-messages">
@@ -36,11 +36,11 @@
 
     <h1>User List</h1>
     <ul>
-        <!-- Display user list here -->
-        {% for user in users %}
+        Display user list here 
+       {% for user in users %}
             <li>{{ user }}</li>
         {% endfor %}
-    </ul>
+    </ul> 
 
    
     
