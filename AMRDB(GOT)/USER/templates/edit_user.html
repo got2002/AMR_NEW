@@ -42,7 +42,8 @@ $(document).ready(function(){
         // Populate dropdown with data
         var dropdown = $('#myDropdown');
         $.each(data, function(index, value) {
-            var optionText = value.description + " - " + value.user_name + " (" + value.user_level + ")";
+            var optionText = value.description;
+            // + " - " + value.user_name + " (" + value.user_level + ")"
             var optionValue = JSON.stringify(value);
             dropdown.append($('<option>').text(optionText).attr('value', optionValue));
         });
