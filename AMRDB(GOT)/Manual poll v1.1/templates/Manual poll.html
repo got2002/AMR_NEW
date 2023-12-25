@@ -133,6 +133,7 @@
             margin-bottom: 100px;
            
         }
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -161,7 +162,7 @@
         </form>
     </div>
     <form method="POST" action="/process_selected_rows" onsubmit="hideTable()">
-        <div id="table-container" style="display: none;">
+        <div id="table-container" class="my-table" style="display: none;">
             <table border="1" class="dataframe data">
                 <thead>
                     <tr style="text-align: right; ">
@@ -210,10 +211,7 @@
         });
     });
 
-    function showTable() {
-        var tableContainer = document.getElementById("table-container");
-        tableContainer.style.display = "none";
-    }
+    
     </script>
    
     <script>
