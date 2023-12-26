@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual poll</title>
     <style>
+        .btn {
+            align-items: center;
+            background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);
+        }
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
@@ -143,7 +147,7 @@
     <h1>Manual poll</h1>
 
     <div class="form-container">
-        <form action="/" method="get">
+    <form id="filterForm" action="/" method="get">
 
             <label for="region_dropdown">Region:</label>
             <select name="region_dropdown" id="region_dropdown">
@@ -161,11 +165,11 @@
             <input type="submit" value="Submit">
         </form>
     </div>
-    <form method="POST" action="/process_selected_rows" onsubmit="hideTable()">
-        <div id="table-container" class="my-table" style="display: none;">
+    <form method="POST" action="/process_selected_rows">
+        {% if not df.empty %}
             <table border="1" class="dataframe data">
                 <thead>
-                    <tr style="text-align: right; ">
+                    <tr style="text-align: right;">
                         <th>Select</th>
                         <th>RUN</th>
                         <th>Region</th>
@@ -178,7 +182,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in data_list %}
+                    {% for _, row in df.iterrows() %}
                         <tr>
                             <td><input type="checkbox" name="selected_rows" value="{{ loop.index0 }}"></td>
                             <td>{{ row['RUN'] }}</td>
@@ -193,8 +197,11 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
     </form>
+    
     
     <script>
          document.addEventListener('DOMContentLoaded', function () {
@@ -248,14 +255,7 @@
             });
         });
     </script>
-    <script>
-        // Check if data_list is not empty, then display the table
-        // Check if data_list is not empty, then display the table
-        var data_list = {{ data_list | tojson | safe }};
-        if (data_list && data_list.length > 0) {
-            document.getElementById('table-container').style.display = 'block';
-        }
-    </script>
+   
 
 
  <!-- Canvas -->

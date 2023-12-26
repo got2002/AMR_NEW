@@ -43,17 +43,17 @@
     <table border="1">
         <thead>
             <tr>
-                {% for title in titles %}
-                    <th>{{ title }}</th>
-                {% endfor %}
+                {% for column in titles %}
+                <th>{{ column }}</th>
+            {% endfor %}
             </tr>
         </thead>
         <tbody>
             {% for row in tables %}
-                <tr>
-                    {% for title in titles %}
-                        <td>{{ row[title] }}</td>
-                    {% endfor %}
+            <tr>
+                {% for key, value in row.items() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
