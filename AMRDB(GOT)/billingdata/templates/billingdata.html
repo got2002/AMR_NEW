@@ -15,525 +15,6 @@
 
     <title>Billing Data</title>
 </head>
-<style>
-    /* Reset some default styles */
-    body,
-    h1,
-    p {
-        margin: 0;
-        padding: 0;
-    }
-
-
-
-    input,
-    select {
-        font-family: 'Noto Sans Thai', sans-serif;
-        width: 100%;
-        /* ปรับขนาดของกล่อง */
-        padding: 12px;
-        /* ปรับขนาดของกล่อง */
-        box-sizing: border-box;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        /* ปรับขนาดของกล่อง */
-        font-size: 16px;
-        margin-bottom: 15px;
-        /* ปรับระยะห่าง */
-        background-image: linear-gradient(to top, #c4c9ca 0%, #ffffff00 100%);
-        background-position: 0 100%;
-        background-repeat: no-repeat;
-        background-size: 100% 2px;
-        transition: background-size 0.3s;
-    }
-
-    input:disabled,
-    select:disabled {
-        background-color: #eee;
-    }
-
-    input:focus,
-    select:focus {
-        background-size: 100% 100%;
-    }
-
-    .label {
-
-        font-size: 18px;
-        margin-bottom: 8px;
-        display: block;
-        color: #333;
-    }
-
-    /* Added styles for footer */
-    .footer {
-        text-align: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #ccc;
-    }
-
-    /* Additional styles for the footer text */
-    .footer p {
-        margin: 0;
-        font-size: 5px;
-        color: #666;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 16px;
-        margin-top: 20px;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        padding: 15px;
-        text-align: left;
-    }
-
-    td {
-        border: 1px solid #ddd;
-        padding: 15px;
-        text-align: left;
-    }
-
-    td:hover {
-        background-color: #f5f5f5;
-    }
-
-    /* Add your CSS styles for the table here */
-    .details {
-
-        padding-top: 20px;
-        border-top: 3px solid #a7a5a582;
-        font-size: 150%;
-        color: #eb2d2d;
-        margin-bottom: 20px;
-        margin-top: 20px;
-    }
-
-    .details1 {
-
-        text-align: left;
-        font-size: 160%;
-        color: #2600ff;
-        margin-bottom: 15px;
-        margin-top: 10px;
-    }
-
-    .details1 strong {
-
-        color: #2600ff;
-
-    }
-
-    .details1 span {
-        font-weight: bold;
-    }
-
-    .scrollable-container {
-        overflow: auto;
-        max-height: 400px;
-        /* Set a max height for the scrollable container */
-    }
-
-    .styled-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-        margin-top: 20px;
-    }
-
-    .styled-table th,
-    .styled-table td {
-        border: 1px solid #ddd;
-        padding: 15px;
-        text-align: left;
-    }
-
-    .styled-table th {
-        background-color: #f2f2f2;
-    }
-
-    .styled-table td:hover {
-        background-color: #f5f5f5;
-    }
-
-
-    body {
-
-        font-family: 'Noto Sans Thai', sans-serif;
-        background-color: #f0f0f0;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-    }
-
-    .main {
-
-        width: 100%;
-        max-width: 1000px;
-        margin: 20px auto;
-        background: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .main2 {
-
-        width: 100%;
-        max-width: 1000px;
-        margin: 20px auto;
-        background: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .img-container {
-
-        border: 3px solid #b1b1b1c2;
-        background-color: #ffffff;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    .search-details {
-        text-align: left;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-
-    .search-details strong {
-        color: #333;
-        font-weight: bold;
-    }
-
-    .search-details span {
-        color: #555;
-    }
-
-    .img-container img {
-        max-width: 100%;
-        /* ทำให้รูปภาพไม่เกินขอบของ .img-container */
-        border-radius: 5px;
-    }
-
-    .imgpttlogo {
-
-        padding-top: 25px;
-        width: 300px;
-        /* เปลี่ยน your_color_here เป็นสีที่คุณต้องการ */
-
-
-        /* เพิ่ม Animation ด้วย fadeInOut, 2s คือระยะเวลา, infinite คือเล่นวนไปเรื่อย ๆ, alternate คือเล่นในทิศทางกลับ */
-    }
-
-    .imgpttlogo1 {
-        padding-top: 25px;
-        width: 50px;
-        /* เปลี่ยน your_color_here เป็นสีที่คุณต้องการ */
-        animation: fadeInOut3 5.5s infinite alternate;
-        /* เพิ่ม Animation ด้วย fadeInOut, 2s คือระยะเวลา, infinite คือเล่นวนไปเรื่อย ๆ, alternate คือเล่นในทิศทางกลับ */
-    }
-
-    @keyframes glowingLight {
-        0% {
-            box-shadow: 0 0 10px 5px yellow;
-            /* เริ่มต้นด้วยเงาสีเหลือง */
-        }
-
-        50% {
-            box-shadow: 0 0 20px 10px yellow;
-            /* เพิ่มขนาดของเงา */
-        }
-
-        100% {
-            box-shadow: 0 0 10px 5px yellow;
-            /* ลดขนาดของเงาให้เท่าเดิม */
-        }
-    }
-
-    /* เพิ่ม keyframes fadeInOut */
-    @keyframes fadeInOut3 {
-        0% {
-            opacity: 0;
-            /* ทำให้ภาพที่ไม่โปร่งใส */
-            filter: brightness(0.5);
-            /* ลดความสว่าง */
-        }
-
-        50% {
-            opacity: 1;
-            /* ทำให้ภาพโปร่งใส */
-            filter: brightness(1);
-            /* คืนค่าความสว่างเป็นปกติ */
-        }
-
-        100% {
-            opacity: 0;
-            /* ทำให้ภาพที่ไม่โปร่งใส */
-            filter: brightness(0.5);
-            /* ลดความสว่าง */
-        }
-    }
-
-    @keyframes fadeInOut1 {
-        from {
-            opacity: 1;
-            transform: translateY(-5px);
-            /* เลื่อนขึ้นไปข้างบน */
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-            /* กลับไปที่ตำแหน่งเริ่มต้น */
-        }
-    }
-
-    @keyframes fadeInOut2 {
-        from {
-            opacity: 1;
-            transform: translateY(-8px);
-            /* เลื่อนขึ้นไปข้างบน */
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-            /* กลับไปที่ตำแหน่งเริ่มต้น */
-        }
-    }
-
-    .main4 {
-        width: 100%;
-        margin: 20px auto;
-        text-align: right;
-        padding: 20px;
-    }
-
-    .main3 {
-        width: 100%;
-        max-width: 350px;
-        margin: 20px auto;
-        background: #ffffff;
-        text-align: left;
-        padding: 20px;
-        box-sizing: border-box;
-
-    }
-
-    .main1 {
-        width: 100%;
-        max-width: 1000px;
-        margin: 20px auto;
-        background: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-
-    }
-
-    h1 {
-        font-size: 200%;
-        color: #000000;
-        margin-bottom: 20px;
-    }
-
-    h4 {
-
-        text-align: center;
-        font-size: 250%;
-        color: #ff0202;
-        margin-bottom: 20px;
-    }
-
-    h2 {
-
-        font-size: 300%;
-        color: #ff0202;
-        margin-bottom: 30px;
-    }
-
-    .container {
-        margin-bottom: 20px;
-        text-align: auto;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    label {
-        margin-bottom: 10px;
-        display: block;
-        font-size: 18px;
-        /* ปรับขนาดตัวอักษร */
-        color: #555;
-        /* เปลี่ยนสีตัวอักษร */
-        font-weight: bold;
-    }
-
-
-    button {
-        padding: 15px 25px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: 0.3s;
-        margin-bottom: 10px;
-        margin-top: 15px;
-    }
-
-    /* ปุ่มค้นหา */
-    button.search-button {
-        background-color: #4caf50;
-        color: #fff;
-        border: none;
-        padding: 15px 25px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    button.search-button:hover {
-        background-color: #45a049;
-        transform: scale(1.05);
-        /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
-    }
-
-    /* ปุ่มล้างข้อมูล */
-    button.clear-button {
-        background-color: #ff6666;
-        color: #fff;
-        border: none;
-        padding: 15px 25px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    button.clear-button:hover {
-        background-color: #ff5050;
-        transform: scale(1.05);
-        /* ปรับขนาดของปุ่มเล็กน้อยเมื่อโฮเวอร์ */
-    }
-
-    #warningContainer {
-
-        margin-top: 20px;
-        color: #ff0000;
-        display: none;
-    }
-
-    .current-date {
-        margin-top: 20px;
-        font-size: 16px;
-        color: #555;
-    }
-
-    .loading-overlay {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(255, 255, 255, 0.8);
-        z-index: 1000;
-        text-align: center;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    #currentDate {
-        font-size: 18px;
-        color: #333;
-    }
-
-    canvas {
-        border: 2px solid #8b9398;
-        border-radius: 10px;
-        margin-bottom: 30px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        transition: box-shadow 0.3s ease;
-    }
-
-    canvas:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .loading-circle {
-        border: 8px solid #4c545a;
-        border-top: 8px solid #f3f3f3;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: fadeInOut 2s infinite alternate;
-        margin-bottom: 10px;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loading-text {
-        font-size: 18px;
-        color: #333;
-        margin-top: 10px;
-    }
-
-    .imgpttlogo {
-
-        padding-top: 25px;
-        width: 300px;
-
-    }
-
-    /* Added styles for footer */
-    .footer {
-        text-align: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #ccc;
-    }
-
-    /* Additional styles for the footer text */
-    .footer p {
-        margin-top: auto;
-        margin: 5px;
-        font-size: 13px;
-        color: #666;
-    }
-</style>
-
-
-
-
-
 
 
 
@@ -543,16 +24,13 @@
         <img class="imgpttlogo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="AMR Logo" />
-        <h2>Billing data</h2>
+            <h2>Billing data</h2>
 
         <form method="get" action="/">
-            <label for="region_dropdown">Select Region :</label>
-            <select id="region_dropdown" name="region_dropdown">
-                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                {% for region in region_options %}
-                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
-                {% endfor %}
-            </select>
+
+            <label for="date_picker">Select Date :</label>
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+
             <label for="tag_dropdown">Select Site :</label>
             <select id="tag_dropdown" name="tag_dropdown">
                 <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
@@ -561,11 +39,17 @@
                 {% endfor %}
             </select>
 
-            <label for="date_picker">Select Date :</label>
-            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+            <label for="tag_dropdown">Select Region :</label>
+            <select id="region_dropdown" name="region_dropdown">
+                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
+                {% endfor %}
+            </select>
 
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear</button>
+            <button class="btn btn-primary" type="submit">Apply Filters</button>
+            <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear Filters</button>
+
 
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loading-circle"></div>
@@ -577,69 +61,20 @@
                 <p>Please select all the required information before searching.</p>
             </div>
         </form>
-<<<<<<< HEAD
-        <table>
-            <thead>
-                <tr>
-                    <h1>Billing data</h1>
-                    {% for title in titles %}
-                    <th>{{ title }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in tables %}
-                <tr>
-                    <td>{{ row['DATA_DATE'] }}</td>
-                    <td>{{ row['CORRECTED'] }}</td>
-                    <td>{{ row['UNCORRECTED'] }}</td>
-                    <td>{{ row['Pressure'] }}</td>
-                    <td>{{ row['Temperature'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            
+        <div>
+            <h1>Config Data</h1>
+            {{ tables[0]|safe }}
+        </div>
+        <div>
+            <h1>Daily Data</h1>
+            {{ tables|safe }}
+        </div>
+<body>
 
-        </table>
-        
-        <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
-        <div class="footer">
-        <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
-    </div>
-
-</body>
-
-
- 
-=======
-        {% if tables %}
-        <table>
-            <!-- your table header here -->
-            <tbody>
-                {% for row in tables %}
-                    <tr>
-                        <!-- access individual elements of the row -->
-                        <td>{{ row.DATA_DATE }}</td>
-                        <td>{{ row.CORRECTED }}</td>
-                        <td>{{ row.UNCORRECTED }}</td>
-                        <td>{{ row.Pressure }}</td>
-                        <td>{{ row.Temperature }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No data available</p>
-    {% endif %}
-
-        <body>
-
-            </script>
-            <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png"
-                class="footer">
-            <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
-            </script>
->>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
+    <!-- </script>
+    <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
+    <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
+    </script> -->
 
 
 
@@ -655,11 +90,8 @@
 
 
 
-<<<<<<< HEAD
-
-</script>
-
-<script>
+    </script>
+        <script>
 
 
     // Wait for the document to be ready
@@ -725,49 +157,49 @@
                         autoclose: true
                     });
                 });
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
 
+            function clearFilters() {
+                $('#date_picker').val('');
+                $('#tag_dropdown').val('');
+                $('#region_dropdown').val('');
+                $('form').submit();
+            }
 
-                function clearFilters() {
-                    $('#date_picker').val('');
-                    $('#tag_dropdown').val('');
-                    $('#region_dropdown').val('');
-                    $('form').submit();
-                }
+            $(document).ready(function () {
+                // Event listener for region dropdown change
+                $('#region_dropdown').change(function () {
+                    console.log('Region dropdown changed');
+                    var selectedRegion = $(this).val();
 
-                $(document).ready(function () {
-                    // Event listener for region dropdown change
-                    $('#region_dropdown').change(function () {
-                        console.log('Region dropdown changed');
-                        var selectedRegion = $(this).val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get_tags',
+                        data: { 'selected_region': selectedRegion },
+                        success: function (response) {
+                            console.log('Ajax request successful', response);
 
-                        $.ajax({
-                            type: 'GET',
-                            url: '/get_tags',
-                            data: { 'selected_region': selectedRegion },
-                            success: function (response) {
-                                console.log('Ajax request successful', response);
+                            // Clear existing options in the tag dropdown
+                            $('#tag_dropdown').empty();
 
-                                // Clear existing options in the tag dropdown
-                                $('#tag_dropdown').empty();
+                            // Add the 'All' option
+                            $('#tag_dropdown').append('<option value="" selected>All</option>');
 
-                                // Add the 'All' option
-                                $('#tag_dropdown').append('<option value="" selected>All</option>');
-
-                                // Add new tag options based on the response
-                                for (var i = 0; i < response.tag_options.length; i++) {
-                                    var tag = response.tag_options[i];
-                                    $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-                                }
-                            },
-                            error: function (error) {
-                                console.log('Error fetching tag options:', error);
+                            // Add new tag options based on the response
+                            for (var i = 0; i < response.tag_options.length; i++) {
+                                var tag = response.tag_options[i];
+                                $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
                             }
-                        });
+                        },
+                        error: function (error) {
+                            console.log('Error fetching tag options:', error);
+                        }
                     });
                 });
-            </script>
+            });
+        </script>
 
-        </body>
+</body>
 
 </html>
 
@@ -788,3 +220,4 @@
         tableBody.innerHTML = '';
     }
 </script>
+
