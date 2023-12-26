@@ -94,15 +94,70 @@
         <script>
 
 
-            // Wait for the document to be ready
-            $(document).ready(function () {
-                $('#date_picker').datepicker({
-                    format: 'mm/yyyy',
-                    startView: 'months',
-                    minViewMode: 'months',
-                    autoclose: true
-                });
+    // Wait for the document to be ready
+    $(document).ready(function () {
+        $('#date_picker').datepicker({
+            format: 'mm/yyyy',
+            startView: 'months',
+            minViewMode: 'months',
+            autoclose: true
+        });
+    });
+
+    function clearFilters() {
+        $('#date_picker').val('');
+        $('#tag_dropdown').val('');
+        $('#region_dropdown').val('');
+        $('form').submit();
+    }
+
+    $(document).ready(function () {
+        // Event listener for region dropdown change
+        $('#region_dropdown').change(function () {
+            console.log('Region dropdown changed');
+            var selectedRegion = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/get_tags',
+                data: { 'selected_region': selectedRegion },
+                success: function (response) {
+                    console.log('Ajax request successful', response);
+
+                    // Clear existing options in the tag dropdown
+                    $('#tag_dropdown').empty();
+
+                    // Add the 'All' option
+                    $('#tag_dropdown').append('<option value="" selected>All</option>');
+
+                    // Add new tag options based on the response
+                    for (var i = 0; i < response.tag_options.length; i++) {
+                        var tag = response.tag_options[i];
+                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                    }
+                },
+                error: function (error) {
+                    console.log('Error fetching tag options:', error);
+                }
             });
+        });
+    });
+</script>
+=======
+            </script>
+            <script>
+
+
+                // Wait for the document to be ready
+                $(document).ready(function () {
+                    $('#date_picker').datepicker({
+                        format: 'mm/yyyy',
+                        startView: 'months',
+                        minViewMode: 'months',
+                        autoclose: true
+                    });
+                });
+>>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
 
             function clearFilters() {
                 $('#date_picker').val('');
