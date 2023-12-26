@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Range Form</title>
+</head>
+<body>
+
+    <h2>Enter Address Range</h2>
+
+    <form id="addressForm">
+        <label for="startAddress">Start Address:</label>
+        <input type="number" id="startAddress" name="startAddress" required>
+
+        <label for="endAddress">End Address:</label>
+        <input type="number" id="endAddress" name="endAddress" required>
+
+        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+    </form>
+
+    <div id="responseMessage"></div>
+
+    <script>
+        function saveToOracle() {
+            var startAddress = document.getElementById('startAddress').value;
+            var endAddress = document.getElementById('endAddress').value;
+
+            // Validate input (you can add more validation if needed)
+            if (isNaN(startAddress) || isNaN(endAddress)) {
+                alert('Please enter valid numeric values for Start and End Address.');
+                return;
+            }
+
+            // Create JSON object
+            var data = {
+                startAddress: parseInt(startAddress),
+                endAddress: parseInt(endAddress)
+            };
+
+            // Send data to Flask endpoint
+            fetch('/save_to_oracle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
