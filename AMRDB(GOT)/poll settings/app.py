@@ -21,7 +21,7 @@ def index():
 @app.route('/save_to_oracle', methods=['POST'])
 def save_to_oracle():
     poll_config_value = None  # Define the variable outside the try block
-
+# Test
     try:
         data = request.get_json()
 
