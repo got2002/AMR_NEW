@@ -58,6 +58,7 @@ def index():
     JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
     WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
     """
+    
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
@@ -230,9 +231,9 @@ def index():
             "CONFIG18",
             "CONFIG19",
             "CONFIG20",
-        ],
+        ]
     )
-
+        titles = list(df.columns)
         # ลบคอลัมน์ที่ไม่ต้องการ
         df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
         df = df.apply(lambda x: x.apply(lambda y: y.replace("\n", "") if isinstance(y, str) else y) if x.dtype == 'O' else x)
