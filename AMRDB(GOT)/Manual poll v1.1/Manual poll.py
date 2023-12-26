@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash
 from sqlalchemy import desc
 from flask import Flask, send_from_directory
 from flask_migrate import Migrate
-import threading
+
 import cx_Oracle
 
 
@@ -73,78 +73,80 @@ def get_tags():
 @app.route('/')
 def index():
     
-        # Fetch regions
-        region_query = "SELECT * FROM AMR_REGION"
-        region_results = fetch_data(region_query)
-        region_options = [str(region[0]) for region in region_results]
-
-    # Fetch tags based on the selected region
-        tag_query = "SELECT DISTINCT TAG_ID FROM AMR_FIELD_ID JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id"
-        selected_region = request.args.get('region_dropdown')
-        tag_results = fetch_data(tag_query, params={'region_id': selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-        tag_options.sort()
-
-        # Construct the main query conditions
-        conditions = [
-            "AMR_USER.USER_ENABLE = 1",
-            "AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID",
-            "AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP",
-            "AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID",
-            "AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID",
-            "AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE",
-            "AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID",
-            "AMR_FIELD_ID.TAG_ID IS NOT NULL"  # Default tag condition
-        ]
-
-        # Update conditions based on user inputs
-        selected_tag = request.args.get('tag_dropdown')
-        if selected_tag:
-            conditions.append(f"AMR_FIELD_ID.TAG_ID = '{selected_tag}'")
-
-        if selected_region:
-            conditions.append(f"AMR_PL_GROUP.PL_REGION_ID = '{selected_region}'")
-
-        # Construct the final query
-        query = f"""
-            SELECT
-                AMR_FIELD_METER.METER_STREAM_NO as RUN,
-                AMR_PL_GROUP.PL_REGION_ID as Region,
-                AMR_FIELD_ID.TAG_ID as Sitename,
-                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
-                AMR_FIELD_METER.METER_ID as METERID,
-                AMR_VC_TYPE.VC_NAME as VCtype,
-                AMR_FIELD_ID.SIM_IP as IPAddress,
-                AMR_PORT_INFO.PORT_NO as Port
-            FROM
-                AMR_FIELD_ID,
-                AMR_USER,
-                AMR_FIELD_CUSTOMER,
-                AMR_FIELD_METER,
-                AMR_PL_GROUP,
-                AMR_VC_TYPE,
-                AMR_PORT_INFO
-            WHERE
-                {' AND '.join(conditions)}
+    region_query = """
+        SELECT * FROM AMR_REGION 
+        """
+    tag_query = """
+        SELECT DISTINCT TAG_ID
+        FROM AMR_FIELD_ID
+        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+        WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
         """
 
-        # Fetch and convert the data to a DataFrame
-        if selected_region:
-            results = fetch_data(query)
-            df = pd.DataFrame(results, columns=['RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'])
-            data_list = df.to_dict(orient='records')
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
 
-            session['data_list'] = data_list
-            session['selected_tag'] = selected_tag
-            session['selected_region'] = selected_region
-            session['region_options'] = region_options
-            session['tag_options'] = tag_options
+    query = """
+        SELECT
+            AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+            AMR_PL_GROUP.PL_REGION_ID as region,
+            AMR_FIELD_ID.TAG_ID as Sitename,
+            AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+            AMR_FIELD_METER.METER_ID as METERID,
+            AMR_VC_TYPE.VC_NAME as VCtype,
+            AMR_FIELD_ID.SIM_IP as IPAddress,
+            AMR_PORT_INFO.PORT_NO as port
+        FROM
+            AMR_FIELD_ID,
+            AMR_USER,
+            AMR_FIELD_CUSTOMER,
+            AMR_FIELD_METER,
+            AMR_PL_GROUP,
+            AMR_VC_TYPE,
+            AMR_PORT_INFO
+        WHERE
+            AMR_USER.USER_ENABLE=1 AND
+            AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+            AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+            AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+            AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+            {tag_condition}
+            {region_condition}
+        """
 
-            return render_template('Manual poll.html', data_list=data_list, selected_tag=selected_tag, selected_region=selected_region, region_options=region_options, tag_options=tag_options, df=df)
-        else:
-            data_list = []
-            # Render the template without executing the query
-            return render_template('Manual poll.html',data_list=data_list, selected_region=selected_region, region_options=region_options)    
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
+
+    selected_tag = request.args.get('tag_dropdown')
+    selected_region = request.args.get('region_dropdown')
+
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+        
+        # Sort the tag options alphabetically
+    tag_options.sort()
+
+    if selected_tag:
+                tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+    if selected_region:
+                region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+        
+    query = query.format(tag_condition=tag_condition, region_condition=region_condition)
+    
+    results = fetch_data(query)
+    df = pd.DataFrame(results, columns=['RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'])
+    
+    return render_template('Manual poll.html', tables=[df.to_html(classes='data')],
+                                    titles=df.columns.values,
+                                    selected_tag=selected_tag,
+                                    selected_region=selected_region,
+                                    region_options=region_options,
+                                    tag_options=tag_options, df=df)
     
 
 
@@ -152,8 +154,7 @@ def index():
 @app.route('/', methods=['POST'])
 
 def read_data():
-    data_list = session.get('data_list', [])
-    selected_region = session.get('selected_region', None)
+   
     global change_to_32bit_counter  # Use the global variable
 
     slave_id = int(request.form['slave_id'])
@@ -401,11 +402,87 @@ def read_data():
         del data_list[7] 
         data_list[7], data_list[23] = data_list[23], data_list[7] 
         
+   
+    
+    region_query = """
+        SELECT * FROM AMR_REGION 
+        """
+    tag_query = """
+        SELECT DISTINCT TAG_ID
+        FROM AMR_FIELD_ID
+        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+        WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        """
 
-    return render_template('Manual poll.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    query = """
+        SELECT
+            AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+            AMR_PL_GROUP.PL_REGION_ID as region,
+            AMR_FIELD_ID.TAG_ID as Sitename,
+            AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+            AMR_FIELD_METER.METER_ID as METERID,
+            AMR_VC_TYPE.VC_NAME as VCtype,
+            AMR_FIELD_ID.SIM_IP as IPAddress,
+            AMR_PORT_INFO.PORT_NO as port
+        FROM
+            AMR_FIELD_ID,
+            AMR_USER,
+            AMR_FIELD_CUSTOMER,
+            AMR_FIELD_METER,
+            AMR_PL_GROUP,
+            AMR_VC_TYPE,
+            AMR_PORT_INFO
+        WHERE
+            AMR_USER.USER_ENABLE=1 AND
+            AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+            AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+            AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+            AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+            {tag_condition}
+            {region_condition}
+        """
+
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
+
+    selected_tag = request.args.get('tag_dropdown')
+    selected_region = request.args.get('region_dropdown')
+
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+        
+        # Sort the tag options alphabetically
+    tag_options.sort()
+
+    if selected_tag:
+                tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+    if selected_region:
+                region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+        
+    query = query.format(tag_condition=tag_condition, region_condition=region_condition)
+    df = pd.DataFrame(columns=['RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'])
+    if selected_region:
+        results = fetch_data(query)
+        df = pd.DataFrame(results, columns=['RUN', 'Region', 'Sitename', 'NoRun', 'METERID', 'VCtype', 'IPAddress', 'Port'])
+        # ... (other code)
+   
+
+    return render_template('Manual poll.html', df=df, data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity, is_16bit=is_16bit,
-                           communication_traffic=communication_traffic, data=data
-                           )
+                           communication_traffic=communication_traffic, data=data, tables=[df.to_html(classes='data')],
+                                titles=df.columns.values,
+                                selected_tag=selected_tag,
+                                selected_region=selected_region,
+                                region_options=region_options,
+                                tag_options=tag_options,)
 
 
 def handle_actaris_action(i, address):
