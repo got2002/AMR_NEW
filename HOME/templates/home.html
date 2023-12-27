@@ -188,7 +188,9 @@
             <ul class="menu">
                 <li><a href="#user-management">Manage Users</a>
                     <div class="menu-dropdown">
-                        <a class="UserManagement.html" href="UserManagement.html">User Management</a>
+                        <a class="UserManagement.html" href="{{ url_for('add_user_route') }}">Add User</a>
+                        <a class="UserManagement.html" href="{{ url_for('edit_user_route') }}">Edit User</a>
+                        <a class="UserManagement.html" href="UserManagement.html">Delete User</a>
                     </div>
                 </li>
                 <li><a href="#notification-system">Manage Sites</a>
