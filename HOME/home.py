@@ -354,6 +354,8 @@ def billing_data():
 ############ / View Billing Data  #####################
 
 
+
+
 ############ sitedetail_data  #####################
     
 @app.route('/sitedetail_data')
@@ -426,6 +428,8 @@ WHERE
         return render_template('sitedetail.html', selected_region=selected_region, region_options=region_options, tables=[])
 
 ############ /sitedetail_data  #####################
+    
+
     
 
 ############ Manualpoll_data  #####################
