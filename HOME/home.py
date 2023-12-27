@@ -30,7 +30,7 @@ import cx_Oracle
 
 app = Flask(__name__)
 
-
+############  connect database  #####################
 username = "root"
 password = "root"
 hostname = "192.168.102.192"
@@ -53,19 +53,21 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
+############  /connect database  #####################
 
 
 
+############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+############ / Home page  #####################
 
 
 
 
 
-
-
+############  View Billing Data   #####################
 
 @app.route('/get_tags', methods=['GET'])
 def get_tags():
@@ -178,7 +180,78 @@ def billing_data():
                 # Render the template without executing the query
         return render_template('billingdata.html', selected_date=selected_date,selected_region=selected_region,selected_tag=selected_tag, region_options=region_options, tag_options=tag_options, tables=[])
 
+############ / View Billing Data  #####################
 
+
+
+@app.route('/sitedetail_data')
+def sitedetail_data():
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+    
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # SQL query for main data
+    query = """
+    SELECT DISTINCT
+    AMR_FIELD_ID.ID,
+    amr_field_id.TAG_ID as SITE,
+    AMR_FIELD_ID.AMR_PHASE as PHASE,
+    AMR_FIELD_ID.SIM_IP as IPADDRESS,
+    (SELECT rmiu_name FROM AMR_RMIU_TYPE WHERE AMR_RMIU_TYPE.ID = AMR_FIELD_ID.RMIU_TYPE) as TYPE
+    
+FROM
+    AMR_FIELD_ID, AMR_PL_group, AMR_RMIU_TYPE, amr_region
+    
+WHERE
+    AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+        {region_condition}
+    """
+
+    # Get selected values from the dropdowns
+    selected_region = request.args.get('region_dropdown')
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Initialize the query with a condition that is always true
+    region_condition = "AND 1 = 1"
+
+    # Fetch tag options based on the selected region
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(region_condition=region_condition)
+
+    # Check if a region is selected before executing the query
+    if selected_region:
+        # ใช้ fetch_data function ในการดึงข้อมูล
+        results = fetch_data(query)
+
+        # ใช้ pandas ในการสร้าง DataFrame
+        df = pd.DataFrame(results, columns=[
+            'ID', 'SITE', 'PHASE', 'IP ADDRESS', 'TYPE'
+        ])
+        # ลบคอลัมน์ที่ไม่ต้องการ
+        df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
+
+        # Sort DataFrame by the 'SITE' column (adjust as needed)
+        df = df.sort_values(by='SITE')
+
+        # ส่ง DataFrame ไปยัง HTML template
+        return render_template('sitedetail.html', tables=[df.to_html(classes='data')],
+                            titles=df.columns.values,
+                            selected_region=selected_region,
+                            region_options=region_options)
+    else:
+        # Render the template without executing the query
+        return render_template('sitedetail.html', selected_region=selected_region, region_options=region_options, tables=[])
 
 
 if __name__ == "__main__":
