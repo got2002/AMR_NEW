@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import cx_Oracle
+import json
 
 app = Flask(__name__)
 
@@ -10,9 +11,35 @@ oracle_host = "192.168.102.192"
 oracle_port = "1521"
 oracle_service = "orcl"
 
-dsn = cx_Oracle.makedsn(oracle_host, oracle_port, service_name=oracle_service)
-connection = cx_Oracle.connect(user=oracle_username, password=oracle_password, dsn=dsn)
-cursor = connection.cursor()
+def perform_polling(address):
+    # ตัวอย่าง: สมมติว่ามี API ที่ให้ข้อมูลโดยใช้ที่อยู่
+    api_url = f'c:\\xampp\\htdocs\\AMRDB\\AMR_NEW\\AMR.2567\\templates\\Homepage.html'
+    try:
+        # ทำการเรียก API หรือดึงข้อมูลจากที่อยู่ที่ระบุ
+        response = requests.get(api_url)
+
+        # ตรวจสอบสถานะการตอบกลับ
+        if response.status_code == 200:
+            # ดึงข้อมูลจาก response
+            data = response.json()
+
+            # ทำตามกระบวนการที่ต้องการ
+            # ...
+
+            # ตัวอย่าง: แสดงผลลัพธ์ที่ได้
+            print(f'Polling result for {address}: {data}')
+
+            # คืนค่าผลลัพธ์หรือสถานะการทำงาน
+            return {'status': 'success', 'data': data}
+        else:
+            # กรณีไม่สำเร็จ
+            print(f'Error polling for {address}. Status code: {response.status_code}')
+            return {'status': 'error', 'message': f'Error polling for {address}. Status code: {response.status_code}'}
+    except Exception as e:
+        # กรณีเกิดข้อผิดพลาดในการเรียก API
+        print(f'Error polling for {address}. Exception: {e}')
+        return {'status': 'error', 'message': f'Error polling for {address}. Exception: {e}'}
+
 
 @app.route('/')
 def index():
@@ -21,45 +48,40 @@ def index():
 @app.route('/save_to_oracle', methods=['POST'])
 def save_to_oracle():
     poll_config_value = None  # Define the variable outside the try block
-# Test
+
     try:
         data = request.get_json()
 
         # Create a list of addresses
         addresses = [
-            str(data.get(7001, '')),
-            str(data.get(7005, '')),
-            str(data.get(7007, '')),
-            str(data.get(7009, '')),
-            str(data.get(7011, '')),
-            str(data.get(7013, '')),
-            str(data.get(7015, '')),
-            str(data.get(7017, '')),
-            str(data.get(7019, '')),
-            str(data.get(7021, '')),
-            str(data.get(7023, '')),
-            str(data.get(7025, '')),
-            str(data.get(7027, '')),
-            str(data.get(7065, '')),
+            str(data.get('start', '')),
+            str(data.get('end', '')),
+            # ... (add more addresses as needed)
         ]
 
         # Remove empty strings from the list
         addresses = [address for address in addresses if address]
 
-        # Assume that the value you want to add to POLL_CONFIG is the list of addresses
-        poll_config_value = addresses
+        # Convert the list of addresses to a JSON array string
+        poll_config_values = json.dumps(addresses)
 
-        sql = "INSERT INTO AMR_POLL_RANGE (POLL_CONFIG) VALUES (:poll_config_value)"
-        cursor.execute(sql, {'poll_config_value': poll_config_value})
-        connection.commit()
+        dsn = cx_Oracle.makedsn(oracle_host, oracle_port, service_name=oracle_service)
+
+        with cx_Oracle.connect(user=oracle_username, password=oracle_password, dsn=dsn) as connection:
+            # Insert data into Oracle table for all addresses using batch insert
+            sql = "INSERT INTO AMR_POLL_RANGE (POLL_CONFIG) VALUES (:poll_config_value)"
+            with connection.cursor() as cursor:
+                cursor.execute(sql, {'poll_config_value': poll_config_values})
+
+            connection.commit()
 
         response = {'message': 'Data saved successfully'}
+    except cx_Oracle.DatabaseError as e:
+        response = {'message': f'Database Error: {e}'}
+        print(f'Database Error: {e}')  # Print the error for debugging
     except Exception as e:
         response = {'message': f'Error: {e}'}
-    finally:
-        if poll_config_value is not None:
-            # Do not close connection and cursor within this block
-            pass
+        print(f'Error: {e}')  # Print the error for debugging
 
     return jsonify(response)
 
