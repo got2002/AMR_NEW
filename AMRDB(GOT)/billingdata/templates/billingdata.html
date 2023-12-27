@@ -27,18 +27,6 @@
             <h2>Billing data</h2>
 
         <form method="get" action="/">
-
-            <label for="date_picker">Select Date :</label>
-            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
-            <label for="tag_dropdown">Select Site :</label>
-            <select id="tag_dropdown" name="tag_dropdown">
-                <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-                {% for tag in tag_options %}
-                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                {% endfor %}
-            </select>
-
             <label for="tag_dropdown">Select Region :</label>
             <select id="region_dropdown" name="region_dropdown">
                 <option value="" {% if not selected_region %}selected{% endif %}>All</option>
@@ -46,6 +34,19 @@
                 <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
                 {% endfor %}
             </select>
+            <label for="tag_dropdown">Select Site :</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+                <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                {% for tag in tag_options %}
+                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                {% endfor %}
+            </select>
+            <label for="date_picker">Select Date :</label>
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+
+            
+
+            
 
             <button class="btn btn-primary" type="submit">Apply Filters</button>
             <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear Filters</button>
@@ -53,7 +54,7 @@
 
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loading-circle"></div>
-                <div class="loading-text">Searching...</div>
+               
             </div>
 
             <!-- Warning message container -->
@@ -67,7 +68,7 @@
         </div>
         <div>
             <h1>Daily Data</h1>
-            {{ tables|safe }}
+            {{ tables[0]|safe }}
         </div>
 <body>
 
@@ -157,7 +158,7 @@
                         autoclose: true
                     });
                 });
->>>>>>> bb4aaf10434a6075f7cb79c6ec374bdd4c49455a
+
 
             function clearFilters() {
                 $('#date_picker').val('');
