@@ -49,24 +49,27 @@
 
             
 
-            <button class="btn btn-primary" type="submit">Daily Data</button>
-            <button class="btn btn-secondary" type="button" onclick="clearFilters()">Clear</button>
-
-
-            <div class="loading-overlay" id="loadingOverlay">
-                <div class="loading-circle"></div>
-               
-            </div>
-
-            <!-- Warning message container -->
-            <div class="container" id="warningContainer" style="display: none;">
-                <p>Please select all the required information before searching.</p>
-            </div>
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily Data</button>
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config Data</button>
+            <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear Filters</button>
+            
         </form>
         
-            {{ tables[0]|safe }}
-       </div>
+        <!-- Warning message container -->
+        
        
+        <div>
+            {% if tables.get('daily_data') %}
+            <h1>Daily Data</h1>
+            {{ tables['daily_data']|safe }}
+            {% endif %}
+        </div>
+        <div>
+            {% if tables.get('config_data') %}
+            <h1>Config Data</h1>
+            {{ tables['config_data']|safe }}
+            {% endif %}
+        </div>
 <body>
 
     <!-- </script>
