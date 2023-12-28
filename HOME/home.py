@@ -199,7 +199,7 @@ def get_data_route():
 @app.route('/edit_user', methods=['GET', 'POST'])
 def edit_user_route():
     # ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-    query = "SELECT description, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_User_tests"
+    query = "SELECT DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_User_tests"
     user_data = fetch_data(query)
 
     if not user_data:
@@ -215,22 +215,22 @@ def edit_user_route():
         user_level = request.form['user_level']
 
         # เข้ารหัสรหัสผ่านโดยใช้ MD5
-        hashed_password = md5_hash(password)
+        hashed_password = md5_hash(password) 
 
         # สร้างคำสั่ง SQL สำหรับการแก้ไขข้อมูลผู้ใช้
-        update_query = 'UPDATE AMR_USER_TESTS SET description = :1, password = :2, user_level = :3 WHERE user_name = :4'
-        update_params = (description, hashed_password, user_level, user_name)
+        update_query = 'UPDATE AMR_USER_TESTS SET description = :1, user_name = :2, password = :3 WHERE user_level = :4'
+        update_params = (description, user_name, hashed_password, user_level)
 
-        # ทำการ execute คำสั่ง SQL และ commit การแก้ไข
+        # ทำการ execute คำสั่ง SQL และ commit การแก้ไข user_name
         if execute_query(update_query, update_params):
             flash('User updated successfully!', 'success')
-            return render_template('edit_user.html')
+            return redirect(url_for('index'))
         else:
             flash('Failed to update user. Please try again.', 'error')
 
-    # ถ้าไม่มีการส่งค่า POST (แสดงหน้าแก้ไข)
-    return render_template('edit_user.html')
-
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template('edit_user.html', user_data=user_data)
+    
 ############  /edit_user   #####################
 
 
