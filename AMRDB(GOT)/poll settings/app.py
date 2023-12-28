@@ -11,36 +11,6 @@ oracle_host = "192.168.102.192"
 oracle_port = "1521"
 oracle_service = "orcl"
 
-def perform_polling(address):
-    # ตัวอย่าง: สมมติว่ามี API ที่ให้ข้อมูลโดยใช้ที่อยู่
-    api_url = f'c:\\xampp\\htdocs\\AMRDB\\AMR_NEW\\AMR.2567\\templates\\Homepage.html'
-    try:
-        # ทำการเรียก API หรือดึงข้อมูลจากที่อยู่ที่ระบุ
-        response = requests.get(api_url)
-
-        # ตรวจสอบสถานะการตอบกลับ
-        if response.status_code == 200:
-            # ดึงข้อมูลจาก response
-            data = response.json()
-
-            # ทำตามกระบวนการที่ต้องการ
-            # ...
-
-            # ตัวอย่าง: แสดงผลลัพธ์ที่ได้
-            print(f'Polling result for {address}: {data}')
-
-            # คืนค่าผลลัพธ์หรือสถานะการทำงาน
-            return {'status': 'success', 'data': data}
-        else:
-            # กรณีไม่สำเร็จ
-            print(f'Error polling for {address}. Status code: {response.status_code}')
-            return {'status': 'error', 'message': f'Error polling for {address}. Status code: {response.status_code}'}
-    except Exception as e:
-        # กรณีเกิดข้อผิดพลาดในการเรียก API
-        print(f'Error polling for {address}. Exception: {e}')
-        return {'status': 'error', 'message': f'Error polling for {address}. Exception: {e}'}
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
