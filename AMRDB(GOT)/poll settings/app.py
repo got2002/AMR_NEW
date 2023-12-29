@@ -11,47 +11,45 @@ oracle_host = "192.168.102.192"
 oracle_port = "1521"
 oracle_service = "orcl"
 
+def generate_address_range(start, end):
+    # Generate a range of addresses from start to end
+    address_range = list(range(int(start), int(end) + 1))
+    return address_range
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/save_to_oracle', methods=['POST'])
 def save_to_oracle():
-    poll_config_value = None  # Define the variable outside the try block
-
     try:
         data = request.get_json()
 
-        # Create a list of addresses
-        addresses = [
-            str(data.get('start', '')),
-            str(data.get('end', '')),
-            # ... (add more addresses as needed)
-        ]
+        # Extract start and end addresses from the JSON data
+        start_address = data.get('start', '')
+        end_address = data.get('end', '')
 
-        # Remove empty strings from the list
-        addresses = [address for address in addresses if address]
+        # Generate the address range as a list of integers
+        address_range = generate_address_range(start_address, end_address)
 
         # Convert the list of addresses to a JSON array string
-        poll_config_values = json.dumps(addresses)
+        poll_config_values = json.dumps(address_range)
 
         dsn = cx_Oracle.makedsn(oracle_host, oracle_port, service_name=oracle_service)
 
         with cx_Oracle.connect(user=oracle_username, password=oracle_password, dsn=dsn) as connection:
-            # Insert data into Oracle table for all addresses using batch insert
+            # Insert data into Oracle table for the address range using batch insert
             sql = "INSERT INTO AMR_POLL_RANGE (POLL_CONFIG) VALUES (:poll_config_value)"
             with connection.cursor() as cursor:
                 cursor.execute(sql, {'poll_config_value': poll_config_values})
 
             connection.commit()
 
-        response = {'message': 'Data saved successfully'}
+        response = {'status': 'success', 'message': 'Data saved successfully'}
     except cx_Oracle.DatabaseError as e:
-        response = {'message': f'Database Error: {e}'}
-        print(f'Database Error: {e}')  # Print the error for debugging
+        response = {'status': 'error', 'message': f'Database Error: {e}'}
     except Exception as e:
-        response = {'message': f'Error: {e}'}
-        print(f'Error: {e}')  # Print the error for debugging
+        response = {'status': 'error', 'message': f'Error: {e}'}
 
     return jsonify(response)
 
