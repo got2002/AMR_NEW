@@ -4,31 +4,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Address Form</title>
+    <title>Address Form</title>    
 </head>
+
 <body>
-    <h1>Enter Address Range</h1>
+    <h1>Poll configuer</h1>
 
     <form id="addressForm">
-        <label for="start">Start Address:</label>
-        <input type="text" id="start" name="start" required><br>
+        <div class="address-pair">
+          
+            <label for="start1">Start Address:</label>
+            <input type="text" id="start1" name="start1" required>
+            <label for="end1">End Address:</label>
+            <input type="text" id="end1" name="end1" required>
+        </div>
 
-        <label for="end">End Address:</label>
-        <input type="text" id="end" name="end" required><br>
+        <div class="address-pair">
+            <!-- <label for="start2">Start Address:</label> -->
+            <input type="text" id="start2" name="start2" required>
+            <!-- <label for="end2">End Address:</label> -->
+            <input type="text" id="end2" name="end2" required>
+        </div>
 
-        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+        <div class="address-pair">
+            <!-- <label for="start3">Start Address:</label> -->
+            <input type="text" id="start3" name="start3" required>
+            <!-- <label for="end3">End Address:</label> -->
+            <input type="text" id="end3" name="end3" required>
+        </div>
+
+        <div class="address-pair">
+            <!-- <label for="start4">Start Address:</label> -->
+            <input type="text" id="start4" name="start4" required>
+            <!-- <label for="end4">End Address:</label> -->
+            <input type="text" id="end4" name="end4" required>
+        </div>
+
+        <div class="address-pair">
+            <!-- <label for="start5">Start Address:</label> -->
+            <input type="text" id="start5" name="start5" required>
+            <!-- <label for="end5">End Address:</label> -->
+            <input type="text" id="end5" name="end5" required>
+        </div>
     </form>
 
+    
+    <button type="button" onclick="saveToOracle()">Save to Oracle</button>
     <div id="statusMessage"></div>
 
     <script>
         function saveToOracle() {
-            var start = document.getElementById("start").value;
-            var end = document.getElementById("end").value;
+            var data = {
+                start1: document.getElementById("start1").value,
+                end1: document.getElementById("end1").value,
+                start2: document.getElementById("start2").value,
+                end2: document.getElementById("end2").value,
+                start3: document.getElementById("start3").value,
+                end3: document.getElementById("end3").value,
+                start4: document.getElementById("start4").value,
+                end4: document.getElementById("end4").value,
+                start5: document.getElementById("start5").value,
+                end5: document.getElementById("end5").value,
+            };
 
-            if (!start || !end) {
-                document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses.";
-                return;
+            // Ensure all start and end values are provided
+            for (var key in data) {
+                if (!data[key]) {
+                    document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
+                    return;
+                }
             }
 
             fetch('/save_to_oracle', {
@@ -36,7 +80,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ start: start, end: end }),
+                body: JSON.stringify(data),
             })
             .then(response => response.json())
             .then(data => {
