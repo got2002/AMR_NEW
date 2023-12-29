@@ -99,9 +99,9 @@
      
         <!-- Update button -->
         <button type="submit">Save Changes</button>
+        
     </form>
-    
-    
+    <a href="{{ url_for('home') }}">Back to Home</a><br>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class="flash-messages">
