@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+<h1>Login</h1>
+
+<!-- Login form -->
+<form action="{{ url_for('login') }}" method="post">
+    <label for="user_name">Username:</label>
+    <input type="text" id="user_name" name="user_name" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
+
+    <!-- Add hidden field for status -->
+    <input type="hidden" id="status" name="status">
+
+    <!-- Status checkboxes -->
+    <label for="statusOpen">เปิด:</label>
+    <input type="checkbox" id="statusOpen" name="statusOpen" checked onclick="updateStatus()">
+    <label for="statusClosed">ปิด:</label>
+    <input type="checkbox" id="statusClosed" name="statusClosed" onclick="updateStatus()"><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<!-- Script to update the hidden status field based on checkbox values -->
+<script>
+function updateStatus() {
+    var statusOpenCheckbox = document.getElementById('statusOpen');
+    var statusClosedCheckbox = document.getElementById('statusClosed');
+    var statusField = document.getElementById('status');
+
+    if (statusOpenCheckbox.checked) {
+        statusField.value = 'active';
+    } else if (statusClosedCheckbox.checked) {
+        statusField.value = 'inactive';
+    }
+}
+</script>       
+
+</body>
+</html>
