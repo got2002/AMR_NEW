@@ -204,7 +204,7 @@ def edit_user_route():
 
     if not user_data:
         flash('User not found!', 'error')
-        return redirect(url_for('index'))
+        return render_template('edit_user.html')
 
     # ถ้ามีการส่งค่า POST (คือการบันทึกการแก้ไข)
     if request.method == 'POST':
@@ -224,7 +224,7 @@ def edit_user_route():
         # ทำการ execute คำสั่ง SQL และ commit การแก้ไข user_name
         if execute_query(update_query, update_params):
             flash('User updated successfully!', 'success')
-            return redirect(url_for('index'))
+            return render_template('edit_user.html')
         else:
             flash('Failed to update user. Please try again.', 'error')
 
