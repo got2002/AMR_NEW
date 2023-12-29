@@ -91,7 +91,7 @@ def index():
     selected_tag = request.args.get('tag_dropdown')
     selected_region = request.args.get('region_dropdown')
 
-    # Fetch unique region values
+    
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
