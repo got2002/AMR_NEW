@@ -31,6 +31,7 @@ def fetch_data(query, params=None):
 
 @app.route('/get_tags', methods=['GET'])
 def get_tags():
+    
     selected_region = request.args.get("selected_region")
 
     tag_query = """
@@ -47,6 +48,7 @@ def get_tags():
 
 @app.route('/')
 def index():
+    query_type = request.args.get('query_type')
     results = []  # Initialize results to an empty list
     # SQL query to fetch unique PL_REGION_ID values
     region_query = """
@@ -62,77 +64,77 @@ def index():
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
-
+    if query_type == 'daily_data':
     # SQL query for main data
-    query = """
-      SELECT
-        AMR_PL_GROUP.PL_REGION_ID,
-        AMR_FIELD_ID.TAG_ID,
-        amr_field_id.meter_id,
-        AMR_CONFIGURED_DATA.DATA_DATE,
-        amr_configured_data.amr_vc_type,
-        amr_configured_data.amr_config1,
-        amr_configured_data.amr_config2,
-        amr_configured_data.amr_config3,
-        amr_configured_data.amr_config4,
-        amr_configured_data.amr_config5,
-        amr_configured_data.amr_config6,
-        amr_configured_data.amr_config7,
-        amr_configured_data.amr_config8,
-        amr_configured_data.amr_config9,
-        amr_configured_data.amr_config10,
-        amr_configured_data.amr_config11,
-        amr_configured_data.amr_config12,
-        amr_configured_data.amr_config13,
-        amr_configured_data.amr_config14,
-        amr_configured_data.amr_config15,
-        amr_configured_data.amr_config16,
-        amr_configured_data.DATE_CREATED,
-        amr_configured_data.TIME_CREATE,
-        amr_configured_data.status,
-        amr_configured_data.created_by,
-        amr_configured_data.updated_by,
-        amr_configured_data.updated_time,
-        amr_configured_data.amr_config17,
-        amr_configured_data.amr_config18,
-        amr_configured_data.amr_config19,
-        amr_configured_data.amr_config20,
+        query = """
+        SELECT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            amr_field_id.meter_id,
+            AMR_CONFIGURED_DATA.DATA_DATE,
+            amr_configured_data.amr_vc_type,
+            amr_configured_data.amr_config1,
+            amr_configured_data.amr_config2,
+            amr_configured_data.amr_config3,
+            amr_configured_data.amr_config4,
+            amr_configured_data.amr_config5,
+            amr_configured_data.amr_config6,
+            amr_configured_data.amr_config7,
+            amr_configured_data.amr_config8,
+            amr_configured_data.amr_config9,
+            amr_configured_data.amr_config10,
+            amr_configured_data.amr_config11,
+            amr_configured_data.amr_config12,
+            amr_configured_data.amr_config13,
+            amr_configured_data.amr_config14,
+            amr_configured_data.amr_config15,
+            amr_configured_data.amr_config16,
+            amr_configured_data.DATE_CREATED,
+            amr_configured_data.TIME_CREATE,
+            amr_configured_data.status,
+            amr_configured_data.created_by,
+            amr_configured_data.updated_by,
+            amr_configured_data.updated_time,
+            amr_configured_data.amr_config17,
+            amr_configured_data.amr_config18,
+            amr_configured_data.amr_config19,
+            amr_configured_data.amr_config20,
+            
+            AMR_VC_CONFIGURED_INFO.vc_type,
+            AMR_VC_CONFIGURED_INFO.config1,
+            AMR_VC_CONFIGURED_INFO.config2,
+            AMR_VC_CONFIGURED_INFO.config3,
+            AMR_VC_CONFIGURED_INFO.config4,
+            AMR_VC_CONFIGURED_INFO.config5,
+            AMR_VC_CONFIGURED_INFO.config6,
+            AMR_VC_CONFIGURED_INFO.config7,
+            AMR_VC_CONFIGURED_INFO.config8,
+            AMR_VC_CONFIGURED_INFO.config9,
+            AMR_VC_CONFIGURED_INFO.config10,
+            AMR_VC_CONFIGURED_INFO.config11,
+            AMR_VC_CONFIGURED_INFO.config12,
+            AMR_VC_CONFIGURED_INFO.config13,
+            AMR_VC_CONFIGURED_INFO.config14,
+            AMR_VC_CONFIGURED_INFO.config15,
+            AMR_VC_CONFIGURED_INFO.config16,
+            AMR_VC_CONFIGURED_INFO.config17,
+            AMR_VC_CONFIGURED_INFO.config18,
+            AMR_VC_CONFIGURED_INFO.config19,
+            AMR_VC_CONFIGURED_INFO.config20
+            
         
-        AMR_VC_CONFIGURED_INFO.vc_type,
-        AMR_VC_CONFIGURED_INFO.config1,
-        AMR_VC_CONFIGURED_INFO.config2,
-        AMR_VC_CONFIGURED_INFO.config3,
-        AMR_VC_CONFIGURED_INFO.config4,
-        AMR_VC_CONFIGURED_INFO.config5,
-        AMR_VC_CONFIGURED_INFO.config6,
-        AMR_VC_CONFIGURED_INFO.config7,
-        AMR_VC_CONFIGURED_INFO.config8,
-        AMR_VC_CONFIGURED_INFO.config9,
-        AMR_VC_CONFIGURED_INFO.config10,
-        AMR_VC_CONFIGURED_INFO.config11,
-        AMR_VC_CONFIGURED_INFO.config12,
-        AMR_VC_CONFIGURED_INFO.config13,
-        AMR_VC_CONFIGURED_INFO.config14,
-        AMR_VC_CONFIGURED_INFO.config15,
-        AMR_VC_CONFIGURED_INFO.config16,
-        AMR_VC_CONFIGURED_INFO.config17,
-        AMR_VC_CONFIGURED_INFO.config18,
-        AMR_VC_CONFIGURED_INFO.config19,
-        AMR_VC_CONFIGURED_INFO.config20
-        
-       
-    FROM
-        AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-    JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-    WHERE
-        AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-        AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-        AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
-        
-        {date_condition}
-        {tag_condition}
-        {region_condition}
-    """
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
+            
+            {date_condition}
+            {tag_condition}
+            {region_condition}
+        """
 
     # Get selected values from the dropdowns
     date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
