@@ -53,6 +53,7 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'fallback_secret_key')
 def md5_hash(input_string):
     # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
+app.secret_key = "your_secret_key_here"
 
 
 
@@ -106,6 +107,7 @@ def execute_query(query, params=None):
 
 ############  Home page  #####################
 @app.route("/")
+
 def home():
     return render_template("home.html")
 ############ / Home page  #####################
@@ -973,25 +975,7 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    if "action_actaris" in request.form:
-        data_list[3], data_list[7] = data_list[7], data_list[3]
-        del data_list[3]
-
-        data_list[4], data_list[5] = data_list[5], data_list[4]
-        del data_list[3]
-        data_list[5], data_list[7] = data_list[7], data_list[5]
-        del data_list[4]
-        data_list[4], data_list[5] = data_list[5], data_list[4]
-    if "action_configuration" in request.form:
-        if len(data_list) >= 6:
-            data_list[4], data_list[5] = data_list[5], data_list[4]
-        if len(data_list) > 2:
-            del data_list[2]
-        if len(data_list) >= 5:
-            data_list[3], data_list[4] = data_list[4], data_list[3]
-        data_list[6], data_list[22] = data_list[22], data_list[6]
-        del data_list[7]
-        data_list[7], data_list[23] = data_list[23], data_list[7]
+    
 
     region_query = """
         SELECT * FROM AMR_REGION 
