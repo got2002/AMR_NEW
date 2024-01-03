@@ -439,21 +439,23 @@
             </thead>
             <tbody>
                 {% for data in data_list %}
-                <tr>
-                    <td>{{ data['description'] }}</td>
-                    <td>{{ data['value'] }}</td>
-                    <td>{{ data['address'] }}</td>
-                    <td>{{ data['hex_value'] }}</td>
-                    <td>{{ data['binary_value'] }}</td>
-                    <td>
-                        {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
-                        %} {{ data['signed_value'] }}
-                        <!-- Display signed_value for signed or Ulong -->
-                        {% else %} {{ data['float_value'] }}
-                        <!-- Display float_value for float and others -->
-                        {% endif %}
-                    </td>
-                </tr>
+                    {% if "Address" not in data['description'] %}
+                        <tr>
+                            <td>{{ data['description'] }}</td>
+                            <td>{{ data['value'] }}</td>
+                            <td>{{ data['address'] }}</td>
+                            <td>{{ data['hex_value'] }}</td>
+                            <td>{{ data['binary_value'] }}</td>
+                            <td>
+                                {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
+                                %} {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                                {% else %} {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
