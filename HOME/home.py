@@ -590,7 +590,7 @@ WHERE
         df = df.sort_values(by='SITE')
 
         # ส่ง DataFrame ไปยัง HTML template
-        return render_template('sitedetail.html', tables=[df.to_html(classes='data')],
+        return render_template('sitedetail.html', tables=[df.to_html(classes='data',index=False)],
                             titles=df.columns.values,
                             selected_region=selected_region,
                             region_options=region_options)
