@@ -8,47 +8,60 @@
 </head>
 
 <body>
-    <h1>Poll configuer</h1>
+    <h1>Poll configurator</h1>
 
     <form id="addressForm">
+        <!-- Address Pair 1 -->
         <div class="address-pair">
-          
             <label for="start1">Start Address:</label>
             <input type="text" id="start1" name="start1" required>
             <label for="end1">End Address:</label>
             <input type="text" id="end1" name="end1" required>
+            <label for="enable1">Enable:</label>
+            <input type="checkbox" id="enable1" name="enable1" checked>
         </div>
-
+    
+        <!-- Address Pair 2 -->
         <div class="address-pair">
-            <!-- <label for="start2">Start Address:</label> -->
+            <label for="start2">Start Address:</label>
             <input type="text" id="start2" name="start2" required>
-            <!-- <label for="end2">End Address:</label> -->
+            <label for="end2">End Address:</label>
             <input type="text" id="end2" name="end2" required>
+            <label for="enable2">Enable:</label>
+            <input type="checkbox" id="enable2" name="enable2" checked>
         </div>
-
+    
+        <!-- Address Pair 3 -->
         <div class="address-pair">
-            <!-- <label for="start3">Start Address:</label> -->
+            <label for="start3">Start Address:</label>
             <input type="text" id="start3" name="start3" required>
-            <!-- <label for="end3">End Address:</label> -->
+            <label for="end3">End Address:</label>
             <input type="text" id="end3" name="end3" required>
+            <label for="enable3">Enable:</label>
+            <input type="checkbox" id="enable3" name="enable3" checked>
         </div>
-
+    
+        <!-- Address Pair 4 -->
         <div class="address-pair">
-            <!-- <label for="start4">Start Address:</label> -->
+            <label for="start4">Start Address:</label>
             <input type="text" id="start4" name="start4" required>
-            <!-- <label for="end4">End Address:</label> -->
+            <label for="end4">End Address:</label>
             <input type="text" id="end4" name="end4" required>
+            <label for="enable4">Enable:</label>
+            <input type="checkbox" id="enable4" name="enable4" checked>
         </div>
-
+    
+        <!-- Address Pair 5 -->
         <div class="address-pair">
-            <!-- <label for="start5">Start Address:</label> -->
+            <label for="start5">Start Address:</label>
             <input type="text" id="start5" name="start5" required>
-            <!-- <label for="end5">End Address:</label> -->
+            <label for="end5">End Address:</label>
             <input type="text" id="end5" name="end5" required>
+            <label for="enable5">Enable:</label>
+            <input type="checkbox" id="enable5" name="enable5" checked>
         </div>
     </form>
 
-    
     <button type="button" onclick="saveToOracle()">Save to Oracle</button>
     <div id="statusMessage"></div>
 
@@ -57,22 +70,35 @@
             var data = {
                 start1: document.getElementById("start1").value,
                 end1: document.getElementById("end1").value,
+                enable1: document.getElementById("enable1").checked ? 1 : 0,
                 start2: document.getElementById("start2").value,
                 end2: document.getElementById("end2").value,
+                enable2: document.getElementById("enable2").checked ? 1 : 0,
                 start3: document.getElementById("start3").value,
                 end3: document.getElementById("end3").value,
+                enable3: document.getElementById("enable3").checked ? 1 : 0,
                 start4: document.getElementById("start4").value,
                 end4: document.getElementById("end4").value,
+                enable4: document.getElementById("enable4").checked ? 1 : 0,
                 start5: document.getElementById("start5").value,
                 end5: document.getElementById("end5").value,
+                enable5: document.getElementById("enable5").checked ? 1 : 0,
             };
 
             // Ensure all start and end values are provided
             for (var key in data) {
-                if (!data[key]) {
-                    document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
-                    return;
+                if (key.startsWith('start') || key.startsWith('end')) {
+                    if (!data[key]) {
+                        document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
+                        return;
+                    }
                 }
+            }
+
+            // Add ENABLE to the data object
+            for (var i = 1; i <= 5; i++) {
+                var enableKey = 'enable' + i;
+                data[enableKey] = document.getElementById(enableKey).checked ? 1 : 0;
             }
 
             fetch('/save_to_oracle', {
@@ -92,6 +118,7 @@
                 document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
             });
         }
+
     </script>
 </body>
 </html>
