@@ -312,7 +312,7 @@ def billing_data():
             AMR_FIELD_ID.TAG_ID,
             amr_field_id.meter_id,
             AMR_CONFIGURED_DATA.DATA_DATE,
-            amr_configured_data.amr_vc_type,
+            
             amr_configured_data.amr_config1,
             amr_configured_data.amr_config2,
             amr_configured_data.amr_config3,
@@ -334,7 +334,7 @@ def billing_data():
             amr_configured_data.amr_config19,
             amr_configured_data.amr_config20,
             
-            AMR_VC_CONFIGURED_INFO.vc_type,
+            
             AMR_VC_CONFIGURED_INFO.config1,
             AMR_VC_CONFIGURED_INFO.config2,
             AMR_VC_CONFIGURED_INFO.config3,
@@ -412,17 +412,20 @@ def billing_data():
                 'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
             ])
             df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-            
+            df['DATA_DATE'] = pd.to_datetime(df['DATA_DATE'])
+
+        # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by='DATA_DATE')
             # Remove newline characters
             df = df.apply(lambda x: x.str.replace('\n', '') if x.dtype == 'object' else x)
             return render_template('billingdata.html',
-                               tables={'config_data': None, 'daily_data': df.to_html(classes='data')},
-                               titles=df.columns.values,
-                               selected_date=selected_date,
-                               selected_tag=selected_tag,
-                               selected_region=selected_region,
-                               region_options=region_options,
-                               tag_options=tag_options)
+                           tables={'config_data': None, 'daily_data': df.to_html(classes='data', index=False)},
+                           titles=df.columns.values,
+                           selected_date=selected_date,
+                           selected_tag=selected_tag,
+                           selected_region=selected_region,
+                           region_options=region_options,
+                           tag_options=tag_options)
         
         elif query_type == 'config_data':
             # Use pandas to create a DataFrame for config_data
@@ -433,7 +436,7 @@ def billing_data():
                     "TAG_ID",
                     "METER_ID",
                     "DATA_DATE",
-                    "AMR_VC_TYPE",
+                    
                     "AMR_CONFIG1",
                     "AMR_CONFIG2",
                     "AMR_CONFIG3",
@@ -454,7 +457,7 @@ def billing_data():
                     "AMR_CONFIG18",
                     "AMR_CONFIG19",
                     "AMR_CONFIG20",
-                    "VC_TYPE",
+                    
                     "CONFIG1",
                     "CONFIG2",
                     "CONFIG3",
@@ -476,24 +479,38 @@ def billing_data():
                     "CONFIG19",
                     "CONFIG20"
                 ]
+                
             )
-            print(df)
-            # Drop unwanted columns
+            columns_to_drop = [ "CONFIG1", "CONFIG2", "CONFIG3", "CONFIG4", "CONFIG5", "CONFIG6", 
+                        "CONFIG7", "CONFIG8", "CONFIG9", "CONFIG10", "CONFIG11", "CONFIG12", 
+                        "CONFIG13", "CONFIG14", "CONFIG15", "CONFIG16", "CONFIG17", "CONFIG18", "CONFIG19", "CONFIG20"]
+
+            dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
+            dropped_columns_data["DATA_DATE"] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data = dropped_columns_data.to_dict(orient='records')
+
+            df = df.drop(columns=columns_to_drop)  # Drop specified columns
+
+
+            print(df.columns)
             df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-            
+
             # Remove newline characters
             df = df.apply(lambda x: x.str.replace('\n', '') if x.dtype == 'object' else x)
-           
+            df['DATA_DATE'] = pd.to_datetime(df['DATA_DATE'])
+
+        # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by='DATA_DATE')
             # Send the DataFrame to the HTML template
             return render_template('billingdata.html',
-                       tables={'daily_data': None, 'config_data': df.to_html(classes='data')},
+                       tables={'daily_data': None, 'config_data': df.to_html(classes='data', header=False, index=False)},
                        titles=df.columns.values,
                        selected_date=selected_date,
                        selected_tag=selected_tag,
                        selected_region=selected_region,
                        region_options=region_options,
-                       tag_options=tag_options)
-
+                       tag_options=tag_options,
+                       dropped_columns_data=dropped_columns_data)
 
     else:
     # Render the template without executing the query
