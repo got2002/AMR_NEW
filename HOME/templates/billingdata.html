@@ -15,13 +15,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <title>Billing Data</title>
+    <style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size:xx-small;
+    
+}
+
+th, td {
+    border: 1px solid #5f5e5e;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #e1dede;
+}
+
+/* Apply a specific width to all columns in both tables */
+th, td {
+    width: 68px; /* Adjust the width value as needed */
+}
+
+/* Additional style for the first table with class 'table1' */
+.table1 {
+    background-color: #e1dede;
+    font-size: xx-small;
+}
+
+.table1 th,
+.table1 td {
+    font-weight:lighter;
+}
+    </style>
 </head>
 
 
 
 
 <body>
-    <div class="main2" id="main2">
+    <div class="main2" id="main2" >
         <img class="imgpttlogo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="AMR Logo" />
@@ -64,11 +98,23 @@
             {{ tables['daily_data']|safe }}
             {% endif %}
         </div>
+        
         <div>
-            {% if tables.get('config_data') %}
-            <h1>Config Data</h1>
-            {{ tables['config_data']|safe }}
-            {% endif %}
+            {% if tables.config_data %}
+            <h2>Config Data</h2>
+            <table class="table1">
+                
+                <tbody>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            {{ tables.config_data | safe }}
+        {% endif %}
+        
         </div>
 <body>
 
@@ -76,12 +122,6 @@
     <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
     <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
     </script> -->
-
-
-
-
-
-
 
 
 
