@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
     <title>Manual poll</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         
         .btn {
@@ -172,6 +173,7 @@
                 <thead>
                     <tr style="text-align: right;">
                         <th>Select</th>
+                        <th>type</th>
                         <th>RUN</th>
                         <th>Region</th>
                         <th>Sitename</th>
@@ -180,12 +182,25 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
+                        <th>evc_type</th>
+                        <th>vc_name</th>
+                        <th>poll_billing</th>
+                        <th>poll_config</th>
+                        <th>poll_billing_enable</th>
+                        <th>poll_config_enable</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for _, row in df.iterrows() %}
                         <tr>
                             <td><input type="checkbox" name="selected_rows" value="{{ loop.index0 }}"></td>
+                            <td style="display: flex; height: 34px;">
+                                <select name="selected_rows_daily" class="poll-dropdown" data-index="{{ loop.index0 }}">
+                                    <option value="daily">Daily</option>
+                                    <option value="daily">config</option>
+                                    <!-- Add other options as needed -->
+                                </select>
+                            </td>
                             <td>{{ row['RUN'] }}</td>
                             <td>{{ row['Region'] }}</td>
                             <td>{{ row['Sitename'] }}</td>
@@ -194,6 +209,12 @@
                             <td>{{ row['VCtype'] }}</td>
                             <td>{{ row['IPAddress'] }}</td>
                             <td>{{ row['Port'] }}</td>
+                            <td>{{ row['evc_type'] }}</td>
+                            <td>{{ row['vc_name'] }}</td>
+                            <td>{{ row['poll_billing'] }}</td>
+                            <td>{{ row['poll_config'] }}</td>
+                            <td>{{ row['poll_billing_enable'] }}</td>
+                            <td>{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -205,23 +226,39 @@
     
     
     <script>
-         document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
-        
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                checkboxes.forEach(otherCheckbox => {
-                    if (otherCheckbox !== checkbox) {
-                        otherCheckbox.checked = false;
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('select.poll-dropdown');
+            const tcpIpInput = document.getElementById('tcp_ip');
+            const tcpPortInput = document.getElementById('tcp_port');
+    
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', () => {
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.value = ""; // Clear other dropdowns
+                        }
+                    });
+    
+                    const selectedIndex = dropdown.selectedIndex;
+                    if (selectedIndex !== -1) {
+                        // Read the IPAddress and Port values from the corresponding row
+                        const rowIndex = dropdown.getAttribute('data-index');
+                        const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(15)`).textContent;
+                        const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
+    
+                        // Update the TCP IP and Port input fields with the values
+                        tcpIpInput.value = ipAddress;
+                        tcpPortInput.value = port;
+                    } else {
+                        // If no option is selected, clear the TCP IP and Port input fields
+                        tcpIpInput.value = "";
+                        tcpPortInput.value = "";
                     }
                 });
             });
         });
-    });
-
-    
     </script>
-   
+    
     <script>
         $(document).ready(function () {
             // Event listener for region dropdown change
@@ -255,9 +292,10 @@
                 });
             });
         });
+        
     </script>
    
-
+   
 
  <!-- Canvas -->
  <canvas id="orbcanvas" class="orb-canvas"></canvas>
@@ -274,24 +312,14 @@
              <div class="menu-icon-wrapper">
 
              </div>
-             </button>
-
+            
          </div>
          
-
-
-
-
          <div class="container-fluid" id="containerfluid" style="width: 30%;">
              <div class="row">
                  <div class="col-sm-6 offset-sm-3 pt-4">
 
                      <form method="POST" id="modbusForm" >
-
-
-                        
-                         
-
                          <div class="form-group" style="display: none;  ">
                              <label for="slave_id" style="margin-bottom: 100px;">Slave ID</label>
                              <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
@@ -315,34 +343,23 @@
                    <!-- Option for custom input -->
                </select>
                          </div>
-
                          <!-- Input field for custom value -->
                          <div class="form-group">
                              <label for="custom_starting_address">Custom Starting Address</label>
                              <input type="number" class="form-control" id="custom_starting_address" name="custom_starting_address" style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
                          </div>
-
-
                          <div class="form-group">
-                             <label for="quantity">Quantity</label>
-                             <input type="number" class="form-control" id="quantity" name="quantity" value="{{60}}" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-
-                         </div>
+                            <label for="quantity">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                        </div>
                          <div class="form-group">
                              <label for="tcp_ip">TCP IP</label>
                              <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
                          </div>
-
-
                          <div class="form-group">
                             <label for="tcp_port">TCP Port</label>
                             <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" placeholder="Enter TCP Port">
                         </div>
-
-
-
-
-
                          <div class="btn-container" id="showDataButton">
                              <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
 
@@ -350,65 +367,39 @@
 
                <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
                <button type="submit" id="changeTo32BitButton" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
-
-                             <div class="btn-button1">
+                             <!-- <div class="btn-button1">
                                  <p>Elster:</p>
-                             </div>
-                             <div class="btn-buttonElster">
-
+                             </div> -->
+                             <!-- <div class="btn-buttonElster"> -->
                                  <!-- ... เพิ่มฟิลด์และปุ่มของ Elster ตามที่คุณต้องการ ... -->
-                                 <button type="submit" class="btn btn-secondary" value="false" style="height: 34px; width: 80px; font-size: x-small; border: none;border-radius: 0.5rem;">Daily Data</button>
+                                 <!-- <button type="submit" class="btn btn-secondary" value="false" style="height: 34px; width: 80px; font-size: x-small; border: none;border-radius: 0.5rem;">Daily Data</button>
                                  <button type="submit" class="btn btn-secondary" value="false" style="height: 34px; width: 104px; font-size: x-small;border: none;border-radius: 0.5rem;">Configuration</button>
-                             </div>
-                             <div class="btn-button2">
+                             </div> -->
+                             <!-- <div class="btn-button2">
                                  <p>Actaris:</p>
-                             </div>
+                             </div> -->
                              <!-- ... เพิ่มฟิลด์และปุ่มของ Actaris ตามที่คุณต้องการ ... -->
+                            
                              <div class="btn-buttonActaris">
-
-
-                                 <button type="submit" name="action_actaris" value="daily_data" style="height: 34px; width: 80px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a); ">
+                                 <!-- <button type="submit" name="action_actaris" value="daily_data" style="height: 34px; width: 80px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a); ">
                                          Daily Data
-                                     </button>
-
-
-                                 <button type="submit" name="action_configuration" value="configuration" style="height: 34px; width: 104px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Configuration</button>
+                                     </button> -->
+                                 <button type="submit" name="action_configuration" value="configuration" style="height: 34px; width: 104px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
                              </div>
                              <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
-
-
-
                          </div>
                      </form>
-
-                     <!-- Your Modbus form content here -->
-
-
                      <div id="datePickerContainer"></div>
-
-
-
                  </div>
                  <div class="col-sm-3 t pt-2">
-
-
                      </form>
                  </div>
-                 <div class="btn-warning" style="top: 100px; position: relative;">
+                 <!-- <div class="btn-warning" style="top: 100px; position: relative;">
                      <button type="button" class="btn btn-warning" onclick="clearForm()" id="clearFormButton" style="height: 34px; width: 190px; margin-left: 480px; margin-top: -350px; border: none;border-radius: 0.5rem;">Clear</button>
-                 </div>
-
-
-
-
-
+                 </div> -->
 
                  <!-- Buttons -->
                  <div class="overlay__btns">
-
-
-
-
                  </div>
              </div>
          </div>
@@ -493,7 +484,9 @@
 
 
 
+
  <script>
+    
     document.addEventListener('DOMContentLoaded', function () {
         const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
         const tcpIpInput = document.getElementById('tcp_ip');
@@ -509,7 +502,7 @@
                 if (checkbox.checked) {
                     // Read the IPAddress value from the corresponding row
                     const rowIndex = checkbox.value;
-                    const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(8)`).textContent;
+                    const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(9)`).textContent;
 
                     // Update the TCP IP input field with the IPAddress value
                     tcpIpInput.value = ipAddress;
@@ -537,7 +530,7 @@
                 if (checkbox.checked) {
                     // Read the Port value from the corresponding row
                     const rowIndex = checkbox.value;
-                    const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(9)`).textContent;
+                    const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
 
                     // Update the TCP Port input element with the Port value
                     updateTcpPortInput(port);
