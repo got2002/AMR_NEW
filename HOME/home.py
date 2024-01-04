@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify,redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import pandas as pd
 import cx_Oracle
 from flask import flash
@@ -48,17 +48,12 @@ def convert_to_binary_string(value, bytes_per_value):
 
 
 # Set the Flask secret key from the environment variable
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'fallback_secret_key')
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
+
 
 def md5_hash(input_string):
     # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
-
-
-
-
-
-
 
 
 ############  connect database  #####################
@@ -84,7 +79,8 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
-    
+
+
 def execute_query(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -97,64 +93,71 @@ def execute_query(query, params=None):
                 connection.commit()
         return True
     except cx_Oracle.Error as e:
-        error, = e.args
+        (error,) = e.args
         print("Oracle Error:", error)
         return False
-############  /connect database  #####################
 
+
+############  /connect database  #####################
 
 
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 ############ / Home page  #####################
 
 
-
 ############  Add User  #####################
-@app.route('/add_user', methods=['GET', 'POST'])
+@app.route("/add_user", methods=["GET", "POST"])
 def add_user_route():
-    if request.method == 'POST':
-        description = request.form['description']
-        user_name = request.form['user_name']
-        password = request.form['password']
-        user_level = request.form['user_level']
+    if request.method == "POST":
+        description = request.form["description"]
+        user_name = request.form["user_name"]
+        password = request.form["password"]
+        user_level = request.form["user_level"]
 
         # เข้ารหัสรหัสผ่านโดยใช้ MD5
         hashed_password = md5_hash(password)
 
         # แปลงเป็น RAWTOHEX ก่อนที่จะบันทึกลงใน Oracle
-        hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(hashed_password)
+        hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(
+            hashed_password
+        )
 
-        query = 'INSERT INTO AMR_USER_TESTS (description, user_name, password, user_level) VALUES (:1, :2, {}, :4)'.format(hashed_password_hex)
+        query = "INSERT INTO AMR_USER_TESTS (description, user_name, password, user_level) VALUES (:1, :2, {}, :4)".format(
+            hashed_password_hex
+        )
         params = (description, user_name, user_level)
 
         if execute_query(query, params):
-            flash('User added successfully!', 'success')
-            return render_template('add_user.html')
+            flash("User added successfully!", "success")
+            return render_template("add_user.html")
         else:
-            flash('Failed to add user. Please try again.', 'error')
+            flash("Failed to add user. Please try again.", "error")
 
-    return render_template('add_user.html')
+    return render_template("add_user.html")
+
+
 ############  /Add User  #####################
-
-
 
 
 ############  edit_user   #####################
 
+
 def get_data(filter_text=None, sort_column=None):
     try:
         connection = cx_Oracle.connect(
-            user=username,
-            password=password,
-            dsn=f"{hostname}:{port}/{service_name}"
+            user=username, password=password, dsn=f"{hostname}:{port}/{service_name}"
         )
         cursor = connection.cursor()
 
         # Base query
-        query = "SELECT description, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_User_tests"
+        query = (
+            "SELECT description, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_User_tests"
+        )
 
         # Apply filtering
         if filter_text:
@@ -173,11 +176,21 @@ def get_data(filter_text=None, sort_column=None):
             rows = cursor.fetchmany(chunk_size)
             if not rows:
                 break
-            data.extend([{"description": row[0], "user_name": row[1], "password": row[2], "user_level": row[3]} for row in rows])
+            data.extend(
+                [
+                    {
+                        "description": row[0],
+                        "user_name": row[1],
+                        "password": row[2],
+                        "user_level": row[3],
+                    }
+                    for row in rows
+                ]
+            )
 
         return data
     except cx_Oracle.Error as e:
-        error, = e.args
+        (error,) = e.args
         print("Oracle Error:", error)
         return []
     finally:
@@ -186,100 +199,104 @@ def get_data(filter_text=None, sort_column=None):
         if connection:
             connection.close()
 
+
 # Example usage with filtering and sorting
 filter_text = "example"  # Replace with your filter text or None for no filtering
 sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
 filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_column)
 
-@app.route('/get_data')
+
+@app.route("/get_data")
 def get_data_route():
     data = get_data()
     return jsonify(data)
 
-@app.route('/edit_user', methods=['GET', 'POST'])
+
+@app.route("/edit_user", methods=["GET", "POST"])
 def edit_user_route():
     # ดึงข้อมูลผู้ใช้จากฐานข้อมูล
     query = "SELECT DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_User_tests"
     user_data = fetch_data(query)
 
     if not user_data:
-        flash('User not found!', 'error')
-        return render_template('edit_user.html')
+        flash("User not found!", "error")
+        return render_template("edit_user.html")
 
     # ถ้ามีการส่งค่า POST (คือการบันทึกการแก้ไข)
-    if request.method == 'POST':
+    if request.method == "POST":
         # ดึงข้อมูลจากฟอร์มแก้ไข
-        description = request.form['description']
-        user_name = request.form['user_name']
-        password = request.form['password']
-        user_level = request.form['user_level']
+        description = request.form["description"]
+        user_name = request.form["user_name"]
+        password = request.form["password"]
+        # user_level = request.form["user_level"]
 
         # เข้ารหัสรหัสผ่านโดยใช้ MD5
-        hashed_password = md5_hash(password) 
+        hashed_password = md5_hash(password)
 
         # สร้างคำสั่ง SQL สำหรับการแก้ไขข้อมูลผู้ใช้
-        update_query = 'UPDATE AMR_USER_TESTS SET description = :1, user_name = :2, password = :3 WHERE user_level = :4'
-        update_params = (description, user_name, hashed_password, user_level)
+        update_query = "UPDATE AMR_USER_TESTS SET description = :1, user_name = :2, password = :3 WHERE description = :4"
+        update_params = (description, user_name, hashed_password, description)
 
         # ทำการ execute คำสั่ง SQL และ commit การแก้ไข user_name
         if execute_query(update_query, update_params):
-            flash('User updated successfully!', 'success')
-            return render_template('edit_user.html')
+            flash("User updated successfully!", "success")
+            return render_template("edit_user.html")
         else:
-            flash('Failed to update user. Please try again.', 'error')
+            flash("Failed to update user. Please try again.", "error")
 
     # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
-    return render_template('edit_user.html', user_data=user_data)
-    
+    return render_template("edit_user.html", user_data=user_data)
+
+
 ############  /edit_user   #####################
+############   /remove_user ###################
 
 
-
-
-
+############   /remove_user ###################
 
 ############  View Billing Data   #####################
 
-@app.route('/get_tags', methods=['GET'])
+
+@app.route("/get_tags", methods=["GET"])
 def get_tags():
-    selected_region = request.args.get('selected_region')
-    
+    selected_region = request.args.get("selected_region")
+
     tag_query = """
     SELECT DISTINCT TAG_ID
     FROM AMR_FIELD_ID
     JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
     WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
     """
-    
-    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
     tag_options.sort()
-    return jsonify({'tag_options': tag_options})
+    return jsonify({"tag_options": tag_options})
 
-@app.route('/billing_data')
+
+@app.route("/billing_data")
 def billing_data():
-    query_type = request.args.get('query_type')
-    
+    query_type = request.args.get("query_type")
+
     # SQL query to fetch unique PL_REGION_ID values
     region_query = """
     SELECT * FROM AMR_REGION 
     """
-    
+
     tag_query = """
     SELECT DISTINCT TAG_ID
     FROM AMR_FIELD_ID
     JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
     WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
     """
-    
+
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
     query = ""
     print(query)
-    if query_type == 'daily_data':
-       
+    if query_type == "daily_data":
         # SQL query for main data
         query = """
         SELECT
@@ -301,11 +318,10 @@ def billing_data():
             {tag_condition}
             {region_condition}
         """
-        
-        
+
         # Return the template with the DataFrame
-        
-    elif query_type == 'config_data':
+
+    elif query_type == "config_data":
         query = """
         SELECT
             AMR_PL_GROUP.PL_REGION_ID,
@@ -369,28 +385,31 @@ def billing_data():
             {region_condition}
         """
 
-        
     # Get selected values from the dropdowns
     billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
     configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
     tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
     region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-    
-    selected_date = request.args.get('date_dropdown')
-    selected_tag = request.args.get('tag_dropdown')
-    selected_region = request.args.get('region_dropdown')
+
+    selected_date = request.args.get("date_dropdown")
+    selected_tag = request.args.get("tag_dropdown")
+    selected_region = request.args.get("region_dropdown")
 
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
 
     # Fetch tag options based on the selected region
-    tag_results = fetch_data(tag_query, params={'region_id': selected_region})
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
 
     if selected_date:
-        billing_date_condition = f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-        configured_date_condition = f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        billing_date_condition = (
+            f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+        configured_date_condition = (
+            f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
     if selected_tag:
         tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
 
@@ -400,34 +419,56 @@ def billing_data():
     region_condition = "AND 1 = 1"  # This line seems unnecessary; it sets region_condition to a constant value
 
     # Modify the query with the selected conditions
-    query = query.format(billing_date_condition=billing_date_condition,configured_date_condition=configured_date_condition, tag_condition=tag_condition, region_condition=region_condition)
+    query = query.format(
+        billing_date_condition=billing_date_condition,
+        configured_date_condition=configured_date_condition,
+        tag_condition=tag_condition,
+        region_condition=region_condition,
+    )
 
     if selected_region:
         # Use fetch_data function to retrieve data
         results = fetch_data(query)
 
-        if query_type == 'daily_data':
+        if query_type == "daily_data":
             # Use pandas to create a DataFrame for daily_data
-            df = pd.DataFrame(results, columns=[
-                'PL_REGION_ID', 'TAG_ID', 'METER_ID', 'DATA_DATE', 'CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'
-            ])
-            df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
-            df['DATA_DATE'] = pd.to_datetime(df['DATA_DATE'])
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "CORRECTED",
+                    "UNCORRECTED",
+                    "Pressure",
+                    "Temperature",
+                ],
+            )
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
-        # Sort DataFrame by 'DATA_DATE'
-            df = df.sort_values(by='DATA_DATE')
+            # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE")
             # Remove newline characters
-            df = df.apply(lambda x: x.str.replace('\n', '') if x.dtype == 'object' else x)
-            return render_template('billingdata.html',
-                           tables={'config_data': None, 'daily_data': df.to_html(classes='data', index=False)},
-                           titles=df.columns.values,
-                           selected_date=selected_date,
-                           selected_tag=selected_tag,
-                           selected_region=selected_region,
-                           region_options=region_options,
-                           tag_options=tag_options)
-        
-        elif query_type == 'config_data':
+            df = df.apply(
+                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
+            )
+            return render_template(
+                "billingdata.html",
+                tables={
+                    "config_data": None,
+                    "daily_data": df.to_html(classes="data", index=False),
+                },
+                titles=df.columns.values,
+                selected_date=selected_date,
+                selected_tag=selected_tag,
+                selected_region=selected_region,
+                region_options=region_options,
+                tag_options=tag_options,
+            )
+
+        elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
             df = pd.DataFrame(
                 results,
@@ -436,7 +477,6 @@ def billing_data():
                     "TAG_ID",
                     "METER_ID",
                     "DATA_DATE",
-                    
                     "AMR_CONFIG1",
                     "AMR_CONFIG2",
                     "AMR_CONFIG3",
@@ -457,7 +497,6 @@ def billing_data():
                     "AMR_CONFIG18",
                     "AMR_CONFIG19",
                     "AMR_CONFIG20",
-                    
                     "CONFIG1",
                     "CONFIG2",
                     "CONFIG3",
@@ -477,65 +516,95 @@ def billing_data():
                     "CONFIG17",
                     "CONFIG18",
                     "CONFIG19",
-                    "CONFIG20"
-                ]
-                
+                    "CONFIG20",
+                ],
             )
-            columns_to_drop = [ "CONFIG1", "CONFIG2", "CONFIG3", "CONFIG4", "CONFIG5", "CONFIG6", 
-                        "CONFIG7", "CONFIG8", "CONFIG9", "CONFIG10", "CONFIG11", "CONFIG12", 
-                        "CONFIG13", "CONFIG14", "CONFIG15", "CONFIG16", "CONFIG17", "CONFIG18", "CONFIG19", "CONFIG20"]
+            columns_to_drop = [
+                "CONFIG1",
+                "CONFIG2",
+                "CONFIG3",
+                "CONFIG4",
+                "CONFIG5",
+                "CONFIG6",
+                "CONFIG7",
+                "CONFIG8",
+                "CONFIG9",
+                "CONFIG10",
+                "CONFIG11",
+                "CONFIG12",
+                "CONFIG13",
+                "CONFIG14",
+                "CONFIG15",
+                "CONFIG16",
+                "CONFIG17",
+                "CONFIG18",
+                "CONFIG19",
+                "CONFIG20",
+            ]
 
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
-            dropped_columns_data["DATA_DATE"] = "DATA.DATE"  # Replace actual values with the column name
-            dropped_columns_data = dropped_columns_data.to_dict(orient='records')
+            dropped_columns_data[
+                "DATA_DATE"
+            ] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
-
             print(df.columns)
-            df = df.drop(['PL_REGION_ID', 'TAG_ID', 'METER_ID'], axis=1)
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
             # Remove newline characters
-            df = df.apply(lambda x: x.str.replace('\n', '') if x.dtype == 'object' else x)
-            df['DATA_DATE'] = pd.to_datetime(df['DATA_DATE'])
+            df = df.apply(
+                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
+            )
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
-        # Sort DataFrame by 'DATA_DATE'
-            df = df.sort_values(by='DATA_DATE')
+            # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE")
             # Send the DataFrame to the HTML template
-            return render_template('billingdata.html',
-                       tables={'daily_data': None, 'config_data': df.to_html(classes='data', header=False, index=False)},
-                       titles=df.columns.values,
-                       selected_date=selected_date,
-                       selected_tag=selected_tag,
-                       selected_region=selected_region,
-                       region_options=region_options,
-                       tag_options=tag_options,
-                       dropped_columns_data=dropped_columns_data)
+            return render_template(
+                "billingdata.html",
+                tables={
+                    "daily_data": None,
+                    "config_data": df.to_html(
+                        classes="data", header=False, index=False
+                    ),
+                },
+                titles=df.columns.values,
+                selected_date=selected_date,
+                selected_tag=selected_tag,
+                selected_region=selected_region,
+                region_options=region_options,
+                tag_options=tag_options,
+                dropped_columns_data=dropped_columns_data,
+            )
 
     else:
-    # Render the template without executing the query
-        return render_template('billingdata.html',
-                           selected_date=selected_date,
-                           selected_region=selected_region,
-                           selected_tag=selected_tag,
-                           region_options=region_options,
-                           tag_options=tag_options,
-                           tables={})
+        # Render the template without executing the query
+        return render_template(
+            "billingdata.html",
+            selected_date=selected_date,
+            selected_region=selected_region,
+            selected_tag=selected_tag,
+            region_options=region_options,
+            tag_options=tag_options,
+            tables={},
+        )
+
 
 ############ / View Billing Data  #####################
 
 
-
-
 ############ sitedetail_data  #####################
-    
-@app.route('/sitedetail_data')
+
+
+@app.route("/sitedetail_data")
 def sitedetail_data():
     # SQL query to fetch unique PL_REGION_ID values
     region_query = """
     SELECT * FROM AMR_REGION 
     """
-    
+
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
@@ -558,7 +627,7 @@ WHERE
     """
 
     # Get selected values from the dropdowns
-    selected_region = request.args.get('region_dropdown')
+    selected_region = request.args.get("region_dropdown")
 
     # Fetch unique region values
     region_results = fetch_data(region_query)
@@ -580,28 +649,35 @@ WHERE
         results = fetch_data(query)
 
         # ใช้ pandas ในการสร้าง DataFrame
-        df = pd.DataFrame(results, columns=[
-            'ID', 'SITE', 'PHASE', 'IP ADDRESS', 'TYPE'
-        ])
+        df = pd.DataFrame(
+            results, columns=["ID", "SITE", "PHASE", "IP ADDRESS", "TYPE"]
+        )
         # ลบคอลัมน์ที่ไม่ต้องการ
-        df = df.applymap(lambda x: x.replace('\n', '') if isinstance(x, str) else x)
+        df = df.applymap(lambda x: x.replace("\n", "") if isinstance(x, str) else x)
 
         # Sort DataFrame by the 'SITE' column (adjust as needed)
-        df = df.sort_values(by='SITE')
+        df = df.sort_values(by="SITE")
 
         # ส่ง DataFrame ไปยัง HTML template
-        return render_template('sitedetail.html', tables=[df.to_html(classes='data',index=False)],
-                            titles=df.columns.values,
-                            selected_region=selected_region,
-                            region_options=region_options)
+        return render_template(
+            "sitedetail.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=df.columns.values,
+            selected_region=selected_region,
+            region_options=region_options,
+        )
     else:
         # Render the template without executing the query
-        return render_template('sitedetail.html', selected_region=selected_region, region_options=region_options, tables=[])
+        return render_template(
+            "sitedetail.html",
+            selected_region=selected_region,
+            region_options=region_options,
+            tables=[],
+        )
+
 
 ############ /sitedetail_data  #####################
-    
 
-    
 
 ############ Manualpoll_data  #####################
 @app.route("/Manualpoll_data")
@@ -1109,17 +1185,18 @@ def read_data():
 def handle_actaris_action(i, address):
     return address
 
+
 def handle_action_configuration(i, value, address):
     return value, address
+
 
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
 
+
 ############ /Manualpoll_data  #####################
-
-
 
 
 if __name__ == "__main__":
