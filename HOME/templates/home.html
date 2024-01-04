@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,22 +10,23 @@
 
     <style>
         /* Added styles for footer */
+        
         .footer {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #ccc;
         }
-
         /* Additional styles for the footer text */
+        
         .footer p {
             margin-top: auto;
             margin: 5px;
             font-size: 13px;
             color: #666;
         }
-
         /* General Styles */
+        
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
@@ -36,10 +36,11 @@
             min-height: 100vh;
             align-items: center;
             justify-content: center;
-            flex-direction: column; /* Change to column to align items vertically */
+            flex-direction: column;
+            /* Change to column to align items vertically */
         }
-
         /* Dashboard Styles */
+        
         .dashboard-container {
             width: 80%;
             height: 700px;
@@ -50,17 +51,18 @@
             box-sizing: border-box;
             text-align: center;
             color: #333;
-            margin-bottom: 20px; /* Add margin bottom to create space */
+            margin-bottom: 20px;
+            /* Add margin bottom to create space */
         }
-
+        
         h2 {
             color: #ff5e5e;
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             font-size: 32px;
         }
-
         /* Menu Styles */
+        
         .menu-container {
             min-height: 100vh;
             list-style: none;
@@ -72,16 +74,17 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Align menu to the left */
+            align-items: flex-start;
+            /* Align menu to the left */
         }
-
+        
         .menu {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-top: 5%;
         }
-
+        
         .menu-dropdown {
             margin-top: -30%;
             display: none;
@@ -95,11 +98,11 @@
             pointer-events: none;
             background-color: #ffcc0000;
             right: 0px;
-            left: 190px; /* Adjusting dropdown position */
-
+            left: 190px;
+            /* Adjusting dropdown position */
         }
-
         /* Show dropdown on hover or focus */
+        
         .menu li:hover .menu-dropdown,
         .menu li:focus-within .menu-dropdown {
             display: block;
@@ -107,7 +110,7 @@
             transform: translateY(0);
             pointer-events: auto;
         }
-
+        
         .menu a {
             padding: 10px 15px;
             margin: 0;
@@ -117,41 +120,47 @@
             display: block;
             transition: background-color 0.3s, transform 0.2s;
             border-bottom: 10px solid rgba(255, 255, 255, 0.1);
-            background-color: #4CAF50; /* Changed button color */
+            background-color: #4CAF50;
+            /* Changed button color */
             border-radius: 8px;
             transform: scale(1);
         }
-
         /* Hover effect on menu items */
+        
         .menu a:hover {
-            background-color: #2E8B57; /* Changed hover color */
+            background-color: #2E8B57;
+            /* Changed hover color */
             transform: scale(1.05);
             border-bottom: 10px solid rgba(255, 255, 255, 0.3);
         }
-
-    /* CSS ของ Announcement Section */
-    .announcement-container {
-        background-color: #f0f0f0; /* สีพื้นหลังของกล่องแสดงประกาศ */
-        border: 1px solid #ccc;
-        border-radius: 12px; /* เพิ่มขอบเขตของมุมกล่อง */
-        padding: 20px;
-        margin: 20px auto;
-        text-align: left;
-        width: 70%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงาใต้กล่อง */
-    }
-
-    .announcement-container h3 {
-        color: #ff5e5e;
-        margin-bottom: 15px;
-        font-size: 24px;
-    }
-
-    .announcement-container p {
-        margin-bottom: 20px;
-        font-size: 16px;
-    }
+        /* CSS ของ Announcement Section */
+        
+        .announcement-container {
+            background-color: #f0f0f0;
+            /* สีพื้นหลังของกล่องแสดงประกาศ */
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            /* เพิ่มขอบเขตของมุมกล่อง */
+            padding: 20px;
+            margin: 20px auto;
+            text-align: left;
+            width: 70%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* เพิ่มเงาใต้กล่อง */
+        }
+        
+        .announcement-container h3 {
+            color: #ff5e5e;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .announcement-container p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
         /* Footer Styles */
+        
         .footer {
             background-color: #333;
             color: #fff;
@@ -164,29 +173,29 @@
             justify-content: center;
         }
         /* Additional Adjustments */
+        
         .logo {
             max-width: 50%;
             height: auto;
             margin-bottom: 20px;
         }
-
         /* Media Query for responsiveness (if needed) */
+        
         @media (max-width: 768px) {
             .dashboard-container {
                 width: 90%;
             }
         }
-        
     </style>
 </head>
 
 <body>
-    
+
     <div class="dashboard-container">
         <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="Logo" class="logo">
         <h2>WELCOME TO THE AMR</h2>
         <div class="menu-container">
-        <!-- End Announcement Section -->
+            <!-- End Announcement Section -->
 
             <ul class="menu">
                 <li><a href="#user-management">Manage Users</a>
@@ -224,7 +233,7 @@
         </div>
     </div>
 
-           
+
 </body>
 
 </html>
