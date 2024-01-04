@@ -698,7 +698,15 @@ def Manualpoll_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port
+            AMR_PORT_INFO.PORT_NO as port,
+            amr_poll_range.evc_type as evc_type,
+    
+   amr_vc_type.vc_name as vc_name ,
+   amr_poll_range.poll_billing as poll_billing ,
+    amr_poll_range.poll_config as poll_config,
+    amr_poll_range.poll_billing_enable as poll_billing_enable ,
+   amr_poll_range.poll_config_enable as poll_config_enable
+
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -706,15 +714,18 @@ def Manualpoll_data():
             AMR_FIELD_METER,
             AMR_PL_GROUP,
             AMR_VC_TYPE,
-            AMR_PORT_INFO
+            AMR_PORT_INFO,
+           amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
+            amr_vc_type.id=amr_poll_range.evc_type AND
             AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
             AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
             AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
             AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
             AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
             AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+            
             {tag_condition}
             {region_condition}
         """
@@ -753,6 +764,13 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
+            "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
+
         ],
     )
 
@@ -1067,7 +1085,15 @@ def read_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port
+            AMR_PORT_INFO.PORT_NO as port,
+            amr_poll_range.evc_type as evc_type,
+    
+   amr_vc_type.vc_name as vc_name ,
+   amr_poll_range.poll_billing as poll_billing ,
+    amr_poll_range.poll_config as poll_config,
+    amr_poll_range.poll_billing_enable as poll_billing_enable ,
+   amr_poll_range.poll_config_enable as poll_config_enable
+
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -1075,15 +1101,18 @@ def read_data():
             AMR_FIELD_METER,
             AMR_PL_GROUP,
             AMR_VC_TYPE,
-            AMR_PORT_INFO
+            AMR_PORT_INFO,
+           amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
+            amr_vc_type.id=amr_poll_range.evc_type AND
             AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
             AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
             AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
             AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
             AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
             AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+            
             {tag_condition}
             {region_condition}
         """
@@ -1119,6 +1148,12 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
+            "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
         ]
     )
     if selected_region:
@@ -1127,13 +1162,19 @@ def read_data():
             results,
             columns=[
                 "RUN",
-                "Region",
-                "Sitename",
-                "NoRun",
-                "METERID",
-                "VCtype",
-                "IPAddress",
-                "Port",
+            "Region",
+            "Sitename",
+            "NoRun",
+            "METERID",
+            "VCtype",
+            "IPAddress",
+            "Port",
+            "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
             ],
         )
         # ... (other code)
