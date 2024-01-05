@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
+    <title>Manual poll</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        
+        .btn {
+            align-items: center;
+            background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);
+        }
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .form-container {
+            margin: 20px;
+        }
+
+
+        .form-group label {
+            font-weight: bold;
+            font-size: small;
+            text-align: center;
+        }
+        .form-container {
+            border: 1px solid #fafafa;
+            border-radius: 5px;
+            box-shadow: 0px 2px 6px rgba(219, 176, 176, 0.1);
+            padding: 20px;
+            
+            background-color: white;
+        }
+        .btn-container {
+            position: absolute;
+            margin-left: 480px;
+            width: 205px;
+            margin-top: -300px;
+        }
+        
+        .btn-buttonElster {
+            margin-left: 1px;
+            position: absolute;
+            margin-top: 100px;
+        }
+        
+        .btn-buttonActaris {
+            margin-left: 1px;
+            position: absolute;
+            margin-top: 180px;
+        }
+        
+        .btn-button1 p {
+            display: flex;
+            position: absolute;
+            margin-left: 1px;
+            margin-top: 70px;
+        }
+        
+        .btn-button2 p {
+            display: flex;
+            position: absolute;
+            margin-left: 1px;
+            margin-top: 153px;
+        }
+        
+        .btn-warning {
+            position: absolute;
+            background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);
+        }
+        .btn-group {
+            margin-top: 10px;
+            justify-content: center;
+            gap: 10px;
+        }
+        /* สไตล์สำหรับช่องข้อมูลที่ใช้ความกว้างเต็มและมีพื้นหลัง */
+        
+        .full-width-input {
+            width: 100%;
+            height: 100%;
+            background-color: #0980f7;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .col-sm-9 {
+            display: grid;
+            top: -80px;
+            right: 0px;
+            width: 100px;
+        }
+        
+        #communicationTrafficContainer {
+            margin: -181px 0px 100px 1120px;
+        }
+        
+        #colSm9Container {
+            display: grid;
+            position: relative;
+            margin-bottom: -14px;
+        }
+        
+        .btn-primary1 {
+            position: sticky;
+            display: flex;
+            left: 770px;
+            top: 203px;
+        }
+        body {
+            
+           
+            padding: 2rem;
+            font-family: var(--font-family);
+            
+            background-image: linear-gradient(0deg, #ffffff 1%, #bef2f2 99%);
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .form-group label{
+            margin-bottom: 100px;
+           
+        }
+
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+    <h1>Manual poll</h1>
+
+    <div class="form-container">
+    <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
+
+            <label for="region_dropdown">Region:</label>
+            <select name="region_dropdown" id="region_dropdown">
+                {% for region_option in region_options %}
+                    <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
+                {% endfor %}
+            </select>
+            <label for="tag_dropdown">Site:</label>
+            <select name="tag_dropdown" id="tag_dropdown">
+                {% for tag_option in tag_options %}
+                    <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <form method="POST" action="/process_selected_rows">
+        {% if not df.empty %}
+            <table border="1" class="dataframe data">
+                <thead>
+                    <tr style="text-align: right;">
+                        <th>Select</th>
+                        <th>type</th>
+                        <th>RUN</th>
+                        <th>Region</th>
+                        <th>Sitename</th>
+                        <th>NoRun</th>
+                        <th>METERID</th>
+                        <th>VCtype</th>
+                        <th>IPAddress</th>
+                        <th>Port</th>
+                        <th>evc_type</th>
+                        <th>vc_name</th>
+                        <th>poll_billing</th>
+                        <th>poll_config</th>
+                        <th>poll_billing_enable</th>
+                        <th>poll_config_enable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for _, row in df.iterrows() %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_rows" value="{{ loop.index0 }}"></td>
+                            <td style="display: flex; height: 34px;">
+                                <select name="selected_rows_daily" class="poll-dropdown" data-index="{{ loop.index0 }}">
+                                    <option value="daily">Daily</option>
+                                    <option value="daily">config</option>
+                                    <!-- Add other options as needed -->
+                                </select>
+                            </td>
+                            <td>{{ row['RUN'] }}</td>
+                            <td>{{ row['Region'] }}</td>
+                            <td>{{ row['Sitename'] }}</td>
+                            <td>{{ row['NoRun'] }}</td>
+                            <td>{{ row['METERID'] }}</td>
+                            <td>{{ row['VCtype'] }}</td>
+                            <td>{{ row['IPAddress'] }}</td>
+                            <td>{{ row['Port'] }}</td>
+                            <td>{{ row['evc_type'] }}</td>
+                            <td>{{ row['vc_name'] }}</td>
+                            <td>{{ row['poll_billing'] }}</td>
+                            <td>{{ row['poll_config'] }}</td>
+                            <td>{{ row['poll_billing_enable'] }}</td>
+                            <td>{{ row['poll_config_enable'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </form>
+    
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('select.poll-dropdown');
+            const tcpIpInput = document.getElementById('tcp_ip');
+            const tcpPortInput = document.getElementById('tcp_port');
+    
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', () => {
+                    dropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.value = ""; // Clear other dropdowns
+                        }
+                    });
+    
+                    const selectedIndex = dropdown.selectedIndex;
+                    if (selectedIndex !== -1) {
+                        // Read the IPAddress and Port values from the corresponding row
+                        const rowIndex = dropdown.getAttribute('data-index');
+                        const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(15)`).textContent;
+                        const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
+    
+                        // Update the TCP IP and Port input fields with the values
+                        tcpIpInput.value = ipAddress;
+                        tcpPortInput.value = port;
+                    } else {
+                        // If no option is selected, clear the TCP IP and Port input fields
+                        tcpIpInput.value = "";
+                        tcpPortInput.value = "";
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            // Event listener for region dropdown change
+            $('#region_dropdown').change(function () {
+                console.log('Region dropdown changed');
+                var selectedRegion = $(this).val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_tags',
+                    data: { 'selected_region': selectedRegion },
+                    success: function (response) {
+                        console.log('Ajax request successful', response);
+
+                        // Sort tag options alphabetically
+                        response.tag_options.sort();
+
+                        // Update tag dropdown options based on the sorted response
+                        var tagDropdown = $('#tag_dropdown');
+                        tagDropdown.empty(); // Clear existing options
+
+                        // Add new options based on the sorted response
+                        for (var i = 0; i < response.tag_options.length; i++) {
+                            var tagOption = response.tag_options[i];
+                            tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error fetching tag options:', error);
+                    }
+                });
+            });
+        });
+        
+    </script>
+   
+   
+
+ <!-- Canvas -->
+ <canvas id="orbcanvas" class="orb-canvas"></canvas>
+ <!-- Overlay -->
+ <div class="overlay" id="overlay">
+
+     <!-- Overlay inner wrapper -->
+     <div class="overlay__inner">
+         <!-- Title -->
+
+         <!-- Description -->
+         <div class="list-container" id="listcontainer">
+
+             <div class="menu-icon-wrapper">
+
+             </div>
+            
+         </div>
+         
+         <div class="container-fluid" id="containerfluid" style="width: 30%;">
+             <div class="row">
+                 <div class="col-sm-6 offset-sm-3 pt-4">
+
+                     <form method="POST" id="modbusForm" >
+                         <div class="form-group" style="display: none;  ">
+                             <label for="slave_id" style="margin-bottom: 100px;">Slave ID</label>
+                             <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                         </div>
+
+                         <div class="form-group" style="display: none;">
+                             <label for="function_code" style="margin-bottom: 100px;">Function Code</label>
+                             <input type="number" class="form-control" id="function_code" name="function_code" value="3" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                         </div>
+
+                         <div class="form-group">
+                             <label for="starting_address">Starting Address</label>
+                             <select class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                   <option value="">Select an option...</option> 
+
+                   <option value="custom">Custom</option>
+                   <option value="8000">8000 ( daily elster)</option>
+                   <option value="7003">7003 ( config elster)</option>
+                   <option value="20482">20482 ( daily actaris)</option>
+                   <option value="32">32 (config actaris)</option>
+                   <!-- Option for custom input -->
+               </select>
+                         </div>
+                         <!-- Input field for custom value -->
+                         <div class="form-group">
+                             <label for="custom_starting_address">Custom Starting Address</label>
+                             <input type="number" class="form-control" id="custom_starting_address" name="custom_starting_address" style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                         </div>
+                         <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                        </div>
+                         <div class="form-group">
+                             <label for="tcp_ip">TCP IP</label>
+                             <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                         </div>
+                         <div class="form-group">
+                            <label for="tcp_port">TCP Port</label>
+                            <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" placeholder="Enter TCP Port">
+                        </div>
+                         <div class="btn-container" id="showDataButton">
+                             <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
+
+                             <button type="submit" id="changeTo16BitButton" class="btn btn-primary" name="is_16bit" value="true" data-state="data" style="height: 34px; width: 45%; font-size: x-small;border-radius: 0.5rem;border: none;">Change to 16-bit</button >
+
+               <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
+               <button type="submit" id="changeTo32BitButton" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
+                             <!-- <div class="btn-button1">
+                                 <p>Elster:</p>
+                             </div> -->
+                             <!-- <div class="btn-buttonElster"> -->
+                                 <!-- ... เพิ่มฟิลด์และปุ่มของ Elster ตามที่คุณต้องการ ... -->
+                                 <!-- <button type="submit" class="btn btn-secondary" value="false" style="height: 34px; width: 80px; font-size: x-small; border: none;border-radius: 0.5rem;">Daily Data</button>
+                                 <button type="submit" class="btn btn-secondary" value="false" style="height: 34px; width: 104px; font-size: x-small;border: none;border-radius: 0.5rem;">Configuration</button>
+                             </div> -->
+                             <!-- <div class="btn-button2">
+                                 <p>Actaris:</p>
+                             </div> -->
+                             <!-- ... เพิ่มฟิลด์และปุ่มของ Actaris ตามที่คุณต้องการ ... -->
+                            
+                             <div class="btn-buttonActaris">
+                                 <!-- <button type="submit" name="action_actaris" value="daily_data" style="height: 34px; width: 80px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a); ">
+                                         Daily Data
+                                     </button> -->
+                                 <button type="submit" name="action_configuration" value="configuration" style="height: 34px; width: 104px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
+                             </div>
+                             <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
+                         </div>
+                     </form>
+                     <div id="datePickerContainer"></div>
+                 </div>
+                 <div class="col-sm-3 t pt-2">
+                     </form>
+                 </div>
+                 <!-- <div class="btn-warning" style="top: 100px; position: relative;">
+                     <button type="button" class="btn btn-warning" onclick="clearForm()" id="clearFormButton" style="height: 34px; width: 190px; margin-left: 480px; margin-top: -350px; border: none;border-radius: 0.5rem;">Clear</button>
+                 </div> -->
+
+                 <!-- Buttons -->
+                 <div class="overlay__btns">
+                 </div>
+             </div>
+         </div>
+
+         <!-- partial -->
+
+     </div>
+ </div>
+
+ </div>
+
+
+ <div id="colSm9Container" class="col-sm-9">
+    <div class="table-responsive" style="width:25%; height: 100px; margin-right: 3500px;margin-top: 100px;">
+
+        {% if data_list %}
+        <h4>Data for {{ selected_date }}</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Address</th>
+                    <th>HEX Value</th>
+                    <th>Binary Value</th>
+                    <th>float_value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in data_list %}
+                    {% if "Address" not in data['description'] %}
+                        <tr>
+                            <td>{{ data['description'] }}</td>
+                            <td>{{ data['value'] }}</td>
+                            <td>{{ data['address'] }}</td>
+                            <td>{{ data['hex_value'] }}</td>
+                            <td>{{ data['binary_value'] }}</td>
+                            <td>
+                                {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
+                                %} {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                                {% else %} {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h4>Data is not available</h4>
+        {% endif %}
+    </div>
+</div>
+
+{% if communication_traffic %}
+    <div id="communicationTrafficContainer" class="communication-traffic">
+        <h4>Communication Traffic</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Direction</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in communication_traffic %}
+                    <tr>
+                        <td>{{ data['direction'] }}</td>
+                        <td>{{ data['data'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+
+
+
+
+
+
+
+ <script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
+        const tcpIpInput = document.getElementById('tcp_ip');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+
+                if (checkbox.checked) {
+                    // Read the IPAddress value from the corresponding row
+                    const rowIndex = checkbox.value;
+                    const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(9)`).textContent;
+
+                    // Update the TCP IP input field with the IPAddress value
+                    tcpIpInput.value = ipAddress;
+                } else {
+                    // If no checkbox is selected, clear the TCP IP input field
+                    tcpIpInput.value = "";
+                }
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
+        const tcpPortInput = document.getElementById('tcp_port');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach(otherCheckbox => {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+
+                if (checkbox.checked) {
+                    // Read the Port value from the corresponding row
+                    const rowIndex = checkbox.value;
+                    const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
+
+                    // Update the TCP Port input element with the Port value
+                    updateTcpPortInput(port);
+                } else {
+                    // If no checkbox is selected, reset the TCP Port input element
+                    resetTcpPortInput();
+                }
+            });
+        });
+
+        function updateTcpPortInput(port) {
+            // Set the value of the input element to the Port value
+            tcpPortInput.value = port;
+        }
+
+        function resetTcpPortInput() {
+            // Reset the value of the input element
+            tcpPortInput.value = "";
+        }
+    });
+</script>
+
+
+
+
+
+</body>
+
+</html>
