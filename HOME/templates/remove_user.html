@@ -3,14 +3,85 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
     <title>Edit User & Password</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        form {
+            max-width: 400px;
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .flash-messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-messages li');
+
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s';
+
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                }, 3000); // Adjust the timeout value (in milliseconds) as needed
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-    <h1>Edit User & Password</h1>
+    <h1>remove User & Password</h1>
 
     <!-- Dropdown for selecting users -->
     <select id="myDropdown">
@@ -18,22 +89,27 @@
 
     <!-- Form for editing user details -->
     <div id="details">
-        <form id="editForm" method="post" action="{{ url_for('edit_user_route') }}">
+        <form id="editForm" method="post" action="{{ url_for('remove_user_route') }}">
             <label for="description">Description:</label>
             <input type="text" id="description" name="description"><br>
             <label for="user_name">User Name:</label>
             <input type="text" id="user_name" name="user_name"><br>
             <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br>
+            <input type="password" id="password" name="password"><br>
             <label for="user_level">User Level:</label>
             <input type="text" id="user_level" name="user_level"><br>
 
             <!-- Update button -->
             <button type="submit">Save Changes</button>
-        </form>
 
-        <!-- Back to User List link -->
-        <a href="{{ url_for('index') }}">Back to User List</a>
+        </form>
+        <a href="{{ url_for('home') }}">Back to Home</a><br> {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li class="{{ message.category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
 
     </div>
 
