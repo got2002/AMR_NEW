@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
+    <title>Add User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .flash-messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-messages li');
+
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s';
+
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                }, 3000); // Adjust the timeout value (in milliseconds) as needed
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Add User</h1>
+    <form method="post" action="{{ url_for('add_user_route') }}">
+        <label for="description">Description:</label>
+        <input type="text" name="description" required>
+
+        <label for="user_name">Username:</label>
+        <input type="text" name="user_name" required>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+
+        <label for="user_level">User Level:</label>
+        <input type="number" name="user_level" required>
+
+        <input type="submit" value="Add User">
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                    <li class="{{ message.category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
