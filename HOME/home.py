@@ -102,13 +102,15 @@ def execute_query(query, params=None):
 ############  /connect database  #####################
 
 
+
+
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
-
-
 ############ / Home page  #####################
+
+
 
 
 ############  Add User  #####################
@@ -145,8 +147,9 @@ def add_user_route():
 ############  /Add User  #####################
 
 
-############  edit_user   #####################
 
+
+############  edit_user   #####################
 
 def get_data(filter_text=None, sort_column=None):
     try:
@@ -250,6 +253,9 @@ def edit_user_route():
 
 
 ############  /edit_user   #####################
+
+
+
 ############   /remove_user ###################
 
 
@@ -260,7 +266,6 @@ def edit_user_route():
 
 
 ############  View Billing Data   #####################
-
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
@@ -599,6 +604,8 @@ def billing_data():
 
 ############ / View Billing Data  #####################
 
+
+
 ############ Daily summary #####################
 @app.route("/Daily_summary")
 def Daily_summary():
@@ -671,6 +678,8 @@ WHERE
 
 
 ############ /Daily summary  #####################
+
+
 
 
 ############ sitedetail_data  #####################
@@ -755,6 +764,9 @@ WHERE
 
 
 ############ /sitedetail_data  #####################
+
+
+
 
 
 ############ Manualpoll_data  #####################
@@ -855,7 +867,7 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-
+    
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
