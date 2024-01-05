@@ -62,7 +62,7 @@
         .btn-buttonActaris {
             margin-left: 1px;
             position: absolute;
-            margin-top: 180px;
+            margin-top: 10px;
         }
         
         .btn-button1 p {
@@ -172,7 +172,7 @@
             <table border="1" class="dataframe data">
                 <thead>
                     <tr style="text-align: right;">
-                        <th>Select</th>
+                        
                         <th>type</th>
                         <th>RUN</th>
                         <th>Region</th>
@@ -182,22 +182,23 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th>evc_type</th>
-                        <th>vc_name</th>
-                        <th>poll_billing</th>
-                        <th>poll_config</th>
-                        <th>poll_billing_enable</th>
-                        <th>poll_config_enable</th>
+                        <th >evc_type</th>
+                        <th >vc_name</th>
+                        <th >poll_billing</th>
+                        <th >poll_config</th>
+                        <th >poll_billing_enable</th>
+                        <th >poll_config_enable</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for _, row in df.iterrows() %}
                         <tr>
-                            <td><input type="checkbox" name="selected_rows" value="{{ loop.index0 }}"></td>
-                            <td style="display: flex; height: 34px;">
-                                <select name="selected_rows_daily" class="poll-dropdown" data-index="{{ loop.index0 }}">
+                            
+                            <td id="dropdownCell{{ loop.index0 }}" class="dropdown-cell" style="display: flex; height: 34px; align-items: center; padding: 5px; border: 1px solid #f5f5f5a4; background-color: #f5f5f5a4;">
+                                <select name="selected_rows_daily" class="poll-dropdown" data-index="{{ loop.index0 }}" style="width: 100%; height: 100%; border: none; outline: none; background-color: inherit; font-size: 14px;" onchange="changeCellColor(this)">
+                                    <option value=""> -Select an option-</option>
                                     <option value="daily">Daily</option>
-                                    <option value="daily">config</option>
+                                    <option value="config">Config</option>
                                     <!-- Add other options as needed -->
                                 </select>
                             </td>
@@ -209,12 +210,12 @@
                             <td>{{ row['VCtype'] }}</td>
                             <td>{{ row['IPAddress'] }}</td>
                             <td>{{ row['Port'] }}</td>
-                            <td>{{ row['evc_type'] }}</td>
-                            <td>{{ row['vc_name'] }}</td>
-                            <td>{{ row['poll_billing'] }}</td>
-                            <td>{{ row['poll_config'] }}</td>
-                            <td>{{ row['poll_billing_enable'] }}</td>
-                            <td>{{ row['poll_config_enable'] }}</td>
+                            <td >{{ row['evc_type'] }}</td>
+                            <td >{{ row['vc_name'] }}</td>
+                            <td >{{ row['poll_billing'] }}</td>
+                            <td >{{ row['poll_config'] }}</td>
+                            <td >{{ row['poll_billing_enable'] }}</td>
+                            <td >{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -225,38 +226,125 @@
     </form>
     
     
+  
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdowns = document.querySelectorAll('select.poll-dropdown');
-            const tcpIpInput = document.getElementById('tcp_ip');
-            const tcpPortInput = document.getElementById('tcp_port');
-    
-            dropdowns.forEach(dropdown => {
-                dropdown.addEventListener('change', () => {
-                    dropdowns.forEach(otherDropdown => {
-                        if (otherDropdown !== dropdown) {
-                            otherDropdown.value = ""; // Clear other dropdowns
-                        }
-                    });
-    
-                    const selectedIndex = dropdown.selectedIndex;
-                    if (selectedIndex !== -1) {
-                        // Read the IPAddress and Port values from the corresponding row
-                        const rowIndex = dropdown.getAttribute('data-index');
-                        const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(15)`).textContent;
-                        const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
-    
-                        // Update the TCP IP and Port input fields with the values
-                        tcpIpInput.value = ipAddress;
-                        tcpPortInput.value = port;
-                    } else {
-                        // If no option is selected, clear the TCP IP and Port input fields
-                        tcpIpInput.value = "";
-                        tcpPortInput.value = "";
-                    }
-                });
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('select.poll-dropdown');
+    const startingAddressInput = document.getElementById('starting_address');
+    const quantityInput = document.getElementById('quantity');
+    const tcpIpInput = document.getElementById('tcp_ip');
+    const tcpPortInput = document.getElementById('tcp_port');
+
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('change', () => {
+            dropdowns.forEach(otherDropdown => {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.value = ""; // Clear other dropdowns
+                }
             });
+
+            const selectedIndex = dropdown.selectedIndex;
+            if (selectedIndex !== -1) {
+                const rowIndex = parseInt(dropdown.getAttribute('data-index'));
+                const selectedOption = dropdown.options[selectedIndex].value;
+
+                let startingAddressValue = "";
+                let quantityValue = "";
+
+                if (selectedOption === "daily") {
+                    const checkValue = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(14)`).textContent;
+
+                    // Check if the value in td:nth-child(14) is "1"
+                    if (checkValue.includes("1")) {
+                        const dataFromTd12 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(12)`).textContent;
+
+                        // Extract the first even pair
+                        const evenPairs = dataFromTd12.match(/(\d+),(\d+)/);
+
+                        if (evenPairs && evenPairs.length > 2) {
+                    // Take the first match
+                    startingAddressValue = evenPairs[1]; // เลือกตัวที่ 1 (กลุ่มที่ 1)
+                    quantityValue = evenPairs[2]; // เลือกตัวที่ 2 (กลุ่มที่ 2)
+                }        
+                    }
+                }
+                if (selectedOption === "config") {
+    const positionValues = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(15)`).textContent.split(',');
+
+    // If there is a "1" in td:nth-child(15)
+    if (positionValues.includes('1')) {
+        // Get the indices of the added values
+        const indicesOfOne = positionValues.reduce((result, value, index) => {
+            if (value === '1') {
+                result.push(index);
+            }
+            return result;
+        }, []);
+
+        // Choose the groups based on the indices
+        const dataFromTd13 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(13)`).textContent;
+        const groups = dataFromTd13.split(',').reduce((result, value, index) => {
+            const groupIndex = Math.floor(index / 2);
+            if (!result[groupIndex]) {
+                result[groupIndex] = [];
+            }
+            result[groupIndex].push(parseInt(value));
+            return result;
+        }, []);
+
+        // Set the startingAddressValue and quantityValue based on the indices
+        if (indicesOfOne.length === 1) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[0]][1];
+        } else if (indicesOfOne.length === 2) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[1]][1];
+        } else if (indicesOfOne.length === 3) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[2]][1];
+        } else if (indicesOfOne.length === 4) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[3]][1];
+        } else if (indicesOfOne.length === 5) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[4]][1];
+        }
+
+        // Display the results
+        console.log("Starting Address:", startingAddressValue);
+        console.log("Quantity:", quantityValue);
+    }
+}
+
+
+
+
+                
+                // Update starting_address and quantity
+                startingAddressInput.value = startingAddressValue;
+                quantityInput.value = quantityValue;
+
+                // Update tcp_ip and tcp_port
+                const ipAddress = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(8)`).textContent;
+                const port = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(9)`).textContent;
+
+                tcpIpInput.value = ipAddress;
+                tcpPortInput.value = port;
+            } else {
+                // If no option is selected, clear the Starting Address, Quantity, IP, and Port input fields
+                startingAddressInput.value = "";
+                quantityInput.value = "";
+                tcpIpInput.value = "";
+                tcpPortInput.value = "";
+            }
         });
+    });
+});
+
+
+
+
+
     </script>
     
     <script>
@@ -332,25 +420,24 @@
 
                          <div class="form-group">
                              <label for="starting_address">Starting Address</label>
-                             <select class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                             <input type="text"class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                             
+                             <!-- <select class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
                    <option value="">Select an option...</option> 
 
                    <option value="custom">Custom</option>
                    <option value="8000">8000 ( daily elster)</option>
                    <option value="7003">7003 ( config elster)</option>
                    <option value="20482">20482 ( daily actaris)</option>
-                   <option value="32">32 (config actaris)</option>
-                   <!-- Option for custom input -->
+                   <option value="32">32 (config actaris)</option> -->
+                   
                </select>
                          </div>
                          <!-- Input field for custom value -->
-                         <div class="form-group">
-                             <label for="custom_starting_address">Custom Starting Address</label>
-                             <input type="number" class="form-control" id="custom_starting_address" name="custom_starting_address" style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                         </div>
+                         
                          <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                            <input type="text" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
                         </div>
                          <div class="form-group">
                              <label for="tcp_ip">TCP IP</label>
@@ -384,7 +471,7 @@
                                  <!-- <button type="submit" name="action_actaris" value="daily_data" style="height: 34px; width: 80px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a); ">
                                          Daily Data
                                      </button> -->
-                                 <button type="submit" name="action_configuration" value="configuration" style="height: 34px; width: 104px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
+                                 <button type="submit" name="action_configuration" value="configuration" style=" height: 34px; width: 185px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
                              </div>
                              <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
                          </div>
@@ -485,7 +572,7 @@
 
 
 
- <script>
+ <!-- <script>
     
     document.addEventListener('DOMContentLoaded', function () {
         const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
@@ -552,7 +639,7 @@
         }
     });
 </script>
-
+ -->
 
 
 

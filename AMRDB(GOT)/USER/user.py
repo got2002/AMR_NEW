@@ -168,7 +168,7 @@ def edit_user_route():
 
     if not user_data:
         flash("User not found!", "error")
-        return redirect(url_for("index"))
+        return render_template("edit_user.html")
 
     # ถ้ามีการส่งค่า POST (คือการบันทึกการแก้ไข)
     if request.method == "POST":
@@ -182,18 +182,63 @@ def edit_user_route():
         hashed_password = md5_hash(password)
 
         # สร้างคำสั่ง SQL สำหรับการแก้ไขข้อมูลผู้ใช้
-        update_query = "UPDATE AMR_USER_TESTS SET description = :1, user_name = :2, password = :3 WHERE user_level = :4"
-        update_params = (description, user_name, hashed_password, user_level)
+        update_query = "UPDATE AMR_USER_TESTS SET description = :1, user_name = :2, password = :3, user_level = :4 WHERE description = :5"
+        update_params = (
+            description,
+            user_name,
+            hashed_password,
+            user_level,
+            description,
+        )
 
         # ทำการ execute คำสั่ง SQL และ commit การแก้ไข user_name
         if execute_query(update_query, update_params):
-            flash("User updated successfully!", "success")
-            return redirect(url_for("index"))
+            return render_template("edit_user.html", user_data=user_data)
         else:
             flash("Failed to update user. Please try again.", "error")
 
     # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
     return render_template("edit_user.html", user_data=user_data)
+
+
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user_route():
+    # ดึงข้อมูลผู้ใช้จาก Oracle
+    query = "SELECT DESCRIPTION, USER_NAME, USER_LEVEL, USER_ENABLE FROM AMR_USER_TESTS"
+    user_data = fetch_data(query)
+
+    if not user_data:
+        flash("Users not found!", "error")
+        return redirect(url_for("index"))
+
+    # ถ้ามีการส่งค่า POST (คือการเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้)
+    if request.method == "POST":
+        # ดึงข้อมูลจากฟอร์มเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้
+        new_status = request.form.get("status")
+        user_name = request.form.get("user_name")  # ดึง user_name จากฟอร์ม
+
+        # ตรวจสอบว่าสถานะที่เลือกถูกต้อง
+        if new_status not in ["active", "inactive"]:
+            flash("Invalid status selected.", "error")
+            return redirect(url_for("remove_user_route"))
+
+        # แปลงสถานะเป็นเลข (0 หรือ 1) ที่จะบันทึกลงในฐานข้อมูล Oracle
+        status_mapping = {"active": 1, "inactive": 0}
+        new_status_numeric = status_mapping[new_status]
+
+        # สร้างคำสั่ง SQL สำหรับการอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        update_query = "UPDATE AMR_USER_TESTS SET USER_ENABLE = :1 WHERE USER_NAME = :2"
+        update_params = (new_status_numeric, user_name)
+
+        # ทำการ execute คำสั่ง SQL และ commit การอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        if execute_query(update_query, update_params):
+            flash("User status updated successfully!", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Failed to update user status. Please try again.", "error")
+
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template("remove_user.html", user_data=user_data)
 
 
 if __name__ == "__main__":
