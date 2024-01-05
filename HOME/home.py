@@ -33,6 +33,7 @@ import cx_Oracle
 app = Flask(__name__)
 
 app.secret_key = "your_secret_key_here"
+
 # Replace these values with your actual database credentials
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
@@ -54,9 +55,6 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 def md5_hash(input_string):
     # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
-
-
-app.secret_key = "your_secret_key_here"
 
 
 ############  connect database  #####################
@@ -256,6 +254,10 @@ def edit_user_route():
 
 
 ############   /remove_user ###################
+
+
+
+
 
 ############  View Billing Data   #####################
 
@@ -597,6 +599,79 @@ def billing_data():
 
 ############ / View Billing Data  #####################
 
+############ Daily summary #####################
+@app.route("/Daily_summary")
+def Daily_summary():
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # SQL query for main data
+    query = """
+    SELECT DISTINCT
+    amr_field_id.TAG_ID as SITE
+FROM
+    AMR_FIELD_ID, AMR_PL_group, AMR_RMIU_TYPE, amr_region
+    
+WHERE
+    AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+  {region_condition}
+    """
+    # Get selected values from the dropdowns
+    selected_region = request.args.get("region_dropdown")
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Initialize the query with a condition that is always true
+    region_condition = "AND 1 = 1"
+
+    # Fetch tag options based on the selected region
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(region_condition=region_condition)
+
+    # Check if a region is selected before executing the query
+    if selected_region:
+        # ใช้ fetch_data function ในการดึงข้อมูล
+        results = fetch_data(query)
+
+        # ใช้ pandas ในการสร้าง DataFrame
+        df = pd.DataFrame(results, columns=["SITE"])
+        # ลบคอลัมน์ที่ไม่ต้องการ
+        df = df.applymap(lambda x: x.replace("\n", "") if isinstance(x, str) else x)
+
+        # Sort DataFrame by the 'SITE' column (adjust as needed)
+        df = df.sort_values(by="SITE")
+
+        # ส่ง DataFrame ไปยัง HTML template
+        return render_template(
+            "Daily_summary.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=df.columns.values,
+            selected_region=selected_region,
+            region_options=region_options,
+        )
+    else:
+        # Render the template without executing the query
+        return render_template(
+            "Daily_summary.html",
+            selected_region=selected_region,
+            region_options=region_options,
+            tables=[],
+        )
+
+
+############ /Daily summary  #####################
+
 
 ############ sitedetail_data  #####################
 
@@ -682,80 +757,6 @@ WHERE
 ############ /sitedetail_data  #####################
 
 
-############ Daily summary #####################
-@app.route("/Daily_summary")
-def Daily_summary():
-    # SQL query to fetch unique PL_REGION_ID values
-    region_query = """
-    SELECT * FROM AMR_REGION 
-    """
-
-    # Fetch unique region values
-    region_results = fetch_data(region_query)
-    region_options = [str(region[0]) for region in region_results]
-
-    # SQL query for main data
-    query = """
-    SELECT DISTINCT
-    amr_field_id.TAG_ID as SITE
-FROM
-    AMR_FIELD_ID, AMR_PL_group, AMR_RMIU_TYPE, amr_region
-    
-WHERE
-    AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-  {region_condition}
-    """
-    # Get selected values from the dropdowns
-    selected_region = request.args.get("region_dropdown")
-
-    # Fetch unique region values
-    region_results = fetch_data(region_query)
-    region_options = [str(region[0]) for region in region_results]
-
-    # Initialize the query with a condition that is always true
-    region_condition = "AND 1 = 1"
-
-    # Fetch tag options based on the selected region
-    if selected_region:
-        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-
-    # Modify the query with the selected conditions
-    query = query.format(region_condition=region_condition)
-
-    # Check if a region is selected before executing the query
-    if selected_region:
-        # ใช้ fetch_data function ในการดึงข้อมูล
-        results = fetch_data(query)
-
-        # ใช้ pandas ในการสร้าง DataFrame
-        df = pd.DataFrame(results, columns=["SITE"])
-        # ลบคอลัมน์ที่ไม่ต้องการ
-        df = df.applymap(lambda x: x.replace("\n", "") if isinstance(x, str) else x)
-
-        # Sort DataFrame by the 'SITE' column (adjust as needed)
-        df = df.sort_values(by="SITE")
-
-        # ส่ง DataFrame ไปยัง HTML template
-        return render_template(
-            "Daily_summary.html",
-            tables=[df.to_html(classes="data", index=False)],
-            titles=df.columns.values,
-            selected_region=selected_region,
-            region_options=region_options,
-        )
-    else:
-        # Render the template without executing the query
-        return render_template(
-            "Daily_summary.html",
-            selected_region=selected_region,
-            region_options=region_options,
-            tables=[],
-        )
-
-
-############ /Daily summary  #####################
-
-
 ############ Manualpoll_data  #####################
 @app.route("/Manualpoll_data")
 def Manualpoll_data():
@@ -781,7 +782,8 @@ def Manualpoll_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port,
+            
+             AMR_PORT_INFO.PORT_NO as port,
             amr_poll_range.evc_type as evc_type,
     
    amr_vc_type.vc_name as vc_name ,
@@ -789,7 +791,6 @@ def Manualpoll_data():
     amr_poll_range.poll_config as poll_config,
     amr_poll_range.poll_billing_enable as poll_billing_enable ,
    amr_poll_range.poll_config_enable as poll_config_enable
-
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -798,7 +799,7 @@ def Manualpoll_data():
             AMR_PL_GROUP,
             AMR_VC_TYPE,
             AMR_PORT_INFO,
-           amr_poll_range
+            amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
             amr_vc_type.id=amr_poll_range.evc_type AND
@@ -808,7 +809,6 @@ def Manualpoll_data():
             AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
             AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
             AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
-            
             {tag_condition}
             {region_condition}
         """
@@ -847,7 +847,7 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
-            "evc_type",
+             "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1143,6 +1143,7 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
+    
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1166,7 +1167,8 @@ def read_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port,
+            
+             AMR_PORT_INFO.PORT_NO as port,
             amr_poll_range.evc_type as evc_type,
     
    amr_vc_type.vc_name as vc_name ,
@@ -1174,7 +1176,6 @@ def read_data():
     amr_poll_range.poll_config as poll_config,
     amr_poll_range.poll_billing_enable as poll_billing_enable ,
    amr_poll_range.poll_config_enable as poll_config_enable
-
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -1183,7 +1184,7 @@ def read_data():
             AMR_PL_GROUP,
             AMR_VC_TYPE,
             AMR_PORT_INFO,
-           amr_poll_range
+            amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
             amr_vc_type.id=amr_poll_range.evc_type AND
@@ -1193,7 +1194,6 @@ def read_data():
             AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
             AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
             AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
-            
             {tag_condition}
             {region_condition}
         """
@@ -1229,7 +1229,7 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
-            "evc_type",
+             "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1250,12 +1250,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
-                "evc_type",
-                "vc_name",
-                "poll_billing",
-                "poll_config",
-                "poll_billing_enable",
-                "poll_config_enable",
+                 "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
             ],
         )
         # ... (other code)
