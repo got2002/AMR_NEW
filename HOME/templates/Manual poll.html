@@ -185,12 +185,12 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th >evc_type</th>
-                        <th >vc_name</th>
-                        <th >poll_billing</th>
-                        <th >poll_config</th>
-                        <th >poll_billing_enable</th>
-                        <th >poll_config_enable</th>
+                        <th style="display: none;">evc_type</th>
+                        <th style="display: none;">vc_name</th>
+                        <th style="display: none;">poll_billing</th>
+                        <th style="display: none;">poll_config</th>
+                        <th style="display: none;">poll_billing_enable</th>
+                        <th style="display: none;">poll_config_enable</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -213,12 +213,12 @@
                             <td>{{ row['VCtype'] }}</td>
                             <td>{{ row['IPAddress'] }}</td>
                             <td>{{ row['Port'] }}</td>
-                            <td >{{ row['evc_type'] }}</td>
-                            <td >{{ row['vc_name'] }}</td>
-                            <td >{{ row['poll_billing'] }}</td>
-                            <td >{{ row['poll_config'] }}</td>
-                            <td >{{ row['poll_billing_enable'] }}</td>
-                            <td >{{ row['poll_config_enable'] }}</td>
+                            <td style="display: none;">{{ row['evc_type'] }}</td>
+                            <td style="display: none;">{{ row['vc_name'] }}</td>
+                            <td style="display: none;">{{ row['poll_billing'] }}</td>
+                            <td style="display: none;">{{ row['poll_config'] }}</td>
+                            <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
+                            <td style="display: none;">{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -255,74 +255,50 @@ document.addEventListener('DOMContentLoaded', function () {
                 let quantityValue = "";
 
                 if (selectedOption === "daily") {
-                    const checkValue = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(14)`).textContent;
+    const positionValues = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(14)`).textContent.split(',');
 
-                    // Check if the value in td:nth-child(14) is "1"
-                    if (checkValue.includes("1")) {
-                        const dataFromTd12 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(12)`).textContent;
-
-                        // Extract the first even pair
-                        const evenPairs = dataFromTd12.match(/(\d+),(\d+)/);
-
-                        if (evenPairs && evenPairs.length > 2) {
-                    // Take the first match
-                    startingAddressValue = evenPairs[1]; // เลือกตัวที่ 1 (กลุ่มที่ 1)
-                    quantityValue = evenPairs[2]; // เลือกตัวที่ 2 (กลุ่มที่ 2)
-                }        
-                    }
-                }
-                if (selectedOption === "config") {
-    const positionValues = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(15)`).textContent.split(',');
-
-    // If there is a "1" in td:nth-child(15)
     if (positionValues.includes('1')) {
-        // Get the indices of the added values
-        const indicesOfOne = positionValues.reduce((result, value, index) => {
-            if (value === '1') {
-                result.push(index);
-            }
-            return result;
-        }, []);
+        const indicesOfOne = positionValues.reduce((result, value, index) => (value === '1' ? result.concat(index) : result), []);
 
-        // Choose the groups based on the indices
-        const dataFromTd13 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(13)`).textContent;
-        const groups = dataFromTd13.split(',').reduce((result, value, index) => {
-            const groupIndex = Math.floor(index / 2);
-            if (!result[groupIndex]) {
-                result[groupIndex] = [];
+        const dataFromTd12 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(12)`).textContent;
+        const groups = dataFromTd12.split(',').reduce((result, value) => {
+            const lastGroup = result[result.length - 1];
+            if (lastGroup && lastGroup.length < 2) {
+                lastGroup.push(parseInt(value));
+            } else {
+                result.push([parseInt(value)]);
             }
-            result[groupIndex].push(parseInt(value));
             return result;
         }, []);
 
         // Set the startingAddressValue and quantityValue based on the indices
-        if (indicesOfOne.length === 1) {
-            startingAddressValue = groups[indicesOfOne[0]][0];
-            quantityValue = groups[indicesOfOne[0]][1];
-        } else if (indicesOfOne.length === 2) {
-            startingAddressValue = groups[indicesOfOne[0]][0];
-            quantityValue = groups[indicesOfOne[1]][1];
-        } else if (indicesOfOne.length === 3) {
-            startingAddressValue = groups[indicesOfOne[0]][0];
-            quantityValue = groups[indicesOfOne[2]][1];
-        } else if (indicesOfOne.length === 4) {
-            startingAddressValue = groups[indicesOfOne[0]][0];
-            quantityValue = groups[indicesOfOne[3]][1];
-        } else if (indicesOfOne.length === 5) {
-            startingAddressValue = groups[indicesOfOne[0]][0];
-            quantityValue = groups[indicesOfOne[4]][1];
-        }
-
-        // Display the results
-        console.log("Starting Address:", startingAddressValue);
-        console.log("Quantity:", quantityValue);
+        const maxIndex = Math.min(indicesOfOne.length - 1, 9); // Adjust the max index if needed
+        startingAddressValue = groups[indicesOfOne[0]][0];
+        quantityValue = groups[indicesOfOne[maxIndex]][1];
     }
 }
 
+if (selectedOption === "config") {
+    const positionValues = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(15)`).textContent.split(',');
 
+    if (positionValues.includes('1')) {
+        const indicesOfOne = positionValues.reduce((result, value, index) => (value === '1' ? result.concat(index) : result), []);
 
+        const dataFromTd13 = document.querySelector(`tbody tr:nth-child(${rowIndex + 1}) td:nth-child(13)`).textContent;
+        const groups = dataFromTd13.split(',').reduce((result, value, index) => {
+            const groupIndex = Math.floor(index / 2);
+            result[groupIndex] = result[groupIndex] || [];
+            result[groupIndex].push(parseInt(value));
+            return result;
+        }, []);
 
-                
+        if (indicesOfOne.length > 0 && indicesOfOne.length <= groups.length) {
+            startingAddressValue = groups[indicesOfOne[0]][0];
+            quantityValue = groups[indicesOfOne[indicesOfOne.length - 1]][1];
+        }
+    }
+}
+
                 // Update starting_address and quantity
                 startingAddressInput.value = startingAddressValue;
                 quantityInput.value = quantityValue;
