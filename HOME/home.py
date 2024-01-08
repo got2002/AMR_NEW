@@ -5,6 +5,7 @@ from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
+
 from flask import (
     Flask,
     render_template,
@@ -426,7 +427,7 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    region_condition = "AND 1 = 1"  # This line seems unnecessary; it sets region_condition to a constant value
+    
 
     # Modify the query with the selected conditions
     query = query.format(
@@ -464,19 +465,21 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
+            
+
+# เพิ่มเนื้อหา HTML สำหรับกราฟ
+            
             return render_template(
-                "billingdata.html",
-                tables={
-                    "config_data": None,
-                    "daily_data": df.to_html(classes="data", index=False),
-                },
-                titles=df.columns.values,
-                selected_date=selected_date,
-                selected_tag=selected_tag,
-                selected_region=selected_region,
-                region_options=region_options,
-                tag_options=tag_options,
-            )
+    "billingdata.html",
+    tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
+    titles=df.columns.values,
+    selected_date=selected_date,
+    selected_tag=selected_tag,
+    selected_region=selected_region,
+    region_options=region_options,
+    tag_options=tag_options,
+    
+)
 
         elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
