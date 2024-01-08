@@ -205,12 +205,12 @@
             }
 
             fetch('/save_to_oracle', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
@@ -221,7 +221,6 @@
                     document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
                 });
         }
-
     </script>
 </body>
 
