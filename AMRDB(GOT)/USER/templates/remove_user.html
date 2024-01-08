@@ -28,9 +28,12 @@
 
             <label for="status">Status:</label>
             <select id="status" name="status">
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-        </select><br>
+                <option value="inactive">Inactive</option>
+                <option value="active">Active</option>
+                
+    
+
+</select><br>
 
             <!-- Update button -->
             <button type="submit">Save Changes</button>
@@ -72,9 +75,29 @@
                 $('#details #description').val(selectedData.description);
                 $('#details #user_name').val(selectedData.user_name);
                 $('#details #user_level').val(selectedData.user_level);
-                $('#show #status').val(selectedData.user_enabel);
+
+                // Convert user_enable to readable text
+                var statusText = selectedData.user_enable === 1 ? 'Active' : 'Inactive';
+                $('#Show #status').val(statusText);
+
+                // สลับค่าใน Dropdown เมื่อแสดงรายละเอียด
+                swapDropdownValues(statusText);
             }
 
+            function swapDropdownValues(statusText) {
+                var dropdown = $('#myDropdown');
+                var activeOption = dropdown.find('option[value="active"]');
+                var inactiveOption = dropdown.find('option[value="inactive"]');
+
+                // สลับค่าใน Dropdown
+                if (statusText === 'Active') {
+                    activeOption.prop('selected', true);
+                    inactiveOption.prop('selected', false);
+                } else {
+                    inactiveOption.prop('selected', false);
+                    activeOption.prop('selected', true);
+                }
+            }
         });
     </script>
 
