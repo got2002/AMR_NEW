@@ -469,22 +469,32 @@ def billing_data():
             
 
 # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            df = df.sort_values(by="DATA_DATE", ascending=True)
+
             fig = px.line(
-            
                 df,
                 x="DATA_DATE",
-                y=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
+                y=["Temperature"],
                 title="Daily Data",
             )
 
-            # ปรับแต่งรายละเอียดต่าง ๆ ของกราฟ
             fig.update_layout(
                 xaxis_title="Date",
                 yaxis_title="Values",
                 legend_title="Variables",
                 hovermode="x unified",
                 template="plotly_white",
+                yaxis=dict(
+                    type='linear',
+                    title='Values',
+                    range=[24, 30]  # Set your desired y-axis range here
+                ),
             )
+
+            # Adjusting line shape for a smoother appearance
+            fig.update_traces(line_shape='linear', mode='lines+markers', marker=dict(symbol='circle', size=6))
+
+            
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
