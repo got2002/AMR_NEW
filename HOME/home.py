@@ -468,10 +468,28 @@ def billing_data():
             
 
 # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            fig = px.line(df, x="DATA_DATE", y=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"], title="Daily Data")
+            fig = px.line(
+                df,
+                x="DATA_DATE",
+                y=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
+                title="Daily Data",
+                labels={"value": "Values"},
+            )
 
-# เพิ่มเนื้อหา HTML สำหรับกราฟ
-            graph_html = fig.to_html(full_html=False)
+            # ปรับแต่งรายละเอียดต่าง ๆ ของกราฟ
+            fig.update_layout(
+                xaxis_title="Date",
+                yaxis_title="Values",
+                legend_title="Variables",
+                hovermode="x unified",
+                template="plotly_white",  # ใช้ template สีขาว
+            )
+
+            # ปรับแต่งสีแต่ละเส้น
+            fig.update_traces(
+                line=dict(width=2),  # ปรับขนาดของเส้น
+                hovertemplate="<b>%{y}</b><br>%{x}<extra></extra>",  # ปรับรายละเอียดใน hover
+            )
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
@@ -483,7 +501,7 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
-                graph=graph_html  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
+                graph=fig.to_html(full_html=False),  # ใช้ fig.to_html เพื่อให้เก็บการปรับแต่ง
             )
 
         elif query_type == "config_data":
