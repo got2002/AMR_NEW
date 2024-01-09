@@ -103,15 +103,13 @@ def execute_query(query, params=None):
 ############  /connect database  #####################
 
 
-
-
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 ############ / Home page  #####################
-
-
 
 
 ############  Add User  #####################
@@ -148,9 +146,8 @@ def add_user_route():
 ############  /Add User  #####################
 
 
-
-
 ############  edit_user   #####################
+
 
 def get_data(filter_text=None, sort_column=None):
     try:
@@ -256,17 +253,14 @@ def edit_user_route():
 ############  /edit_user   #####################
 
 
-
 ############   /remove_user ###################
 
 
 ############   /remove_user ###################
-
-
-
 
 
 ############  View Billing Data   #####################
+
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
@@ -427,8 +421,6 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    
-
     # Modify the query with the selected conditions
     query = query.format(
         billing_date_condition=billing_date_condition,
@@ -466,18 +458,34 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            
 
+<<<<<<< HEAD
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            fig = px.line(
+=======
 # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
             fig = px.line(
+<<<<<<< HEAD
+            
+>>>>>>> 74a49749f67470a3ea3962dcaa428bfc1037936c
+=======
+>>>>>>> a907ee8e3e76f93acf6ab3e7f841688712cef88d
                 df,
                 x="DATA_DATE",
                 y=["Temperature"],
                 title="Daily Data",
             )
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            graph_html = fig.to_html(full_html=False)
+=======
+            # ปรับแต่งรายละเอียดต่าง ๆ ของกราฟ
+=======
+>>>>>>> a907ee8e3e76f93acf6ab3e7f841688712cef88d
             fig.update_layout(
                 xaxis_title="Date",
                 yaxis_title="Values",
@@ -489,6 +497,7 @@ def billing_data():
                     title='Values',
                 ),
             )
+>>>>>>> 74a49749f67470a3ea3962dcaa428bfc1037936c
 
             # Adjusting line shape for a smoother appearance
             fig.update_traces(line_shape='linear', mode='lines+markers', marker=dict(symbol='circle', size=6))
@@ -498,14 +507,21 @@ def billing_data():
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
-                tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
+                tables={
+                    "config_data": None,
+                    "daily_data": df.to_html(classes="data", index=False),
+                },
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
+<<<<<<< HEAD
+                graph=graph_html,  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
+=======
                 graph=fig.to_html(full_html=False),
+>>>>>>> 74a49749f67470a3ea3962dcaa428bfc1037936c
             )
 
         elif query_type == "config_data":
@@ -636,7 +652,6 @@ def billing_data():
 ############ / View Billing Data  #####################
 
 
-
 ############ Daily summary #####################
 @app.route("/Daily_summary")
 def Daily_summary():
@@ -709,8 +724,6 @@ WHERE
 
 
 ############ /Daily summary  #####################
-
-
 
 
 ############ sitedetail_data  #####################
@@ -795,9 +808,6 @@ WHERE
 
 
 ############ /sitedetail_data  #####################
-
-
-
 
 
 ############ Manualpoll_data  #####################
@@ -890,7 +900,7 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -898,7 +908,7 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-    
+
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -1053,7 +1063,6 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1139,7 +1148,7 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1160,12 +1169,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
-                 "evc_type",
-            "vc_name",
-            "poll_billing",
-            "poll_config",
-            "poll_billing_enable",
-            "poll_config_enable",
+                "evc_type",
+                "vc_name",
+                "poll_billing",
+                "poll_config",
+                "poll_billing_enable",
+                "poll_config_enable",
             ],
         )
         # ... (other code)
