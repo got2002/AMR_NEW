@@ -487,7 +487,6 @@ def billing_data():
                 yaxis=dict(
                     type='linear',
                     title='Values',
-                    range=[24, 30]  # Set your desired y-axis range here
                 ),
             )
 
