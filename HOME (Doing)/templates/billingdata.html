@@ -22,6 +22,11 @@
             margin: 0 auto;
             padding: 20px;
         }
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
         table {
             border-collapse: collapse;
@@ -69,24 +74,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        .legend {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            border-radius: 50%;
-        }
     </style>
 </head>
 
@@ -94,7 +81,7 @@
 
 
 <body>
-    <div class="main2" id="main2">
+    <div class="main" id="main">
         <img class="imgpttlogo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="AMR Logo" />
@@ -137,24 +124,7 @@
             <div class="plot-container">
                 {{ graph|safe }}
                 {% endif %}
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: blue;"></div>
-                        <span>CORRECTED</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: red;"></div>
-                        <span>UNCORRECTED</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: orange;"></div>
-                        <span>Pressure</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: green;"></div>
-                        <span>Temperature</span>
-                    </div>
-                </div>
+
             </div>
 
             <div>
