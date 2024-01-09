@@ -5,7 +5,7 @@ from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
-
+import plotly.express as px
 from flask import (
     Flask,
     render_template,
@@ -468,18 +468,23 @@ def billing_data():
             
 
 # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            
+            fig = px.line(df, x="DATA_DATE", y=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"], title="Daily Data")
+
+# เพิ่มเนื้อหา HTML สำหรับกราฟ
+            graph_html = fig.to_html(full_html=False)
+
+            # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
-    "billingdata.html",
-    tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
-    titles=df.columns.values,
-    selected_date=selected_date,
-    selected_tag=selected_tag,
-    selected_region=selected_region,
-    region_options=region_options,
-    tag_options=tag_options,
-    
-)
+                "billingdata.html",
+                tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
+                titles=df.columns.values,
+                selected_date=selected_date,
+                selected_tag=selected_tag,
+                selected_region=selected_region,
+                region_options=region_options,
+                tag_options=tag_options,
+                graph=graph_html  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
+            )
 
         elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
