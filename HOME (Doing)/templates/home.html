@@ -10,7 +10,7 @@
     <link rel="icon"
         href="https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/PTT_Public_Company_logo.svg/1200px-PTT_Public_Company_logo.svg.png"
         sizes="192x192" type="image/png">
-    <title>WELCOME TO THE AMR</title>
+    <title>ASGS</title>
 </head>
 
 <style>
@@ -28,7 +28,7 @@
     }
 
     .header {
-        background-color: #333;
+        background-image: linear-gradient(to right, #0048a7, #6ac3fb);
         overflow: hidden;
         color: white;
         text-align: right;
@@ -68,6 +68,7 @@
         width: 250px;
         height: 100vh;
         background-color: #221f1f;
+        background-image: linear-gradient(to right, #0048a7, #abdfff);
         color: white;
         position: fixed;
         top: 0;
@@ -82,9 +83,9 @@
         transition: left 0.3s ease;
         /* Transition effect to slide in/out */
         transition: transform 300ms, box-shadow 300ms;
-        box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
         overflow: hidden;
-        
+
     }
 
     .sidebar::before,
@@ -113,21 +114,22 @@
         background-color: rgba(0, 223, 253, 0.2);
         animation: wawes 7s infinite;
     }
-    @keyframes wawes {
-            from {
-                transform: rotate(0);
-            }
 
-            to {
-                transform: rotate(360deg);
-            }
+    @keyframes wawes {
+        from {
+            transform: rotate(0);
         }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
 
     /* Updated styles for dropdown with hover effect */
     .dropdown {
         position: relative;
         display: inline-block;
-        margin-top: 15px;
+        margin-top: 35px;
     }
 
     .dropbtn {
@@ -229,7 +231,7 @@
 
     .footer {
         font-family: 'Noto Sans Thai Looped', sans-serif;
-        background-color: #333;
+        background-image: linear-gradient(to right, #abdfff, #0048a7);
         color: white;
         text-align: right;
         padding: 15px;
@@ -265,54 +267,43 @@
         }
     }
 
-    .logout {
-        position: absolute;
-        right: 20px;
-        padding: 0px 0px;
-        text-align: center;
-    }
-
-    .logout a {
-        color: var(--Gray-Gray-500, #718096);
+    a.logout-link {
+        color: #ffffff;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
-        font-weight: bold;
+        /* ลบการเส้นใต้ลิงก์ */
+        padding: 8px 16px;
+        /* ระยะห่างขอบของลิงก์ */
+        border-radius: 4px;
+        /* ทำให้มีมุมโค้ง */
+        background-color: #1a1a1a;
+        /* สีพื้นหลังของลิงก์ */
+        transition: background-color 0.3s, color 0.3s;
+        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
     }
 
-    .logout a:hover {
-        text-decoration: underline;
+    a.logout-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        background-color: #575757;
+        /* สีพื้นหลังของลิงก์เมื่อ hover */
     }
 </style>
 
 <body>
     <div class="header">
-        <a class="active" href="#">About Us</a>
-        <a href="#">Contact</a>
-        <a href="login.html">Log Out</a>
-        <span class="textW" alt="logo">WELCOME TO THE AMR</span>
+        <!-- HTML -->
+        <a href="login.html" class="logout-link">Log Out</a>
+
+        <span class="textW" alt="logo">WELCOME TO THE ASGS</span>
 
     </div>
     <div class="sidebar">
-        <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
-        <!-- Dropdowns -->
-        <div class="dropdown">
-            <button class="dropbtn">Manage Users</button>
-            <div class="dropdown-content">
-                <a href="#">Add User</a>
-                <a href="#">Edit User</a>
-                <a href="#">Remove User</a>
-
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn">Manage Sites</button>
-            <div class="dropdown-content">
-                <a href="#">Add Site</a>
-                <a href="#">Edit Site</a>
-                <a href="#">Remove Site</a>
-            </div>
-        </div>
-
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
         <div class="dropdown">
             <button class="dropbtn">Reports Data</button>
             <div class="dropdown-content">
@@ -325,20 +316,34 @@
                 <a href="#">New Site Detail</a>
             </div>
         </div>
-
         <div class="dropdown">
             <button class="dropbtn">Polling Actions</button>
             <div class="dropdown-content">
                 <a href="#">Manual poll</a>
                 <a href="#">Write Config</a>
+                <a href="#">Daily Hourly</a>
+                <a href="#">Hourly</a>
             </div>
         </div>
-
+        <div class="dropdown">
+            <button class="dropbtn">Manage Sites</button>
+            <div class="dropdown-content">
+                <a href="#">Add Site</a>
+                <a href="#">Edit Site</a>
+                <a href="#">Remove Site</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Manage Users</button>
+            <div class="dropdown-content">
+                <a href="#">Add User</a>
+                <a href="#">Edit User</a>
+                <a href="#">Remove User</a>
+            </div>
+        </div>
     </div>
     <div class="footer">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
+        <span>POWERED BY ASGS.ATOS</span>
     </div>
     </div>
 
