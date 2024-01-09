@@ -102,19 +102,33 @@
         
         .col-sm-9 {
             display: grid;
-            top: -80px;
+            top: 100px;
             right: 0px;
             width: 100px;
+            
         }
         
         #communicationTrafficContainer {
-            margin: -181px 0px 100px 1120px;
-        }
+    margin: -181px 0px 0px 0px;
+    width: 100%; /* ปรับความกว้างของ container */
+    overflow-x: auto; /* เพิ่มการเลื่อนแนวนอน */
+   
+}
+
+.table.table-bordered {
+    width: 100%; /* ปรับความกว้างของตาราง */
+}
+
+.table.table-bordered th,
+.table.table-bordered td {
+    white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ในเซลล์ */
+}
         
         #colSm9Container {
             display: grid;
             position: relative;
             margin-bottom: -14px;
+            
         }
         
         .btn-primary1 {
@@ -129,7 +143,7 @@
             padding: 2rem;
             font-family: var(--font-family);
             
-            background-image: linear-gradient(0deg, #ffffff 1%, #bef2f2 99%);
+            background-image: linear-gradient(0deg, #d3d1d1 1%, #ebe8e8 99%);
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -185,15 +199,21 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th style="display: none;">evc_type</th>
-                        <th style="display: none;">vc_name</th>
-                        <th style="display: none;">poll_billing</th>
-                        <th style="display: none;">poll_config</th>
-                        <th style="display: none;">poll_billing_enable</th>
-                        <th style="display: none;">poll_config_enable</th>
+                        <th 
+                        >evc_type</th>
+                        <th 
+                        >vc_name</th>
+                        <th 
+                        >poll_billing</th>
+                        <th 
+                        >poll_config</th>
+                        <th 
+                        >poll_billing_enable</th>
+                        <th 
+                        >poll_config_enable</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="background-color: #ffffff;">
                     {% for _, row in df.iterrows() %}
                         <tr>
                             
@@ -213,12 +233,12 @@
                             <td>{{ row['VCtype'] }}</td>
                             <td>{{ row['IPAddress'] }}</td>
                             <td>{{ row['Port'] }}</td>
-                            <td style="display: none;">{{ row['evc_type'] }}</td>
-                            <td style="display: none;">{{ row['vc_name'] }}</td>
-                            <td style="display: none;">{{ row['poll_billing'] }}</td>
-                            <td style="display: none;">{{ row['poll_config'] }}</td>
-                            <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
-                            <td style="display: none;">{{ row['poll_config_enable'] }}</td>
+                            <td >{{ row['evc_type'] }}</td>
+                            <td >{{ row['vc_name'] }}</td>
+                            <td >{{ row['poll_billing'] }}</td>
+                            <td >{{ row['poll_config'] }}</td>
+                            <td >{{ row['poll_billing_enable'] }}</td>
+                            <td >{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -479,7 +499,7 @@ if (selectedOption === "config") {
 
 
  <div id="colSm9Container" class="col-sm-9">
-    <div class="table-responsive" style="width:25%; height: 100px; margin-right: 3500px;margin-top: 100px;">
+    <div class="table-responsive" style="width:34%; height: 100px; margin-right: 3500px;margin-top: 100px; " >
 
         {% if data_list %}
         <h4>Data for {{ selected_date }}</h4>
@@ -494,7 +514,7 @@ if (selectedOption === "config") {
                     <th>float_value</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: #ffffff;">
                 {% for data in data_list %}
                     {% if "Address" not in data['description'] %}
                         <tr>
@@ -532,8 +552,8 @@ if (selectedOption === "config") {
                     <th>Data</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for data in communication_traffic %}
+            <tbody style="background-color: #ffffff;">
+                {% for data in communication_traffic[-2:] %}
                     <tr>
                         <td>{{ data['direction'] }}</td>
                         <td>{{ data['data'] }}</td>
@@ -543,6 +563,7 @@ if (selectedOption === "config") {
         </table>
     </div>
 {% endif %}
+
 
 
 
