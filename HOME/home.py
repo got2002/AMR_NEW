@@ -310,7 +310,7 @@ def billing_data():
     if query_type == "daily_data":
         # SQL query for main data
         query = """
-        SELECT
+        SELECT DISTINCT
             AMR_PL_GROUP.PL_REGION_ID,
             AMR_FIELD_ID.TAG_ID,
             amr_field_id.meter_id,
@@ -461,6 +461,7 @@ def billing_data():
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
@@ -591,6 +592,7 @@ def billing_data():
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Send the DataFrame to the HTML template
             return render_template(
                 "billingdata.html",
