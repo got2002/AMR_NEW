@@ -499,7 +499,7 @@ if (selectedOption === "config") {
 
 
  <div id="colSm9Container" class="col-sm-9">
-    <div class="table-responsive" style="width:34%; height: 100px; margin-right: 3500px;margin-top: 100px; " >
+    <div class="table-responsive" style="width: 34%; height: 100px; margin-right: 3500px; margin-top: 100px;">
 
         {% if data_list %}
         <h4>Data for {{ selected_date }}</h4>
@@ -524,11 +524,13 @@ if (selectedOption === "config") {
                             <td>{{ data['hex_value'] }}</td>
                             <td>{{ data['binary_value'] }}</td>
                             <td>
-                                {% if data['is_16bit'] or data['address'] in [ 20482,20494,20498,20512,20524,20528,20543,20555,20559,20573,20585,20589,546,756,7015,7017,7019,7021,7031,7033,7035,7003,8000,8002,8004,8010,8012,8014,8020,8022,8024,8030,8032,8034,8040,8042,8044,8050,8052,8054,8060,8062,8064,8070,8072,8074,8080,8082,8084]
-                                %} {{ data['signed_value'] }}
-                                <!-- Display signed_value for signed or Ulong -->
-                                {% else %} {{ data['float_value'] }}
-                                <!-- Display float_value for float and others -->
+                                {% if data['is_16bit'] or data['address'] in [20482, 20494, 20498, 20512, 20524, 20528, 20543, 20555, 20559, 20573, 20585, 20589, 546, 756, 7015, 7017, 7019, 7021, 7031, 7033, 7035, 7003, 8000, 8002, 8004, 8010, 8012, 8014, 8020, 8022, 8024, 8030, 8032, 8034, 8040, 8042, 8044, 8050, 8052, 8054, 8060, 8062, 8064, 8070, 8072, 8074, 8080, 8082, 8084]
+                                %} 
+                                    {{ data['signed_value'] }}
+                                    <!-- Display signed_value for signed or Ulong -->
+                                {% else %} 
+                                    {{ data['float_value'] }}
+                                    <!-- Display float_value for float and others -->
                                 {% endif %}
                             </td>
                         </tr>
@@ -540,6 +542,8 @@ if (selectedOption === "config") {
         <h4>Data is not available</h4>
         {% endif %}
     </div>
+</div>
+
 </div>
 
 {% if communication_traffic %}
