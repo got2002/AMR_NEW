@@ -31,6 +31,7 @@ import os
 import cx_Oracle
 import plotly.subplots as sp
 import plotly.graph_objs as go
+import matplotlib as mpt
 
 app = Flask(__name__)
 
@@ -454,6 +455,8 @@ def billing_data():
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
+    
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
@@ -461,22 +464,28 @@ def billing_data():
             # สร้าง subplot
             fig = sp.make_subplots(rows=2, cols=2, subplot_titles=['CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'])
 
-
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines', name='CORRECTED', line=dict(color='blue', width=2, ))
-            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines', name='UNCORRECTED', line=dict(color='red', width=2, ))
-            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines', name='Pressure', line=dict(color='lightblue', width=2, ))
+
+        
+            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines+markers', name='CORRECTED', line=dict(color='blue', width=2, ))
+            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines+markers', name='UNCORRECTED', line=dict(color='red', width=2, ))
+            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines', name='Pressure', line=dict(color='orange', width=2, ))
             trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines', name='Temperature', line=dict(color='green', width=2, ))
 
-            fig.update_xaxes(title_text='Date', row=1, col=1)
-            fig.update_yaxes(title_text='Corrected Value', row=1, col=1)
             fig.update_layout(legend=dict(x=10, y=1.3))
-
+            fig.update_xaxes(title_text='Date', tickformat='%Y-%m-%d')
             fig.add_trace(trace_corrected, row=1, col=1)
             fig.add_trace(trace_uncorrected, row=1, col=2)
             fig.add_trace(trace_pressure, row=2, col=1)
             fig.add_trace(trace_temperature, row=2, col=2)
-            
+            fig.update_layout(legend=dict(x=0, y=-0.2, orientation='h'))
+            fig.update_layout(height=600, width=1400,)
+            fig.update_traces(
+                textposition='top center',
+                marker=dict(color='rgba(255,0,0,0)')
+            )
+
+
 
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             graph_html = fig.to_html(full_html=False)
@@ -588,6 +597,7 @@ def billing_data():
             )
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
             # Send the DataFrame to the HTML template
