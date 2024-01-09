@@ -464,28 +464,46 @@ def billing_data():
             fig = px.line(
 =======
 # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            df = df.sort_values(by="DATA_DATE", ascending=True)
+
             fig = px.line(
+<<<<<<< HEAD
             
 >>>>>>> 74a49749f67470a3ea3962dcaa428bfc1037936c
+=======
+>>>>>>> a907ee8e3e76f93acf6ab3e7f841688712cef88d
                 df,
                 x="DATA_DATE",
-                y=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
+                y=["Temperature"],
                 title="Daily Data",
             )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             graph_html = fig.to_html(full_html=False)
 =======
             # ปรับแต่งรายละเอียดต่าง ๆ ของกราฟ
+=======
+>>>>>>> a907ee8e3e76f93acf6ab3e7f841688712cef88d
             fig.update_layout(
                 xaxis_title="Date",
                 yaxis_title="Values",
                 legend_title="Variables",
                 hovermode="x unified",
                 template="plotly_white",
+                yaxis=dict(
+                    type='linear',
+                    title='Values',
+                    range=[24, 30]  # Set your desired y-axis range here
+                ),
             )
 >>>>>>> 74a49749f67470a3ea3962dcaa428bfc1037936c
+
+            # Adjusting line shape for a smoother appearance
+            fig.update_traces(line_shape='linear', mode='lines+markers', marker=dict(symbol='circle', size=6))
+
+            
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
