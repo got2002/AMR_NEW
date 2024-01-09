@@ -455,39 +455,52 @@ def billing_data():
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-    
+
             df = df.drop_duplicates(subset=["DATA_DATE"])
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
             # สร้าง subplot
-            fig = sp.make_subplots(rows=2, cols=2, subplot_titles=['CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'])
+            fig = sp.make_subplots(
+                rows=2,
+                cols=2,
+                subplot_titles=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
+            )
+            # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE", ascending=True)
 
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            # สร้าง traces
+            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines+markers', name='CORRECTED', line=dict(color='blue', width=2))
+            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines+markers', name='UNCORRECTED', line=dict(color='red', width=2))
+            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines+markers', name='Pressure', line=dict(color='orange', width=2))
+            trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines+markers', name='Temperature', line=dict(color='green', width=2))
 
-        
-            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines+markers', name='CORRECTED', line=dict(color='blue', width=2, ))
-            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines+markers', name='UNCORRECTED', line=dict(color='red', width=2, ))
-            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines', name='Pressure', line=dict(color='orange', width=2, ))
-            trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines', name='Temperature', line=dict(color='green', width=2, ))
-
-            fig.update_layout(legend=dict(x=10, y=1.3))
-            fig.update_xaxes(title_text='Date', tickformat='%Y-%m-%d')
+            # เพิ่ม traces ลงใน subplot
             fig.add_trace(trace_corrected, row=1, col=1)
             fig.add_trace(trace_uncorrected, row=1, col=2)
             fig.add_trace(trace_pressure, row=2, col=1)
             fig.add_trace(trace_temperature, row=2, col=2)
-            fig.update_layout(legend=dict(x=0, y=-0.2, orientation='h'))
-            fig.update_layout(height=600, width=1400,)
-            fig.update_traces(
-                textposition='top center',
-                marker=dict(color='rgba(255,0,0,0)')
+
+            # ปรับ y-axis สำหรับทั้ง 4 กราฟ
+            fig.update_yaxes(type="linear", title="Values", row=1, col=1)
+            fig.update_yaxes(type="linear", title="Values", row=1, col=2)
+            fig.update_yaxes(type="linear", title="Values", row=2, col=1)
+            fig.update_yaxes(type="linear", title="Values", row=2, col=2)
+            
+            # ปรับปรุงลักษณะและรายละเอียดของกราฟ
+            fig.update_traces(line_shape='linear', marker=dict(symbol='circle', size=6))
+            fig.update_layout(
+                legend=dict(x=0.6, y=1.25, orientation='h'),
+                yaxis_title="Values",
+                xaxis_title="Date",
+                hovermode="x unified",
+                template="plotly_white",
+                yaxis=dict(type='linear', title='Values'),
             )
+            fig.update_xaxes(title_text='Date', tickformat='%Y-%m-%d')
 
-
-
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            # แสดงกราฟ
             graph_html = fig.to_html(full_html=False)
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
