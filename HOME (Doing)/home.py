@@ -5,6 +5,7 @@ from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
+import plotly.express as px
 from flask import (
     Flask,
     render_template,
@@ -28,7 +29,8 @@ from flask_migrate import Migrate
 import hashlib
 import os
 import cx_Oracle
-
+import plotly.subplots as sp
+import plotly.graph_objs as go
 
 app = Flask(__name__)
 
@@ -102,15 +104,13 @@ def execute_query(query, params=None):
 ############  /connect database  #####################
 
 
-
-
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 ############ / Home page  #####################
-
-
 
 
 ############  Add User  #####################
@@ -147,9 +147,8 @@ def add_user_route():
 ############  /Add User  #####################
 
 
-
-
 ############  edit_user   #####################
+
 
 def get_data(filter_text=None, sort_column=None):
     try:
@@ -255,17 +254,14 @@ def edit_user_route():
 ############  /edit_user   #####################
 
 
-
 ############   /remove_user ###################
 
 
 ############   /remove_user ###################
-
-
-
 
 
 ############  View Billing Data   #####################
+
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
@@ -426,8 +422,6 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    region_condition = "AND 1 = 1"  # This line seems unnecessary; it sets region_condition to a constant value
-
     # Modify the query with the selected conditions
     query = query.format(
         billing_date_condition=billing_date_condition,
@@ -464,6 +458,30 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
+            # สร้าง subplot
+            fig = sp.make_subplots(rows=2, cols=2, subplot_titles=['CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'])
+
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines', name='CORRECTED', line=dict(color='blue', width=2, ))
+            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines', name='UNCORRECTED', line=dict(color='red', width=2, ))
+            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines', name='Pressure', line=dict(color='lightblue', width=2, ))
+            trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines', name='Temperature', line=dict(color='green', width=2, ))
+
+            fig.update_xaxes(title_text='Date', row=1, col=1)
+            fig.update_yaxes(title_text='Corrected Value', row=1, col=1)
+            fig.update_layout(legend=dict(x=10, y=1.3))
+
+            fig.add_trace(trace_corrected, row=1, col=1)
+            fig.add_trace(trace_uncorrected, row=1, col=2)
+            fig.add_trace(trace_pressure, row=2, col=1)
+            fig.add_trace(trace_temperature, row=2, col=2)
+            
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            graph_html = fig.to_html(full_html=False)
+
+            # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
                 tables={
@@ -476,6 +494,7 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
+                graph=graph_html,  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
             )
 
         elif query_type == "config_data":
@@ -605,7 +624,6 @@ def billing_data():
 ############ / View Billing Data  #####################
 
 
-
 ############ Daily summary #####################
 @app.route("/Daily_summary")
 def Daily_summary():
@@ -678,8 +696,6 @@ WHERE
 
 
 ############ /Daily summary  #####################
-
-
 
 
 ############ sitedetail_data  #####################
@@ -764,9 +780,6 @@ WHERE
 
 
 ############ /sitedetail_data  #####################
-
-
-
 
 
 ############ Manualpoll_data  #####################
@@ -859,7 +872,7 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -867,7 +880,7 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-    
+
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -1155,7 +1168,6 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1241,7 +1253,7 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1262,12 +1274,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
-                 "evc_type",
-            "vc_name",
-            "poll_billing",
-            "poll_config",
-            "poll_billing_enable",
-            "poll_config_enable",
+                "evc_type",
+                "vc_name",
+                "poll_billing",
+                "poll_config",
+                "poll_billing_enable",
+                "poll_config_enable",
             ],
         )
         # ... (other code)
