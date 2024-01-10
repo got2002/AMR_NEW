@@ -5,6 +5,7 @@ from flask import flash
 from datetime import datetime
 import pandas as pd
 import sqlite3
+import plotly.express as px
 from flask import (
     Flask,
     render_template,
@@ -28,11 +29,14 @@ from flask_migrate import Migrate
 import hashlib
 import os
 import cx_Oracle
-
+import plotly.subplots as sp
+import plotly.graph_objs as go
+import matplotlib as mpt
 
 app = Flask(__name__)
 
 app.secret_key = "your_secret_key_here"
+
 # Replace these values with your actual database credentials
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
@@ -249,10 +253,13 @@ def edit_user_route():
 
 
 ############  /edit_user   #####################
+
+
 ############   /remove_user ###################
 
 
 ############   /remove_user ###################
+
 
 ############  View Billing Data   #####################
 
@@ -416,8 +423,6 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    region_condition = "AND 1 = 1"  # This line seems unnecessary; it sets region_condition to a constant value
-
     # Modify the query with the selected conditions
     query = query.format(
         billing_date_condition=billing_date_condition,
@@ -450,10 +455,42 @@ def billing_data():
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
+    
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
+            # สร้าง subplot
+            fig = sp.make_subplots(rows=2, cols=2, subplot_titles=['CORRECTED', 'UNCORRECTED', 'Pressure', 'Temperature'])
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+
+        
+            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines+markers', name='CORRECTED', line=dict(color='blue', width=2, ))
+            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines+markers', name='UNCORRECTED', line=dict(color='red', width=2, ))
+            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines', name='Pressure', line=dict(color='orange', width=2, ))
+            trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines', name='Temperature', line=dict(color='green', width=2, ))
+
+            fig.update_layout(legend=dict(x=10, y=1.3))
+            fig.update_xaxes(title_text='Date', tickformat='%Y-%m-%d')
+            fig.add_trace(trace_corrected, row=1, col=1)
+            fig.add_trace(trace_uncorrected, row=1, col=2)
+            fig.add_trace(trace_pressure, row=2, col=1)
+            fig.add_trace(trace_temperature, row=2, col=2)
+            fig.update_layout(legend=dict(x=0, y=-0.2, orientation='h'))
+            fig.update_layout(height=600, width=1400,)
+            fig.update_traces(
+                textposition='top center',
+                marker=dict(color='rgba(255,0,0,0)')
+            )
+
+
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            graph_html = fig.to_html(full_html=False)
+
+            # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
                 tables={
@@ -466,6 +503,7 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
+                graph=graph_html,  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
             )
 
         elif query_type == "config_data":
@@ -559,6 +597,7 @@ def billing_data():
             )
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
+            df = df.drop_duplicates(subset=["DATA_DATE"])
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
             # Send the DataFrame to the HTML template
@@ -593,6 +632,80 @@ def billing_data():
 
 
 ############ / View Billing Data  #####################
+
+
+############ Daily summary #####################
+@app.route("/Daily_summary")
+def Daily_summary():
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # SQL query for main data
+    query = """
+    SELECT DISTINCT
+    amr_field_id.TAG_ID as SITE
+FROM
+    AMR_FIELD_ID, AMR_PL_group, AMR_RMIU_TYPE, amr_region
+    
+WHERE
+    AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+  {region_condition}
+    """
+    # Get selected values from the dropdowns
+    selected_region = request.args.get("region_dropdown")
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Initialize the query with a condition that is always true
+    region_condition = "AND 1 = 1"
+
+    # Fetch tag options based on the selected region
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(region_condition=region_condition)
+
+    # Check if a region is selected before executing the query
+    if selected_region:
+        # ใช้ fetch_data function ในการดึงข้อมูล
+        results = fetch_data(query)
+
+        # ใช้ pandas ในการสร้าง DataFrame
+        df = pd.DataFrame(results, columns=["SITE"])
+        # ลบคอลัมน์ที่ไม่ต้องการ
+        df = df.applymap(lambda x: x.replace("\n", "") if isinstance(x, str) else x)
+
+        # Sort DataFrame by the 'SITE' column (adjust as needed)
+        df = df.sort_values(by="SITE")
+
+        # ส่ง DataFrame ไปยัง HTML template
+        return render_template(
+            "Daily_summary.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=df.columns.values,
+            selected_region=selected_region,
+            region_options=region_options,
+        )
+    else:
+        # Render the template without executing the query
+        return render_template(
+            "Daily_summary.html",
+            selected_region=selected_region,
+            region_options=region_options,
+            tables=[],
+        )
+
+
+############ /Daily summary  #####################
 
 
 ############ sitedetail_data  #####################
@@ -704,7 +817,15 @@ def Manualpoll_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port
+            
+             AMR_PORT_INFO.PORT_NO as port,
+            amr_poll_range.evc_type as evc_type,
+    
+   amr_vc_type.vc_name as vc_name ,
+   amr_poll_range.poll_billing as poll_billing ,
+    amr_poll_range.poll_config as poll_config,
+    amr_poll_range.poll_billing_enable as poll_billing_enable ,
+   amr_poll_range.poll_config_enable as poll_config_enable
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -712,9 +833,11 @@ def Manualpoll_data():
             AMR_FIELD_METER,
             AMR_PL_GROUP,
             AMR_VC_TYPE,
-            AMR_PORT_INFO
+            AMR_PORT_INFO,
+            amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
+            amr_vc_type.id=amr_poll_range.evc_type AND
             AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
             AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
             AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
@@ -759,6 +882,12 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
+            "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
         ],
     )
 
@@ -1049,25 +1178,6 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    if "action_actaris" in request.form:
-        data_list[3], data_list[7] = data_list[7], data_list[3]
-        del data_list[3]
-
-        data_list[4], data_list[5] = data_list[5], data_list[4]
-        del data_list[3]
-        data_list[5], data_list[7] = data_list[7], data_list[5]
-        del data_list[4]
-        data_list[4], data_list[5] = data_list[5], data_list[4]
-    if "action_configuration" in request.form:
-        if len(data_list) >= 6:
-            data_list[4], data_list[5] = data_list[5], data_list[4]
-        if len(data_list) > 2:
-            del data_list[2]
-        if len(data_list) >= 5:
-            data_list[3], data_list[4] = data_list[4], data_list[3]
-        data_list[6], data_list[22] = data_list[22], data_list[6]
-        del data_list[7]
-        data_list[7], data_list[23] = data_list[23], data_list[7]
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1091,7 +1201,15 @@ def read_data():
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
-            AMR_PORT_INFO.PORT_NO as port
+            
+             AMR_PORT_INFO.PORT_NO as port,
+            amr_poll_range.evc_type as evc_type,
+    
+   amr_vc_type.vc_name as vc_name ,
+   amr_poll_range.poll_billing as poll_billing ,
+    amr_poll_range.poll_config as poll_config,
+    amr_poll_range.poll_billing_enable as poll_billing_enable ,
+   amr_poll_range.poll_config_enable as poll_config_enable
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -1099,9 +1217,11 @@ def read_data():
             AMR_FIELD_METER,
             AMR_PL_GROUP,
             AMR_VC_TYPE,
-            AMR_PORT_INFO
+            AMR_PORT_INFO,
+            amr_poll_range
         WHERE
             AMR_USER.USER_ENABLE=1 AND
+            amr_vc_type.id=amr_poll_range.evc_type AND
             AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
             AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
             AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
@@ -1143,6 +1263,12 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
+            "evc_type",
+            "vc_name",
+            "poll_billing",
+            "poll_config",
+            "poll_billing_enable",
+            "poll_config_enable",
         ]
     )
     if selected_region:
@@ -1158,6 +1284,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
+                "evc_type",
+                "vc_name",
+                "poll_billing",
+                "poll_config",
+                "poll_billing_enable",
+                "poll_config_enable",
             ],
         )
         # ... (other code)
