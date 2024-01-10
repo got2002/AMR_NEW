@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<h1>Mapping config</h1>
+
+<body>
+
+    <form action="/submit_form" method="post">
+        <label for="address">ADDRESS:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="description">DESCRIPTION:</label>
+        <input type="text" id="description" name="description" required>
+
+        <label for="type_value">TYPE_VALUE:</label>
+        <select id="type_value" name="type_value" required>
+            <option value="ARRAY6">ARRAY6</option>
+            <option value="Ulong">Ulong</option>
+            <option value="Float">Float</option>
+        </select>
+
+        <label for="evc_type">EVC_TYPE:</label>
+        <input type="text" id="evc_type" name="evc_type" required>
+
+        <label for="or_der">OR_DER:</label>
+        <input type="text" id="or_der" name="or_der" required>
+
+        <label for="data_type">DATA_TYPE:</label>
+        <input type="text" id="data_type" name="data_type" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+
+</html>
