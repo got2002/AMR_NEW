@@ -16,7 +16,22 @@
 
 
     <title>Billing Data</title>
+
     <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            background-image: linear-gradient(to right, #5b707e, #abb2b9);
+            height: 100%;
+            font-family: 'Noto Sans Thai Looped', sans-serif;
+        }
+
         .header {
             background-image: linear-gradient(to right, #0048a7, #6ac3fb);
             overflow: hidden;
@@ -28,6 +43,7 @@
             left: 0;
             width: 100%;
             z-index: 1;
+            position: fixed;
         }
 
 
@@ -141,7 +157,7 @@
         .container {
             justify-content: center;
             align-items: flex-start;
-            padding-top: 30px;
+            padding-top: 30px
         }
 
         .menu {
@@ -222,6 +238,17 @@
             /* ปรับตำแหน่งของรูป (X, Y) */
         }
 
+        .form-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+            margin-top: 50px;
+            overflow: auto;
+        }
 
         .MainDashboard {
             width: calc(100% - 250px);
@@ -238,11 +265,11 @@
             background-image: linear-gradient(to right, #abdfff, #0048a7);
             color: white;
             text-align: right;
-            padding: 15px;
-            position: fixed;
+            padding: 5px;
             bottom: 0;
             left: 0;
             width: 100%;
+            margin-top: 0px;
         }
 
 
@@ -306,6 +333,7 @@
             border-collapse: collapse;
             width: 100%;
             font-size: xx-small;
+            max-width: 100%;
 
         }
 
@@ -330,88 +358,190 @@
         /* Additional style for the first table with class 'table1' */
         .table1 {
             background-color: #e1dede;
-            font-size: xx-small;
+            font-size: small;
+            /* ขนาดตัวอักษรเล็กลง */
+            border-collapse: collapse;
+            /* ยุบเส้นขอบตารางเข้าด้วยกัน */
+            width: 100%;
+            margin-top: 20px;
+            /* เพิ่ม margin-top เพื่อแยกจากข้อความก่อนหน้า */
+        }
+
+        /* Additional style for the first table with class 'table1' */
+        .table1 {
+            background-color: #e1dede;
+            font-size: medium;
+            /* เปลี่ยนขนาดตัวอักษร */
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid #5f5e5e;
         }
 
         .table1 th,
         .table1 td {
+            border: 1px solid #5f5e5e;
+            text-align: center;
+            padding: 12px;
+            /* ปรับ padding สำหรับมีพื้นที่ดีขึ้น */
+            font-size: xx-small;
+            /* เปลี่ยนขนาดตัวอักษรในเซลล์ */
             font-weight: lighter;
         }
 
+        .table1 th {
+            background-color: #e1dede;
+            font-weight: bold;
+        }
+
+        .table1 tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table1 tr:hover {
+            background-color: #d9d9d9;
+        }
+
+
         .graph {
             width: 100%;
+            margin-top: 40px;
+            /* ลด margin-top เพื่อทำให้กราฟไม่ขึ้นมากเกินไป */
         }
 
         .plot-container {
-            background-color: #fff;
+            background-color: #aaaaaa98;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            padding: 20px;
+            /* เพิ่ม padding สำหรับมีพื้นที่ดีขึ้น */
+        }
+
+        /* สร้างรูปแบบสำหรับตัวอักษรใน tables.config_data */
+        .config-data-style {
+            font-family: 'Your Font', sans-serif;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* สร้างรูปแบบสำหรับตาราง */
+        .config-data-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .config-data-table th,
+        .config-data-table td {
+            border: 1px solid #5f5e5e;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .config-data-table th {
+            background-color: #e1dede;
+            font-weight: bold;
+        }
+
+        .config-data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .config-data-table tr:hover {
+            background-color: #d9d9d9;
+        }
+
+        /* เพิ่มสไตล์สำหรับหัวตาราง */
+        .config-data-table th {
+            background-color: #e1dede;
+            font-weight: bold;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .config-data-table thead {
+            background-color: #333;
+            /* สีพื้นหลังสำหรับส่วนหัวตาราง */
+            color: #831515;
+            /* สีข้อความในหัวตาราง */
         }
     </style>
 </head>
 <div class="header">
-    <a href="login.html" class="logout-link">Log Out</a>
+    <a href="login" class="logout-link">Log Out</a>
     <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
 </div>
+
 <body>
 
-
     <div class="container">
-        <form method="get" action="{{ url_for('billing_data') }}">
-            <label for="tag_dropdown">Select Region :</label>
-            <select id="region_dropdown" name="region_dropdown">
-                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                {% for region in region_options %}
-                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
-                {% endfor %}
-            </select>
-            <label for="tag_dropdown">Select Site :</label>
-            <select id="tag_dropdown" name="tag_dropdown">
-                <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-                {% for tag in tag_options %}
-                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                {% endfor %}
-            </select>
-            <label for="date_picker">Select Date :</label>
-            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+        <div class="form-container">
 
-            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
-                Data</button>
-            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
-                Data</button>
-            <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear Filters</button>
+            <form method="get" action="{{ url_for('billing_data') }}">
+                <label for="tag_dropdown">Select Region :</label>
+                <select id="region_dropdown" name="region_dropdown">
+                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                    {% for region in region_options %}
+                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="tag_dropdown">Select Site :</label>
+                <select id="tag_dropdown" name="tag_dropdown">
+                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                    {% for tag in tag_options %}
+                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                    {% endfor %}
+                </select>
+                <label for="date_picker">Select Date :</label>
+                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
-        </form>
-        <div class="container">
-            {% if tables.get('daily_data') %}
-            <h1>Daily Data</h1>
-            {{ tables['daily_data']|safe }}
-            <div class="plot-container">
-                {{ graph|safe }}
-                {% endif %}
+                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
+                    Data</button>
+                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
+                    Data</button>
+                <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
+                    Filters</button>
 
-            </div>
+            </form>
+            <div class="container">
+                {% if tables.get('daily_data') %}
+                <h1>Daily Data</h1>
+                {{ tables['daily_data']|safe }}
+                <div class="plot-container">
+                    {{ graph|safe }}
+                    {% endif %}
 
-            <div>
-                {% if tables.config_data %}
-                <h2>Config Data</h2>
-                <table class="table1">
-
-                    <tbody>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <td>{{ value }}</td>
-                            {{ graph|safe }}
+                </div>
+                <div>
+                    {% if tables.config_data and dropped_columns_data %}
+                    <h2>Config Data</h2>
+                    <table class="table1">
+                        <thead style="display: none;">
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th>{{ key }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in dropped_columns_data %}
+                            <tr>
+                                {% for key, value in row.items() %}
+                                <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
                             {% endfor %}
-                        </tr>
-                    </tbody>
-                </table>
-                {{ tables.config_data | safe }}
-                {% endif %}
-
+                        </tbody>
+                    </table>
+                    {{ tables.config_data | safe }}
+                    {% endif %}
+                </div>
             </div>
-
+        </div>
+    </div>
 </body>
 
 </div>
@@ -525,9 +655,5 @@
             }
         });
     }
-</script>
 
-</html>
-<div class="footer">
-    <span>POWERED BY ATOS.ASGS</span>
-</div>
+</script>
