@@ -516,7 +516,7 @@ if (selectedOption === "config") {
             </thead>
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list %}
-                    {% if "Address" not in data['description'] %}
+                    {% if data['description'] and "Address" not in data['description'] %}
                         <tr>
                             <td>{{ data['description'] }}</td>
                             <td>{{ data['value'] }}</td>

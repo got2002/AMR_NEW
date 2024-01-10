@@ -389,7 +389,7 @@ def billing_data():
         WHERE
             AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
             AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-            AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
             
             {configured_date_condition}
             {tag_condition}
@@ -987,7 +987,7 @@ def read_data():
 
     for i, value in enumerate(values):
         address = starting_address + i * 2
-
+        type_value = get_type_value_from_database(address)
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)
         float_value = struct.unpack("!f", struct.pack("!I", value))[0]
@@ -995,8 +995,7 @@ def read_data():
 
         if description is None:
             description = f"Address {address}"
-            address += 1
-        
+            address += 0
 
         if is_16bit:
             signed_value = value - 2**16 if value >= 2**15 else value
@@ -1014,8 +1013,18 @@ def read_data():
             float_signed_value = (
                 signed_value if is_16bit_value else None
             )  # Set signed_value to None for 32-bit
-            float_display_value = float_value
 
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f'Type Value for address {address}: {type_value}')
         data_list.append(
             {
                 "description": description,
@@ -1029,6 +1038,7 @@ def read_data():
                 "float_signed_value": signed_value,
             }
         )
+        
         value, updated_address = handle_action_configuration(i, value, address)
         # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
     # แทนที่ด้วย:
@@ -1199,7 +1209,7 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
@@ -1209,6 +1219,12 @@ def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
 
+def get_type_value_from_database(address):
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    result = fetch_data(query, params={"address": address})
+    if result:
+        return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
+    return None
 
 ############ /Manualpoll_data  #####################
 
