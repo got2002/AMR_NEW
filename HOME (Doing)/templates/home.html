@@ -304,92 +304,93 @@
         color: #595656;
         /* สีที่แตกต่างเมื่อ hover */
     }
+
+    .form-container {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 50px;
+    }
 </style>
 
 <body>
-    <div class="header">
-        <a href="login.html" class="logout-link">Log Out</a>
-        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
-    </div>
-    <div class="sidebar">
-        <img class="logo"
-            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-            alt="logo">
-        <div class="container">
-            <div class="menu">
-                <button class="toggle">Reports Data</button>
-                <ul class="list">
-                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">View Billing Data</a></li>
-                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">View EVC
-                            Status</a></li>
-                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Daily Summary</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.8s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Monthly
-                            Summery</a></li>
-                    <li class="list-item" style="--delay:0.10s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Site Detail</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.12s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">New Site
-                            Detail</a></li>
-                </ul>
-            </div>
-            <div class="menu">
-                <button class="toggle">Polling Actions</button>
-                <ul class="list">
-                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Manual poll</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Write Config</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Daily Hourly</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.8s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Hourly</a></li>
-                </ul>
-            </div>
-
-            <div class="menu">
-                <button class="toggle">Manage Sites</button>
-                <ul class="list">
-                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Add Site</a></li>
-                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Edit Site</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Remove Site</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="menu">
-                <button class="toggle">Manage Users</button>
-                <ul class="list">
-                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Add User</a></li>
-                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Edit User</a>
-                    </li>
-                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
-                            class="list-item-link">Remove User</a>
-                    </li>
-                </ul>
-            </div>
-
+    
+        <div class="header">
+            <a href="login.html" class="logout-link">Log Out</a>
+            <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
         </div>
-    </div>
+        </div>
+        <div class="sidebar">
+            <img class="logo"
+                src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+                alt="logo">
+            <div class="container">
+                <div class="menu">
+                    <button class="toggle">Reports Data</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
+                                class="list-item-link">View Billing Data</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">View EVC
+                                Status</a></li>
+                        <li class="list-item" style="--delay:0.6s"><a href="Daily_summary" class="list-item-link">Daily
+                                Summary</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.8s"><a href="" class="list-item-link">Monthly
+                                Summery</a></li>
+                        <li class="list-item" style="--delay:0.10s"><a href="sitedetail" class="list-item-link">Site
+                                Detail</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.12s"><a href="" class="list-item-link">New Site
+                                Detail</a></li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Polling Actions</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="Manual poll" class="list-item-link">Manual
+                                poll</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu">
+                    <button class="toggle">Manage Sites</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu">
+                    <button class="toggle">Manage Users</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="add_user" class="list-item-link">Add
+                                User</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
+                                User</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
+                                User</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
 
 
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
+        <div class="footer">
+            <span>POWERED BY ATOS.ASGS</span>
+        </div>
     </div>
 </body>
 
