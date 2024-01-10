@@ -643,7 +643,6 @@ def billing_data():
             tables={},
         )
 
-
 ############ / View Billing Data  #####################
 
 
@@ -1342,7 +1341,12 @@ def process_selected_rows():
 
 
 ############ /Manualpoll_data  #####################
-
+@app.route('/logout')
+def logout():
+    # ล้าง session หรือทำงานอื่น ๆ ที่คุณต้องการเมื่อลงชื่อออก
+    session.clear()
+    # ส่งไปยังหน้าลงชื่อเข้าใช้หลังจากลงชื่อออก
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
