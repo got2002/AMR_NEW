@@ -23,8 +23,12 @@
 
     body,
     html {
-        background-image: linear-gradient(to right, #343739, #abb2b9);
-        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-image: linear-gradient(to right, #5b707e, #abb2b9);
+        overflow-x: hidden;
+        overflow-y: hidden;
+        ;
         font-family: 'Noto Sans Thai Looped', sans-serif;
     }
 
@@ -36,7 +40,13 @@
         padding: 10px;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
     }
+
 
     .header a {
         float: right;
@@ -58,12 +68,13 @@
     }
 
     .textW {
-        margin-top: -10px;
+        margin-top: -15px;
         color: #ffffff;
         font-size: 40px;
         position: absolute;
         left: 17%;
         font-family: 'Noto Sans Thai Looped', sans-serif;
+        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
     }
 
     .sidebar {
@@ -127,89 +138,96 @@
         }
     }
 
-    /* Updated styles for dropdown with hover effect */
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-top: 35px;
-    }
-
-    .dropbtn {
-        position: relative;
-        top: 20px;
-        /* ปรับค่าตามต้องการ */
-        background-color: #221f1f;
-        color: white;
-        font-size: 20px;
-        border: none;
-        cursor: pointer;
-        padding: 13px;
-        text-align: center;
-        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-        /* Added transition for box-shadow */
-        width: 200px;
-        border-radius: 5px;
-        /* Rounded corners for the button */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        /* Added shadow effect */
-    }
-
-    .dropbtn:hover {
-        background-color: #363333;
-        /* Darken the background color on hover */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        /* Adjusted shadow on hover */
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #484343;
-        min-width: 200px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        margin-top: 15px;
-        border-radius: 5px;
-        /* Rounded corners for the dropdown */
-        overflow: hidden;
-        /* Hide any content that overflows */
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-        animation: fadeInDown 0.3s ease;
-    }
-
-    .dropdown-content a {
-        color: white;
-        padding: 10px 16px;
+    a.list-item-link {
+        color: #000000;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
-        display: block;
-        transition: background-color 0.3s, color 0.3s;
-        text-align: center;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
     }
 
-    .dropdown-content a:hover {
-        background-color: #fafafa;
-        color: black;
+    a.list-item-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
-    .dropdown:hover .dropdown-content a {
-        opacity: 1;
-        transform: translateY(0);
+    .container {
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 30px;
     }
 
-    /* Optional: Add a fade-in animation */
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
+    .menu {
+        display: grid;
+        grid-template-rows: 40px max-content;
+        gap: 10px;
+        margin-top: 10%;
+    }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .toggle {
+        all: unset;
+        background-color: dodgerblue;
+        color: white;
+        width: 150px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggle::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-width: 0 3px 3px 0;
+        border-style: solid;
+        transform: rotate(45deg);
+        transition: 0.4s;
+    }
+
+    .list {
+        background-color: white;
+        color: #444;
+        list-style: none;
+        display: grid;
+        grid-template-rows: repeat(4, 40px);
+        border-radius: 5px;
+        overflow: hidden;
+        height: 0;
+        transition: 0.4s;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.4s, transform 0.4s var(--delay);
+        transform: translateX(-100%);
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .list-item:hover {
+        background-color: dodgerblue;
+        color: #fff;
+    }
+
+    .toggle:focus::after {
+        transform: rotate(225deg);
+    }
+
+    .toggle:focus~.list {
+        height: 160px;
+    }
+
+    .toggle:focus~.list .list-item {
+        transform: translateX(0);
     }
 
 
@@ -237,7 +255,7 @@
         color: white;
         text-align: right;
         padding: 15px;
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
@@ -290,76 +308,104 @@
 
 <body>
     <div class="header">
-        <!-- HTML -->
         <a href="login.html" class="logout-link">Log Out</a>
-
-        <span class="textW" alt="logo">WELCOME TO THE ASGS</span>
-
+        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
     <div class="sidebar">
         <img class="logo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
-        <div class="dropdown">
-            <button class="dropbtn">Reports Data</button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('billing_data') }}">View Billing Data</a>
-                <a href="#">View EVC Status</a>
-                <a href="#">Daily Summary</a>
-                <a href="#">Monthly Summery</a>
-                <a href="#">Poling Status</a>
-                <a href="#">Site Detail</a>
-                <a href="#">New Site Detail</a>
+        <div class="container">
+            <div class="menu">
+                <button class="toggle">Reports Data</button>
+                <ul class="list">
+                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">View Billing Data</a></li>
+                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">View EVC
+                            Status</a></li>
+                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Daily Summary</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.8s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Monthly
+                            Summery</a></li>
+                    <li class="list-item" style="--delay:0.10s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Site Detail</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.12s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">New Site
+                            Detail</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Polling Actions</button>
-            <div class="dropdown-content">
-                <a href="#">Manual poll</a>
-                <a href="#">Write Config</a>
-                <a href="#">Daily Hourly</a>
-                <a href="#">Hourly</a>
+            <div class="menu">
+                <button class="toggle">Polling Actions</button>
+                <ul class="list">
+                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Manual poll</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Write Config</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Daily Hourly</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.8s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Hourly</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Manage Sites</button>
-            <div class="dropdown-content">
-                <a href="#">Add Site</a>
-                <a href="#">Edit Site</a>
-                <a href="#">Remove Site</a>
+
+            <div class="menu">
+                <button class="toggle">Manage Sites</button>
+                <ul class="list">
+                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Add Site</a></li>
+                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Edit Site</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Remove Site</a>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Manage Users</button>
-            <div class="dropdown-content">
-                <a href="#">Add User</a>
-                <a href="#">Edit User</a>
-                <a href="#">Remove User</a>
+
+            <div class="menu">
+                <button class="toggle">Manage Users</button>
+                <ul class="list">
+                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Add User</a></li>
+                    <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Edit User</a>
+                    </li>
+                    <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('billing_data') }}"
+                            class="list-item-link">Remove User</a>
+                    </li>
+                </ul>
             </div>
+
         </div>
     </div>
+
+
     <div class="footer">
-        <span>POWERED BY ASGS.ATOS</span>
+        <span>POWERED BY ATOS.ASGS</span>
     </div>
     </div>
-
-    <script>
-        function updateTime() {
-            const today = new Date();
-            const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const time = today.toLocaleTimeString();
-            document.getElementById('datetime').innerHTML = `${date} - ${time}`;
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-    </script>
 </body>
 
 </html>
-<!-- Add this script at the end of your HTML body or in the head -->
+
 <script>
-    // Function to close dropdowns when clicking outside
+    function updateTime() {
+        const today = new Date();
+        const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const time = today.toLocaleTimeString();
+        document.getElementById('datetime').innerHTML = `${date} - ${time}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+
     window.onclick = function (event) {
         if (!event.target.matches('.dropbtn')) {
             var dropdowns = document.getElementsByClassName("dropdown");
