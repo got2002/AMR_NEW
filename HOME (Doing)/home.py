@@ -67,7 +67,6 @@ hostname = "192.168.102.192"
 port = "1521"
 service_name = "orcl"
 
-
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -214,7 +213,12 @@ filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_co
 def get_data_route():
     data = get_data()
     return jsonify(data)
-
+# User list page
+@app.route("/")
+def index():
+    query = "SELECT * FROM AMR_USER_TESTS"
+    users = fetch_data(query)
+    return render_template("user.html", users=users)
 
 @app.route("/edit_user", methods=["GET", "POST"])
 def edit_user_route():
@@ -256,6 +260,44 @@ def edit_user_route():
 
 
 ############   /remove_user ###################
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user_route():
+    # ดึงข้อมูลผู้ใช้จาก Oracle
+    query = "SELECT DESCRIPTION, USER_NAME, USER_LEVEL, USER_ENABLE FROM AMR_USER_TESTS"
+    user_data = fetch_data(query)
+
+    if not user_data:
+        flash("Users not found!", "error")
+        return redirect(url_for("index"))
+
+    # ถ้ามีการส่งค่า POST (คือการเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้)
+    if request.method == "POST":
+        # ดึงข้อมูลจากฟอร์มเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้
+        new_status = request.form.get("status")
+        user_name = request.form.get("user_name")  # ดึง user_name จากฟอร์ม
+
+        # ตรวจสอบว่าสถานะที่เลือกถูกต้อง
+        if new_status not in ["active", "inactive"]:
+            flash("Invalid status selected.", "error")
+            return redirect(url_for("remove_user_route"))
+
+        # แปลงสถานะเป็นเลข (0 หรือ 1) ที่จะบันทึกลงในฐานข้อมูล Oracle
+        status_mapping = {"active": 1, "inactive": 0}
+        new_status_numeric = status_mapping[new_status]
+
+        # สร้างคำสั่ง SQL สำหรับการอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        update_query = "UPDATE AMR_USER_TESTS SET USER_ENABLE = :1 WHERE USER_NAME = :2"
+        update_params = (new_status_numeric, user_name)
+
+        # ทำการ execute คำสั่ง SQL และ commit การอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        if execute_query(update_query, update_params):
+            flash("User status updated successfully!", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Failed to update user status. Please try again.", "error")
+
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template("remove_user.html", user_data=user_data)
 
 
 ############   /remove_user ###################
@@ -471,10 +513,34 @@ def billing_data():
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
             # สร้าง traces
-            trace_corrected = go.Scatter(x=df['DATA_DATE'], y=df['CORRECTED'], mode='lines+markers', name='CORRECTED', line=dict(color='blue', width=2))
-            trace_uncorrected = go.Scatter(x=df['DATA_DATE'], y=df['UNCORRECTED'], mode='lines+markers', name='UNCORRECTED', line=dict(color='red', width=2))
-            trace_pressure = go.Scatter(x=df['DATA_DATE'], y=df['Pressure'], mode='lines+markers', name='Pressure', line=dict(color='orange', width=2))
-            trace_temperature = go.Scatter(x=df['DATA_DATE'], y=df['Temperature'], mode='lines+markers', name='Temperature', line=dict(color='green', width=2))
+            trace_corrected = go.Scatter(
+                x=df["DATA_DATE"],
+                y=df["CORRECTED"],
+                mode="lines+markers",
+                name="CORRECTED",
+                line=dict(color="blue", width=2),
+            )
+            trace_uncorrected = go.Scatter(
+                x=df["DATA_DATE"],
+                y=df["UNCORRECTED"],
+                mode="lines+markers",
+                name="UNCORRECTED",
+                line=dict(color="red", width=2),
+            )
+            trace_pressure = go.Scatter(
+                x=df["DATA_DATE"],
+                y=df["Pressure"],
+                mode="lines+markers",
+                name="Pressure",
+                line=dict(color="orange", width=2),
+            )
+            trace_temperature = go.Scatter(
+                x=df["DATA_DATE"],
+                y=df["Temperature"],
+                mode="lines+markers",
+                name="Temperature",
+                line=dict(color="green", width=2),
+            )
 
             # เพิ่ม traces ลงใน subplot
             fig.add_trace(trace_corrected, row=1, col=1)
@@ -487,18 +553,18 @@ def billing_data():
             fig.update_yaxes(type="linear", title="Values", row=1, col=2)
             fig.update_yaxes(type="linear", title="Values", row=2, col=1)
             fig.update_yaxes(type="linear", title="Values", row=2, col=2)
-            
+
             # ปรับปรุงลักษณะและรายละเอียดของกราฟ
-            fig.update_traces(line_shape='linear', marker=dict(symbol='circle', size=6))
+            fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
             fig.update_layout(
-                legend=dict(x=0.6, y=1.25, orientation='h'),
+                legend=dict(x=0.6, y=1.25, orientation="h"),
                 yaxis_title="Values",
                 xaxis_title="Date",
                 hovermode="x unified",
                 template="plotly_white",
-                yaxis=dict(type='linear', title='Values'),
+                yaxis=dict(type="linear", title="Values"),
             )
-            fig.update_xaxes(title_text='Date', tickformat='%Y-%m-%d')
+            fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
 
             # แสดงกราฟ
             graph_html = fig.to_html(full_html=False)
@@ -632,16 +698,22 @@ def billing_data():
             )
 
     else:
-        # Render the template without executing the query
         return render_template(
             "billingdata.html",
+            tables={
+                "daily_data": None,
+                "config_data": df.to_html(classes="data", header=False, index=False),
+            },
+            titles=df.columns.values,
             selected_date=selected_date,
-            selected_region=selected_region,
             selected_tag=selected_tag,
+            selected_region=selected_region,
             region_options=region_options,
             tag_options=tag_options,
-            tables={},
+            dropped_columns_data=dropped_columns_data,
         )
+
+
 
 ############ / View Billing Data  #####################
 
@@ -1340,13 +1412,16 @@ def process_selected_rows():
     return "Selected rows processed successfully"
 
 
+
+
 ############ /Manualpoll_data  #####################
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     # ล้าง session หรือทำงานอื่น ๆ ที่คุณต้องการเมื่อลงชื่อออก
     session.clear()
     # ส่งไปยังหน้าลงชื่อเข้าใช้หลังจากลงชื่อออก
-    return redirect(url_for('login'))
+    return redirect(url_for("login"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
