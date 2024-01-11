@@ -306,29 +306,31 @@ def billing_data():
     region_options = [str(region[0]) for region in region_results]
 
     query = ""
-    print(query)
+
     if query_type == "daily_data":
         # SQL query for main data
         query = """
         SELECT DISTINCT
             AMR_PL_GROUP.PL_REGION_ID,
             AMR_FIELD_ID.TAG_ID,
-            amr_field_id.meter_id,
+            AMR_FIELD_ID.METER_ID,
             AMR_BILLING_DATA.DATA_DATE,
             AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
             AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
             AMR_BILLING_DATA.AVR_PF as Pressure,
-            AMR_BILLING_DATA.AVR_TF as Temperature
+            AMR_BILLING_DATA.AVR_TF as Temperature,
+            AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
         FROM
             AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
         WHERE
             AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
             AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-            AND AMR_BILLING_DATA.METER_STREAM_NO like '1'
+            AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
             {billing_date_condition}
             {tag_condition}
             {region_condition}
         """
+
 
         # Return the template with the DataFrame
 
@@ -381,7 +383,8 @@ def billing_data():
             AMR_VC_CONFIGURED_INFO.config17,
             AMR_VC_CONFIGURED_INFO.config18,
             AMR_VC_CONFIGURED_INFO.config19,
-            AMR_VC_CONFIGURED_INFO.config20
+            AMR_VC_CONFIGURED_INFO.config20,
+            AMR_CONFIGURED_DATA.METER_STREAM_NO
             
         FROM
             AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
@@ -413,7 +416,7 @@ def billing_data():
     # Fetch tag options based on the selected region
     tag_results = fetch_data(tag_query, params={"region_id": selected_region})
     tag_options = [str(tag[0]) for tag in tag_results]
-
+    
     if selected_date:
         billing_date_condition = (
             f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
@@ -443,6 +446,7 @@ def billing_data():
 
         if query_type == "daily_data":
             # Use pandas to create a DataFrame for daily_data
+            
             df = pd.DataFrame(
                 results,
                 columns=[
@@ -454,60 +458,70 @@ def billing_data():
                     "UNCORRECTED",
                     "Pressure",
                     "Temperature",
+                    "METER_STREAM_NO",
+                    
                 ],
             )
+            
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-            df = df.drop_duplicates(subset=["DATA_DATE"])
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+
+
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
             
 
-# เพิ่มเนื้อหา HTML สำหรับกราฟ
+            # Assuming 'df' is the DataFrame created from the query results
+            df_ran1 = df[df['METER_STREAM_NO'] == '1']
+            df_ran2 = df[df['METER_STREAM_NO'] == '2']
+            df_ran3 = df[df['METER_STREAM_NO'] == '3']
+            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "config_data": None,
+            }
+
+            if not df_ran1.empty:
+                print("Unique DATA_DATE values in df_ran1:\n", df_ran1['DATA_DATE'].unique())
+                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran1"] = df_ran1.to_html(classes="data", index=False)
+
+            if not df_ran2.empty:
+                print("Unique DATA_DATE values in df_ran2:\n", df_ran2['DATA_DATE'].unique())
+                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran2"] = df_ran2.to_html(classes="data", index=False)
+
+            if not df_ran3.empty:
+                print("Unique DATA_DATE values in df_ran3:\n", df_ran3['DATA_DATE'].unique())
+                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran3"] = df_ran3.to_html(classes="data", index=False)
+
+            if not df_ran4.empty:
+                print("Unique DATA_DATE values in df_ran4:\n", df_ran4['DATA_DATE'].unique())
+                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran4"] = df_ran4.to_html(classes="data", index=False)
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
-
-            fig = px.line(
-                df,
-                x="DATA_DATE",
-                y=["UNCORRECTED"],
-                title="Daily Data",
-            )
-
-            fig.update_layout(
-                xaxis_title="Date",
-                yaxis_title="Values",
-                legend_title="Variables",
-                hovermode="x unified",
-                template="plotly_white",
-                yaxis=dict(
-                    type='linear',
-                    title='Values',
-                ),
-            )
-
-            # Adjusting line shape for a smoother appearance
-            fig.update_traces(line_shape='linear', mode='lines+markers', marker=dict(symbol='circle', size=6))
-
-            
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
-                tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
+                tables=tables,
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
-                graph=fig.to_html(full_html=False),
             )
-
         elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
             df = pd.DataFrame(
@@ -557,6 +571,7 @@ def billing_data():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
+                    "METER_STREAM_NO",
                 ],
             )
             columns_to_drop = [
@@ -580,6 +595,7 @@ def billing_data():
                 "CONFIG18",
                 "CONFIG19",
                 "CONFIG20",
+                
             ]
 
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
@@ -590,7 +606,7 @@ def billing_data():
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
-            print(df.columns)
+           
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
             # Remove newline characters
@@ -598,28 +614,45 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-            df = df.drop_duplicates(subset=["DATA_DATE"])
+            
             # Send the DataFrame to the HTML template
+            df_ran1 = df[df['METER_STREAM_NO'] == '1']
+            df_ran2 = df[df['METER_STREAM_NO'] == '2']
+            df_ran3 = df[df['METER_STREAM_NO'] == '3']
+            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "daily_data": None,
+            }
+
+            if not df_ran1.empty:
+                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_ran1"] = df_ran1.to_html(classes="data", index=False, header=None)
+            if not df_ran2.empty:
+                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_ran2"] = df_ran2.to_html(classes="data", index=False, header=None)
+            if not df_ran3.empty:
+                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_ran3"] = df_ran3.to_html(classes="data", index=False, header=None)
+            if not df_ran4.empty:
+                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_ran4"] = df_ran4.to_html(classes="data", index=False, header=None)
+
             return render_template(
                 "billingdata.html",
-                tables={
-                    "daily_data": None,
-                    "config_data": df.to_html(
-                        classes="data", header=False, index=False
-                    ),
-                },
+                
+                tables=tables,
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
                 selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options,
-                dropped_columns_data=dropped_columns_data,
+                tag_options=tag_options, dropped_columns_data=dropped_columns_data
             )
-
     else:
         # Render the template without executing the query
         return render_template(
