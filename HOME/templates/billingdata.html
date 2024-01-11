@@ -23,7 +23,9 @@
     font-size:xx-small;
     
 }
-
+body{
+    display:block;
+}
 th, td {
     border: 1px solid #5f5e5e;
     text-align: left;
@@ -36,7 +38,7 @@ th {
 
 /* Apply a specific width to all columns in both tables */
 th, td {
-    width: 68px; /* Adjust the width value as needed */
+    width: 63px; /* Adjust the width value as needed */
 }
 
 /* Additional style for the first table with class 'table1' */
@@ -49,8 +51,28 @@ th, td {
 .table1 td {
     font-weight:lighter;
 }
+.table-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
 
+        .table {
+    width: 100%; /* Adjust the width as needed */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    padding: 30px;
+    margin: 10px auto; /* Center-align the table */
+}
+
+        @media (max-width: 768px) {
+            .table {
+                width: 100%;
+            }
+        }
     </style>
+
+    
 </head>
 
 
@@ -90,36 +112,145 @@ th, td {
             <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear Filters</button>
             
         </form>
-        
+    </div>  
         <!-- Warning message container -->
         
-       
-        <div>
-            {% if tables.get('daily_data') %}
-            <h1>Daily Data</h1>
-            {{ tables['daily_data']|safe }}
-          
+        <div class="table-container">
+            {% if tables.get('daily_data_ran1') %}
+                <div class="table" id="table1">
+                    <h5>Run 1: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_ran1']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_ran2') %}
+                <div class="table" id="table2">
+                    <h5>Run 2: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_ran2']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_ran3') %}
+                <div class="table" id="table3">
+                    <h5>Run 3: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_ran3']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_ran4') %}
+                <div class="table" id="table4">
+                    <h5>Run 4: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_ran4']|safe }}
+                </div>
             {% endif %}
         </div>
         
-        <div>
-            {% if tables.config_data %}
-            <h2>Config Data</h2>
+        
+        
+        
+    
+        
+    
+        
+        
+
+        
+        
+
+
+
+        <div class="table-container1">
+            {% if tables.get('config_data_ran1') %}
+            <div class="table" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5>
             <table class="table1">
-                
-                <tbody>
+                <thead>
                     <tr>
                         {% for key, value in dropped_columns_data[0].items() %}
-                            <td>{{ value }}</td>
+                            <th >{{ value }}</th>
+                        {% endfor %}
+                        {% for column_name in config_columns_list %}
+                            <th >{{ column_name }}</th>
                         {% endfor %}
                     </tr>
-                </tbody>
+                </thead>
+                
             </table>
-            {{ tables.config_data | safe }}
-        {% endif %}
-        
+            <tbody>
+                {{ tables['config_data_ran1']|safe }}
+            </tbody>
         </div>
+            {% endif %}
         
+        
+            {% if tables.get('config_data_ran2') %}
+            <div class="table" id="table1">
+            <h5>Run 2: {{ selected_tag }}</h5>
+            <table class="table1">
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                            <th >{{ value }}</th>
+                        {% endfor %}
+                        {% for column_name in config_columns_list %}
+                            <th >{{ column_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                
+            </table>
+            <tbody>
+                {{ tables['config_data_ran2']|safe }}
+            </tbody>
+        </div>
+            {% endif %}
+
+
+           {% if tables.get('config_data_ran3') %}
+            <div class="table" id="table1">
+            <h5>Run 3: {{ selected_tag }}</h5>
+            <table class="table1">
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                            <th >{{ value }}</th>
+                        {% endfor %}
+                        {% for column_name in config_columns_list %}
+                            <th >{{ column_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                
+            </table>
+            <tbody>
+                {{ tables['config_data_ran3']|safe }}
+            </tbody>
+        </div>
+            {% endif %}
+
+        {% if tables.get('config_data_ran4') %}
+            <div class="table" id="table1">
+            <h5>Run 4: {{ selected_tag }}</h5>
+            <table class="table1">
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                            <th >{{ value }}</th>
+                        {% endfor %}
+                        {% for column_name in config_columns_list %}
+                            <th >{{ column_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                
+            </table>
+            <tbody>
+                {{ tables['config_data_ran4']|safe }}
+            </tbody>
+        </div>
+            {% endif %}
+        </div>
+    
 <body>
 
     <!-- </script>
