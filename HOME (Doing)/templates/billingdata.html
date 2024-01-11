@@ -515,30 +515,29 @@
                     {% endif %}
 
                 </div>
-                <div>
-                    {% if tables.config_data and dropped_columns_data %}
+
+                <div class="container">
+                    {% if tables.config_data %}
                     <h2>Config Data</h2>
                     <table class="table1">
-                        <thead style="display: none;">
+                        <thead>
                             <tr>
-                                {% for key, value in dropped_columns_data[0].items() %}
-                                <th>{{ key }}</th>
-                                {% endfor %}
+                                <th>DATA.DATE</th>
+                                <!-- Add other column headers as needed -->
                             </tr>
                         </thead>
                         <tbody>
-                            {% for row in dropped_columns_data %}
+                            {% for billingdata, row in df.iterrows() %}
                             <tr>
-                                {% for key, value in row.items() %}
-                                <td>{{ value }}</td>
-                                {% endfor %}
+                                <td>{{ row['DATA_DATE'] }}</td>
+                                <!-- Add other columns using the appropriate keys -->
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    {{ tables.config_data | safe }}
                     {% endif %}
                 </div>
+
             </div>
         </div>
     </div>
