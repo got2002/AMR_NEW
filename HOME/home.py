@@ -103,15 +103,13 @@ def execute_query(query, params=None):
 ############  /connect database  #####################
 
 
-
-
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 ############ / Home page  #####################
-
-
 
 
 ############  Add User  #####################
@@ -148,9 +146,8 @@ def add_user_route():
 ############  /Add User  #####################
 
 
-
-
 ############  edit_user   #####################
+
 
 def get_data(filter_text=None, sort_column=None):
     try:
@@ -256,17 +253,52 @@ def edit_user_route():
 ############  /edit_user   #####################
 
 
+############   /remove_user ###################
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user_route():
+    # ดึงข้อมูลผู้ใช้จาก Oracle
+    query = "SELECT DESCRIPTION, USER_NAME, USER_LEVEL, USER_ENABLE FROM AMR_USER_TESTS"
+    user_data = fetch_data(query)
+
+    if not user_data:
+        flash("Users not found!", "error")
+        return redirect(url_for("index"))
+
+    # ถ้ามีการส่งค่า POST (คือการเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้)
+    if request.method == "POST":
+        # ดึงข้อมูลจากฟอร์มเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้
+        new_status = request.form.get("status")
+        user_name = request.form.get("user_name")  # ดึง user_name จากฟอร์ม
+
+        # ตรวจสอบว่าสถานะที่เลือกถูกต้อง
+        if new_status not in ["active", "inactive"]:
+            flash("Invalid status selected.", "error")
+            return redirect(url_for("remove_user_route"))
+
+        # แปลงสถานะเป็นเลข (0 หรือ 1) ที่จะบันทึกลงในฐานข้อมูล Oracle
+        status_mapping = {"active": 1, "inactive": 0}
+        new_status_numeric = status_mapping[new_status]
+
+        # สร้างคำสั่ง SQL สำหรับการอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        update_query = "UPDATE AMR_USER_TESTS SET USER_ENABLE = :1 WHERE USER_NAME = :2"
+        update_params = (new_status_numeric, user_name)
+
+        # ทำการ execute คำสั่ง SQL และ commit การอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        if execute_query(update_query, update_params):
+            flash("User status updated successfully!", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Failed to update user status. Please try again.", "error")
+
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template("remove_user.html", user_data=user_data)
+
 
 ############   /remove_user ###################
-
-
-############   /remove_user ###################
-
-
-
 
 
 ############  View Billing Data   #####################
+
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
@@ -427,8 +459,6 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    
-
     # Modify the query with the selected conditions
     query = query.format(
         billing_date_condition=billing_date_condition,
@@ -466,9 +496,8 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            
 
-# เพิ่มเนื้อหา HTML สำหรับกราฟ
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
             fig = px.line(
@@ -485,20 +514,25 @@ def billing_data():
                 hovermode="x unified",
                 template="plotly_white",
                 yaxis=dict(
-                    type='linear',
-                    title='Values',
+                    type="linear",
+                    title="Values",
                 ),
             )
 
             # Adjusting line shape for a smoother appearance
-            fig.update_traces(line_shape='linear', mode='lines+markers', marker=dict(symbol='circle', size=6))
-
-            
+            fig.update_traces(
+                line_shape="linear",
+                mode="lines+markers",
+                marker=dict(symbol="circle", size=6),
+            )
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
-                tables={"config_data": None, "daily_data": df.to_html(classes="data", index=False)},
+                tables={
+                    "config_data": None,
+                    "daily_data": df.to_html(classes="data", index=False),
+                },
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
@@ -636,7 +670,6 @@ def billing_data():
 ############ / View Billing Data  #####################
 
 
-
 ############ Daily summary #####################
 @app.route("/Daily_summary")
 def Daily_summary():
@@ -709,8 +742,6 @@ WHERE
 
 
 ############ /Daily summary  #####################
-
-
 
 
 ############ sitedetail_data  #####################
@@ -795,9 +826,6 @@ WHERE
 
 
 ############ /sitedetail_data  #####################
-
-
-
 
 
 ############ Manualpoll_data  #####################
@@ -890,7 +918,7 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -898,7 +926,7 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-    
+
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -1024,7 +1052,7 @@ def read_data():
             else:
                 # Handle other cases or set a default behavior
                 float_display_value = "Undefined"
-                print(f'Type Value for address {address}: {type_value}')
+                print(f"Type Value for address {address}: {type_value}")
         data_list.append(
             {
                 "description": description,
@@ -1038,7 +1066,7 @@ def read_data():
                 "float_signed_value": signed_value,
             }
         )
-        
+
         value, updated_address = handle_action_configuration(i, value, address)
         # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
     # แทนที่ด้วย:
@@ -1063,7 +1091,6 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1149,7 +1176,7 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1170,12 +1197,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
-                 "evc_type",
-            "vc_name",
-            "poll_billing",
-            "poll_config",
-            "poll_billing_enable",
-            "poll_config_enable",
+                "evc_type",
+                "vc_name",
+                "poll_billing",
+                "poll_config",
+                "poll_billing_enable",
+                "poll_config_enable",
             ],
         )
         # ... (other code)
@@ -1214,10 +1241,12 @@ def get_description_from_database(address):
     result = fetch_data(query, params)
     return result[0][0] if result else None
 
+
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
+
 
 def get_type_value_from_database(address):
     query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
@@ -1225,6 +1254,7 @@ def get_type_value_from_database(address):
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
     return None
+
 
 ############ /Manualpoll_data  #####################
 
