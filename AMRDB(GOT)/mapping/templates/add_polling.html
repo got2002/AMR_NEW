@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+
+<body>
+    <form action="/submit_form" method="post">
+        <h1>Mapping config</h1>
+        <div class="textbox-group">
+            <label for="address1">ADDRESS:</label>
+            <input type="text" id="address1" name="address1" required>
+
+            <label for="description1">DESCRIPTION:</label>
+            <input type="text" id="description1" name="description1" required>
+
+            <label for="type_value1">TYPE_VALUE:</label>
+            <select id="type_value1" name="type_value1" required>
+        <option value="ARRAY6">ARRAY6</option>
+        <option value="Ulong">Ulong</option>
+        <option value="Float">Float</option>
+    </select>
+
+            <label for="evc_type1">EVC_TYPE:</label>
+            <input type="text" id="evc_type1" name="evc_type1" required>
+
+            <label for="or_der1">OR_DER:</label>
+            <input type="text" id="or_der1" name="or_der1" required>
+
+            <label for="data_type1">DATA_TYPE:</label>
+            <input type="text" id="data_type1" name="data_type1" required>
+        </div>
+
+        <!-- Second set of textboxes -->
+        <div class="textbox-group">
+            <label for="address2">ADDRESS:</label>
+            <input type="text" id="address2" name="address2" required>
+
+            <label for="description2">DESCRIPTION:</label>
+            <input type="text" id="description2" name="description2" required>
+
+            <label for="type_value2">TYPE_VALUE:</label>
+            <select id="type_value2" name="type_value2" required>
+        <option value="ARRAY6">ARRAY6</option>
+        <option value="Ulong">Ulong</option>
+        <option value="Float">Float</option>
+    </select>
+
+            <label for="evc_type2">EVC_TYPE:</label>
+            <input type="text" id="evc_type2" name="evc_type2" required>
+
+            <label for="or_der2">OR_DER:</label>
+            <input type="text" id="or_der2" name="or_der2" required>
+
+            <label for="data_type2">DATA_TYPE:</label>
+            <input type="text" id="data_type2" name="data_type2" required>
+        </div>
+
+        <input type="submit" value="Submit">
+    </form>
+
+
+</body>
+
+</html>
