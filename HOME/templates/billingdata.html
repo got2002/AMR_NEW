@@ -59,7 +59,7 @@ th, td {
 }
 
 .table1 th, .table1 td {
-    border: 1px solid #e1dede;
+    border: 1px solid #000000;
     text-align: center; /* จัดตำแหน่งตรงกลาง */
     padding: 8px;
 }
@@ -82,7 +82,6 @@ th, td {
 
         .table {
     width: 100%; /* Adjust the width as needed */
-    border: 1px solid #000000;
     box-sizing: border-box;
     border: 1px solid #ccc;
     padding: 30px;
@@ -162,7 +161,7 @@ th, td {
             {% endif %}
         
             {% if tables.get('daily_data_run4') %}
-                <div class="table" id="table4" >
+                <div class="table" id="table4">
                     <h5>Run 4: {{ selected_tag }}</h5>
                     {{ tables['daily_data_run4']|safe }}
                 </div>
