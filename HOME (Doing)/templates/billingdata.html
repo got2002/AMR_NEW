@@ -154,11 +154,7 @@
             /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
         }
 
-        .container {
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 30px
-        }
+
 
         .menu {
             display: grid;
@@ -317,155 +313,85 @@
             /* สีที่แตกต่างเมื่อ hover */
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
         .main {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: xx-small;
-            max-width: 100%;
-
-        }
-
-        th,
-        td {
-            border: 1px solid #5f5e5e;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #e1dede;
-        }
-
-        /* Apply a specific width to all columns in both tables */
-        th,
-        td {
-            width: 68px;
-            /* Adjust the width value as needed */
-        }
-
-        /* Additional style for the first table with class 'table1' */
-        .table1 {
-            background-color: #e1dede;
-            font-size: small;
-            /* ขนาดตัวอักษรเล็กลง */
-            border-collapse: collapse;
-            /* ยุบเส้นขอบตารางเข้าด้วยกัน */
-            width: 100%;
-            margin-top: 20px;
-            /* เพิ่ม margin-top เพื่อแยกจากข้อความก่อนหน้า */
-        }
-
-        /* Additional style for the first table with class 'table1' */
-        .table1 {
-            background-color: #e1dede;
-            font-size: medium;
-            /* เปลี่ยนขนาดตัวอักษร */
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-            border: 1px solid #5f5e5e;
-        }
-
-        .table1 th,
-        .table1 td {
-            border: 1px solid #5f5e5e;
-            text-align: center;
-            padding: 12px;
-            /* ปรับ padding สำหรับมีพื้นที่ดีขึ้น */
-            font-size: xx-small;
-            /* เปลี่ยนขนาดตัวอักษรในเซลล์ */
-            font-weight: lighter;
-        }
-
-        .table1 th {
-            background-color: #e1dede;
-            font-weight: bold;
-        }
-
-        .table1 tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .table1 tr:hover {
-            background-color: #d9d9d9;
-        }
-
-
+        /* เพิ่มสไตล์ให้กราฟดูทันสมัย */
         .graph {
             width: 100%;
-            margin-top: 40px;
-            /* ลด margin-top เพื่อทำให้กราฟไม่ขึ้นมากเกินไป */
+            margin-top: 20px;
         }
 
         .plot-container {
-            background-color: #aaaaaa98;
+            background-color: #aaaaaa54;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding: 20px;
-            /* เพิ่ม padding สำหรับมีพื้นที่ดีขึ้น */
         }
 
-        /* สร้างรูปแบบสำหรับตัวอักษรใน tables.config_data */
-        .config-data-style {
-            font-family: 'Your Font', sans-serif;
-            font-size: 16px;
-            color: #333;
-            line-height: 1.5;
-        }
 
-        /* สร้างรูปแบบสำหรับตาราง */
-        .config-data-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
 
-        .config-data-table th,
-        .config-data-table td {
+        th,
+        td {
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0 auto;
             border: 1px solid #5f5e5e;
             text-align: center;
             padding: 12px;
+            font-size: small;
+            font-weight: lighter;
         }
 
-        .config-data-table th {
+        th {
             background-color: #e1dede;
             font-weight: bold;
         }
 
-        .config-data-table tr:nth-child(even) {
+
+
+        .table {
+            width: 100%;
+            font-size: small;
+            max-width: 100%;
+            background-color: #e1dede;
+            border: 1px solid #5f5e5e;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #5f5e5e;
+            text-align: center;
+            padding: 2px;
+            font-size: small;
+            font-weight: lighter;
+        }
+
+        .table th {
+            background-color: #e1dede;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        .config-data-table tr:hover {
+        .table tr:hover {
             background-color: #d9d9d9;
         }
 
-        /* เพิ่มสไตล์สำหรับหัวตาราง */
-        .config-data-table th {
-            background-color: #e1dede;
-            font-weight: bold;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .config-data-table thead {
-            background-color: #333;
-            /* สีพื้นหลังสำหรับส่วนหัวตาราง */
-            color: #831515;
-            /* สีข้อความในหัวตาราง */
+        .container {
+            justify-content: center;
+            align-items: center;
+            padding-top: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
         }
     </style>
 </head>
@@ -507,40 +433,40 @@
 
             </form>
             <div class="container">
-                {% if tables.get('daily_data') %}
-                <h1>Daily Data</h1>
-                {{ tables['daily_data']|safe }}
-                <div class="plot-container">
-                    {{ graph|safe }}
-                    {% endif %}
 
-                </div>
+                <table class="table">
+                    {% if tables.get('daily_data') %}
+                    <h1>Daily Data</h1>
+                    {{ tables['daily_data']|safe }}
+                </table>
+            </div>
+            <div class="plot-container">
+                {{ graph|safe }}
+                {% endif %}
+            </div>
 
+            <div>
                 <div class="container">
+                <table class="table">
                     {% if tables.config_data %}
                     <h2>Config Data</h2>
-                    <table class="table1">
-                        <thead>
-                            <tr>
-                                <th>DATA.DATE</th>
-                                <!-- Add other column headers as needed -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for billingdata, row in df.iterrows() %}
-                            <tr>
-                                <td>{{ row['DATA_DATE'] }}</td>
-                                <!-- Add other columns using the appropriate keys -->
-                            </tr>
+                    <tbody>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <td>{{ value }}</td>
                             {% endfor %}
-                        </tbody>
-                    </table>
-                    {% endif %}
-                </div>
+                            {{ tables.config_data | safe }}
+                            {% endif %}
+                            
+                        </tr>
+                    </tbody>
+
+                </table>
 
             </div>
         </div>
-    </div>
+
+
 </body>
 
 </div>
