@@ -602,7 +602,7 @@ def billing_data():
 
             
             
-            print()
+            
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"
