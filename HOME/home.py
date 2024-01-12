@@ -4,6 +4,7 @@ import cx_Oracle
 from flask import flash
 from datetime import datetime
 import pandas as pd
+import numpy as np
 import sqlite3
 import plotly.express as px
 from flask import (
@@ -478,35 +479,35 @@ def billing_data():
             
 
             # Assuming 'df' is the DataFrame created from the query results
-            df_ran1 = df[df['METER_STREAM_NO'] == '1']
-            df_ran2 = df[df['METER_STREAM_NO'] == '2']
-            df_ran3 = df[df['METER_STREAM_NO'] == '3']
-            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "config_data": None,
             }
 
-            if not df_ran1.empty:
-                print("Unique DATA_DATE values in df_ran1:\n", df_ran1['DATA_DATE'].unique())
-                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran1"] = df_ran1.to_html(classes="data", index=False)
+            if not df_run1.empty:
+               
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
 
-            if not df_ran2.empty:
-                print("Unique DATA_DATE values in df_ran2:\n", df_ran2['DATA_DATE'].unique())
-                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran2"] = df_ran2.to_html(classes="data", index=False)
+            if not df_run2.empty:
+               
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran2"] = df_run2.to_html(classes="data", index=False)
 
-            if not df_ran3.empty:
-                print("Unique DATA_DATE values in df_ran3:\n", df_ran3['DATA_DATE'].unique())
-                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran3"] = df_ran3.to_html(classes="data", index=False)
+            if not df_run3.empty:
+             
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran3"] = df_run3.to_html(classes="data", index=False)
 
-            if not df_ran4.empty:
-                print("Unique DATA_DATE values in df_ran4:\n", df_ran4['DATA_DATE'].unique())
-                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran4"] = df_ran4.to_html(classes="data", index=False)
+            if not df_run4.empty:
+               
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
 
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
@@ -572,7 +573,7 @@ def billing_data():
                     "CONFIG19",
                     "CONFIG20",
                     "METER_STREAM_NO",
-                ],
+                ]
             )
             columns_to_drop = [
                 "CONFIG1",
@@ -595,13 +596,17 @@ def billing_data():
                 "CONFIG18",
                 "CONFIG19",
                 "CONFIG20",
-                
             ]
+
+        
+
+            
+            
 
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"
-            ] = "DATA.DATE"  # Replace actual values with the column name
+            ] = "Date"  # Replace actual values with the column name
             dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
@@ -619,28 +624,31 @@ def billing_data():
             df = df.sort_values(by="DATA_DATE")
             
             # Send the DataFrame to the HTML template
-            df_ran1 = df[df['METER_STREAM_NO'] == '1']
-            df_ran2 = df[df['METER_STREAM_NO'] == '2']
-            df_ran3 = df[df['METER_STREAM_NO'] == '3']
-            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "daily_data": None,
+                
             }
 
-            if not df_ran1.empty:
-                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran1"] = df_ran1.to_html(classes="data", index=False, header=None)
-            if not df_ran2.empty:
-                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran2"] = df_ran2.to_html(classes="data", index=False, header=None)
-            if not df_ran3.empty:
-                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran3"] = df_ran3.to_html(classes="data", index=False, header=None)
-            if not df_ran4.empty:
-                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran4"] = df_ran4.to_html(classes="data", index=False, header=None)
+            common_table_properties = {"classes": "data", "index": False,"header":None}
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
 
             return render_template(
                 "billingdata.html",
