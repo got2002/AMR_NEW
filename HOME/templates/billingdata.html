@@ -261,7 +261,44 @@ th, td {
         </table>
     </div>
 {% endif %}
-           
+{% if tables.get('config_data_run5') %}
+<div class="table" id="table1">
+    <h5>Run 5: {{ selected_tag }}</h5>
+    <table class="table1">
+        <!-- The following line combines thead and tbody into a single block -->
+        <thead >
+            <tr >
+                {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {{ tables['config_data_run5']|safe }}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% if tables.get('config_data_run6') %}
+<div class="table" id="table1">
+    <h5>Run 6: {{ selected_tag }}</h5>
+    <table class="table1">
+        <!-- The following line combines thead and tbody into a single block -->
+        <thead >
+            <tr >
+                {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {{ tables['config_data_run6']|safe }}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+       
+       
             
         </div>
     
