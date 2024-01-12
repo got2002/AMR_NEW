@@ -67,6 +67,7 @@ hostname = "192.168.102.192"
 port = "1521"
 service_name = "orcl"
 
+
 def fetch_data(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -213,12 +214,15 @@ filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_co
 def get_data_route():
     data = get_data()
     return jsonify(data)
+
+
 # User list page
 @app.route("/")
 def index():
     query = "SELECT * FROM AMR_USER_TESTS"
     users = fetch_data(query)
     return render_template("user.html", users=users)
+
 
 @app.route("/edit_user", methods=["GET", "POST"])
 def edit_user_route():
@@ -279,7 +283,7 @@ def remove_user_route():
         # ตรวจสอบว่าสถานะที่เลือกถูกต้อง
         if new_status not in ["active", "inactive"]:
             flash("Invalid status selected.", "error")
-            return redirect(url_for("remove_user_route"))
+            return redirect(url_for("remove_user"))
 
         # แปลงสถานะเป็นเลข (0 หรือ 1) ที่จะบันทึกลงในฐานข้อมูล Oracle
         status_mapping = {"active": 1, "inactive": 0}
@@ -372,67 +376,66 @@ def billing_data():
 
     elif query_type == "config_data":
         query = """
-        SELECT
-            AMR_PL_GROUP.PL_REGION_ID,
-            AMR_FIELD_ID.TAG_ID,
-            amr_field_id.meter_id,
-            AMR_CONFIGURED_DATA.DATA_DATE,
-            
-            amr_configured_data.amr_config1,
-            amr_configured_data.amr_config2,
-            amr_configured_data.amr_config3,
-            amr_configured_data.amr_config4,
-            amr_configured_data.amr_config5,
-            amr_configured_data.amr_config6,
-            amr_configured_data.amr_config7,
-            amr_configured_data.amr_config8,
-            amr_configured_data.amr_config9,
-            amr_configured_data.amr_config10,
-            amr_configured_data.amr_config11,
-            amr_configured_data.amr_config12,
-            amr_configured_data.amr_config13,
-            amr_configured_data.amr_config14,
-            amr_configured_data.amr_config15,
-            amr_configured_data.amr_config16,
-            amr_configured_data.amr_config17,
-            amr_configured_data.amr_config18,
-            amr_configured_data.amr_config19,
-            amr_configured_data.amr_config20,
-            
-            
-            AMR_VC_CONFIGURED_INFO.config1,
-            AMR_VC_CONFIGURED_INFO.config2,
-            AMR_VC_CONFIGURED_INFO.config3,
-            AMR_VC_CONFIGURED_INFO.config4,
-            AMR_VC_CONFIGURED_INFO.config5,
-            AMR_VC_CONFIGURED_INFO.config6,
-            AMR_VC_CONFIGURED_INFO.config7,
-            AMR_VC_CONFIGURED_INFO.config8,
-            AMR_VC_CONFIGURED_INFO.config9,
-            AMR_VC_CONFIGURED_INFO.config10,
-            AMR_VC_CONFIGURED_INFO.config11,
-            AMR_VC_CONFIGURED_INFO.config12,
-            AMR_VC_CONFIGURED_INFO.config13,
-            AMR_VC_CONFIGURED_INFO.config14,
-            AMR_VC_CONFIGURED_INFO.config15,
-            AMR_VC_CONFIGURED_INFO.config16,
-            AMR_VC_CONFIGURED_INFO.config17,
-            AMR_VC_CONFIGURED_INFO.config18,
-            AMR_VC_CONFIGURED_INFO.config19,
-            AMR_VC_CONFIGURED_INFO.config20
-            
-        FROM
-            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-        WHERE
-            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-            AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
-            
-            {configured_date_condition}
-            {tag_condition}
-            {region_condition}
-        """
+    SELECT
+        AMR_PL_GROUP.PL_REGION_ID,
+        AMR_FIELD_ID.TAG_ID,
+        amr_field_id.meter_id,
+        AMR_CONFIGURED_DATA.DATA_DATE,
+        
+        amr_configured_data.amr_config1,
+        amr_configured_data.amr_config2,
+        amr_configured_data.amr_config3,
+        amr_configured_data.amr_config4,
+        amr_configured_data.amr_config5,
+        amr_configured_data.amr_config6,
+        amr_configured_data.amr_config7,
+        amr_configured_data.amr_config8,
+        amr_configured_data.amr_config9,
+        amr_configured_data.amr_config10,
+        amr_configured_data.amr_config11,
+        amr_configured_data.amr_config12,
+        amr_configured_data.amr_config13,
+        amr_configured_data.amr_config14,
+        amr_configured_data.amr_config15,
+        amr_configured_data.amr_config16,
+        amr_configured_data.amr_config17,
+        amr_configured_data.amr_config18,
+        amr_configured_data.amr_config19,
+        amr_configured_data.amr_config20,
+        
+        AMR_VC_CONFIGURED_INFO.config1,
+        AMR_VC_CONFIGURED_INFO.config2,
+        AMR_VC_CONFIGURED_INFO.config3,
+        AMR_VC_CONFIGURED_INFO.config4,
+        AMR_VC_CONFIGURED_INFO.config5,
+        AMR_VC_CONFIGURED_INFO.config6,
+        AMR_VC_CONFIGURED_INFO.config7,
+        AMR_VC_CONFIGURED_INFO.config8,
+        AMR_VC_CONFIGURED_INFO.config9,
+        AMR_VC_CONFIGURED_INFO.config10,
+        AMR_VC_CONFIGURED_INFO.config11,
+        AMR_VC_CONFIGURED_INFO.config12,
+        AMR_VC_CONFIGURED_INFO.config13,
+        AMR_VC_CONFIGURED_INFO.config14,
+        AMR_VC_CONFIGURED_INFO.config15,
+        AMR_VC_CONFIGURED_INFO.config16,
+        AMR_VC_CONFIGURED_INFO.config17,
+        AMR_VC_CONFIGURED_INFO.config18,
+        AMR_VC_CONFIGURED_INFO.config19,
+        AMR_VC_CONFIGURED_INFO.config20
+        
+    FROM
+        AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+    JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+    WHERE
+        AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+        AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+        AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
+        
+        {configured_date_condition}
+        {tag_condition}
+        {region_condition}
+    """
 
     # Get selected values from the dropdowns
     billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
@@ -658,7 +661,7 @@ def billing_data():
                 "CONFIG19",
                 "CONFIG20",
             ]
-
+            dropped_columns_data = pd.concat([pd.DataFrame(columns=df.columns), pd.DataFrame(columns=columns_to_drop)], axis=1)
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"
@@ -698,21 +701,16 @@ def billing_data():
             )
 
     else:
+        # Render the template without executing the query
         return render_template(
             "billingdata.html",
-            tables={
-                "daily_data": None,
-                "config_data": df.to_html(classes="data", header=False, index=False),
-            },
-            titles=df.columns.values,
             selected_date=selected_date,
-            selected_tag=selected_tag,
             selected_region=selected_region,
+            selected_tag=selected_tag,
             region_options=region_options,
             tag_options=tag_options,
-            dropped_columns_data=dropped_columns_data,
+            tables={},
         )
-
 
 
 ############ / View Billing Data  #####################
@@ -1410,8 +1408,6 @@ def handle_action_configuration(i, value, address):
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
-
-
 
 
 ############ /Manualpoll_data  #####################
