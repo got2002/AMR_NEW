@@ -46,6 +46,32 @@
             position: fixed;
         }
 
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            /* สีข้อความ */
+        }
+
+        input {
+            width: 25%;
+            padding: 10px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #555;
+            /* สีข้อความใน input */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
 
 
         .header a {
@@ -77,66 +103,7 @@
             text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
         }
 
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #221f1f;
-            background-image: linear-gradient(to right, #0048a7, #abdfff);
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            /* Add a subtle box shadow */
-            transition: left 0.3s ease;
-            /* Transition effect to slide in/out */
-            transition: transform 300ms, box-shadow 300ms;
-            box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
 
-        }
-
-        .sidebar::before,
-        .sidebar::after {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-top-left-radius: 40%;
-            border-top-right-radius: 45%;
-            border-bottom-left-radius: 35%;
-            border-bottom-right-radius: 40%;
-            z-index: -1;
-        }
-
-        .sidebar::before {
-            left: 20%;
-            bottom: -50%;
-            background-color: rgba(8, 0, 255, 0.788);
-            animation: wawes 6s infinite linear;
-        }
-
-        .sidebar::after {
-            left: -188%;
-            bottom: -40%;
-            background-color: rgba(0, 223, 253, 0.2);
-            animation: wawes 7s infinite;
-        }
-
-        @keyframes wawes {
-            from {
-                transform: rotate(0);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
 
         a.list-item-link {
             color: #000000;
@@ -231,29 +198,61 @@
             width: 200px;
             /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
             object-position: 30% 38%;
-            /* ปรับตำแหน่งของรูป (X, Y) */
+            background-color: #ffffff;
+            display: flex;
+        }
+
+        th,
+        td {
+            width: 100px;
+
+            align-items: center;
+            margin: 0 auto;
+            border: 1px solid #5f5e5e;
+            text-align: center;
+            padding: 12px;
+            font-size: small;
+            text-align: left;
+            border: 1px solid #000000;
+        }
+
+        th {
+            background-color: #e1dede;
+            font-weight: bold;
+        }
+
+        form {
+            max-width: 350px;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
         }
 
         .form-container {
+            text-align: center;
+        }
+
+
+        .form-containerBOx {
             background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            width: 100%;
-            margin-top: 50px;
-            overflow: auto;
-        }
-
-        .MainDashboard {
-            width: calc(100% - 250px);
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(159deg, #ffffff 14.25%, #ffffff 56.45%, #ffffff 86.14%);
+            width: 95%;
+            margin-top: 40px;
             overflow: hidden;
+            font-family: Arial, sans-serif;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         .footer {
@@ -319,6 +318,151 @@
             padding: 20px;
         }
 
+        :root {
+            --color1: #0b1d5b;
+            --color2: #ffffff;
+            --color3: #102dbb;
+            --color4: #476aec;
+            --color5: #6885ef;
+        }
+
+
+        .navbar {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70rem;
+            margin-top: 10vw;
+            transition: all .5s ease;
+
+        }
+
+        .navbar-container {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            perspective: 50rem;
+            background-color: rgba(66, 64, 64, 0.8);
+            /* Darken color1 with 20% transparency */
+
+            box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+
+        }
+
+        .navbar-container_sub {
+            position: absolute;
+            width: 100%;
+            list-style: none;
+            border-radius: 0 0 5px 5px;
+            top: 100%;
+            left: 0;
+            padding: 0;
+            transform: rotateY(180deg) scaleY(0);
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .7s ease;
+            box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-item {
+            flex-grow: 1;
+            padding: 1rem;
+            font-size: 2rem;
+            background-color: var(--color3);
+            font-weight: bold;
+            text-align: center;
+            color: whitesmoke;
+            transition: all .7s ease;
+            transform: rotateY(0deg);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            font-size: 15px;
+
+        }
+
+        .navbar-item:hover {
+            transform: rotateY(180deg);
+        }
+
+        .navbar-item:hover .navbar-container_sub {
+            transform: rotateY(180deg) scaleY(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navbar-item:hover .navbar-item_label {
+            transform: scaley(1) rotateY(180deg);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navbar-item_sub {
+            padding: 1rem;
+            font-size: 2rem;
+            background-color: transparent;
+            position: relative;
+            overflow: hidden;
+            color: whitesmoke;
+            text-align: end;
+            transition: color .3s ease-in;
+            font-size: 15px;
+            overflow: hidden;
+        }
+
+        .navbar-item_sub:hover {
+            color: var(--color3);
+        }
+
+        .navbar-item_sub:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-color: var(--color4);
+        }
+
+        .navbar-item_sub:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 120%;
+            width: 120%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--color2);
+            transform: skewX(-30deg);
+            transform-origin: right;
+            transition: all .3s ease-in;
+        }
+
+        .navbar-item_sub:hover:before {
+            left: -10%;
+        }
+
+        .navbar-item_label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: inherit;
+            font-size: inherit;
+            font-weight: bold;
+            text-align: right;
+            transform: scaleY(0) rotateY(180deg);
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .4s ease .1s;
+            background-color: var(--color2);
+            color: var(--color3);
+        }
+
         /* เพิ่มสไตล์ให้กราฟดูทันสมัย */
         .graph {
             width: 100%;
@@ -335,22 +479,6 @@
 
 
 
-        th,
-        td {
-            justify-content: center;
-            align-items: flex-start;
-            margin: 0 auto;
-            border: 1px solid #5f5e5e;
-            text-align: center;
-            padding: 12px;
-            font-size: small;
-            font-weight: lighter;
-        }
-
-        th {
-            background-color: #e1dede;
-            font-weight: bold;
-        }
 
 
 
@@ -362,39 +490,12 @@
             margin-top: -10px;
 
         }
-        .table {
-            width: 100%;
-            /* Adjust the width as needed */
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            padding: 30px;
-            margin: 10px auto;
-            /* Center-align the table */
-        }
 
-
-        th,
-        td {
-            border: 1px solid #000000;
-
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #e1dede;
-        }
-
-
-        th,
-        td {
-            width: 63px;
-        }
 
 
 
         .table1 {
-            table-layout: fixed;
+
             border-collapse: collapse;
             width: 100%;
             box-sizing: border-box;
@@ -422,67 +523,101 @@
         }
 
         @media (max-width: 768px) {
-            .table {
+            .table1 {
                 width: 100%;
             }
         }
     </style>
 </head>
-<div class="header">
-    <a href="login" class="logout-link">Log Out</a>
-    <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
-</div>
+<ul class="navbar-container">
+    <img class="logo"
+        src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+        alt="logo">
+    <li class="navbar-item">Reports Data<span class="navbar-item_label">Reports Data</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="{{ url_for('billing_data') }}" class="list-item-link"><a href=""
+                        class="list-item-link"></a>View Billing Data</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>View EVC Status</li>
+            <li class="navbar-item_sub"><a href="Daily_summary" class="list-item-link"></a>Daily Summary</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Monthly Summery</li>
+            <li class="navbar-item_sub"><a href="sitedetail_data" class="list-item-link"></a>Site Detail</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>New Site Detail</li>
+        </ul>
+    </li>
+    <li class="navbar-item">Polling Actions<span class="navbar-item_label">Polling Actions</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="Manualpoll_data" class="list-item-link"></a>Manualpoll</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Write Config</li>
+        </ul>
+    </li>
+    <li class="navbar-item">Manage Sites<span class="navbar-item_label">Manage Sites</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Add Site</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Edit Site</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>>Remove Site</li>
+        </ul>
+    </li>
+    <li class="navbar-item">Manage Users<span class="navbar-item_label">Manage Users</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="add_user_route" class="list-item-link"></a>Add User</li>
+            <li class="navbar-item_sub"><a href="edit_user" class="list-item-link"></a>Edit User</li>
+            <li class="navbar-item_sub"><a href="remove_user" class="list-item-link"></a>Remove User</li>
+        </ul>
+    </li>
+    <li class="navbar-item">Poll Sitting<span class="navbar-item_label">Poll Sitting</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="add_mapping_route" class="list-item-link"></a>Add Mapping</li>
+            <li class="navbar-item_sub"><a href="add_polling_route" class="list-item-link"></a>Add Polling</li>
+        </ul>
+    </li>
+</ul>
+</nav>
+
+<body>
+    <div class="form-container">
+        <form method="get" action="{{ url_for('billing_data') }}">
+            <label for="tag_dropdown">Select Region :</label>
+            <select id="region_dropdown" name="region_dropdown">
+                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+                </option>
+                {% endfor %}
+            </select>
+            <label for="tag_dropdown">Select Site :</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+                <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                {% for tag in tag_options %}
+                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                {% endfor %}
+            </select>
+            <label for="date_picker">Select Date :</label>
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
+                Data</button>
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
+                Data</button>
+            <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
+                Filters</button>
+        </form>
+    </div>
+</body>
 
 <body>
 
-    <div class="container">
-        <div class="form-container">
-
-            <form method="get" action="{{ url_for('billing_data') }}">
-                <label for="tag_dropdown">Select Region :</label>
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="tag_dropdown">Select Site :</label>
-                <select id="tag_dropdown" name="tag_dropdown">
-                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-                    {% for tag in tag_options %}
-                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                    {% endfor %}
-                </select>
-                <label for="date_picker">Select Date :</label>
-                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
-                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
-                    Data</button>
-                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
-                    Data</button>
-                <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
-                    Filters</button>
-
-            </form>
-            <div class="container">
-
-                <table class="table">
-                    {% if tables.get('daily_data') %}
-                    <h1>Daily Data</h1>
-                    {{ tables['daily_data']|safe }}
-                </table>
-            </div>
-            <div class="plot-container">
-                {{ graph|safe }}
-                {% endif %}
-            </div>
-
-
-
-
-
-            <!-- <div class="container">
+    <div class="form-containerBOx">
+            <table class="table">
+                {% if tables.get('daily_data') %}
+                <h1>Daily Data</h1>
+                {{ tables['daily_data']|safe }}
+            </table>
+        </div>
+        <div class="plot-container">
+            {{ graph|safe }}
+            {% endif %}
+        </div>
+        <!-- <div class="container">
                 <table class="table">
                     {% if tables.config_data %}
                     <h2>Config Data</h2>
@@ -501,27 +636,26 @@
 
             </div> -->
 
-            <div class="table-container1">
-                {% if tables.config_data %}
-                <div class="table" id="table1">
-                    <h5>Run 1: {{ selected_tag }}</h5>
-                    <table class="table1">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                            <tr>
-                                {% for key, value in dropped_columns_data[0].items() %}
-                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{ tables.config_data | safe }}
-                        </tbody>
-                    </table>
-                </div>
-                {% endif %}
+        {% if tables.config_data %}
+        <div class="container" id="container">
+            <h5>Run 1: {{ selected_tag }}</h5>
+            <table class="container">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables.config_data | safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </body>
 
-</body>
 
 </div>
 
