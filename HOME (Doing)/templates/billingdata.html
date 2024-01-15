@@ -22,13 +22,11 @@
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body,
         html {
             background-image: linear-gradient(to right, #5b707e, #abb2b9);
-            height: 100%;
             font-family: 'Noto Sans Thai Looped', sans-serif;
         }
 
@@ -202,36 +200,49 @@
             display: flex;
         }
 
-        th,
-        td {
-            width: 100px;
 
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 0px;
+            padding: 5px;
+        }
+
+        
+        td {
+            background-color: rgb(255, 255, 255);
+            border: 1.5px solid #171717;
+            height: 20px;
+            width: 65px;
             align-items: center;
-            margin: 0 auto;
-            border: 1px solid #5f5e5e;
             text-align: center;
-            padding: 12px;
             font-size: small;
-            text-align: left;
-            border: 1px solid #000000;
+            padding: 3px; 
         }
 
         th {
-            background-color: #e1dede;
+            background-color: #9d9d9d;
+            border: 2px solid #171717;
+            height: 50px;
+            width: 65px;
             font-weight: bold;
+            text-align: center;
+            font-size: xx-small;
+            align-items: center;
+            padding: 2px;
         }
 
         form {
-            max-width: 350px;
+            max-width: 650px;
             margin: auto;
             margin-top: 50px;
             margin-bottom: 50px;
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: left;
-            /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
+            
         }
 
         .form-container {
@@ -242,13 +253,12 @@
         .form-containerBOx {
             background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 5px;
             text-align: center;
-            padding: 20px;
+            padding: 1px;
             box-sizing: border-box;
             width: 95%;
-            margin-top: 40px;
-            overflow: hidden;
+            overflow: auto;
             font-family: Arial, sans-serif;
             margin: auto;
             margin-top: 50px;
@@ -465,7 +475,7 @@
 
         /* เพิ่มสไตล์ให้กราฟดูทันสมัย */
         .graph {
-            width: 100%;
+            width: 10%;
             margin-top: 20px;
         }
 
@@ -478,55 +488,6 @@
         }
 
 
-
-
-
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: xx-small;
-            table-layout: fixed;
-            margin-top: -10px;
-
-        }
-
-
-
-
-        .table1 {
-
-            border-collapse: collapse;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 30px;
-            margin: 10px auto;
-        }
-
-        .table1 th,
-        .table1 td {
-            border: 1px solid #000000;
-            text-align: center;
-            /* จัดตำแหน่งตรงกลาง */
-            padding: 8px;
-        }
-
-        .table1 th {
-            border-top: 1px solid #000000;
-            border-bottom: 1px solid #000000;
-        }
-
-        @media (max-width: 768px) {
-            .table1 {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .table1 {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <ul class="navbar-container">
@@ -611,9 +572,64 @@
             </table>
         </div>
         <div class="plot-container">
-            {{ graph|safe }}
+            <div class="plot-container">
+                {{ graph_corrected|safe }}
+            </div>
+            
+            <div class="plot-container">
+                {{ graph_uncorrected|safe }}
+            </div>
+            
+            <div class="plot-container">
+                {{ graph_pressure|safe }}
+            </div>
+            
+            <div class="plot-container">
+                {{ graph_temperature|safe }}
+            </div>
+            
             {% endif %}
         </div>
+        <div class="table-container">
+            {% if tables.get('daily_data_run1') %}
+                <div class="table" id="table1">
+                    <h5>Run 1: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_run1']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_run2') %}
+                <div class="table" id="table2">
+                    <h5>Run 2: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_run2']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_run3') %}
+                <div class="table" id="table3">
+                    <h5>Run 3: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_run3']|safe }}
+                </div>
+            {% endif %}
+        
+            {% if tables.get('daily_data_run4') %}
+                <div class="table" id="table4">
+                    <h5>Run 4: {{ selected_tag }}</h5>
+                    {{ tables['daily_data_run4']|safe }}
+                </div>
+            {% endif %}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
         <!-- <div class="container">
                 <table class="table">
                     {% if tables.config_data %}
@@ -632,16 +648,15 @@
                 </table>
 
             </div> -->
-
-        {% if tables.config_data %}
-        <div class="container" id="container">
-            <h5>Run 1: {{ selected_tag }}</h5>
             <table class="container">
+        {% if tables.config_data %}
+            <h5>Run 1: {{ selected_tag }}</h5>
+            
                 <!-- The following line combines thead and tbody into a single block -->
                 <thead>
                     <tr>
                         {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        <th>{{ value }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
