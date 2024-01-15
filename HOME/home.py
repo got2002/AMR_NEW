@@ -596,13 +596,14 @@ def billing_data():
                 "CONFIG18",
                 "CONFIG19",
                 "CONFIG20",
+                
             ]
 
         
 
             
             
-            print()
+            
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"
@@ -628,6 +629,8 @@ def billing_data():
             df_run2 = df[df['METER_STREAM_NO'] == '2']
             df_run3 = df[df['METER_STREAM_NO'] == '3']
             df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
@@ -649,6 +652,12 @@ def billing_data():
             if not df_run4.empty:
                 df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
 
             return render_template(
                 "billingdata.html",
