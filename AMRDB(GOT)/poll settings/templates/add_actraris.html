@@ -11,15 +11,15 @@
 
 <body>
 
-    <form action="/submit_new_form" method="post">
+    <form action="/new_form" method="post">
         <h1>Mapping config</h1>
 
-        <div style="display: inline-block; border: 0.5px solid #ccc; padding: 10px; border-radius: 10px; background-color: #edf0c8;">
+        <div style="display: inline-block; border: 0.5px solid #fffbfb; padding: 10px; border-radius: 10px; background-color: #eeeee2;">
             <a href="{{ url_for('add_mapping_route') }}" style="text-decoration: none; color: #333; font-weight: bold;">Elter</a>
         </div>
 
-        <div style="display: inline-block; border: 0.5px solid #ccc; padding: 10px; border-radius: 10px; background-color: #c5d4c6;">
-            <a href="{{ url_for('add_actraris_route') }}" style="text-decoration: none; color: #333; font-weight: bold;">Actraris</a>
+        <div style="display: inline-block; border: 0.5px solid #e7dede; padding: 10px; border-radius: 10px; background-color: #06f506;">
+            <a href="{{ url_for('add_actraris_route') }}" style="text-decoration: none; color: #1a1818; font-weight: bold;">Actraris</a>
         </div>
 
         <div class="textbox-group">
@@ -446,6 +446,10 @@
     </form>
 
 
+</body>
+
+<body>
+    <a href="{{ url_for('index') }}">Home</a>
 </body>
 
 </html>
