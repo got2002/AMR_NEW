@@ -505,6 +505,7 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
 
+<<<<<<< HEAD
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
@@ -545,6 +546,9 @@ def billing_data():
                 },
             )
 
+=======
+
+>>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
             # Assuming 'df' is the DataFrame created from the query results
             df_run1 = df[df["METER_STREAM_NO"] == "1"]
             df_run2 = df[df["METER_STREAM_NO"] == "2"]
@@ -579,6 +583,10 @@ def billing_data():
             return render_template(
                 "billingdata.html",
                 tables=tables,
+<<<<<<< HEAD
+=======
+
+>>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
@@ -1030,6 +1038,7 @@ def read_data():
     else:
         starting_address = int(request.form["starting_address"])
     quantity = int(request.form["quantity"])
+    
     tcp_ip = request.form["tcp_ip"]
     tcp_port = int(request.form["tcp_port"])
 
@@ -1046,15 +1055,15 @@ def read_data():
 
     # Build the request message
     request_message = bytearray(
-        [
-            slave_id,
-            function_code,
-            starting_address >> 8,
-            starting_address & 0xFF,
-            quantity >> 8,
-            quantity & 0xFF,
-        ]
-    )
+    [
+        slave_id,                      # Byte 1: Slave ID
+        function_code,                 # Byte 2: Function Code
+        starting_address >> 8,         # Byte 3: High byte of Starting Address
+        starting_address & 0xFF,       # Byte 4: Low byte of Starting Address
+        quantity >> 8,                 # Byte 5: High byte of Quantity
+        quantity & 0xFF,               # Byte 6: Low byte of Quantity
+    ]
+)
 
     crc = computeCRC(request_message)
     request_message += crc.to_bytes(2, byteorder="big")
@@ -1313,7 +1322,7 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
@@ -1326,7 +1335,7 @@ def process_selected_rows():
 
 
 def get_type_value_from_database(address):
-    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     result = fetch_data(query, params={"address": address})
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
