@@ -507,44 +507,7 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
 
-<<<<<<< HEAD
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            df = df.sort_values(by="DATA_DATE", ascending=True)
 
-            fig = px.line(
-                df,
-                x="DATA_DATE",
-                y=["UNCORRECTED"],
-                title="Daily Data",
-            )
-
-            fig.update_layout(
-                xaxis_title="Date",
-                yaxis_title="Values",
-                legend_title="Variables",
-                hovermode="x unified",
-                template="plotly_white",
-                yaxis=dict(
-                    type="linear",
-                    title="Values",
-                ),
-            )
-
-            # Adjusting line shape for a smoother appearance
-            fig.update_traces(
-                line_shape="linear",
-                mode="lines+markers",
-                marker=dict(symbol="circle", size=6),
-            )
-
-            # ส่ง graph_html ไปยัง HTML template ของ Flask
-            return render_template(
-                "billingdata.html",
-                tables={
-                    "config_data": None,
-                    "daily_data": df.to_html(classes="data", index=False),
-                },
-=======
             # Assuming 'df' is the DataFrame created from the query results
             df_run1 = df[df['METER_STREAM_NO'] == '1']
             df_run2 = df[df['METER_STREAM_NO'] == '2']
@@ -583,7 +546,7 @@ def billing_data():
             return render_template(
                 "billingdata.html",
                 tables=tables,
->>>>>>> 080e6c13d6966bd7d555a9108d772465032f35e2
+
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
@@ -1320,7 +1283,7 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
@@ -1333,7 +1296,7 @@ def process_selected_rows():
 
 
 def get_type_value_from_database(address):
-    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     result = fetch_data(query, params={"address": address})
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
