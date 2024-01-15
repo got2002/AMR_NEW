@@ -527,8 +527,6 @@ def billing_data():
                 line=dict(color="blue", width=2),
             )
 
-
-###
             trace_uncorrected = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["UNCORRECTED"],
