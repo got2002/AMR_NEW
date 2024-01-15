@@ -5,66 +5,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
-</head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<body>
+    <head>
+        <script>
+            // Ensure the document is ready before executing JavaScript
+            $(document).ready(function() {
+                // Fetch and display data when the page loads
+                fetchAndDisplayData();
 
-    <h1>Poll Configurator</h1>
+                // Function to fetch and display data
+                function fetchAndDisplayData() {
+                    var query = "SELECT EVC_TYPE, POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE FROM AMR_POLL_RANGE";
+                    // Update 'your_table_name' with your actual table name
 
-    <select id="myDropdown">
-</select>
+                    $.ajax({
+                        type: "POST",
+                        url: "/query",
+                        data: {
+                            query: query
+                        },
+                        success: function(data) {
+                            displayData(data);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                            alert("Error fetching data from Oracle!");
+                        }
+                    });
+                }
 
+                // Function to display data
+                function displayData(data) {
+                    // Assuming you have a div with id "dataContainer" to display the data
+                    var container = $("#dataContainer");
+                    container.empty();
+
+                    // Check if data is not empty
+                    if (data.length > 0) {
+                        // Assuming data is an array of rows
+                        for (var i = 0; i < data.length; i++) {
+                            var row = data[i];
+                            container.append("<p>EVC_TYPE: " + row[0] + ", POLL_CONFIG: " + row[1] +
+                                ", POLL_BILLING: " + row[2] + ", POLL_CONFIG_ENABLE: " + row[3] +
+                                ", POLL_BILLING_ENABLE: " + row[4] + "</p>");
+                        }
+                    } else {
+                        container.append("<p>No data found</p>");
+                    }
+                }
+            });
+        </script>
+    </head>
 
     <body>
-        <form id="editForm" method="post" action="{{ url_for('edit_polling_route') }}">
-            <div class="address-pair">
-                <label for="start1">Start Address:</label>
-                <input type="text" id="start1" name="start1" required>
-                <label for="end1">End Address:</label>
-                <input type="text" id="end1" name="end1" required>
-                <label for="enable1">Enable:</label>
-                <input type="checkbox" id="enable1" name="enable1" checked>
-            </div>
 
-            <!-- Address Pair 2 -->
-            <div class="address-pair">
-                <label for="start2">Start Address:</label>
-                <input type="text" id="start2" name="start2" required>
-                <label for="end2">End Address:</label>
-                <input type="text" id="end2" name="end2" required>
-                <label for="enable2">Enable:</label>
-                <input type="checkbox" id="enable2" name="enable2" checked>
-            </div>
+        <h1>Poll Configurator</h1>
 
-            <!-- Address Pair 3 -->
-            <div class="address-pair">
-                <label for="start3">Start Address:</label>
-                <input type="text" id="start3" name="start3" required>
-                <label for="end3">End Address:</label>
-                <input type="text" id="end3" name="end3" required>
-                <label for="enable3">Enable:</label>
-                <input type="checkbox" id="enable3" name="enable3" checked>
-            </div>
+        <label for="myDropdown">Select EVC_TYPE:</label>
+        <select id="myDropdown">
+        <!-- Add options here if needed -->
+    </select>
 
-            <!-- Address Pair 4 -->
-            <div class="address-pair">
-                <label for="start4">Start Address:</label>
-                <input type="text" id="start4" name="start4" required>
-                <label for="end4">End Address:</label>
-                <input type="text" id="end4" name="end4" required>
-                <label for="enable4">Enable:</label>
-                <input type="checkbox" id="enable4" name="enable4" checked>
-            </div>
+        <!-- Add the rest of your HTML code here -->
 
-            <!-- Address Pair 5 -->
-            <div class="address-pair">
-                <label for="start5">Start Address:</label>
-                <input type="text" id="start5" name="start5" required>
-                <label for="end5">End Address:</label>
-                <input type="text" id="end5" name="end5" required>
-                <label for="enable5">Enable:</label>
-                <input type="checkbox" id="enable5" name="enable5" checked>
-            </div>
+    </body>
+
+    <body>
+        <div class="address-pair">
+            <label for="start1">Start Address:</label>
+            <input type="text" id="start1" name="start1" required>
+            <label for="end1">End Address:</label>
+            <input type="text" id="end1" name="end1" required>
+            <label for="enable1">Enable:</label>
+            <input type="checkbox" id="enable1" name="enable1" checked>
+        </div>
+
+        <!-- Address Pair 2 -->
+        <div class="address-pair">
+            <label for="start2">Start Address:</label>
+            <input type="text" id="start2" name="start2" required>
+            <label for="end2">End Address:</label>
+            <input type="text" id="end2" name="end2" required>
+            <label for="enable2">Enable:</label>
+            <input type="checkbox" id="enable2" name="enable2" checked>
+        </div>
+
+        <!-- Address Pair 3 -->
+        <div class="address-pair">
+            <label for="start3">Start Address:</label>
+            <input type="text" id="start3" name="start3" required>
+            <label for="end3">End Address:</label>
+            <input type="text" id="end3" name="end3" required>
+            <label for="enable3">Enable:</label>
+            <input type="checkbox" id="enable3" name="enable3" checked>
+        </div>
+
+        <!-- Address Pair 4 -->
+        <div class="address-pair">
+            <label for="start4">Start Address:</label>
+            <input type="text" id="start4" name="start4" required>
+            <label for="end4">End Address:</label>
+            <input type="text" id="end4" name="end4" required>
+            <label for="enable4">Enable:</label>
+            <input type="checkbox" id="enable4" name="enable4" checked>
+        </div>
+
+        <!-- Address Pair 5 -->
+        <div class="address-pair">
+            <label for="start5">Start Address:</label>
+            <input type="text" id="start5" name="start5" required>
+            <label for="end5">End Address:</label>
+            <input type="text" id="end5" name="end5" required>
+            <label for="enable5">Enable:</label>
+            <input type="checkbox" id="enable5" name="enable5" checked>
+        </div>
         </form>
 
         <h1>Poll Billing</h1>
@@ -173,42 +230,6 @@
         <button type="button" onclick="saveToOracle()">Save to Oracle</button>
         <div id="statusMessage"></div>
 
-        <script>
-            // ฟังก์ชันเมื่อ Dropdown เปลี่ยน
-            function loadData() {
-                var dropdown = document.getElementById("myDropdown");
-                var selectedDataTextbox = document.getElementById("selectedData");
-                var selectedData = dropdown.options[dropdown.selectedIndex].text;
-
-                // แสดงข้อมูลที่เลือกใน Textbox
-                selectedDataTextbox.value = selectedData;
-            }
-
-            // ฟังก์ชันสำหรับ Save to Python
-            function saveToPython() {
-                var selectedDataTextbox = document.getElementById("selectedData");
-                var selectedData = selectedDataTextbox.value;
-
-                // ส่งข้อมูลไปยัง Python
-                fetch('/save_to_python', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            selectedData: selectedData,
-                        }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById("statusMessage").innerText = data.message;
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            }
-        </script>
-
     </body>
 
-</html>
+    </html>
