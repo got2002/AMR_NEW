@@ -569,15 +569,12 @@ def billing_data():
                     yaxis_title="Values",
                     xaxis_title="Date",
                     hovermode="x unified",
-                    template="plotly_white",
+                    template="plotly_dark",  # ใช้ template dark
                     yaxis=dict(type="linear", title="Values"),
                 )
             fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
-            # เพิ่มเติม: ปรับสีของกราฟ
-            fig.update_layout(
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)',
-            )
+
+
             # เพิ่มเติม: ปรับสีของแต่ละ trace
             for trace in fig.data:
                 trace.marker.line.color = 'rgba(255,255,255,0.7)'
