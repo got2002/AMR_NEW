@@ -1000,6 +1000,7 @@ def read_data():
     else:
         starting_address = int(request.form["starting_address"])
     quantity = int(request.form["quantity"])
+    
     tcp_ip = request.form["tcp_ip"]
     tcp_port = int(request.form["tcp_port"])
 
@@ -1016,15 +1017,15 @@ def read_data():
 
     # Build the request message
     request_message = bytearray(
-        [
-            slave_id,
-            function_code,
-            starting_address >> 8,
-            starting_address & 0xFF,
-            quantity >> 8,
-            quantity & 0xFF,
-        ]
-    )
+    [
+        slave_id,                      # Byte 1: Slave ID
+        function_code,                 # Byte 2: Function Code
+        starting_address >> 8,         # Byte 3: High byte of Starting Address
+        starting_address & 0xFF,       # Byte 4: Low byte of Starting Address
+        quantity >> 8,                 # Byte 5: High byte of Quantity
+        quantity & 0xFF,               # Byte 6: Low byte of Quantity
+    ]
+)
 
     crc = computeCRC(request_message)
     request_message += crc.to_bytes(2, byteorder="big")
