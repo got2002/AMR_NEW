@@ -506,8 +506,7 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
-            df = df.sort_values(by="DATA_DATE", ascending=True)
+
 
             # สร้าง subplot และ traces สำหรับแต่ละกราฟ
             fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Corrected"])
@@ -559,7 +558,12 @@ def billing_data():
 
             # ปรับปรุงลักษณะและรายละเอียดของกราฟ
             for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
-                fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
+                fig.update_traces(
+                    line_shape="linear", 
+                    marker=dict(symbol="circle", size=6),
+                    hoverinfo="text+x+y",  # แสดงข้อมูล tooltip
+                    hovertext=df["DATA_DATE"],  # ข้อมูลที่แสดงใน tooltip
+                )
                 fig.update_layout(
                     legend=dict(x=0.6, y=1.25, orientation="h"),
                     yaxis_title="Values",
@@ -568,8 +572,15 @@ def billing_data():
                     template="plotly_white",
                     yaxis=dict(type="linear", title="Values"),
                 )
-                fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
-
+            fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+            # เพิ่มเติม: ปรับสีของกราฟ
+            fig.update_layout(
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+            )
+            # เพิ่มเติม: ปรับสีของแต่ละ trace
+            for trace in fig.data:
+                trace.marker.line.color = 'rgba(255,255,255,0.7)'
             # แสดงกราฟ
             graph_corrected = fig_corrected.to_html(full_html=False)
             graph_uncorrected = fig_uncorrected.to_html(full_html=False)
@@ -594,6 +605,7 @@ def billing_data():
                 graph_pressure=graph_pressure,
                 graph_temperature=graph_temperature,
             )
+
 
         elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
