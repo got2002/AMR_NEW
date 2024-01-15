@@ -12,7 +12,7 @@ oracle_service = "orcl"
 
 
 def insert_address_range_to_oracle(
-    poll_config, poll_billing, enable_config, enable_billing, evc_type
+    poll_config, poll_billing, enable_config, enable_billing
 ):
     dsn = cx_Oracle.makedsn(oracle_host, oracle_port, service_name=oracle_service)
 
@@ -21,8 +21,8 @@ def insert_address_range_to_oracle(
     ) as connection:
         with connection.cursor() as cursor:
             sql_insert = """
-                INSERT INTO AMR_POLL_RANGE (POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE, EVC_TYPE)
-                VALUES (:1, :2, :3, :4, :5)
+                INSERT INTO AMR_POLL_RANGE (POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE)
+                VALUES (:1, :2, :3, :4)
             """
 
             # Convert enable_config and enable_billing to comma-separated strings
@@ -34,7 +34,6 @@ def insert_address_range_to_oracle(
                 poll_billing,
                 enable_config_str,
                 enable_billing_str,
-                evc_type,
             )
 
             cursor.execute(sql_insert, data_to_insert)
@@ -47,11 +46,6 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/add_polling_route")
-def add_polling_route():
-    return render_template("add_polling.html")
-
-
 MAX_ADDRESS_LENGTH = 249
 
 
@@ -59,9 +53,6 @@ MAX_ADDRESS_LENGTH = 249
 def save_to_oracle():
     try:
         data = request.get_json()
-
-        # Add the following line to define 'evc_type'
-        evc_type = data.get("evc_type", "")
 
         def validate_address_range(start_key, end_key):
             start_address = int(data.get(start_key, 0))
@@ -106,7 +97,6 @@ def save_to_oracle():
             combined_address_billing,
             enable_config,
             enable_billing,
-            evc_type,
         )
 
         response = {"status": "success", "message": "Data saved successfully"}
@@ -120,6 +110,7 @@ def save_to_oracle():
     return jsonify(response)
 
 
+<<<<<<< HEAD
 @app.route("/edit_polling_route")
 def edit_polling_route():
     return render_template("edit_polling.html")
@@ -301,5 +292,7 @@ def submit_new_form():
             connection.close()
 
 
+=======
+>>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
 if __name__ == "__main__":
     app.run(debug=True)
