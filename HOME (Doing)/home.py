@@ -352,90 +352,95 @@ def billing_data():
     if query_type == "daily_data":
         # SQL query for main data
         query = """
-        SELECT
+        SELECT DISTINCT
             AMR_PL_GROUP.PL_REGION_ID,
             AMR_FIELD_ID.TAG_ID,
-            amr_field_id.meter_id,
+            AMR_FIELD_ID.METER_ID,
             AMR_BILLING_DATA.DATA_DATE,
             AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
             AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
             AMR_BILLING_DATA.AVR_PF as Pressure,
-            AMR_BILLING_DATA.AVR_TF as Temperature
+            AMR_BILLING_DATA.AVR_TF as Temperature,
+            AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
         FROM
             AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
         WHERE
             AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
             AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-            AND AMR_BILLING_DATA.METER_STREAM_NO like '1'
+            AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
             {billing_date_condition}
             {tag_condition}
             {region_condition}
         """
 
+
         # Return the template with the DataFrame
 
     elif query_type == "config_data":
         query = """
-    SELECT
-        AMR_PL_GROUP.PL_REGION_ID,
-        AMR_FIELD_ID.TAG_ID,
-        amr_field_id.meter_id,
-        AMR_CONFIGURED_DATA.DATA_DATE,
-        
-        amr_configured_data.amr_config1,
-        amr_configured_data.amr_config2,
-        amr_configured_data.amr_config3,
-        amr_configured_data.amr_config4,
-        amr_configured_data.amr_config5,
-        amr_configured_data.amr_config6,
-        amr_configured_data.amr_config7,
-        amr_configured_data.amr_config8,
-        amr_configured_data.amr_config9,
-        amr_configured_data.amr_config10,
-        amr_configured_data.amr_config11,
-        amr_configured_data.amr_config12,
-        amr_configured_data.amr_config13,
-        amr_configured_data.amr_config14,
-        amr_configured_data.amr_config15,
-        amr_configured_data.amr_config16,
-        amr_configured_data.amr_config17,
-        amr_configured_data.amr_config18,
-        amr_configured_data.amr_config19,
-        amr_configured_data.amr_config20,
-        
-        AMR_VC_CONFIGURED_INFO.config1,
-        AMR_VC_CONFIGURED_INFO.config2,
-        AMR_VC_CONFIGURED_INFO.config3,
-        AMR_VC_CONFIGURED_INFO.config4,
-        AMR_VC_CONFIGURED_INFO.config5,
-        AMR_VC_CONFIGURED_INFO.config6,
-        AMR_VC_CONFIGURED_INFO.config7,
-        AMR_VC_CONFIGURED_INFO.config8,
-        AMR_VC_CONFIGURED_INFO.config9,
-        AMR_VC_CONFIGURED_INFO.config10,
-        AMR_VC_CONFIGURED_INFO.config11,
-        AMR_VC_CONFIGURED_INFO.config12,
-        AMR_VC_CONFIGURED_INFO.config13,
-        AMR_VC_CONFIGURED_INFO.config14,
-        AMR_VC_CONFIGURED_INFO.config15,
-        AMR_VC_CONFIGURED_INFO.config16,
-        AMR_VC_CONFIGURED_INFO.config17,
-        AMR_VC_CONFIGURED_INFO.config18,
-        AMR_VC_CONFIGURED_INFO.config19,
-        AMR_VC_CONFIGURED_INFO.config20
-        
-    FROM
-        AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-    JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-    WHERE
-        AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-        AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-        AND AMR_CONFIGURED_DATA.METER_STREAM_NO like '1'
-        
-        {configured_date_condition}
-        {tag_condition}
-        {region_condition}
-    """
+        SELECT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            amr_field_id.meter_id,
+            AMR_CONFIGURED_DATA.DATA_DATE,
+            
+            amr_configured_data.amr_config1,
+            amr_configured_data.amr_config2,
+            amr_configured_data.amr_config3,
+            amr_configured_data.amr_config4,
+            amr_configured_data.amr_config5,
+            amr_configured_data.amr_config6,
+            amr_configured_data.amr_config7,
+            amr_configured_data.amr_config8,
+            amr_configured_data.amr_config9,
+            amr_configured_data.amr_config10,
+            amr_configured_data.amr_config11,
+            amr_configured_data.amr_config12,
+            amr_configured_data.amr_config13,
+            amr_configured_data.amr_config14,
+            amr_configured_data.amr_config15,
+            amr_configured_data.amr_config16,
+            amr_configured_data.amr_config17,
+            amr_configured_data.amr_config18,
+            amr_configured_data.amr_config19,
+            amr_configured_data.amr_config20,
+            
+            
+            AMR_VC_CONFIGURED_INFO.config1,
+            AMR_VC_CONFIGURED_INFO.config2,
+            AMR_VC_CONFIGURED_INFO.config3,
+            AMR_VC_CONFIGURED_INFO.config4,
+            AMR_VC_CONFIGURED_INFO.config5,
+            AMR_VC_CONFIGURED_INFO.config6,
+            AMR_VC_CONFIGURED_INFO.config7,
+            AMR_VC_CONFIGURED_INFO.config8,
+            AMR_VC_CONFIGURED_INFO.config9,
+            AMR_VC_CONFIGURED_INFO.config10,
+            AMR_VC_CONFIGURED_INFO.config11,
+            AMR_VC_CONFIGURED_INFO.config12,
+            AMR_VC_CONFIGURED_INFO.config13,
+            AMR_VC_CONFIGURED_INFO.config14,
+            AMR_VC_CONFIGURED_INFO.config15,
+            AMR_VC_CONFIGURED_INFO.config16,
+            AMR_VC_CONFIGURED_INFO.config17,
+            AMR_VC_CONFIGURED_INFO.config18,
+            AMR_VC_CONFIGURED_INFO.config19,
+            AMR_VC_CONFIGURED_INFO.config20,
+            AMR_CONFIGURED_DATA.METER_STREAM_NO
+            
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
+            
+            {configured_date_condition}
+            {tag_condition}
+            {region_condition}
+        """
+
 
     # Get selected values from the dropdowns
     billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
@@ -493,6 +498,7 @@ def billing_data():
                     "UNCORRECTED",
                     "Pressure",
                     "Temperature",
+                    "METER_STREAM_NO",
                 ],
             )
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -501,7 +507,7 @@ def billing_data():
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
 
-            df = df.drop_duplicates(subset=["DATA_DATE"])
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Remove newline characters
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
@@ -583,14 +589,54 @@ def billing_data():
             graph_uncorrected = fig_uncorrected.to_html(full_html=False)
             graph_pressure = fig_pressure.to_html(full_html=False)
             graph_temperature = fig_temperature.to_html(full_html=False)
+            # Assuming 'df' is the DataFrame created from the query results
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "config_data": None,
+            }
+
+            if not df_run1.empty:
+               
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+
+            if not df_run2.empty:
+               
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran2"] = df_run2.to_html(classes="data", index=False)
+
+            if not df_run3.empty:
+             
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran3"] = df_run3.to_html(classes="data", index=False)
+
+            if not df_run4.empty:
+               
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+            if not df_run5.empty:
+               
+                df_run4 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+            if not df_run6.empty:
+               
+                df_run4 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            df = df.sort_values(by="DATA_DATE", ascending=True)
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
                 "billingdata.html",
-                tables={
-                    "config_data": None,
-                    "daily_data": df.to_html(classes="data", index=False),
-                },
+                tables=tables,
+
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
@@ -653,7 +699,8 @@ def billing_data():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
-                ],
+                    "METER_STREAM_NO",
+                ]
             )
             columns_to_drop = [
                 "CONFIG1",
@@ -701,25 +748,53 @@ def billing_data():
             )
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
-            df = df.drop_duplicates(subset=["DATA_DATE"])
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
             # Send the DataFrame to the HTML template
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "daily_data": None,
+                
+            }
+
+            common_table_properties = {"classes": "data", "index": False,"header":None}
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
             return render_template(
                 "billingdata.html",
-                tables={
-                    "daily_data": None,
-                    "config_data": df.to_html(
-                        classes="data", header=False, index=False
-                    ),
-                },
+                
+                tables=tables,
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
                 selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options,
-                dropped_columns_data=dropped_columns_data,
+                tag_options=tag_options, dropped_columns_data=dropped_columns_data
             )
 
     else:
