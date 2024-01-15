@@ -110,5 +110,189 @@ def save_to_oracle():
     return jsonify(response)
 
 
+<<<<<<< HEAD
+@app.route("/edit_polling_route")
+def edit_polling_route():
+    return render_template("edit_polling.html")
+
+
+@app.route("/add_mapping_route")
+def add_mapping_route():
+    return render_template("add_mapping.html")
+
+
+@app.route("/submit_form", methods=["POST"])
+def submit_form():
+    cursor = None
+    connection = None
+
+    try:
+        data_list = []
+        for i in range(1, 21):
+            address = request.form[f"address{i}"]
+            description = request.form[f"description{i}"]
+            type_value = request.form.get(f"type_value{i}")
+            evc_type = request.form[f"evc_type{i}"]
+            or_der = request.form[f"or_der{i}"]
+            data_type = request.form[f"data_type{i}"]
+
+            data_list.append(
+                (address, description, type_value, evc_type, or_der, data_type)
+            )
+
+        dsn_tns = cx_Oracle.makedsn(
+            oracle_host, oracle_port, service_name=oracle_service
+        )
+        connection = cx_Oracle.connect(
+            user=oracle_username, password=oracle_password, dsn=dsn_tns
+        )
+
+        cursor = connection.cursor()
+
+        sql_merge = """
+            MERGE INTO AMR_ADDRESS_MAPPING1 dst
+            USING (
+                SELECT
+                    :address as address,
+                    :description as description,
+                    :type_value as type_value,
+                    :evc_type as evc_type,
+                    :or_der as or_der,
+                    :data_type as data_type
+                FROM dual
+            ) src
+            ON (dst.address = src.address)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    dst.description = src.description,
+                    dst.type_value = src.type_value,
+                    dst.evc_type = src.evc_type,
+                    dst.or_der = src.or_der,
+                    dst.data_type = src.data_type
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    address,
+                    description,
+                    type_value,
+                    evc_type,
+                    or_der,
+                    data_type
+                ) VALUES (
+                    src.address,
+                    src.description,
+                    src.type_value,
+                    src.evc_type,
+                    src.or_der,
+                    src.data_type
+                )
+        """
+
+        cursor.executemany(sql_merge, data_list)
+
+        connection.commit()
+
+        return "บันทึกข้อมูลสำเร็จ"
+    except Exception as e:
+        return f"เกิดข้อผิดพลาด: {str(e)}"
+    finally:
+        if cursor is not None:
+            # ปิด cursor
+            cursor.close()
+
+        if connection is not None:
+            # ปิด connection
+            connection.close()
+
+
+@app.route("/add_actraris_route")
+def add_actraris_route():
+    return render_template("add_actraris.html")
+
+
+@app.route("/new_form", methods=["POST"])
+def submit_new_form():
+    cursor = None
+    connection = None
+
+    try:
+        data_list = []
+        for i in range(1, 18):
+            address = request.form.get(f"address{i}")
+            description = request.form.get(f"description{i}")
+            type_value = request.form.get(f"type_value{i}")
+            evc_type = request.form.get(f"evc_type{i}")
+            or_der = request.form.get(f"or_der{i}")
+            data_type = request.form.get(f"data_type{i}")
+
+            data_list.append(
+                (address, description, type_value, evc_type, or_der, data_type)
+            )
+
+        dsn_tns = cx_Oracle.makedsn(
+            oracle_host, oracle_port, service_name=oracle_service
+        )
+        connection = cx_Oracle.connect(
+            user=oracle_username, password=oracle_password, dsn=dsn_tns
+        )
+
+        cursor = connection.cursor()
+
+        sql_merge = """
+            MERGE INTO AMR_ADDRESS_MAPPING1 dst
+            USING (
+                SELECT
+                    :address as address,
+                    :description as description,
+                    :type_value as type_value,
+                    :evc_type as evc_type,
+                    :or_der as or_der,
+                    :data_type as data_type
+                FROM dual
+            ) src
+            ON (dst.address = src.address)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    dst.description = src.description,
+                    dst.type_value = src.type_value,
+                    dst.evc_type = src.evc_type,
+                    dst.or_der = src.or_der,
+                    dst.data_type = src.data_type
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    address,
+                    description,
+                    type_value,
+                    evc_type,
+                    or_der,
+                    data_type
+                ) VALUES (
+                    src.address,
+                    src.description,
+                    src.type_value,
+                    src.evc_type,
+                    src.or_der,
+                    src.data_type
+                )
+        """
+
+        cursor.executemany(sql_merge, data_list)
+
+        connection.commit()
+
+        return "บันทึกข้อมูลสำเร็จ"
+    except Exception as e:
+        return f"เกิดข้อผิดพลาด: {str(e)}"
+    finally:
+        if cursor is not None:
+            # ปิด cursor
+            cursor.close()
+
+        if connection is not None:
+            # ปิด connection
+            connection.close()
+
+
+=======
+>>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
 if __name__ == "__main__":
     app.run(debug=True)
