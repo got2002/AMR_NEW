@@ -120,6 +120,11 @@ def save_to_oracle():
     return jsonify(response)
 
 
+@app.route("/edit_polling_route")
+def edit_polling_route():
+    return render_template("edit_polling.html")
+
+
 @app.route("/add_mapping_route")
 def add_mapping_route():
     return render_template("add_mapping.html")
