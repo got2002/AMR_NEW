@@ -505,51 +505,6 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
 
-<<<<<<< HEAD
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            df = df.sort_values(by="DATA_DATE", ascending=True)
-
-            fig = px.line(
-                df,
-                x="DATA_DATE",
-                y=["UNCORRECTED"],
-                title="Daily Data",
-            )
-
-            fig.update_layout(
-                xaxis_title="Date",
-                yaxis_title="Values",
-                legend_title="Variables",
-                hovermode="x unified",
-                template="plotly_white",
-                yaxis=dict(
-                    type="linear",
-                    title="Values",
-                ),
-            )
-
-            # Adjusting line shape for a smoother appearance
-            fig.update_traces(
-                line_shape="linear",
-                mode="lines+markers",
-                marker=dict(symbol="circle", size=6),
-            )
-
-            # ส่ง graph_html ไปยัง HTML template ของ Flask
-            return render_template(
-                "billingdata.html",
-            )
-            tables = (
-                {
-                    "config_data": None,
-                    "daily_data": df.to_html(classes="data", index=False),
-                },
-            )
-
-=======
-
->>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
-            # Assuming 'df' is the DataFrame created from the query results
             df_run1 = df[df["METER_STREAM_NO"] == "1"]
             df_run2 = df[df["METER_STREAM_NO"] == "2"]
             df_run3 = df[df["METER_STREAM_NO"] == "3"]
@@ -583,10 +538,6 @@ def billing_data():
             return render_template(
                 "billingdata.html",
                 tables=tables,
-<<<<<<< HEAD
-=======
-
->>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
