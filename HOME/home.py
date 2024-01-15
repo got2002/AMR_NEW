@@ -505,7 +505,6 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
 
-<<<<<<< HEAD
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
@@ -546,9 +545,9 @@ def billing_data():
                 },
             )
 
-=======
 
->>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
+
+
             # Assuming 'df' is the DataFrame created from the query results
             df_run1 = df[df["METER_STREAM_NO"] == "1"]
             df_run2 = df[df["METER_STREAM_NO"] == "2"]
@@ -583,10 +582,7 @@ def billing_data():
             return render_template(
                 "billingdata.html",
                 tables=tables,
-<<<<<<< HEAD
-=======
 
->>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
