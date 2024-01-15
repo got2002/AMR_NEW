@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Edit User</title>
+    <title>Edit User & Password</title>
 </head>
 
 <style>
@@ -19,15 +19,18 @@
         box-sizing: border-box;
     }
 
+
+
     body,
     html {
         margin: 0;
         padding: 0;
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
-        overflow-x: hidden;
-        overflow-y: hidden;
+        overflow-x: auto;
+        overflow-y: auto;
         ;
         font-family: 'Noto Sans Thai Looped', sans-serif;
+
     }
 
     .header {
@@ -413,20 +416,21 @@
     form {
         max-width: 400px;
         margin: auto;
+        /* ปรับระยะห่างข้างบน */
         margin-top: 100px;
+        /* ปรับระยะห่างข้างล่าง */
         margin-bottom: 50px;
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
+
     }
 
-    /* ตัวอย่าง label, input, submit button, link, hover styles ไม่เปลี่ยนแปลง */
-    label {
+
+    label[for="date_picker"] {
         display: block;
-        margin-bottom: 8px;
+        text-align: left;
     }
 
     input {
@@ -466,6 +470,90 @@
 
     a:hover {
         color: #45a049;
+    }
+
+
+
+    .tables {
+        width: 100%;
+        font-size: small;
+        max-width: 100%;
+        background-color: #e1dede;
+        border: 1px solid #5f5e5e;
+        margin-top: 20px;
+
+    }
+
+
+    .tables th,
+    .tables td {
+        border: 1px solid #5f5e5e;
+        text-align: center;
+        padding: 2px;
+        font-size: small;
+        font-weight: lighter;
+
+    }
+
+    .tables th {
+        background-color: #e1dede;
+        font-weight: bold;
+    }
+
+    .tables tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .tables tr:hover {
+        background-color: #d9d9d9;
+    }
+
+    th,
+    td {
+
+        border: 1px solid #5f5e5e;
+        text-align: center;
+        padding: 8px;
+        position: relative;
+
+
+    }
+
+    th {
+        background-color: #e1dede;
+    }
+
+    td:after {
+
+        content: ' ●';
+        right: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #12d800;
+        font-size: 30px;
+
+    }
+
+    .datepicker-input:after {
+        display: none;
+
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    /* เลือกรายการที่เลือก */
+    select option:checked {
+        background-color: #4caf50;
+        /* สีพื้นหลัง */
+        color: #fff;
+        /* สีตัวอักษร */
     }
 </style>
 
@@ -543,32 +631,33 @@
         </div>
     </div>
 
+
+
+    <form method="get" action="{{ url_for('Daily_summary') }}">
+        <select id="region_dropdown" name="region_dropdown">
+            <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+            {% for region in region_options %}
+            <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
+            {% endfor %}
+        </select>
+        <label for="date_picker">Select Date :</label>
+        <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
+            class="datepicker-input">
+        <button type="submit">Dailysummary</button>
+        
+            {{ tables[0]|safe }}
+        </div>
+        
+    </form>
+
+
+
+
     <body>
-        <h1>Edit User</h1>
-
-
-        <form id="EditForm" method="post" action="{{ url_for('edit_user_route') }}">
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description"><br>
-            <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name"><br>
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br>
-            <label for="user_level">User Level:</label>
-            <input type="text" id="user_level" name="user_level"><br>
-
-            <!-- Update button -->
-            <button type="submit">Save Changes</button>
-            <!-- Back to User List link -->
-            <a href="{{ url_for('index') }}">Back to User List</a>
-        </form>
-
-
+        <div class="footer">
+            <span>POWERED BY ATOS.ASGS</span>
+        </div>
     </body>
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
-</body>
 
 </html>
 
@@ -628,38 +717,43 @@
 
 <script>
     $(document).ready(function () {
-        // Load data from server
-        $.getJSON('/get_data', function (data) {
-            // Sort data alphabetically by description
-            data.sort(function (a, b) {
-                return a.description.localeCompare(b.description);
-            });
-
-            // Populate dropdown with sorted data
-            var dropdown = $('#myDropdown');
-            $.each(data, function (index, value) {
-                var optionText = value.description;
-                var optionValue = JSON.stringify(value);
-                dropdown.append($('<option>').text(optionText).attr('value', optionValue));
-            });
-
-            // Set initial details
-            var initialData = data[0];
-            displayDetails(initialData);
+        $('#date_picker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
         });
 
-        // Function to display details when an item is selected
-        $('#myDropdown').change(function () {
-            var selectedData = JSON.parse($(this).val());
-            displayDetails(selectedData);
-        });
-
-        // Function to display details
-        function displayDetails(selectedData) {
-            $('#details #description').val(selectedData.description);
-            $('#details #user_name').val(selectedData.user_name);
-            $('#details #password').val(""); // Clear password field for security
-            $('#details #user_level').val(selectedData.user_level);
-        }
+        // ซ่อนวงกลมเมื่อหน้าเว็บโหลด
+        hideCircle();
     });
+
+    $(document).ready(function () {
+        $('#region_dropdown').change(function () {
+            var selectedRegion = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '/get_tags',
+                data: { 'selected_region': selectedRegion },
+                success: function (response) {
+                    response.tag_options.sort(function (a, b) {
+                        return a.localeCompare(b);
+                    });
+                    var tagDropdown = $('#tag_dropdown');
+                    tagDropdown.empty();
+                    $.each(response.tag_options, function (index, tagOption) {
+                        tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                    });
+
+                    // ซ่อนวงกลมเมื่อมีการเปลี่ยนแปลง region
+                    hideCircle();
+                },
+                error: function (error) {
+                    console.log('Error fetching tag options:', error);
+                }
+            });
+        });
+    });
+
+    function hideCircle() {
+        $('td:after').hide();
+    }
 </script>

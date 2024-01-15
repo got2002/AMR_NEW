@@ -21,13 +21,19 @@
     border-collapse: collapse;
     width: 100%;
     font-size:xx-small;
+    table-layout: fixed;
+    margin-top: -10px;
     
 }
-body{
-    display:block;
+body {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 th, td {
-    border: 1px solid #5f5e5e;
+    border: 1px solid #000000;
+    
     text-align: left;
     padding: 8px;
 }
@@ -36,20 +42,37 @@ th {
     background-color: #e1dede;
 }
 
-/* Apply a specific width to all columns in both tables */
+
 th, td {
-    width: 63px; /* Adjust the width value as needed */
+    width: 63px; 
 }
 
-/* Additional style for the first table with class 'table1' */
+
+
 .table1 {
-    background-color: #e1dede;
-    font-size: xx-small;
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
 }
 
-.table1 th,
-.table1 td {
-    font-weight:lighter;
+.table1 th, .table1 td {
+    border: 1px solid #000000;
+    text-align: center; /* จัดตำแหน่งตรงกลาง */
+    padding: 8px;
+}
+
+.table1 th {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+@media (max-width: 768px) {
+    .table1 {
+        width: 100%;
+    }
 }
 .table-container {
             display: flex;
@@ -116,31 +139,31 @@ th, td {
         <!-- Warning message container -->
         
         <div class="table-container">
-            {% if tables.get('daily_data_ran1') %}
+            {% if tables.get('daily_data_run1') %}
                 <div class="table" id="table1">
                     <h5>Run 1: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_ran1']|safe }}
+                    {{ tables['daily_data_run1']|safe }}
                 </div>
             {% endif %}
         
-            {% if tables.get('daily_data_ran2') %}
+            {% if tables.get('daily_data_run2') %}
                 <div class="table" id="table2">
                     <h5>Run 2: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_ran2']|safe }}
+                    {{ tables['daily_data_run2']|safe }}
                 </div>
             {% endif %}
         
-            {% if tables.get('daily_data_ran3') %}
+            {% if tables.get('daily_data_run3') %}
                 <div class="table" id="table3">
                     <h5>Run 3: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_ran3']|safe }}
+                    {{ tables['daily_data_run3']|safe }}
                 </div>
             {% endif %}
         
-            {% if tables.get('daily_data_ran4') %}
+            {% if tables.get('daily_data_run4') %}
                 <div class="table" id="table4">
                     <h5>Run 4: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_ran4']|safe }}
+                    {{ tables['daily_data_run4']|safe }}
                 </div>
             {% endif %}
         </div>
@@ -160,95 +183,128 @@ th, td {
 
 
         <div class="table-container1">
-            {% if tables.get('config_data_ran1') %}
-            <div class="table" id="table1">
-            <h5>Run 1: {{ selected_tag }}</h5>
-            <table class="table1">
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                            <th >{{ value }}</th>
-                        {% endfor %}
-                        {% for column_name in config_columns_list %}
-                            <th >{{ column_name }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                
-            </table>
-            <tbody>
-                {{ tables['config_data_ran1']|safe }}
-            </tbody>
-        </div>
+            {% if tables.get('config_data_run1') %}
+                <div class="table" id="table1">
+                    <h5>Run 1: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead >
+                            <tr >
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run1']|safe }}
+                        </tbody>
+                    </table>
+                </div>
             {% endif %}
         
         
-            {% if tables.get('config_data_ran2') %}
+        
+        
+            {% if tables.get('config_data_run2') %}
             <div class="table" id="table1">
-            <h5>Run 2: {{ selected_tag }}</h5>
-            <table class="table1">
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                            <th >{{ value }}</th>
-                        {% endfor %}
-                        {% for column_name in config_columns_list %}
-                            <th >{{ column_name }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                
-            </table>
-            <tbody>
-                {{ tables['config_data_ran2']|safe }}
-            </tbody>
-        </div>
-            {% endif %}
+                <h5>Run 2: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead >
+                        <tr >
+                            {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run2']|safe }}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
-
-           {% if tables.get('config_data_ran3') %}
-            <div class="table" id="table1">
+        {% if tables.get('config_data_run3') %}
+        <div class="table" id="table1">
             <h5>Run 3: {{ selected_tag }}</h5>
             <table class="table1">
-                <thead>
-                    <tr>
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead >
+                    <tr >
                         {% for key, value in dropped_columns_data[0].items() %}
-                            <th >{{ value }}</th>
-                        {% endfor %}
-                        {% for column_name in config_columns_list %}
-                            <th >{{ column_name }}</th>
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
-                
+                <tbody>
+                    {{ tables['config_data_run3']|safe }}
+                </tbody>
             </table>
-            <tbody>
-                {{ tables['config_data_ran3']|safe }}
-            </tbody>
+<<<<<<< HEAD
+            {{ tables.config_data | safe }}
+        {% endif %}
+=======
+>>>>>>> 080e6c13d6966bd7d555a9108d772465032f35e2
         </div>
-            {% endif %}
+    {% endif %}
 
-        {% if tables.get('config_data_ran4') %}
-            <div class="table" id="table1">
-            <h5>Run 4: {{ selected_tag }}</h5>
-            <table class="table1">
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                            <th >{{ value }}</th>
-                        {% endfor %}
-                        {% for column_name in config_columns_list %}
-                            <th >{{ column_name }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                
-            </table>
+    {% if tables.get('config_data_run4') %}
+    <div class="table" id="table1">
+        <h5>Run 4: {{ selected_tag }}</h5>
+        <table class="table1">
+            <!-- The following line combines thead and tbody into a single block -->
+            <thead >
+                <tr >
+                    {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
             <tbody>
-                {{ tables['config_data_ran4']|safe }}
+                {{ tables['config_data_run4']|safe }}
             </tbody>
-        </div>
-            {% endif %}
+        </table>
+    </div>
+{% endif %}
+{% if tables.get('config_data_run5') %}
+<div class="table" id="table1">
+    <h5>Run 5: {{ selected_tag }}</h5>
+    <table class="table1">
+        <!-- The following line combines thead and tbody into a single block -->
+        <thead >
+            <tr >
+                {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {{ tables['config_data_run5']|safe }}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% if tables.get('config_data_run6') %}
+<div class="table" id="table1">
+    <h5>Run 6: {{ selected_tag }}</h5>
+    <table class="table1">
+        <!-- The following line combines thead and tbody into a single block -->
+        <thead >
+            <tr >
+                {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {{ tables['config_data_run6']|safe }}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+       
+       
+            
         </div>
     
 <body>

@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Edit User</title>
+    <title>Edit User & Password</title>
 </head>
 
 <style>
@@ -408,7 +408,12 @@
         transition: transform 0.5s ease;
     }
 
-
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 20px;
+        padding: 20px;
+    }
 
     form {
         max-width: 400px;
@@ -544,31 +549,45 @@
     </div>
 
     <body>
-        <h1>Edit User</h1>
+
+        <h1>remove User</h1>
+
+        <!-- Dropdown for selecting users -->
+        <select id="myDropdown">
+        </select>
+
+        <!-- Form for editing user details -->
+        <div id="details">
+            <form id="editForm" method="post" action="{{ url_for('remove_user_route') }}">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" readonly><br>
+                <label for="user_name">User Name:</label>
+                <input type="text" id="user_name" name="user_name" readonly><br>
+                <label for="user_level">User Level:</label>
+                <input type="text" id="user_level" name="user_level" readonly><br>
+
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="inactive">Inactive</option>
+                    <option value="active">Active</option>
 
 
-        <form id="EditForm" method="post" action="{{ url_for('edit_user_route') }}">
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description"><br>
-            <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name"><br>
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br>
-            <label for="user_level">User Level:</label>
-            <input type="text" id="user_level" name="user_level"><br>
 
-            <!-- Update button -->
-            <button type="submit">Save Changes</button>
+                </select><br>
+
+                <!-- Update button -->
+                <button type="submit">Save Changes</button>
+            </form>
+
             <!-- Back to User List link -->
             <a href="{{ url_for('index') }}">Back to User List</a>
-        </form>
+        </div>
 
-
-    </body>
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
-</body>
+        <body>
+            <div class="footer">
+                <span>POWERED BY ATOS.ASGS</span>
+            </div>
+        </body>
 
 </html>
 
@@ -654,12 +673,32 @@
             displayDetails(selectedData);
         });
 
-        // Function to display details
         function displayDetails(selectedData) {
             $('#details #description').val(selectedData.description);
             $('#details #user_name').val(selectedData.user_name);
-            $('#details #password').val(""); // Clear password field for security
             $('#details #user_level').val(selectedData.user_level);
+
+            // Convert user_enable to readable text
+            var statusText = selectedData.user_enable === 1 ? 'Active' : 'Inactive';
+            $('#Show #status').val(statusText);
+
+            // สลับค่าใน Dropdown เมื่อแสดงรายละเอียด
+            swapDropdownValues(statusText);
+        }
+
+        function swapDropdownValues(statusText) {
+            var dropdown = $('#myDropdown');
+            var activeOption = dropdown.find('option[value="active"]');
+            var inactiveOption = dropdown.find('option[value="inactive"]');
+
+            // สลับค่าใน Dropdown
+            if (statusText === 'Active') {
+                activeOption.prop('selected', true);
+                inactiveOption.prop('selected', false);
+            } else {
+                inactiveOption.prop('selected', false);
+                activeOption.prop('selected', true);
+            }
         }
     });
 </script>

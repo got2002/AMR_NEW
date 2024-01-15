@@ -4,6 +4,7 @@ import cx_Oracle
 from flask import flash
 from datetime import datetime
 import pandas as pd
+import numpy as np
 import sqlite3
 import plotly.express as px
 from flask import (
@@ -103,15 +104,13 @@ def execute_query(query, params=None):
 ############  /connect database  #####################
 
 
-
-
 ############  Home page  #####################
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
 ############ / Home page  #####################
-
-
 
 
 ############  Add User  #####################
@@ -148,9 +147,8 @@ def add_user_route():
 ############  /Add User  #####################
 
 
-
-
 ############  edit_user   #####################
+
 
 def get_data(filter_text=None, sort_column=None):
     try:
@@ -256,17 +254,52 @@ def edit_user_route():
 ############  /edit_user   #####################
 
 
+############   /remove_user ###################
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user_route():
+    # ดึงข้อมูลผู้ใช้จาก Oracle
+    query = "SELECT DESCRIPTION, USER_NAME, USER_LEVEL, USER_ENABLE FROM AMR_USER_TESTS"
+    user_data = fetch_data(query)
+
+    if not user_data:
+        flash("Users not found!", "error")
+        return redirect(url_for("index"))
+
+    # ถ้ามีการส่งค่า POST (คือการเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้)
+    if request.method == "POST":
+        # ดึงข้อมูลจากฟอร์มเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้
+        new_status = request.form.get("status")
+        user_name = request.form.get("user_name")  # ดึง user_name จากฟอร์ม
+
+        # ตรวจสอบว่าสถานะที่เลือกถูกต้อง
+        if new_status not in ["active", "inactive"]:
+            flash("Invalid status selected.", "error")
+            return redirect(url_for("remove_user_route"))
+
+        # แปลงสถานะเป็นเลข (0 หรือ 1) ที่จะบันทึกลงในฐานข้อมูล Oracle
+        status_mapping = {"active": 1, "inactive": 0}
+        new_status_numeric = status_mapping[new_status]
+
+        # สร้างคำสั่ง SQL สำหรับการอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        update_query = "UPDATE AMR_USER_TESTS SET USER_ENABLE = :1 WHERE USER_NAME = :2"
+        update_params = (new_status_numeric, user_name)
+
+        # ทำการ execute คำสั่ง SQL และ commit การอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
+        if execute_query(update_query, update_params):
+            flash("User status updated successfully!", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Failed to update user status. Please try again.", "error")
+
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template("remove_user.html", user_data=user_data)
+
 
 ############   /remove_user ###################
-
-
-############   /remove_user ###################
-
-
-
 
 
 ############  View Billing Data   #####################
+
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
@@ -430,8 +463,6 @@ def billing_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
 
-    
-
     # Modify the query with the selected conditions
     query = query.format(
         billing_date_condition=billing_date_condition,
@@ -475,38 +506,75 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            
 
+<<<<<<< HEAD
+            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            df = df.sort_values(by="DATA_DATE", ascending=True)
+
+            fig = px.line(
+                df,
+                x="DATA_DATE",
+                y=["UNCORRECTED"],
+                title="Daily Data",
+            )
+
+            fig.update_layout(
+                xaxis_title="Date",
+                yaxis_title="Values",
+                legend_title="Variables",
+                hovermode="x unified",
+                template="plotly_white",
+                yaxis=dict(
+                    type="linear",
+                    title="Values",
+                ),
+            )
+
+            # Adjusting line shape for a smoother appearance
+            fig.update_traces(
+                line_shape="linear",
+                mode="lines+markers",
+                marker=dict(symbol="circle", size=6),
+            )
+
+            # ส่ง graph_html ไปยัง HTML template ของ Flask
+            return render_template(
+                "billingdata.html",
+                tables={
+                    "config_data": None,
+                    "daily_data": df.to_html(classes="data", index=False),
+                },
+=======
             # Assuming 'df' is the DataFrame created from the query results
-            df_ran1 = df[df['METER_STREAM_NO'] == '1']
-            df_ran2 = df[df['METER_STREAM_NO'] == '2']
-            df_ran3 = df[df['METER_STREAM_NO'] == '3']
-            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "config_data": None,
             }
 
-            if not df_ran1.empty:
-                print("Unique DATA_DATE values in df_ran1:\n", df_ran1['DATA_DATE'].unique())
-                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran1"] = df_ran1.to_html(classes="data", index=False)
+            if not df_run1.empty:
+               
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
 
-            if not df_ran2.empty:
-                print("Unique DATA_DATE values in df_ran2:\n", df_ran2['DATA_DATE'].unique())
-                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran2"] = df_ran2.to_html(classes="data", index=False)
+            if not df_run2.empty:
+               
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran2"] = df_run2.to_html(classes="data", index=False)
 
-            if not df_ran3.empty:
-                print("Unique DATA_DATE values in df_ran3:\n", df_ran3['DATA_DATE'].unique())
-                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran3"] = df_ran3.to_html(classes="data", index=False)
+            if not df_run3.empty:
+             
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_ran3"] = df_run3.to_html(classes="data", index=False)
 
-            if not df_ran4.empty:
-                print("Unique DATA_DATE values in df_ran4:\n", df_ran4['DATA_DATE'].unique())
-                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_ran4"] = df_ran4.to_html(classes="data", index=False)
+            if not df_run4.empty:
+               
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
 
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
@@ -515,6 +583,7 @@ def billing_data():
             return render_template(
                 "billingdata.html",
                 tables=tables,
+>>>>>>> 080e6c13d6966bd7d555a9108d772465032f35e2
                 titles=df.columns.values,
                 selected_date=selected_date,
                 selected_tag=selected_tag,
@@ -572,7 +641,7 @@ def billing_data():
                     "CONFIG19",
                     "CONFIG20",
                     "METER_STREAM_NO",
-                ],
+                ]
             )
             columns_to_drop = [
                 "CONFIG1",
@@ -598,10 +667,15 @@ def billing_data():
                 
             ]
 
+        
+
+            
+            
+            
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"
-            ] = "DATA.DATE"  # Replace actual values with the column name
+            ] = "Date"  # Replace actual values with the column name
             dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
@@ -619,28 +693,39 @@ def billing_data():
             df = df.sort_values(by="DATA_DATE")
             
             # Send the DataFrame to the HTML template
-            df_ran1 = df[df['METER_STREAM_NO'] == '1']
-            df_ran2 = df[df['METER_STREAM_NO'] == '2']
-            df_ran3 = df[df['METER_STREAM_NO'] == '3']
-            df_ran4 = df[df['METER_STREAM_NO'] == '4']
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "daily_data": None,
+                
             }
 
-            if not df_ran1.empty:
-                df_ran1 = df_ran1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran1"] = df_ran1.to_html(classes="data", index=False, header=None)
-            if not df_ran2.empty:
-                df_ran2 = df_ran2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran2"] = df_ran2.to_html(classes="data", index=False, header=None)
-            if not df_ran3.empty:
-                df_ran3 = df_ran3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran3"] = df_ran3.to_html(classes="data", index=False, header=None)
-            if not df_ran4.empty:
-                df_ran4 = df_ran4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_ran4"] = df_ran4.to_html(classes="data", index=False, header=None)
+            common_table_properties = {"classes": "data", "index": False,"header":None}
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
 
             return render_template(
                 "billingdata.html",
@@ -667,7 +752,6 @@ def billing_data():
 
 
 ############ / View Billing Data  #####################
-
 
 
 ############ Daily summary #####################
@@ -742,8 +826,6 @@ WHERE
 
 
 ############ /Daily summary  #####################
-
-
 
 
 ############ sitedetail_data  #####################
@@ -828,9 +910,6 @@ WHERE
 
 
 ############ /sitedetail_data  #####################
-
-
-
 
 
 ############ Manualpoll_data  #####################
@@ -923,7 +1002,7 @@ def Manualpoll_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -931,7 +1010,7 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-    
+
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -1057,7 +1136,7 @@ def read_data():
             else:
                 # Handle other cases or set a default behavior
                 float_display_value = "Undefined"
-                print(f'Type Value for address {address}: {type_value}')
+                print(f"Type Value for address {address}: {type_value}")
         data_list.append(
             {
                 "description": description,
@@ -1071,7 +1150,7 @@ def read_data():
                 "float_signed_value": signed_value,
             }
         )
-        
+
         value, updated_address = handle_action_configuration(i, value, address)
         # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
     # แทนที่ด้วย:
@@ -1096,7 +1175,6 @@ def read_data():
                 data_16bit["value"] * 2
             )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    
 
     region_query = """
         SELECT * FROM AMR_REGION 
@@ -1182,7 +1260,7 @@ def read_data():
             "VCtype",
             "IPAddress",
             "Port",
-             "evc_type",
+            "evc_type",
             "vc_name",
             "poll_billing",
             "poll_config",
@@ -1203,12 +1281,12 @@ def read_data():
                 "VCtype",
                 "IPAddress",
                 "Port",
-                 "evc_type",
-            "vc_name",
-            "poll_billing",
-            "poll_config",
-            "poll_billing_enable",
-            "poll_config_enable",
+                "evc_type",
+                "vc_name",
+                "poll_billing",
+                "poll_config",
+                "poll_billing_enable",
+                "poll_config_enable",
             ],
         )
         # ... (other code)
@@ -1247,10 +1325,12 @@ def get_description_from_database(address):
     result = fetch_data(query, params)
     return result[0][0] if result else None
 
+
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
+
 
 def get_type_value_from_database(address):
     query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
@@ -1258,6 +1338,7 @@ def get_type_value_from_database(address):
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
     return None
+
 
 ############ /Manualpoll_data  #####################
 

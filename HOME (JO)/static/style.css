@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai+Looped&display=swap');
-</style>
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Edit User</title>
-</head>
-
-<style>
     /* Global styles */
     * {
         margin: 0;
@@ -409,7 +396,6 @@
     }
 
 
-
     form {
         max-width: 400px;
         margin: auto;
@@ -438,22 +424,13 @@
         box-sizing: border-box;
     }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
+    input[type="submit"] {
         background-color: #4caf50;
         color: #fff;
         cursor: pointer;
     }
 
-    button[type="submit"]:hover {
+    input[type="submit"]:hover {
         background-color: #45a049;
     }
 
@@ -467,199 +444,3 @@
     a:hover {
         color: #45a049;
     }
-</style>
-
-<body>
-
-    <div class="header">
-        <a href="login.html" class="logout-link">Log Out</a>
-        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
-    </div>
-    </div>
-    <div class="sidebar">
-        <img class="logo"
-            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-            alt="logo">
-        <div class="container">
-            <div class="form-containerSB">
-                <span class="textSB" alt="logo">Menu</span>
-                <div class="menu">
-                    <button class="toggleR">Reports Data</button>
-                    <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
-                                class="list-item-link">View Billing Data</a></li>
-                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
-                                Status</a></li>
-                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
-                                Summary</a></li>
-                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
-                                Summery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
-                                class="list-item-link">Site
-                                Detail</a></li>
-                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
-                                Detail</a></li>
-                    </ul>
-                </div>
-                <div class="menu">
-                    <button class="toggle">Polling Actions</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
-                                class="list-item-link">Manual
-                                poll</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="menu">
-                    <button class="toggle">Manage Sites</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="menu">
-                    <button class="toggle">Manage Users</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
-                                class="list-item-link">Add
-                                User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
-                                User</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
-                                User</a>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <body>
-        <h1>Edit User</h1>
-
-
-        <form id="EditForm" method="post" action="{{ url_for('edit_user_route') }}">
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description"><br>
-            <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name"><br>
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br>
-            <label for="user_level">User Level:</label>
-            <input type="text" id="user_level" name="user_level"><br>
-
-            <!-- Update button -->
-            <button type="submit">Save Changes</button>
-            <!-- Back to User List link -->
-            <a href="{{ url_for('index') }}">Back to User List</a>
-        </form>
-
-
-    </body>
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
-</body>
-
-</html>
-
-<script>
-    function updateTime() {
-        const today = new Date();
-        const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const time = today.toLocaleTimeString();
-        document.getElementById('datetime').innerHTML = `${date} - ${time}`;
-    }
-
-    updateTime();
-    setInterval(updateTime, 1000);
-
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.style.display === 'block') {
-                    openDropdown.style.display = 'none';
-                    openDropdown.previousElementSibling.classList.remove('active');
-                }
-            }
-        }
-    }
-
-    // Function to toggle dropdown visibility
-    function toggleDropdown(dropdown) {
-        var content = dropdown.nextElementSibling;
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-            dropdown.classList.remove('active');
-        } else {
-            content.style.display = 'block';
-            dropdown.classList.add('active');
-        }
-    }
-
-    //* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-
-    for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
-        });
-    }
-
-</script>
-
-<script>
-    $(document).ready(function () {
-        // Load data from server
-        $.getJSON('/get_data', function (data) {
-            // Sort data alphabetically by description
-            data.sort(function (a, b) {
-                return a.description.localeCompare(b.description);
-            });
-
-            // Populate dropdown with sorted data
-            var dropdown = $('#myDropdown');
-            $.each(data, function (index, value) {
-                var optionText = value.description;
-                var optionValue = JSON.stringify(value);
-                dropdown.append($('<option>').text(optionText).attr('value', optionValue));
-            });
-
-            // Set initial details
-            var initialData = data[0];
-            displayDetails(initialData);
-        });
-
-        // Function to display details when an item is selected
-        $('#myDropdown').change(function () {
-            var selectedData = JSON.parse($(this).val());
-            displayDetails(selectedData);
-        });
-
-        // Function to display details
-        function displayDetails(selectedData) {
-            $('#details #description').val(selectedData.description);
-            $('#details #user_name').val(selectedData.user_name);
-            $('#details #password').val(""); // Clear password field for security
-            $('#details #user_level').val(selectedData.user_level);
-        }
-    });
-</script>
