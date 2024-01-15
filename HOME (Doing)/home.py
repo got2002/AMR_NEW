@@ -1061,149 +1061,15 @@ def read_data():
 
     for i, value in enumerate(values):
         address = starting_address + i * 2
-
+        type_value = get_type_value_from_database(address)
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)
         float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = f"Address {address}"
-        # elster ek
-        if (
-            address == 8000
-            or address == 8010
-            or address == 8020
-            or address == 8030
-            or address == 8040
-            or address == 8050
-            or address == 8060
-        ):
-            description = "Time Stamp"
-        if (
-            address == 8002
-            or address == 8012
-            or address == 8022
-            or address == 8032
-            or address == 8042
-            or address == 8052
-            or address == 8062
-        ):
-            description = "Converted Index (VmT)"
-        if (
-            address == 8004
-            or address == 8014
-            or address == 8024
-            or address == 8034
-            or address == 8044
-            or address == 8054
-            or address == 8064
-        ):
-            description = "Unconverted Index (VbT)"
-        if (
-            address == 8006
-            or address == 8016
-            or address == 8026
-            or address == 8036
-            or address == 8046
-            or address == 8056
-            or address == 8066
-        ):
-            description = "Pressure Daily Average"
-        if (
-            address == 8008
-            or address == 8018
-            or address == 8028
-            or address == 8038
-            or address == 8048
-            or address == 8058
-            or address == 8068
-        ):
-            description = "Temperature Daily Average"
-        if address == 7001:
-            description = "Serial No."
-        if address == 7003:
-            description = "Time & Date"
-        if address == 7005:
-            description = "Pressure"
-        if address == 7007:
-            description = "Temperature"
-        if address == 7009:
-            description = "Pressure Base"
-        if address == 7011:
-            description = "Temperature base"
-        if address == 7013:
-            description = " Actual Flowrate Qm"
-        if address == 7015:
-            description = "Vt(Turbine index)"
-        if address == 7017:
-            description = "Vm total (Actual vol cumulative)"
-        if address == 7019:
-            description = "Vb total (Actual vol cumulative)"
-        if address == 7021:
-            description = "AGA-8 Equation"
-        if address == 7023:
-            description = "Zb"
-        if address == 7025:
-            description = "Zf"
-        if address == 7027:
-            description = "Pulse weight"
-        if address == 7029:
-            description = "Qm max"
-        if address == 7031:
-            description = "Qm min"
-        if address == 7033:
-            description = "CO2"
-        if address == 7035:
-            description = "N2"
-        if address == 7037:
-            description = "SG"
-        if address == 7039:
-            description = "LowBattery Alarm"
+        description = get_description_from_database(address)
 
-        # Actaris
-        if address == 20482:
-            description = "Time Stamp"
-        if address == 20498:
-            description = "Converted Index (VmT)"
-        if address == 20494:
-            description = "Unconverted Index (VbT)"
-        if address == 20486:
-            description = "Pressure Daily Average"
-        if address == 20484:
-            description = "Temperature Daily Average"
-        # config
-        if address == 32:
-            description = "Specific Gravity"
-        if address == 34:
-            description = "Base Pressure"
-        if address == 38:
-            description = "Base Pressure. For Z Calculate"
-        if address == 40:
-            description = "Base Temperature. For Z Calculate"
-        if address == 42:
-            description = "Input Pulse Weight"
-        if address == 44:
-            description = "Base Temperature"
-        if address == 78:
-            description = " Carbon dioxide"
-        if address == 82:
-            description = "Nitrogen"
-        if address == 546:
-            description = "Current Time"
-        if address == 756:
-            description = "Battery Alarm Warning"
-        if address == 822:
-            description = "Actual Flow rate"
-        if address == 824:
-            description = "Standard Flow rate"
-        if address == 834:
-            description = "Current Temperature"
-        if address == 836:
-            description = "Current Pressure"
-        if address == 838:
-            description = "Conversion Factor"
-        if address == 840:
-            description = "Act. Compressibility Factor"
-        if address == 842:
-            description = "Fpv2"
+        if description is None:
+            description = f"Address {address}"
+            address += 0
 
         if is_16bit:
             signed_value = value - 2**16 if value >= 2**15 else value
@@ -1221,8 +1087,18 @@ def read_data():
             float_signed_value = (
                 signed_value if is_16bit_value else None
             )  # Set signed_value to None for 32-bit
-            float_display_value = float_value
 
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
         data_list.append(
             {
                 "description": description,
@@ -1236,6 +1112,7 @@ def read_data():
                 "float_signed_value": signed_value,
             }
         )
+
         value, updated_address = handle_action_configuration(i, value, address)
         # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
     # แทนที่ด้วย:
@@ -1404,10 +1281,25 @@ def handle_action_configuration(i, value, address):
     return value, address
 
 
+def get_description_from_database(address):
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    params = {"address": address}
+    result = fetch_data(query, params)
+    return result[0][0] if result else None
+
+
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
+
+
+def get_type_value_from_database(address):
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    result = fetch_data(query, params={"address": address})
+    if result:
+        return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
+    return None
 
 
 ############ /Manualpoll_data  #####################
