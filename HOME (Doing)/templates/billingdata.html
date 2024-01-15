@@ -354,44 +354,77 @@
 
 
 
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: xx-small;
+            table-layout: fixed;
+            margin-top: -10px;
+
+        }
         .table {
             width: 100%;
-            font-size: small;
-            max-width: 100%;
-            background-color: #e1dede;
-            border: 1px solid #5f5e5e;
-            margin-top: 20px;
+            /* Adjust the width as needed */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 30px;
+            margin: 10px auto;
+            /* Center-align the table */
         }
 
-        .table th,
-        .table td {
-            border: 1px solid #5f5e5e;
+
+        th,
+        td {
+            border: 1px solid #000000;
+
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #e1dede;
+        }
+
+
+        th,
+        td {
+            width: 63px;
+        }
+
+
+
+        .table1 {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            margin: 10px auto;
+        }
+
+        .table1 th,
+        .table1 td {
+            border: 1px solid #000000;
             text-align: center;
-            padding: 2px;
-            font-size: small;
-            font-weight: lighter;
+            /* จัดตำแหน่งตรงกลาง */
+            padding: 8px;
         }
 
-        .table th {
-            background-color: #e1dede;
-            font-weight: bold;
+        .table1 th {
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
         }
 
-        .table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        @media (max-width: 768px) {
+            .table1 {
+                width: 100%;
+            }
         }
 
-        .table tr:hover {
-            background-color: #d9d9d9;
-        }
-
-        .container {
-            justify-content: center;
-            align-items: center;
-            padding-top: 30px;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
+        @media (max-width: 768px) {
+            .table {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -445,8 +478,11 @@
                 {% endif %}
             </div>
 
-            <div>
-                <div class="container">
+
+
+
+
+            <!-- <div class="container">
                 <table class="table">
                     {% if tables.config_data %}
                     <h2>Config Data</h2>
@@ -463,9 +499,27 @@
 
                 </table>
 
-            </div>
-        </div>
+            </div> -->
 
+            <div class="table-container1">
+                {% if tables.config_data %}
+                <div class="table" id="table1">
+                    <h5>Run 1: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables.config_data | safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
 
 </body>
 
