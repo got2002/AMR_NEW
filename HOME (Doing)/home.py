@@ -506,16 +506,19 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            # สร้าง subplot
-            fig = sp.make_subplots(
-                rows=2,
-                cols=2,
-                subplot_titles=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
-            )
             # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
-            # สร้าง traces
+            # สร้าง subplot และ traces สำหรับแต่ละกราฟ
+            fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Corrected"])
+            fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Uncorrected"])
+            fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=["Pressure"])
+            fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=["Temperature"])
+
+            # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE", ascending=True)
+
+            # สร้าง traces สำหรับแต่ละกราฟ
             trace_corrected = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["CORRECTED"],
@@ -523,6 +526,7 @@ def billing_data():
                 name="CORRECTED",
                 line=dict(color="blue", width=2),
             )
+
             trace_uncorrected = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["UNCORRECTED"],
@@ -530,6 +534,7 @@ def billing_data():
                 name="UNCORRECTED",
                 line=dict(color="red", width=2),
             )
+
             trace_pressure = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["Pressure"],
@@ -537,6 +542,7 @@ def billing_data():
                 name="Pressure",
                 line=dict(color="orange", width=2),
             )
+
             trace_temperature = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["Temperature"],
@@ -546,31 +552,29 @@ def billing_data():
             )
 
             # เพิ่ม traces ลงใน subplot
-            fig.add_trace(trace_corrected, row=1, col=1)
-            fig.add_trace(trace_uncorrected, row=1, col=2)
-            fig.add_trace(trace_pressure, row=2, col=1)
-            fig.add_trace(trace_temperature, row=2, col=2)
-
-            # ปรับ y-axis สำหรับทั้ง 4 กราฟ
-            fig.update_yaxes(type="linear", title="Values", row=1, col=1)
-            fig.update_yaxes(type="linear", title="Values", row=1, col=2)
-            fig.update_yaxes(type="linear", title="Values", row=2, col=1)
-            fig.update_yaxes(type="linear", title="Values", row=2, col=2)
+            fig_corrected.add_trace(trace_corrected)
+            fig_uncorrected.add_trace(trace_uncorrected)
+            fig_pressure.add_trace(trace_pressure)
+            fig_temperature.add_trace(trace_temperature)
 
             # ปรับปรุงลักษณะและรายละเอียดของกราฟ
-            fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
-            fig.update_layout(
-                legend=dict(x=0.6, y=1.25, orientation="h"),
-                yaxis_title="Values",
-                xaxis_title="Date",
-                hovermode="x unified",
-                template="plotly_white",
-                yaxis=dict(type="linear", title="Values"),
-            )
-            fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+            for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
+                fig.update_layout(
+                    legend=dict(x=0.6, y=1.25, orientation="h"),
+                    yaxis_title="Values",
+                    xaxis_title="Date",
+                    hovermode="x unified",
+                    template="plotly_white",
+                    yaxis=dict(type="linear", title="Values"),
+                )
+                fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
 
             # แสดงกราฟ
-            graph_html = fig.to_html(full_html=False)
+            graph_corrected = fig_corrected.to_html(full_html=False)
+            graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+            graph_pressure = fig_pressure.to_html(full_html=False)
+            graph_temperature = fig_temperature.to_html(full_html=False)
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
@@ -585,7 +589,10 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
-                graph=graph_html,  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
+                graph_corrected=graph_corrected,
+                graph_uncorrected=graph_uncorrected,
+                graph_pressure=graph_pressure,
+                graph_temperature=graph_temperature,
             )
 
         elif query_type == "config_data":
@@ -1067,149 +1074,15 @@ def read_data():
 
     for i, value in enumerate(values):
         address = starting_address + i * 2
-
+        type_value = get_type_value_from_database(address)
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)
         float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = f"Address {address}"
-        # elster ek
-        if (
-            address == 8000
-            or address == 8010
-            or address == 8020
-            or address == 8030
-            or address == 8040
-            or address == 8050
-            or address == 8060
-        ):
-            description = "Time Stamp"
-        if (
-            address == 8002
-            or address == 8012
-            or address == 8022
-            or address == 8032
-            or address == 8042
-            or address == 8052
-            or address == 8062
-        ):
-            description = "Converted Index (VmT)"
-        if (
-            address == 8004
-            or address == 8014
-            or address == 8024
-            or address == 8034
-            or address == 8044
-            or address == 8054
-            or address == 8064
-        ):
-            description = "Unconverted Index (VbT)"
-        if (
-            address == 8006
-            or address == 8016
-            or address == 8026
-            or address == 8036
-            or address == 8046
-            or address == 8056
-            or address == 8066
-        ):
-            description = "Pressure Daily Average"
-        if (
-            address == 8008
-            or address == 8018
-            or address == 8028
-            or address == 8038
-            or address == 8048
-            or address == 8058
-            or address == 8068
-        ):
-            description = "Temperature Daily Average"
-        if address == 7001:
-            description = "Serial No."
-        if address == 7003:
-            description = "Time & Date"
-        if address == 7005:
-            description = "Pressure"
-        if address == 7007:
-            description = "Temperature"
-        if address == 7009:
-            description = "Pressure Base"
-        if address == 7011:
-            description = "Temperature base"
-        if address == 7013:
-            description = " Actual Flowrate Qm"
-        if address == 7015:
-            description = "Vt(Turbine index)"
-        if address == 7017:
-            description = "Vm total (Actual vol cumulative)"
-        if address == 7019:
-            description = "Vb total (Actual vol cumulative)"
-        if address == 7021:
-            description = "AGA-8 Equation"
-        if address == 7023:
-            description = "Zb"
-        if address == 7025:
-            description = "Zf"
-        if address == 7027:
-            description = "Pulse weight"
-        if address == 7029:
-            description = "Qm max"
-        if address == 7031:
-            description = "Qm min"
-        if address == 7033:
-            description = "CO2"
-        if address == 7035:
-            description = "N2"
-        if address == 7037:
-            description = "SG"
-        if address == 7039:
-            description = "LowBattery Alarm"
+        description = get_description_from_database(address)
 
-        # Actaris
-        if address == 20482:
-            description = "Time Stamp"
-        if address == 20498:
-            description = "Converted Index (VmT)"
-        if address == 20494:
-            description = "Unconverted Index (VbT)"
-        if address == 20486:
-            description = "Pressure Daily Average"
-        if address == 20484:
-            description = "Temperature Daily Average"
-        # config
-        if address == 32:
-            description = "Specific Gravity"
-        if address == 34:
-            description = "Base Pressure"
-        if address == 38:
-            description = "Base Pressure. For Z Calculate"
-        if address == 40:
-            description = "Base Temperature. For Z Calculate"
-        if address == 42:
-            description = "Input Pulse Weight"
-        if address == 44:
-            description = "Base Temperature"
-        if address == 78:
-            description = " Carbon dioxide"
-        if address == 82:
-            description = "Nitrogen"
-        if address == 546:
-            description = "Current Time"
-        if address == 756:
-            description = "Battery Alarm Warning"
-        if address == 822:
-            description = "Actual Flow rate"
-        if address == 824:
-            description = "Standard Flow rate"
-        if address == 834:
-            description = "Current Temperature"
-        if address == 836:
-            description = "Current Pressure"
-        if address == 838:
-            description = "Conversion Factor"
-        if address == 840:
-            description = "Act. Compressibility Factor"
-        if address == 842:
-            description = "Fpv2"
+        if description is None:
+            description = f"Address {address}"
+            address += 0
 
         if is_16bit:
             signed_value = value - 2**16 if value >= 2**15 else value
@@ -1227,8 +1100,18 @@ def read_data():
             float_signed_value = (
                 signed_value if is_16bit_value else None
             )  # Set signed_value to None for 32-bit
-            float_display_value = float_value
 
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
         data_list.append(
             {
                 "description": description,
@@ -1242,6 +1125,7 @@ def read_data():
                 "float_signed_value": signed_value,
             }
         )
+
         value, updated_address = handle_action_configuration(i, value, address)
         # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
     # แทนที่ด้วย:
@@ -1410,10 +1294,25 @@ def handle_action_configuration(i, value, address):
     return value, address
 
 
+def get_description_from_database(address):
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    params = {"address": address}
+    result = fetch_data(query, params)
+    return result[0][0] if result else None
+
+
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
+
+
+def get_type_value_from_database(address):
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    result = fetch_data(query, params={"address": address})
+    if result:
+        return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
+    return None
 
 
 ############ /Manualpoll_data  #####################
@@ -1423,6 +1322,292 @@ def logout():
     session.clear()
     # ส่งไปยังหน้าลงชื่อเข้าใช้หลังจากลงชื่อออก
     return redirect(url_for("login"))
+
+
+###############################################
+
+
+def insert_address_range_to_oracle(
+    poll_config, poll_billing, enable_config, enable_billing, evc_type
+):
+    dsn = cx_Oracle.makedsn(hostname, port, service_name)
+
+    with cx_Oracle.connect(
+        user=username, password=password, dsn=dsn
+    ) as connection:
+        with connection.cursor() as cursor:
+            sql_insert = """
+                INSERT INTO AMR_POLL_RANGE (POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE, EVC_TYPE)
+                VALUES (:1, :2, :3, :4, :5)
+            """
+
+            # Convert enable_config and enable_billing to comma-separated strings
+            enable_config_str = ",".join(map(str, enable_config))
+            enable_billing_str = ",".join(map(str, enable_billing))
+
+            data_to_insert = (
+                poll_config,
+                poll_billing,
+                enable_config_str,
+                enable_billing_str,
+                evc_type,
+            )
+
+            cursor.execute(sql_insert, data_to_insert)
+
+        connection.commit()
+
+
+@app.route("/add_polling_route")
+def add_polling_route():
+    return render_template("add_polling.html")
+
+
+MAX_ADDRESS_LENGTH = 249
+
+
+@app.route("/save_to_oracle", methods=["POST"])
+def save_to_oracle():
+    try:
+        data = request.get_json()
+
+        # Add the following line to define 'evc_type'
+        evc_type = data.get("evc_type", "")
+
+        def validate_address_range(start_key, end_key):
+            start_address = int(data.get(start_key, 0))
+            end_address = int(data.get(end_key, 0))
+
+            if end_address - start_address + 1 > MAX_ADDRESS_LENGTH:
+                raise ValueError(
+                    f"Address range {start_key} - {end_key} exceeds the maximum length of {MAX_ADDRESS_LENGTH}"
+                )
+
+            return start_address, end_address
+
+        combined_address_config = ",".join(
+            [
+                ",".join(map(str, validate_address_range(f"start{i}", f"end{i}")))
+                for i in range(1, 6)
+                if data.get(f"start{i}")
+            ]
+        )
+
+        enable_config = [int(data.get(f"enable{i}", 0)) for i in range(1, 6)]
+
+        combined_address_billing = ",".join(
+            [
+                ",".join(map(str, validate_address_range(f"start{i}", f"end{i}")))
+                for i in range(6, 16)
+                if data.get(f"start{i}")
+            ]
+        )
+
+        enable_billing = [int(data.get(f"enable{i}", 0)) for i in range(6, 16)]
+
+        if not combined_address_config or not combined_address_billing:
+            response = {
+                "status": "error",
+                "message": "Please enter at least one valid start or end address for both configurations.",
+            }
+            return jsonify(response)
+
+        insert_address_range_to_oracle(
+            combined_address_config,
+            combined_address_billing,
+            enable_config,
+            enable_billing,
+            evc_type,
+        )
+
+        response = {"status": "success", "message": "Data saved successfully"}
+    except ValueError as ve:
+        response = {"status": "error", "message": str(ve)}
+    except cx_Oracle.DatabaseError as e:
+        response = {"status": "error", "message": f"Database Error: {e}"}
+    except Exception as e:
+        response = {"status": "error", "message": f"Error: {e}"}
+
+    return jsonify(response)
+
+
+@app.route("/add_mapping_route")
+def add_mapping_route():
+    return render_template("add_mapping.html")
+
+
+@app.route("/submit_form", methods=["POST"])
+def submit_form():
+    cursor = None
+    connection = None
+
+    try:
+        data_list = []
+        for i in range(1, 21):
+            address = request.form[f"address{i}"]
+            description = request.form[f"description{i}"]
+            type_value = request.form.get(f"type_value{i}")
+            evc_type = request.form[f"evc_type{i}"]
+            or_der = request.form[f"or_der{i}"]
+            data_type = request.form[f"data_type{i}"]
+
+            data_list.append(
+                (address, description, type_value, evc_type, or_der, data_type)
+            )
+
+        dsn_tns = cx_Oracle.makedsn(
+            hostname, port, service_name
+        )
+        connection = cx_Oracle.connect(
+            user=username, password=password, dsn=dsn_tns
+        )
+
+        cursor = connection.cursor()
+
+        sql_merge = """
+            MERGE INTO AMR_ADDRESS_MAPPING1 dst
+            USING (
+                SELECT
+                    :address as address,
+                    :description as description,
+                    :type_value as type_value,
+                    :evc_type as evc_type,
+                    :or_der as or_der,
+                    :data_type as data_type
+                FROM dual
+            ) src
+            ON (dst.address = src.address)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    dst.description = src.description,
+                    dst.type_value = src.type_value,
+                    dst.evc_type = src.evc_type,
+                    dst.or_der = src.or_der,
+                    dst.data_type = src.data_type
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    address,
+                    description,
+                    type_value,
+                    evc_type,
+                    or_der,
+                    data_type
+                ) VALUES (
+                    src.address,
+                    src.description,
+                    src.type_value,
+                    src.evc_type,
+                    src.or_der,
+                    src.data_type
+                )
+        """
+
+        cursor.executemany(sql_merge, data_list)
+
+        connection.commit()
+
+        return "บันทึกข้อมูลสำเร็จ"
+    except Exception as e:
+        return f"เกิดข้อผิดพลาด: {str(e)}"
+    finally:
+        if cursor is not None:
+            # ปิด cursor
+            cursor.close()
+
+        if connection is not None:
+            # ปิด connection
+            connection.close()
+
+
+@app.route("/add_actraris_route")
+def add_actraris_route():
+    return render_template("add_actraris.html")
+
+
+@app.route("/new_form", methods=["POST"])
+def submit_new_form():
+    cursor = None
+    connection = None
+
+    try:
+        data_list = []
+        for i in range(1, 18):
+            address = request.form.get(f"address{i}")
+            description = request.form.get(f"description{i}")
+            type_value = request.form.get(f"type_value{i}")
+            evc_type = request.form.get(f"evc_type{i}")
+            or_der = request.form.get(f"or_der{i}")
+            data_type = request.form.get(f"data_type{i}")
+
+            data_list.append(
+                (address, description, type_value, evc_type, or_der, data_type)
+            )
+
+        dsn_tns = cx_Oracle.makedsn(
+            hostname, port, service_name
+        )
+        connection = cx_Oracle.connect(
+            user=username, password=password, dsn=dsn_tns
+        )
+
+        cursor = connection.cursor()
+
+        sql_merge = """
+            MERGE INTO AMR_ADDRESS_MAPPING1 dst
+            USING (
+                SELECT
+                    :address as address,
+                    :description as description,
+                    :type_value as type_value,
+                    :evc_type as evc_type,
+                    :or_der as or_der,
+                    :data_type as data_type
+                FROM dual
+            ) src
+            ON (dst.address = src.address)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    dst.description = src.description,
+                    dst.type_value = src.type_value,
+                    dst.evc_type = src.evc_type,
+                    dst.or_der = src.or_der,
+                    dst.data_type = src.data_type
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    address,
+                    description,
+                    type_value,
+                    evc_type,
+                    or_der,
+                    data_type
+                ) VALUES (
+                    src.address,
+                    src.description,
+                    src.type_value,
+                    src.evc_type,
+                    src.or_der,
+                    src.data_type
+                )
+        """
+
+        cursor.executemany(sql_merge, data_list)
+
+        connection.commit()
+
+        return "บันทึกข้อมูลสำเร็จ"
+    except Exception as e:
+        return f"เกิดข้อผิดพลาด: {str(e)}"
+    finally:
+        if cursor is not None:
+            # ปิด cursor
+            cursor.close()
+
+        if connection is not None:
+            # ปิด connection
+            connection.close()
+
+
+####################################################
 
 
 if __name__ == "__main__":
