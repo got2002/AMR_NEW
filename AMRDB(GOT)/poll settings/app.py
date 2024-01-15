@@ -125,6 +125,71 @@ def edit_polling_route():
     return render_template("edit_polling.html")
 
 
+@app.route("/edit_polling", methods=["POST"])
+def edit_polling():
+    try:
+        data = request.get_json()
+
+        # Add the following line to define 'evc_type'
+        evc_type = data.get("evc_type", "")
+
+        def validate_address_range(start_key, end_key):
+            start_address = int(data.get(start_key, 0))
+            end_address = int(data.get(end_key, 0))
+
+            if end_address - start_address + 1 > MAX_ADDRESS_LENGTH:
+                raise ValueError(
+                    f"Address range {start_key} - {end_key} exceeds the maximum length of {MAX_ADDRESS_LENGTH}"
+                )
+
+            return start_address, end_address
+
+        combined_address_config = ",".join(
+            [
+                ",".join(map(str, validate_address_range(f"start{i}", f"end{i}")))
+                for i in range(1, 6)
+                if data.get(f"start{i}")
+            ]
+        )
+
+        enable_config = [int(data.get(f"enable{i}", 0)) for i in range(1, 6)]
+
+        combined_address_billing = ",".join(
+            [
+                ",".join(map(str, validate_address_range(f"start{i}", f"end{i}")))
+                for i in range(6, 16)
+                if data.get(f"start{i}")
+            ]
+        )
+
+        enable_billing = [int(data.get(f"enable{i}", 0)) for i in range(6, 16)]
+
+        if not combined_address_config or not combined_address_billing:
+            response = {
+                "status": "error",
+                "message": "Please enter at least one valid start or end address for both configurations.",
+            }
+            return jsonify(response)
+
+        insert_address_range_to_oracle(
+            combined_address_config,
+            combined_address_billing,
+            enable_config,
+            enable_billing,
+            evc_type,  # Add 'evc_type' as an argument here
+        )
+
+        response = {"status": "success", "message": "Data saved successfully"}
+    except ValueError as ve:
+        response = {"status": "error", "message": str(ve)}
+    except cx_Oracle.DatabaseError as e:
+        response = {"status": "error", "message": f"Database Error: {e}"}
+    except Exception as e:
+        response = {"status": "error", "message": f"Error: {e}"}
+
+    return jsonify(response)
+
+
 @app.route("/add_mapping_route")
 def add_mapping_route():
     return render_template("add_mapping.html")
