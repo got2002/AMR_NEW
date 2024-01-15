@@ -506,16 +506,19 @@ def billing_data():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            # สร้าง subplot
-            fig = sp.make_subplots(
-                rows=2,
-                cols=2,
-                subplot_titles=["CORRECTED", "UNCORRECTED", "Pressure", "Temperature"],
-            )
             # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
-            # สร้าง traces
+            # สร้าง subplot และ traces สำหรับแต่ละกราฟ
+            fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Corrected"])
+            fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Uncorrected"])
+            fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=["Pressure"])
+            fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=["Temperature"])
+
+            # เรียงลำดับ DataFrame ตาม 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE", ascending=True)
+
+            # สร้าง traces สำหรับแต่ละกราฟ
             trace_corrected = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["CORRECTED"],
@@ -523,6 +526,7 @@ def billing_data():
                 name="CORRECTED",
                 line=dict(color="blue", width=2),
             )
+
             trace_uncorrected = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["UNCORRECTED"],
@@ -530,6 +534,7 @@ def billing_data():
                 name="UNCORRECTED",
                 line=dict(color="red", width=2),
             )
+
             trace_pressure = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["Pressure"],
@@ -537,6 +542,7 @@ def billing_data():
                 name="Pressure",
                 line=dict(color="orange", width=2),
             )
+
             trace_temperature = go.Scatter(
                 x=df["DATA_DATE"],
                 y=df["Temperature"],
@@ -546,31 +552,29 @@ def billing_data():
             )
 
             # เพิ่ม traces ลงใน subplot
-            fig.add_trace(trace_corrected, row=1, col=1)
-            fig.add_trace(trace_uncorrected, row=1, col=2)
-            fig.add_trace(trace_pressure, row=2, col=1)
-            fig.add_trace(trace_temperature, row=2, col=2)
-
-            # ปรับ y-axis สำหรับทั้ง 4 กราฟ
-            fig.update_yaxes(type="linear", title="Values", row=1, col=1)
-            fig.update_yaxes(type="linear", title="Values", row=1, col=2)
-            fig.update_yaxes(type="linear", title="Values", row=2, col=1)
-            fig.update_yaxes(type="linear", title="Values", row=2, col=2)
+            fig_corrected.add_trace(trace_corrected)
+            fig_uncorrected.add_trace(trace_uncorrected)
+            fig_pressure.add_trace(trace_pressure)
+            fig_temperature.add_trace(trace_temperature)
 
             # ปรับปรุงลักษณะและรายละเอียดของกราฟ
-            fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
-            fig.update_layout(
-                legend=dict(x=0.6, y=1.25, orientation="h"),
-                yaxis_title="Values",
-                xaxis_title="Date",
-                hovermode="x unified",
-                template="plotly_white",
-                yaxis=dict(type="linear", title="Values"),
-            )
-            fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+            for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                fig.update_traces(line_shape="linear", marker=dict(symbol="circle", size=6))
+                fig.update_layout(
+                    legend=dict(x=0.6, y=1.25, orientation="h"),
+                    yaxis_title="Values",
+                    xaxis_title="Date",
+                    hovermode="x unified",
+                    template="plotly_white",
+                    yaxis=dict(type="linear", title="Values"),
+                )
+                fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
 
             # แสดงกราฟ
-            graph_html = fig.to_html(full_html=False)
+            graph_corrected = fig_corrected.to_html(full_html=False)
+            graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+            graph_pressure = fig_pressure.to_html(full_html=False)
+            graph_temperature = fig_temperature.to_html(full_html=False)
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             return render_template(
@@ -585,7 +589,10 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options,
-                graph=graph_html,  # เพิ่ม graph_html ใน context สำหรับใช้ใน HTML template
+                graph_corrected=graph_corrected,
+                graph_uncorrected=graph_uncorrected,
+                graph_pressure=graph_pressure,
+                graph_temperature=graph_temperature,
             )
 
         elif query_type == "config_data":
