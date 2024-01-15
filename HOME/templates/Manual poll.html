@@ -50,7 +50,7 @@
             position: absolute;
             margin-left: 480px;
             width: 205px;
-            margin-top: -50px;
+            margin-top: -170px;
         }
         
         .btn-buttonElster {
@@ -199,17 +199,17 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th style="display: none;"
+                        <th 
                         >evc_type</th>
-                        <th style="display: none;"
+                        <th 
                         >vc_name</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing_enable</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config_enable</th>
                     </tr>
                 </thead>
@@ -232,13 +232,14 @@
                             <td>{{ row['METERID'] }}</td>
                             <td>{{ row['VCtype'] }}</td>
                             <td>{{ '127.0.0.1' }}</td>
+                            <!-- <td>{{ row['IPAddress'] }}</td> -->
                             <td>{{ row['Port'] }}</td>
-                            <td style="display: none;">{{ row['evc_type'] }}</td>
-                            <td style="display: none;">{{ row['vc_name'] }}</td>
-                            <td style="display: none;">{{ row['poll_billing'] }}</td>
-                            <td style="display: none;">{{ row['poll_config'] }}</td>
-                            <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
-                            <td style="display: none;">{{ row['poll_config_enable'] }}</td>
+                            <td >{{ row['evc_type'] }}</td>
+                            <td >{{ row['vc_name'] }}</td>
+                            <td >{{ row['poll_billing'] }}</td>
+                            <td >{{ row['poll_config'] }}</td>
+                            <td >{{ row['poll_billing_enable'] }}</td>
+                            <td >{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -417,27 +418,23 @@ if (selectedOption === "config") {
                              <input type="number" class="form-control" id="function_code" name="function_code" value="3" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
                          </div>
 
-                         <div class="form-group" >
-                             <label for="starting_address">Starting Address</label>
-                             <input type="text"class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                             
-                             <!-- <select class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                   <option value="">Select an option...</option> 
-
-                   <option value="custom">Custom</option>
-                   <option value="8000">8000 ( daily elster)</option>
-                   <option value="7003">7003 ( config elster)</option>
-                   <option value="20482">20482 ( daily actaris)</option>
-                   <option value="32">32 (config actaris)</option> -->
-                   
-               </select>
-                         </div>
-                         <!-- Input field for custom value -->
-                         
-                         <div class="form-group" >
+                         <div class="form-group">
+                            <label for="starting_address">Starting Address</label>
+                            <input type="text" class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="quantity">Quantity</label>
                             <input type="text" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
                         </div>
+                        
+                        <div id="result"></div>
+                        <button onclick="calculate()">Calculate</button>
+                        
+                        <!-- <div class="form-group">
+                            <label for="quantity">ผลลัพ</label>
+                            <input type="text" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
+                        </div> -->
                          <div class="form-group">
                              <label for="tcp_ip">TCP IP</label>
                              <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
@@ -516,7 +513,7 @@ if (selectedOption === "config") {
             </thead>
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list %}
-                    {% if data['description'] and "Address" not in data['description'] %}
+                    {% if data['description'] %}
                         <tr>
                             <td>{{ data['description'] }}</td>
                             <td>{{ data['value'] }}</td>
@@ -568,9 +565,19 @@ if (selectedOption === "config") {
     </div>
 {% endif %}
 
+<script>
+      function calculate() {
+        // ดึงค่าจาก input elements
+        var startingAddressValue = parseFloat(document.getElementById("starting_address").value);
+        var quantityValue = parseFloat(document.getElementById("quantity1").value);
 
+        // ลบ "Quantity" จาก "Starting Address" และเพิ่ม 1
+        var result = quantityValue - startingAddressValue  + 1;
 
-
+        // แสดงผลลัพธ์
+        document.getElementById("result").innerHTML = "Result: " + result;
+    }
+</script>
 
 
 
