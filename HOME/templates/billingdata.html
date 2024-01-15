@@ -13,80 +13,89 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
+
 
     <title>Billing Data</title>
     <style>
-    table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size:xx-small;
-    table-layout: fixed;
-    margin-top: -10px;
-    
-}
-body {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-th, td {
-    border: 1px solid #000000;
-    
-    text-align: left;
-    padding: 8px;
-}
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: xx-small;
+            table-layout: fixed;
+            margin-top: -10px;
 
-th {
-    background-color: #e1dede;
-}
+        }
 
+        body {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-th, td {
-    width: 63px; 
-}
+        th,
+        td {
+            border: 1px solid #000000;
+
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #e1dede;
+        }
 
 
+        th,
+        td {
+            width: 63px;
+        }
 
-.table1 {
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 30px;
-    margin: 10px auto;
-}
 
-.table1 th, .table1 td {
-    border: 1px solid #000000;
-    text-align: center; /* จัดตำแหน่งตรงกลาง */
-    padding: 8px;
-}
 
-.table1 th {
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
+        .table1 {
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            margin: 10px auto;
+        }
 
-@media (max-width: 768px) {
-    .table1 {
-        width: 100%;
-    }
-}
-.table-container {
+        .table1 th,
+        .table1 td {
+            border: 1px solid #000000;
+            text-align: center;
+            /* จัดตำแหน่งตรงกลาง */
+            padding: 8px;
+        }
+
+        .table1 th {
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
+
+        @media (max-width: 768px) {
+            .table1 {
+                width: 100%;
+            }
+        }
+
+        .table-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
 
         .table {
-    width: 100%; /* Adjust the width as needed */
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    padding: 30px;
-    margin: 10px auto; /* Center-align the table */
-}
+            width: 100%;
+            /* Adjust the width as needed */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 30px;
+            margin: 10px auto;
+            /* Center-align the table */
+        }
 
         @media (max-width: 768px) {
             .table {
@@ -95,20 +104,20 @@ th, td {
         }
     </style>
 
-    
+
 </head>
 
 
 
 
 <body>
-    <div class="main2" id="main2" >
+    <div class="main2" id="main2">
         <img class="imgpttlogo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="AMR Logo" />
-            <h2>Billing data</h2>
+        <h2>Billing data</h2>
 
-            <form method="get" action="{{ url_for('billing_data') }}">
+        <form method="get" action="{{ url_for('billing_data') }}">
             <label for="tag_dropdown">Select Region :</label>
             <select id="region_dropdown" name="region_dropdown">
                 <option value="" {% if not selected_region %}selected{% endif %}>All</option>
@@ -126,102 +135,104 @@ th, td {
             <label for="date_picker">Select Date :</label>
             <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
-            
 
-            
 
-            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily Data</button>
-            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config Data</button>
+
+
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
+                Data</button>
+            <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
+                Data</button>
             <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear Filters</button>
-            
+
         </form>
-    </div>  
-        <!-- Warning message container -->
-        
-        <div class="table-container">
-            {% if tables.get('daily_data_run1') %}
-                <div class="table" id="table1">
-                    <h5>Run 1: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_run1']|safe }}
-                </div>
-            {% endif %}
-        
-            {% if tables.get('daily_data_run2') %}
-                <div class="table" id="table2">
-                    <h5>Run 2: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_run2']|safe }}
-                </div>
-            {% endif %}
-        
-            {% if tables.get('daily_data_run3') %}
-                <div class="table" id="table3">
-                    <h5>Run 3: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_run3']|safe }}
-                </div>
-            {% endif %}
-        
-            {% if tables.get('daily_data_run4') %}
-                <div class="table" id="table4">
-                    <h5>Run 4: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_run4']|safe }}
-                </div>
-            {% endif %}
+    </div>
+    <!-- Warning message container -->
+
+    <div class="table-container">
+        {% if tables.get('daily_data_run1') %}
+        <div class="table" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run1']|safe }}
         </div>
-        
-        
-        
-        
-    
-        
-    
-        
-        
+        {% endif %}
 
-        
-        
+        {% if tables.get('daily_data_run2') %}
+        <div class="table" id="table2">
+            <h5>Run 2: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run2']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run3') %}
+        <div class="table" id="table3">
+            <h5>Run 3: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run3']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run4') %}
+        <div class="table" id="table4">
+            <h5>Run 4: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run4']|safe }}
+        </div>
+        {% endif %}
+    </div>
 
 
 
-        <div class="table-container1">
-            {% if tables.get('config_data_run1') %}
-                <div class="table" id="table1">
-                    <h5>Run 1: {{ selected_tag }}</h5>
-                    <table class="table1">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead >
-                            <tr >
-                                {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{ tables['config_data_run1']|safe }}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
-        
-        
-        
-        
-            {% if tables.get('config_data_run2') %}
-            <div class="table" id="table1">
-                <h5>Run 2: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead >
-                        <tr >
-                            {% for key, value in dropped_columns_data[0].items() %}
-                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run2']|safe }}
-                    </tbody>
-                </table>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="table-container1">
+        {% if tables.get('config_data_run1') %}
+        <div class="table" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run1']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+
+
+
+        {% if tables.get('config_data_run2') %}
+        <div class="table" id="table1">
+            <h5>Run 2: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run2']|safe }}
+                </tbody>
+            </table>
+        </div>
         {% endif %}
 
         {% if tables.get('config_data_run3') %}
@@ -229,10 +240,10 @@ th, td {
             <h5>Run 3: {{ selected_tag }}</h5>
             <table class="table1">
                 <!-- The following line combines thead and tbody into a single block -->
-                <thead >
-                    <tr >
+                <thead>
+                    <tr>
                         {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
@@ -243,70 +254,70 @@ th, td {
 
 
         </div>
-    {% endif %}
+        {% endif %}
 
-    {% if tables.get('config_data_run4') %}
-    <div class="table" id="table1">
-        <h5>Run 4: {{ selected_tag }}</h5>
-        <table class="table1">
-            <!-- The following line combines thead and tbody into a single block -->
-            <thead >
-                <tr >
-                    {% for key, value in dropped_columns_data[0].items() %}
+        {% if tables.get('config_data_run4') %}
+        <div class="table" id="table1">
+            <h5>Run 4: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
                         <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {{ tables['config_data_run4']|safe }}
-            </tbody>
-        </table>
-    </div>
-{% endif %}
-{% if tables.get('config_data_run5') %}
-<div class="table" id="table1">
-    <h5>Run 5: {{ selected_tag }}</h5>
-    <table class="table1">
-        <!-- The following line combines thead and tbody into a single block -->
-        <thead >
-            <tr >
-                {% for key, value in dropped_columns_data[0].items() %}
-                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {{ tables['config_data_run5']|safe }}
-        </tbody>
-    </table>
-</div>
-{% endif %}
-{% if tables.get('config_data_run6') %}
-<div class="table" id="table1">
-    <h5>Run 6: {{ selected_tag }}</h5>
-    <table class="table1">
-        <!-- The following line combines thead and tbody into a single block -->
-        <thead >
-            <tr >
-                {% for key, value in dropped_columns_data[0].items() %}
-                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {{ tables['config_data_run6']|safe }}
-        </tbody>
-    </table>
-</div>
-{% endif %}
-       
-       
-            
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run4']|safe }}
+                </tbody>
+            </table>
         </div>
-    
-<body>
+        {% endif %}
+        {% if tables.get('config_data_run5') %}
+        <div class="table" id="table1">
+            <h5>Run 5: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run5']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% if tables.get('config_data_run6') %}
+        <div class="table" id="table1">
+            <h5>Run 6: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run6']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
 
-    <!-- </script>
+
+
+    </div>
+
+    <body>
+
+        <!-- </script>
     <img class="imgpttlogo1" src="https://jobbkk.com/upload/employer/0E/43E/00643E/images/25662.png" class="footer">
     <p>&copy; Copyright All Rights Reserved By 🤖 TEAM AMR PROMPT </p>
     </script> -->
@@ -319,74 +330,74 @@ th, td {
 
 
 
-    </script>
-   
+        </script>
+
         <script>
 
 
-    // Wait for the document to be ready
-    $(document).ready(function () {
-        $('#date_picker').datepicker({
-            format: 'mm/yyyy',
-            startView: 'months',
-            minViewMode: 'months',
-            autoclose: true
-        });
-    });
-
-    function clearFilters() {
-        $('#date_picker').val('');
-        $('#tag_dropdown').val('');
-        $('#region_dropdown').val('');
-        $('form').submit();
-    }
-
-    $(document).ready(function () {
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-            console.log('Region dropdown changed');
-            var selectedRegion = $(this).val();
-
-            $.ajax({
-                type: 'GET',
-                url: '/get_tags',
-                data: { 'selected_region': selectedRegion },
-                success: function (response) {
-                    console.log('Ajax request successful', response);
-
-                    // Clear existing options in the tag dropdown
-                    $('#tag_dropdown').empty();
-
-                    // Add the 'All' option
-                    $('#tag_dropdown').append('<option value="" selected>All</option>');
-
-                    // Add new tag options based on the response
-                    for (var i = 0; i < response.tag_options.length; i++) {
-                        var tag = response.tag_options[i];
-                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-                    }
-                },
-                error: function (error) {
-                    console.log('Error fetching tag options:', error);
-                }
+            // Wait for the document to be ready
+            $(document).ready(function () {
+                $('#date_picker').datepicker({
+                    format: 'mm/yyyy',
+                    startView: 'months',
+                    minViewMode: 'months',
+                    autoclose: true
+                });
             });
-        });
-    });
-</script>
 
-            </script>
-            <script>
+            function clearFilters() {
+                $('#date_picker').val('');
+                $('#tag_dropdown').val('');
+                $('#region_dropdown').val('');
+                $('form').submit();
+            }
 
+            $(document).ready(function () {
+                // Event listener for region dropdown change
+                $('#region_dropdown').change(function () {
+                    console.log('Region dropdown changed');
+                    var selectedRegion = $(this).val();
 
-                // Wait for the document to be ready
-                $(document).ready(function () {
-                    $('#date_picker').datepicker({
-                        format: 'mm/yyyy',
-                        startView: 'months',
-                        minViewMode: 'months',
-                        autoclose: true
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get_tags',
+                        data: { 'selected_region': selectedRegion },
+                        success: function (response) {
+                            console.log('Ajax request successful', response);
+
+                            // Clear existing options in the tag dropdown
+                            $('#tag_dropdown').empty();
+
+                            // Add the 'All' option
+                            $('#tag_dropdown').append('<option value="" selected>All</option>');
+
+                            // Add new tag options based on the response
+                            for (var i = 0; i < response.tag_options.length; i++) {
+                                var tag = response.tag_options[i];
+                                $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                            }
+                        },
+                        error: function (error) {
+                            console.log('Error fetching tag options:', error);
+                        }
                     });
                 });
+            });
+        </script>
+
+        </script>
+        <script>
+
+
+            // Wait for the document to be ready
+            $(document).ready(function () {
+                $('#date_picker').datepicker({
+                    format: 'mm/yyyy',
+                    startView: 'months',
+                    minViewMode: 'months',
+                    autoclose: true
+                });
+            });
 
 
             function clearFilters() {
@@ -429,7 +440,7 @@ th, td {
             });
         </script>
 
-</body>
+    </body>
 
 </html>
 
@@ -450,4 +461,3 @@ th, td {
         tableBody.innerHTML = '';
     }
 </script>
-
