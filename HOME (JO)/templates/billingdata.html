@@ -582,7 +582,7 @@
             <ul class="navbar-container_sub">
                 <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Add Site</li>
                 <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Edit Site</li>
-                <li class="navbar-item_sub"<a href="" class="list-item-link"></a>>Remove Site</li>
+                <li class="navbar-item_sub"><a href="" class="list-item-link"></a>>Remove Site</li>
             </ul>
         </li>
         <li class="navbar-item">Manage Users<span class="navbar-item_label">Manage Users</span>
@@ -622,9 +622,10 @@
                     <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
                     {% endfor %}
                 </select>
+                </select>
                 <label for="date_picker">Select Date :</label>
                 <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
+                </select>
                 <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
                     Data</button>
                 <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
