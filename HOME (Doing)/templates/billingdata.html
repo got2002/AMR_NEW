@@ -202,7 +202,6 @@
 
 
         table {
-            table-layout: fixed;
             border-collapse: collapse;
             width: 100%;
             table-layout: fixed;
@@ -488,55 +487,31 @@
             width: 30px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: center;
-            /* จัด div ให้อยู่ตรงกลาง */
+            margin: center; /* จัด div ให้อยู่ตรงกลาง */
         }
 
-        .table-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+        /* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
+        .plot-container>div {
+            width: 45%;
+            /* กำหนดขนาดของแต่ละ div */
+            margin: 10px;
+            /* ขอบระหว่าง div */
+            border: 1px solid #ddd;
+            /* เส้นขอบของ div */
+            border-radius: 8px;
+            /* ทำให้มีมุมโค้ง */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* เงาใต้ div */
+            margin: center; /* จัด div ให้อยู่ตรงกลาง */
         }
 
-        .table {
-            width: 100%;
-            /* Adjust the width as needed */
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            padding: 30px;
-            margin: 10px auto;
-            /* Center-align the table */
+        /* ปรับสีของกราฟ */
+        .plot-container>div .plotly {
+            background-color: #fff;
+            /* สีพื้นหลังของกราฟ */
+            border-radius: 8px;
+            /* ทำให้มีมุมโค้ง */
         }
-
-        @media (max-width: 768px) {
-            .table {
-                width: 100%;
-            }
-        }
-    </style>
-
-    <!-- /* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
-    .plot-container>div {
-    width: 45%;
-    /* กำหนดขนาดของแต่ละ div */
-    margin: 10px;
-    /* ขอบระหว่าง div */
-    border: 1px solid #ddd;
-    /* เส้นขอบของ div */
-    border-radius: 8px;
-    /* ทำให้มีมุมโค้ง */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* เงาใต้ div */
-    margin: center; /* จัด div ให้อยู่ตรงกลาง */
-    }
-
-    /* ปรับสีของกราฟ */
-    .plot-container>div .plotly {
-    background-color: #fff;
-    /* สีพื้นหลังของกราฟ */
-    border-radius: 8px;
-    /* ทำให้มีมุมโค้ง */
-    } -->
     </style>
 </head>
 <ul class="navbar-container">
@@ -604,212 +579,121 @@
                 </select>
                 <label for="date_picker">Select Date :</label>
                 <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-                
-                <div class="form-container">
-                    <form method="get" action="{{ url_for('billing_data') }}">
-                        <label for="tag_dropdown">Select Region :</label>
-                        <select id="region_dropdown" name="region_dropdown">
-                            <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                            {% for region in region_options %}
-                            <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region
-                                }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <label for="tag_dropdown">Select Site :</label>
-                        <select id="tag_dropdown" name="tag_dropdown">
-                            <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-                            {% for tag in tag_options %}
-                            <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                            {% endfor %}
-                        </select>
-                        <label for="date_picker">Select Date :</label>
-                        <input" type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
-                            autocomplete="off">
 
-                            <button class="btn btn-primary custom-btn" type="submit" name="query_type"
-                                value="daily_data">Daily
-                                Data</button>
-                            <button class="btn btn-primary custom-btn" type="submit" name="query_type"
-                                value="config_data">Config
-                                Data</button>
-                            <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
-                                Filters</button>
-                    </form>
+                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
+                    Data</button>
+                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
+                    Data</button>
+                <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
+                    Filters</button>
+            </form>
 
-                 
-        <div class="table-container">
-            {% if tables.get('daily_data_run1') %}
+            <div class="form-containerBOx">
+                <table class="table">
+                    {% if tables.get('daily_data') %}
+                    <h1>Daily Data</h1>
+                    {{ tables['daily_data']|safe }}
+                </table>
+            </div>
+            <div class="plot-container">
+                <div class="plot-container">
+                    {{ graph_corrected|safe }}
+                </div>
+
+                <div class="plot-container">
+                    {{ graph_uncorrected|safe }}
+                </div>
+
+                <div class="plot-container">
+                    {{ graph_pressure|safe }}
+                </div>
+
+                <div class="plot-container">
+                    {{ graph_temperature|safe }}
+                </div>
+
+                {% endif %}
+            </div>
+            <div class="table-container">
+                {% if tables.get('daily_data_run1') %}
                 <div class="table" id="table1">
                     <h5>Run 1: {{ selected_tag }}</h5>
                     {{ tables['daily_data_run1']|safe }}
                 </div>
-                
-            {% endif %}
-        
-            {% if tables.get('daily_data_run2') %}
+                {% endif %}
+
+                {% if tables.get('daily_data_run2') %}
                 <div class="table" id="table2">
                     <h5>Run 2: {{ selected_tag }}</h5>
                     {{ tables['daily_data_run2']|safe }}
                 </div>
-            {% endif %}
-        
-            {% if tables.get('daily_data_run3') %}
+                {% endif %}
+
+                {% if tables.get('daily_data_run3') %}
                 <div class="table" id="table3">
                     <h5>Run 3: {{ selected_tag }}</h5>
                     {{ tables['daily_data_run3']|safe }}
                 </div>
-            {% endif %}
-        
-            {% if tables.get('daily_data_run4') %}
+                {% endif %}
+
+                {% if tables.get('daily_data_run4') %}
                 <div class="table" id="table4">
                     <h5>Run 4: {{ selected_tag }}</h5>
                     {{ tables['daily_data_run4']|safe }}
                 </div>
-            {% endif %}
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-        <div class="table-container1">
-            {% if tables.get('config_data_run1') %}
-                <div class="table" id="table1">
-                    <h5>Run 1: {{ selected_tag }}</h5>
-                    <table class="table1">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead >
-                            <tr >
-                                {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{ tables['config_data_run1']|safe }}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
-        
-        
-        
-        
-            {% if tables.get('config_data_run2') %}
-            <div class="table" id="table1">
-                <h5>Run 2: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead >
-                        <tr >
-                            {% for key, value in dropped_columns_data[0].items() %}
-                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run2']|safe }}
-                    </tbody>
-                </table>
+                {% endif %}
             </div>
-        {% endif %}
 
-        {% if tables.get('config_data_run3') %}
-        <div class="table" id="table1">
-            <h5>Run 3: {{ selected_tag }}</h5>
-            <table class="table1">
+
+
+
+
+
+
+
+
+
+
+            <!-- <div class="container">
+                <table class="table">
+                    {% if tables.config_data %}
+                    <h2>Config Data</h2>
+                    <tbody>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <td>{{ value }}</td>
+                            {% endfor %}
+                            {{ tables.config_data | safe }}
+                            {% endif %}
+                            
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div> -->
+            <table class="container">
+                {% if tables.config_data %}
+                <h5>Run 1: {{ selected_tag }}</h5>
+
                 <!-- The following line combines thead and tbody into a single block -->
-                <thead >
-                    <tr >
+                <thead>
+                    <tr>
                         {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        <th>{{ value }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
-                    {{ tables['config_data_run3']|safe }}
+                    {{ tables.config_data | safe }}
                 </tbody>
             </table>
-
-
         </div>
-    {% endif %}
-
-    {% if tables.get('config_data_run4') %}
-    <div class="table" id="table1">
-        <h5>Run 4: {{ selected_tag }}</h5>
-        <table class="table1">
-            <!-- The following line combines thead and tbody into a single block -->
-            <thead >
-                <tr >
-                    {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {{ tables['config_data_run4']|safe }}
-            </tbody>
-        </table>
-    </div>
-{% endif %}
-{% if tables.get('config_data_run5') %}
-<div class="table" id="table1">
-    <h5>Run 5: {{ selected_tag }}</h5>
-    <table class="table1">
-        <!-- The following line combines thead and tbody into a single block -->
-        <thead >
-            <tr >
-                {% for key, value in dropped_columns_data[0].items() %}
-                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {{ tables['config_data_run5']|safe }}
-        </tbody>
-    </table>
-</div>
-{% endif %}
-{% if tables.get('config_data_run6') %}
-<div class="table" id="table1">
-    <h5>Run 6: {{ selected_tag }}</h5>
-    <table class="table1">
-        <!-- The following line combines thead and tbody into a single block -->
-        <thead >
-            <tr >
-                {% for key, value in dropped_columns_data[0].items() %}
-                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {{ tables['config_data_run6']|safe }}
-        </tbody>
-    </table>
-</div>
-{% endif %}
-       
-       
-            
-        </div>
-
-
-</div>
-
-
-
+        {% endif %}
 </body>
 
 
-
+</div>
 
 <script>
     // Wait for the document to be ready
