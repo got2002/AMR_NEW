@@ -458,7 +458,7 @@
         <a href="login.html" class="logout-link">Log Out</a>
         <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
-    </div>
+    
     <div class="sidebar">
         <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
         <div class="container">
@@ -489,88 +489,73 @@
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
                         </li>
                     </ul>
-<<<<<<< HEAD
 
+                </div>
                     <div class="sidebar">
 
                         <div class="logo-container">
 
                             <img class="logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/PTT_Public_Company_logo.svg/1200px-PTT_Public_Company_logo.svg.png" alt="logo">
-                            <!-- โลโก้ -->
-=======
+                         
+
                 </div>
->>>>>>> e41b4e364bfcfbb0adcdf9d863ebc95826ead63e
+            </div>
+
+        </div>
+
+    </div>                  
+</div>
+           
+                <h1>Add User</h1>
+                <form method="post" action="{{ url_for('add_user_route') }}">
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" required>
+            
+                    <label for="user_name">Username:</label>
+                    <input type="text" name="user_name" required>
+            
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" required>
+            
+                    <label for="user_level">User Level:</label>
+                    <input type="number" name="user_level" required>
+            
+                    <input type="submit" value="Add User">
+                    <a href="{{ url_for('home') }}">Back to Home</a>
+                </form>
+            
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li class="{{ message.category }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
 
 
-                            <div class="dropdown">
-                                <button class="dropbtn">Manage Users</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Add User</a>
-                                    <a href="#">Edit User</a>
-                                    <a href="#">Remove User</a>
-                                </div>
 
-                            </div>
 
-                            <div class="menu">
-                                <button class="toggle">Manage Sites</button>
-                                <ul class="list">
-                                    <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
-                                    <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
-                                    </li>
-                                    <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="menu">
-                                <button class="toggle">Manage Users</button>
-                                <ul class="list">
-                                    <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}" class="list-item-link">Add
-                                User</a></li>
-                                    <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
-                                User</a>
-                                    </li>
-                                    <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
-                                User</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <body>
-                    <h1>Add User</h1>
-                    <form method="post" action="{{ url_for('add_user_route') }}">
-                        <label for="description">Description:</label>
-                        <input type="text" name="description" required>
-
-                        <label for="user_name">Username:</label>
-                        <input type="text" name="user_name" required>
-
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" required>
-
-                        <label for="user_level">User Level:</label>
-                        <input type="number" name="user_level" required>
-
-                        <input type="submit" value="Add User">
-                        <a href="{{ url_for('home') }}">Back to Home</a>
-                    </form>
-
-                    {% with messages = get_flashed_messages() %} {% if messages %}
-                    <ul class="flash-messages">
-                        {% for message in messages %}
-                        <li class="{{ message.category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %} {% endwith %}
-                </body>
+    </body>
 
 </html>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-messages li');
 
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s';
+
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                }, 3000); // Adjust the timeout value (in milliseconds) as needed
+            });
+        });
+    </script>
 <script>
     function updateTime() {
         const today = new Date();
