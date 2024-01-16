@@ -484,9 +484,7 @@
         color: #fff;
         /* สีตัวอักษร */
     }
-    #myDropdown {
-        display: none; /* หรือใช้ visibility: hidden; */
-    }
+   
 </style>
 
 <body>
@@ -573,17 +571,18 @@
         </div>
     </div>
 
-    <body>
 
+<div>
         <h1>remove User</h1>
 
         <!-- Dropdown for selecting users -->
-        <select id="myDropdown">
-            
-        </select>
+      
         <!-- Form for editing user details -->
         <div id="form">
             <form id="editForm" method="post" action="{{ url_for('remove_user_route') }}">
+                <select id="myDropdown">
+            
+                </select>
                 <label for="description">Description:</label>
                 <input type="text" id="description" name="description" readonly><br>
                 <label for="user_name">User Name:</label>
@@ -600,11 +599,11 @@
             </form>
 
             <!-- Back to User List link -->
-            <a href="{{ url_for('index') }}">Back to User List</a>
+            <a href="{{ url_for('home') }}">Back to User List</a>
         </div>
+    </div>
 
-
-        <body>
+       
             <div class="footer">
                 <span>POWERED BY ATOS.ASGS</span>
             </div>
