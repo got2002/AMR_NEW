@@ -467,7 +467,7 @@
         <a href="login.html" class="logout-link">Log Out</a>
         <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
-    </div>
+    
     <div class="sidebar">
         <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
         <div class="container">
@@ -539,35 +539,45 @@
         </div>
     </div>
 
-    <body>
-        <h1>Edit User</h1>
+    <div>
+    <h1>Edit User & Password</h1>
 
+    <!-- Dropdown for selecting users -->
+   
 
-        <form id="EditForm" method="post" action="{{ url_for('edit_user_route') }}">
+    <!-- Form for editing user details -->
+    <div id="details">
+        <form id="editForm" method="post" action="{{ url_for('edit_user_route') }}">
+            <select id="myDropdown">
+            </select>
             <label for="description">Description:</label>
             <input type="text" id="description" name="description"><br>
             <label for="user_name">User Name:</label>
             <input type="text" id="user_name" name="user_name"><br>
             <label for="password">Password:</label>
-            <input type="text" id="password" name="password"><br>
+            <input type="password" id="password" name="password"><br>
             <label for="user_level">User Level:</label>
             <input type="text" id="user_level" name="user_level"><br>
 
             <!-- Update button -->
             <button type="submit">Save Changes</button>
-            <!-- Back to User List link -->
-            <a href="{{ url_for('index') }}">Back to User List</a>
+
         </form>
-
-
-    </body>
+        <a href="{{ url_for('home') }}">Back to Home</a><br> {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li class="{{ message.category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    </div>
     <div class="footer">
         <span>POWERED BY ATOS.ASGS</span>
     </div>
 </body>
 
 </html>
-
+<!-- 
 <script>
     function updateTime() {
         const today = new Date();
@@ -624,7 +634,7 @@
             }
         });
     }
-</script>
+</script> -->
 
 <script>
     $(document).ready(function() {
