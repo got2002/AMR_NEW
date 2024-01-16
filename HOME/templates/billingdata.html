@@ -18,90 +18,116 @@
     <title>Billing Data</title>
     <style>
         table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: xx-small;
-            table-layout: fixed;
-            margin-top: -10px;
+    border-collapse: collapse;
+    width: 100%;
+    font-size:xx-small;
+    table-layout: fixed;
+    margin-top: -10px;
+    
+    
+}
 
-        }
+body {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+th, td {
+    border: 1px solid #000000;
+    
+    text-align: left;
+    padding: 8px;
+}
 
-        body {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        th,
-        td {
-            border: 1px solid #000000;
-
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #e1dede;
-        }
+th {
+    background-color: #e1dede;
+}
 
 
-        th,
-        td {
-            width: 63px;
-        }
+th, td {
+    width: 63px; 
+}
 
 
 
-        .table1 {
-            table-layout: fixed;
-            border-collapse: collapse;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 30px;
-            margin: 10px auto;
-        }
+.table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+}
 
-        .table1 th,
-        .table1 td {
-            border: 1px solid #000000;
-            text-align: center;
-            /* จัดตำแหน่งตรงกลาง */
-            padding: 8px;
-        }
+.table1 th, .table1 td {
+    border: 1px solid #000000;
+    text-align: center; /* จัดตำแหน่งตรงกลาง */
+    padding: 8px;
+}
 
-        .table1 th {
-            border-top: 1px solid #000000;
-            border-bottom: 1px solid #000000;
-        }
+.table1 th {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
 
-        @media (max-width: 768px) {
-            .table1 {
-                width: 100%;
-            }
-        }
-
-        .table-container {
+@media (max-width: 768px) {
+    .table1 {
+        width: 100%;
+    }
+}
+.table-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
 
         .table {
-            width: 100%;
-            /* Adjust the width as needed */
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            padding: 30px;
-            margin: 10px auto;
-            /* Center-align the table */
-        }
+    width: 100%; /* Adjust the width as needed */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    padding: 30px;
+    margin: 10px auto; /* Center-align the table */
+}
 
         @media (max-width: 768px) {
             .table {
                 width: 100%;
             }
         }
+.ui-datepicker {
+    width: 50%;
+    max-height: 400px; /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
+    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
+}
+
+.ui-datepicker table {
+    width: 100%;
+}
+
+#date_picker {
+    width: 100%; /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    max-width: 200px;
+}
     </style>
 
 
