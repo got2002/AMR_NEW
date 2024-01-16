@@ -81,7 +81,7 @@
 
 <body>
 
-    <h1>remove User & Password</h1>
+    <h1>remove User</h1>
 
     <!-- Dropdown for selecting users -->
     <select id="myDropdown">
@@ -91,27 +91,27 @@
     <div id="details">
         <form id="editForm" method="post" action="{{ url_for('remove_user_route') }}">
             <label for="description">Description:</label>
-            <input type="text" id="description" name="description"><br>
+            <input type="text" id="description" name="description" readonly><br>
             <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name"><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"><br>
+            <input type="text" id="user_name" name="user_name" readonly><br>
             <label for="user_level">User Level:</label>
-            <input type="text" id="user_level" name="user_level"><br>
+            <input type="text" id="user_level" name="user_level" readonly><br>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="inactive">Inactive</option>
+                <option value="active">Active</option>
+                
+    
+
+</select>
 
             <!-- Update button -->
-            <button type="submit">Save Changes</button>
-
-        </form>
-        <a href="{{ url_for('home') }}">Back to Home</a><br> {% with messages = get_flashed_messages() %} {% if messages %}
-        <ul class="flash-messages">
-            {% for message in messages %}
-            <li class="{{ message.category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %} {% endwith %}
-
     </div>
+
+    <button type="submit">Save Changes</button><br>
+    <a href="{{ url_for('home') }}">Back to User List</a>
+
 
     <script>
         $(document).ready(function() {
@@ -141,12 +141,32 @@
                 displayDetails(selectedData);
             });
 
-            // Function to display details
             function displayDetails(selectedData) {
                 $('#details #description').val(selectedData.description);
                 $('#details #user_name').val(selectedData.user_name);
-                $('#details #password').val(""); // Clear password field for security
                 $('#details #user_level').val(selectedData.user_level);
+
+                // Convert user_enable to readable text
+                var statusText = selectedData.user_enable === 1 ? 'Active' : 'Inactive';
+                $('#Show #status').val(statusText);
+
+                // สลับค่าใน Dropdown เมื่อแสดงรายละเอียด
+                swapDropdownValues(statusText);
+            }
+
+            function swapDropdownValues(statusText) {
+                var dropdown = $('#myDropdown');
+                var activeOption = dropdown.find('option[value="active"]');
+                var inactiveOption = dropdown.find('option[value="inactive"]');
+
+                // สลับค่าใน Dropdown
+                if (statusText === 'Active') {
+                    activeOption.prop('selected', true);
+                    inactiveOption.prop('selected', false);
+                } else {
+                    inactiveOption.prop('selected', false);
+                    activeOption.prop('selected', true);
+                }
             }
         });
     </script>

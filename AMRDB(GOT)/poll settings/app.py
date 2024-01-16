@@ -176,7 +176,7 @@ def edit_polling():
             combined_address_billing,
             enable_config,
             enable_billing,
-            evc_type,  # Add 'evc_type' as an argument here
+            evc_type,
         )
 
         response = {"status": "success", "message": "Data saved successfully"}

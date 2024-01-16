@@ -83,13 +83,9 @@
 
     <h1>Edit User & Password</h1>
 
-    <!-- Dropdown for selecting users -->
-    <select id="myDropdown">
-</select>
-
-    <!-- Form for editing user details -->
     <div id="details">
         <form id="editForm" method="post" action="{{ url_for('edit_user_route') }}">
+            <select id="myDropdown"><select>
             <label for="description">Description:</label>
             <input type="text" id="description" name="description"><br>
             <label for="user_name">User Name:</label>
@@ -145,7 +141,7 @@
             function displayDetails(selectedData) {
                 $('#details #description').val(selectedData.description);
                 $('#details #user_name').val(selectedData.user_name);
-                $('#details #password').val(""); // Clear password field for security
+                $('#details #password').val(""); 
                 $('#details #user_level').val(selectedData.user_level);
             }
         });
