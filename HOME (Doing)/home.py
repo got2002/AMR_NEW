@@ -148,6 +148,7 @@ def add_user_route():
 ############  /Add User  #####################
 
 
+
 ############  edit_user   #####################
 
 
@@ -216,14 +217,6 @@ def get_data_route():
     return jsonify(data)
 
 
-# User list page
-@app.route("/")
-def index():
-    query = "SELECT * FROM AMR_USER_TESTS"
-    users = fetch_data(query)
-    return render_template("user.html", users=users)
-
-
 @app.route("/edit_user", methods=["GET", "POST"])
 def edit_user_route():
     # ดึงข้อมูลผู้ใช้จากฐานข้อมูล
@@ -272,7 +265,7 @@ def remove_user_route():
 
     if not user_data:
         flash("Users not found!", "error")
-        return redirect(url_for("index"))
+        return redirect(url_for("remove_user.html"))
 
     # ถ้ามีการส่งค่า POST (คือการเปลี่ยนสถานะการเข้าสู่ระบบของผู้ใช้)
     if request.method == "POST":
@@ -296,7 +289,7 @@ def remove_user_route():
         # ทำการ execute คำสั่ง SQL และ commit การอัปเดตสถานะการเข้าสู่ระบบของผู้ใช้
         if execute_query(update_query, update_params):
             flash("User status updated successfully!", "success")
-            return redirect(url_for("index"))
+            return redirect(url_for("remove_user.html"))
         else:
             flash("Failed to update user status. Please try again.", "error")
 
