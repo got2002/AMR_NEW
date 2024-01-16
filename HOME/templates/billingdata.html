@@ -24,7 +24,9 @@
     table-layout: fixed;
     margin-top: -10px;
     
+    
 }
+
 body {
   display: grid;
   justify-content: center;
@@ -93,6 +95,39 @@ th, td {
                 width: 100%;
             }
         }
+.ui-datepicker {
+    width: 50%;
+    max-height: 400px; /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
+    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
+}
+
+.ui-datepicker table {
+    width: 100%;
+}
+
+#date_picker {
+    width: 100%; /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    max-width: 200px;
+}
     </style>
 
     
@@ -123,9 +158,10 @@ th, td {
                 <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
                 {% endfor %}
             </select>
+            <div class="calendar">
             <label for="date_picker">Select Date :</label>
-            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off" >
+        </div>
             
 
             
@@ -319,7 +355,6 @@ th, td {
 
 
 
-    </script>
    
         <script>
 
@@ -374,61 +409,7 @@ th, td {
     });
 </script>
 
-            </script>
-            <script>
-
-
-                // Wait for the document to be ready
-                $(document).ready(function () {
-                    $('#date_picker').datepicker({
-                        format: 'mm/yyyy',
-                        startView: 'months',
-                        minViewMode: 'months',
-                        autoclose: true
-                    });
-                });
-
-
-            function clearFilters() {
-                $('#date_picker').val('');
-                $('#tag_dropdown').val('');
-                $('#region_dropdown').val('');
-                $('form').submit();
-            }
-
-            $(document).ready(function () {
-                // Event listener for region dropdown change
-                $('#region_dropdown').change(function () {
-                    console.log('Region dropdown changed');
-                    var selectedRegion = $(this).val();
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '/get_tags',
-                        data: { 'selected_region': selectedRegion },
-                        success: function (response) {
-                            console.log('Ajax request successful', response);
-
-                            // Clear existing options in the tag dropdown
-                            $('#tag_dropdown').empty();
-
-                            // Add the 'All' option
-                            $('#tag_dropdown').append('<option value="" selected>All</option>');
-
-                            // Add new tag options based on the response
-                            for (var i = 0; i < response.tag_options.length; i++) {
-                                var tag = response.tag_options[i];
-                                $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-                            }
-                        },
-                        error: function (error) {
-                            console.log('Error fetching tag options:', error);
-                        }
-                    });
-                });
-            });
-        </script>
-
+     
 </body>
 
 </html>
