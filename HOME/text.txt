@@ -133,3 +133,20 @@ LoadModule version_module modules/mod_version.so
 1:24:38 PM  [Apache] 	Apache WILL NOT start without the configured ports free!
 1:24:38 PM  [Apache] 	You need to uninstall/disable/reconfigure the blocking application
 1:24:38 PM  [Apache] 	or reconfigure Apache and the Control Panel to listen on a different port
+
+
+
+#Listen 12.34.56.78:8080
+Listen 8080
+
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+
+<VirtualHost *:8080>
+    ServerName 10.100.56.2
+
+    # Proxy settings for Python server
+    ProxyPass / http://127.0.0.1:5000/
+    ProxyPassReverse / http://127.0.0.1:5000/
+
+</VirtualHost>
