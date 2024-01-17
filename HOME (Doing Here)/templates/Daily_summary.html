@@ -618,10 +618,10 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route" class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
@@ -644,6 +644,7 @@
 
 
     <form method="get" action="{{ url_for('Daily_summary') }}">
+        <h1>Daily Summary</h1>
         <select id="region_dropdown" name="region_dropdown">
             <option value="" {% if not selected_region %}selected{% endif %}>All</option>
             {% for region in region_options %}
@@ -653,7 +654,7 @@
         <label for="date_picker">Select Date :</label>
         <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
             class="datepicker-input">
-        <button type="submit">Dailysummary</button>
+        <button type="submit">Submit</button>
         
             {{ tables[0]|safe }}
         </div>

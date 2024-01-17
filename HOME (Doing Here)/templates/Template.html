@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Edit User & Password</title>
+    <title>Site Detail</title>
 </head>
 
 <style>
@@ -532,29 +532,79 @@
                         <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route" class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
                 </div>
-
+                <div class="menu">
+                    <button class="toggle">Poll Sitting</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
+                                class="list-item-link">Add
+                                Mapping</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
+                                class="list-item-link">Add Polling</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
+    <body>
 
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
 
+        <div class="footer">
+            <span>POWERED BY ATOS.ASGS</span>
+        </div>
+
+
+    </body>
 
 
 </html>
 
 <script>
+    $(document).ready(function () {
+        // Event listener for region dropdown change
+        $('#region_dropdown').change(function () {
+            // Get the selected region value
+            var selectedRegion = $(this).val();
+
+            // Make an Ajax request to get updated tag options based on the selected region
+            $.ajax({
+                type: 'GET',
+                url: '/get_tags',
+                data: { 'selected_region': selectedRegion },
+                success: function (response) {
+                    // Sort tag options alphabetically starting from 'a'
+                    response.tag_options.sort(function (a, b) {
+                        return a.localeCompare(b);
+                    });
+
+                    // Update tag dropdown options
+                    var tagDropdown = $('#tag_dropdown');
+                    tagDropdown.empty();
+                    $.each(response.tag_options, function (index, tagOption) {
+                        tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.log('Error fetching tag options:', error);
+                }
+            });
+        });
+    });
+
     function updateTime() {
         const today = new Date();
-        const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const date = today.toLocaleDateString(undefined, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
         const time = today.toLocaleTimeString();
         document.getElementById('datetime').innerHTML = `${date} - ${time}`;
     }
@@ -602,5 +652,4 @@
             }
         });
     }
-
 </script>
