@@ -158,3 +158,7 @@ An error occurred during a connection to 10.100.56.2:5000.
     The site could be temporarily unavailable or too busy. Try again in a few moments.
     If you are unable to load any pages, check your computer’s network connection.
     If your computer or network is protected by a firewall or proxy, make sure that Firefox is permitted to access the web.
+
+
+
+    [Wed Jan 17 11:02:54.273485 2024] [ssl:warn] [pid 984:tid 284] AH01909: www.example.com:443:0 server certificate does NOT include an ID which matches the server name
