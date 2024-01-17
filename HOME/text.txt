@@ -125,3 +125,11 @@ LoadModule version_module modules/mod_version.so
     ProxyPassReverse / http://127.0.0.1:5000/
 
 </VirtualHost>
+
+
+
+1:24:38 PM  [Apache] 	Problem detected!
+1:24:38 PM  [Apache] 	Port 80 in use by "Unable to open process" with PID 4!
+1:24:38 PM  [Apache] 	Apache WILL NOT start without the configured ports free!
+1:24:38 PM  [Apache] 	You need to uninstall/disable/reconfigure the blocking application
+1:24:38 PM  [Apache] 	or reconfigure Apache and the Control Panel to listen on a different port
