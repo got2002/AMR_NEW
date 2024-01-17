@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai+Looped&display=swap');
-</style>
-
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Edit User & Password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
-
 <style>
-    /* Global styles */
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
     * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        text-decoration: none;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #181828;
+    }
+
+    body {
+        background-color: #f4f4f4;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-    }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
 
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        background-image: linear-gradient(to right, #5b707e, #abb2b9);
-        overflow-x: hidden;
-        overflow-y: hidden;
-        ;
-        font-family: 'Noto Sans Thai Looped', sans-serif;
     }
 
     .header {
         background-image: linear-gradient(to right, #0048a7, #41b6ff);
         overflow: hidden;
         color: white;
-        text-align: right;
+        text-align: center;
         padding: 10px;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
@@ -52,7 +57,7 @@
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
-        font-size: 17px;
+        
     }
 
     .header a:hover {
@@ -66,45 +71,389 @@
     }
 
     .textW {
-        margin-top: -15px;
         color: #ffffff;
         font-size: 40px;
         position: absolute;
-        left: 17%;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+        text-align: center;
+        /* จัดวางตามแนวนอนตรงกลาง */
+        left: 50%;
+        /* ย้ายไปทางซ้ายครึ่งหนึ่งของพื้นที่ที่กำหนด */
+        transform: translateX(-50%);
+        /* ย้ายกลับไปทางขวาครึ่งหนึ่งของตัวข้อความ */
+        padding: -25px 16px;
+    }
+
+
+    .form-container {
+        width: 80%;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 205%;
+
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    .address-pair {
+        margin-bottom: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        border-bottom: 2px solid #ccc;
+        /* เส้น border 2px ด้านล่าง */
+        padding-bottom: 15px;
+        /* เส้น border 2px ด้านล่าง */
+        padding-top: 10px;
+        width: 80%;
+        /* เพิ่มเติมความยาวเป็น 80% ของพื้นที่ข้างใน */
+        max-width: 600px;
+        /* หรือจำกัดความยาวสูงสุดที่ 600px */
+        margin: 0 auto;
+        /* เพิ่มบรรทัดนี้เพื่อให้เนื้อที่อยู่ตรงกลาง */
+    }
+
+
+    label {
+        width: 120px;
+        margin-right: 10px;
+        font-weight: bold;
+        flex: 0 0 120px;
+        /* Fixed width for labels */
+        padding-bottom: 15px;
+        padding-top: 10px;
+    }
+
+    input[type="text"] {
+        padding: 8px;
+        box-sizing: border-box;
+        width: calc(100% - 138px);
+        /* Adjusted width for text inputs */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+
+    }
+
+    input[type="checkbox"] {
+        margin-left: -65px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 5%;
+
+    }
+
+
+    #statusMessage {
+        margin-top: 15px;
+        color: #dd4646;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background: #ffffff;
+        transition: all .5s ease;
+        transition: left 0.3s ease;
+        transition: transform 300ms, box-shadow 300ms;
+        overflow: hidden;
+        background-image: linear-gradient(to right, #0048a7, #61bff9);
+    }
+
+    .sidebar header {
+        font-size: 22px;
+        color: #00ffaaed;
+        line-height: 70px;
+        text-align: center;
+        background: #ffffff;
+        user-select: none;
+        position: relative;
+        /* Add position relative for absolute positioning */
+    }
+
+    .sidebar header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+
+    .sidebar ul a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        line-height: 45px;
+        font-size: 20px;
+        color: white;
+        padding-left: 20px;
+        box-sizing: border-box;
+        transition: .4s;
+    }
+
+    ul li:hover a {
+        padding-left: 50px;
+    }
+
+    .sidebar ul a i {
+        margin-right: 16px;
+    }
+
+    #check {
+        display: none;
+    }
+
+    label #btn,
+    label #cancel {
+        position: fixed;
+        background: #ffffff;
+        border-radius: 3px;
+        cursor: pointer;
+
+    }
+
+    label #btn {
+        left: 40px;
+        top: 45px;
+        font-size: 21px;
+        color: #1109ffbf;
+        box-shadow: #1109ffbf 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) -1px 20px 16px;
+        padding: 20px;
+        transition: all .4s;
+        border-radius: 50%;
+        z-index: 1111;
+    }
+
+    label #cancel {
+        padding: 20px;
+        z-index: 1111;
+        left: -190px;
+        top: 100px;
+        font-size: 19px;
+        color: #ff0000;
+        transition: all .4s ease;
+    }
+
+    #check:checked~.sidebar {
+        left: 0;
+    }
+
+    #check:checked~label #btn {
+        left: 250px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #check:checked~label #cancel {
+        top: 35px;
+        left: 255px;
+    }
+
+    #check:checked~section {
+        margin-left: 250px;
+    }
+
+    section {
+        background: url(bg.jpeg) no-repeat;
+        background-position: center;
+        background-size: cover;
+        height: 100vh;
+        transition: all .5s;
+    }
+
+    .text-active-blue.active {
+        color: #27a4fb !important;
+    }
+
+    .navigation__menu>li>a.active {
+        color: #dcf3ff;
+        background-color: #1e2a31;
+        border: .00001px solid #0096ff8a;
+        box-shadow: #00000073 0px 25px 20px -20px;
+    }
+
+    .navigation__menu>li>a {
+        border-radius: .25rem;
+        font-size: .95rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .navigation__menu {
+        padding: 28px 10px 0px;
+    }
+
+
+    .navigation__menu a {
+        color: #7996a9 !important;
+    }
+
+    .text-red {
+        color: #e53935 !important;
+    }
+
+    .text-green {
+        color: #2cc56f !important;
+    }
+
+    .text-amber {
+        color: #ffc021 !important;
+    }
+
+    .text-purple {
+        color: #ac66f5 !important;
+    }
+
+    .text-cyan {
+        color: #00f3e7 !important;
+    }
+
+    .text-pink {
+        color: #e91e63 !important;
+    }
+
+    .closebtn {
+        position: absolute;
+
+    }
+
+
+    /* Add this style for dropdown */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-right: 30px;
+        /* Add some spacing to the right of the dropdown */
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #222238;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        min-width: 160px;
+        /* Set a minimum width for the dropdown content */
+        border-radius: 5px;
+        /* Add border-radius for a rounded appearance */
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s;
+        /* Add smooth transition effect */
+    }
+
+    .dropdown-content a:hover {
+        background-color: #1e2a31;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Style the dropdown button */
+    .dropdown-button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 5%;
+        display: flex;
+        align-items: center;
+        /* Center the text and the arrow icon */
+    }
+
+    /* Style the arrow icon */
+    .dropdown-button i {
+        margin-left: 5px;
+    }
+
+    /* Add a green color when the dropdown is open */
+    .dropdown:hover .dropdown-button {
+        background-color: #45a049;
+    }
+
+    .logo {
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        object-position: 30% 38%;
+        /* ปรับตำแหน่งของรูป (X, Y) */
+        margin-top: 10%;
+    }
+
+    a.logout-link {
+        color: #ffffff;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        padding: 8px 16px;
+        /* ระยะห่างขอบของลิงก์ */
+        transition: background-color 0.3s, color 0.3s;
+        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
+    }
+
+    a.logout-link:hover {
+        color: #595656;
+        /* สีที่แตกต่างเมื่อ hover */
+    }
+
+    a.list-item-link {
+        color: #000000;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
+    }
+
+    a.list-item-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
     .textSB {
-        color: #ffffff;
+        color: #070707;
         font-size: 20px;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
     }
 
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        background-color: #221f1f;
-        background-image: linear-gradient(to right, #0048a7, #61bff9);
-        color: white;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 3;
-        padding-top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        /* Add a subtle box shadow */
-        transition: left 0.3s ease;
-        /* Transition effect to slide in/out */
-        transition: transform 300ms, box-shadow 300ms;
-        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-
-    }
 
     .sidebar::before,
     .sidebar::after {
@@ -145,12 +494,18 @@
 
     a.list-item-link {
         color: #000000;
+        /* สีของลิงก์ */
         font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
     }
 
     a.list-item-link:hover {
         color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
     .container {
@@ -164,6 +519,7 @@
         grid-template-rows: 40px max-content;
         gap: 10px;
         margin-top: 10%;
+
     }
 
     .toggle {
@@ -278,7 +634,7 @@
 
     .list-itemR:hover {
         background-color: dodgerblue;
-        color: #fff;
+        color: #1b1a1a;
     }
 
     .toggleR:focus::after {
@@ -295,92 +651,6 @@
     }
 
     /* ///////////////////////////////////////////////////////////// */
-
-    .logo {
-        width: 200px;
-        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-        object-position: 30% 38%;
-        /* ปรับตำแหน่งของรูป (X, Y) */
-    }
-
-
-    .MainDashboard {
-        width: calc(100% - 250px);
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(159deg, #ffffff 14.25%, #ffffff 56.45%, #ffffff 86.14%);
-        overflow: hidden;
-    }
-
-    .footer {
-        font-family: 'Noto Sans Thai Looped', sans-serif;
-        background-image: linear-gradient(to right, #abdfff, #0048a7);
-        color: white;
-        text-align: right;
-        padding: 15px;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
-
-    .footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 10px;
-        font-size: 16px;
-    }
-
-    .footer a:hover {
-        text-decoration: underline;
-    }
-
-    .scrolling-text {
-        animation: scroll-left 60s linear infinite;
-        white-space: nowrap;
-    }
-
-    @keyframes scroll-left {
-        0% {
-            transform: translateX(100%);
-        }
-
-        100% {
-            transform: translateX(-100%);
-        }
-    }
-
-    a.logout-link {
-        color: #ffffff;
-        /* สีของลิงก์ */
-        font-size: 16px;
-        /* ขนาดตัวอักษรของลิงก์ */
-        text-decoration: none;
-        /* ลบการเส้นใต้ลิงก์ */
-        padding: 8px 16px;
-        /* ระยะห่างขอบของลิงก์ */
-        transition: background-color 0.3s, color 0.3s;
-        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
-    }
-
-    a.logout-link:hover {
-        color: #595656;
-        /* สีที่แตกต่างเมื่อ hover */
-    }
-
-    .form-container {
-        background-color: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-        width: 100%;
-        margin-top: 20px;
-    }
-
     .form-containerSB {
         background-color: #ffffff19;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.333);
@@ -402,86 +672,40 @@
         transition: transform 0.5s ease;
     }
 
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 20px;
+    .container {
+        text-align: center;
         padding: 20px;
-    }
-
-    form {
-        max-width: 400px;
-        margin: auto;
-        margin-top: 100px;
-        margin-bottom: 50px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
-    }
-
-    /* ตัวอย่าง label, input, submit button, link, hover styles ไม่เปลี่ยนแปลง */
-    label {
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
         box-sizing: border-box;
-    }
-
-    button {
         width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
-        background-color: #4caf50;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-        background-color: #45a049;
-    }
-
-    a {
-        display: block;
         margin-top: 10px;
-        color: #4caf50;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #45a049;
     }
 </style>
 
 <body>
+    <!--dust particel-->
+    <div>
 
-    <div class="header">
-        <a href="login.html" class="logout-link">Log Out</a>
-        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+        <div class="header">
+            <a href="login.html" class="logout-link">Log Out</a>
+            <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+        </div>
     </div>
+
+
     </div>
-    <div class="sidebar">
+
+
+    <input type="checkbox" id="check">
+    <label for="check" class="closebtn">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <div class="sidebar d-block">
         <img class="logo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
-        <div class="container">
-            <div class="form-containerSB">
-                <span class="textSB" alt="logo">Menu</span>
+        <ul class="container">
+            <ul class="form-containerSB">
                 <div class="menu">
                     <button class="toggleR">Reports Data</button>
                     <ul class="listR">
@@ -507,7 +731,8 @@
                                 class="list-item-link">Manual
                                 poll</a>
                         </li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write
+                                Config</a>
                         </li>
                     </ul>
                 </div>
@@ -515,7 +740,8 @@
                 <div class="menu">
                     <button class="toggle">Manage Sites</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a>
+                        </li>
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
                         </li>
                         <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
@@ -529,78 +755,309 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}"
+                                class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}"
+                                class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
                 </div>
 
-            </div>
+                <div class="menu">
+                    <button class="toggle">Poll Sitting</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
+                                class="list-item-link">Add
+                                Mapping</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
+                                class="list-item-link">Add
+                                Polling</a>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+    </div>
+    </div>
+    <section></section>
+
+</body>
+
+<body>
+
+    <div class="form-container">
+        <h1>Poll Configurator</h1>
+
+        <div class="address-pair">
+            <label for="myDropdown">Select EVC_TYPE:</label>
+            <select id="myDropdown">
         </div>
-    </div>
+
+        </form>
+        <!-- Address Pair 1 -->
+        <div class="address-pair">
+            <label for="start1">Start Address:</label>
+            <input type="text" id="start1" name="start1" required>
+            <label for="end1">End Address:</label>
+            <input type="text" id="end1" name="end1" required>
+            <label for="enable1">Enable:</label>
+            <input type="checkbox" id="enable1" name="enable1" checked>
+        </div>
+
+        <!-- Address Pair 2 -->
+        <div class="address-pair">
+            <label for="start2">Start Address:</label>
+            <input type="text" id="start2" name="start2" required>
+            <label for="end2">End Address:</label>
+            <input type="text" id="end2" name="end2" required>
+            <label for="enable2">Enable:</label>
+            <input type="checkbox" id="enable2" name="enable2" checked>
+        </div>
+
+        <!-- Address Pair 3 -->
+        <div class="address-pair">
+            <label for="start3">Start Address:</label>
+            <input type="text" id="start3" name="start3" required>
+            <label for="end3">End Address:</label>
+            <input type="text" id="end3" name="end3" required>
+            <label for="enable3">Enable:</label>
+            <input type="checkbox" id="enable3" name="enable3" checked>
+        </div>
+
+        <!-- Address Pair 4 -->
+        <div class="address-pair">
+            <label for="start4">Start Address:</label>
+            <input type="text" id="start4" name="start4" required>
+            <label for="end4">End Address:</label>
+            <input type="text" id="end4" name="end4" required>
+            <label for="enable4">Enable:</label>
+            <input type="checkbox" id="enable4" name="enable4" checked>
+        </div>
+
+        <!-- Address Pair 5 -->
+        <div class="address-pair">
+            <label for="start5">Start Address:</label>
+            <input type="text" id="start5" name="start5" required>
+            <label for="end5">End Address:</label>
+            <input type="text" id="end5" name="end5" required>
+            <label for="enable5">Enable:</label>
+            <input type="checkbox" id="enable5" name="enable5" checked>
+        </div>
+        </form>
+
+        <h1>Poll Billing</h1>
+        </form>
+        <div class="address-pair">
+            <label for="start6">Start Address:</label>
+            <input type="text" id="start6" name="start6" required>
+            <label for="end6">End Address:</label>
+            <input type="text" id="end6" name="end6" required>
+            <label for="enable6">Enable:</label>
+            <input type="checkbox" id="enable6" name="enable6" checked>
+        </div>
+
+        <!-- Address Pair 7 -->
+        <div class="address-pair">
+            <label for="start7">Start Address:</label>
+            <input type="text" id="start7" name="start7" required>
+            <label for="end7">End Address:</label>
+            <input type="text" id="end7" name="end7" required>
+            <label for="enable7">Enable:</label>
+            <input type="checkbox" id="enable7" name="enable7" checked>
+        </div>
+
+        <!-- Address Pair 8 -->
+        <div class="address-pair">
+            <label for="start8">Start Address:</label>
+            <input type="text" id="start8" name="start8" required>
+            <label for="end8">End Address:</label>
+            <input type="text" id="end8" name="end8" required>
+            <label for="enable8">Enable:</label>
+            <input type="checkbox" id="enable8" name="enable8" checked>
+        </div>
+
+        <!-- Address Pair 9 -->
+        <div class="address-pair">
+            <label for="start9">Start Address:</label>
+            <input type="text" id="start9" name="start9" required>
+            <label for="end9">End Address:</label>
+            <input type="text" id="end9" name="end9" required>
+            <label for="enable9">Enable:</label>
+            <input type="checkbox" id="enable9" name="enable9" checked>
+        </div>
+
+        <!-- Address Pair 10 -->
+        <div class="address-pair">
+            <label for="start10">Start Address:</label>
+            <input type="text" id="start10" name="start10" required>
+            <label for="end10">End Address:</label>
+            <input type="text" id="end10" name="end10" required>
+            <label for="enable10">Enable:</label>
+            <input type="checkbox" id="enable10" name="enable10" checked>
+        </div>
+
+        <!-- Address Pair 11 -->
+        <div class="address-pair">
+            <label for="start11">Start Address:</label>
+            <input type="text" id="start11" name="start11" required>
+            <label for="end11">End Address:</label>
+            <input type="text" id="end11" name="end11" required>
+            <label for="enable11">Enable:</label>
+            <input type="checkbox" id="enable11" name="enable11" checked>
+        </div>
+
+        <!-- Address Pair 12 -->
+        <div class="address-pair">
+            <label for="start12">Start Address:</label>
+            <input type="text" id="start12" name="start12" required>
+            <label for="end12">End Address:</label>
+            <input type="text" id="end12" name="end12" required>
+            <label for="enable12">Enable:</label>
+            <input type="checkbox" id="enable12" name="enable12" checked>
+        </div>
+
+        <!-- Address Pair 13 -->
+        <div class="address-pair">
+            <label for="start13">Start Address:</label>
+            <input type="text" id="start13" name="start13" required>
+            <label for="end13">End Address:</label>
+            <input type="text" id="end13" name="end13" required>
+            <label for="enable13">Enable:</label>
+            <input type="checkbox" id="enable13" name="enable13" checked>
+        </div>
+
+        <!-- Address Pair 14 -->
+        <div class="address-pair">
+            <label for="start14">Start Address:</label>
+            <input type="text" id="start14" name="start14" required>
+            <label for="end14">End Address:</label>
+            <input type="text" id="end14" name="end14" required>
+            <label for="enable14">Enable:</label>
+            <input type="checkbox" id="enable14" name="enable14" checked>
+        </div>
+
+        <!-- Address Pair 15 -->
+        <div class="address-pair">
+            <label for="start15">Start Address:</label>
+            <input type="text" id="start15" name="start15" required>
+            <label for="end15">End Address:</label>
+            <input type="text" id="end15" name="end15" required>
+            <label for="enable15">Enable:</label>
+            <input type="checkbox" id="enable15" name="enable15" checked>
+        </div>
+        </form>
 
 
-    <div class="footer">
-        <span>POWERED BY ATOS.ASGS</span>
-    </div>
-
-
-
-</html>
+        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+        <div id="statusMessage"></div>
+</body>
 
 <script>
-    function updateTime() {
-        const today = new Date();
-        const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const time = today.toLocaleTimeString();
-        document.getElementById('datetime').innerHTML = `${date} - ${time}`;
-    }
+    function saveToOracle() {
+        var data = {};
 
-    updateTime();
-    setInterval(updateTime, 1000);
+        // Include EVC_TYPE in data
+        data.evc_type = document.getElementById("evc_type").value;
 
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.style.display === 'block') {
-                    openDropdown.style.display = 'none';
-                    openDropdown.previousElementSibling.classList.remove('active');
+        // Loop through address pairs 1 through 15
+        for (var i = 1; i <= 15; i++) {
+            var startKey = 'start' + i;
+            var endKey = 'end' + i;
+            var enableKey = 'enable' + i;
+
+            data[startKey] = document.getElementById(startKey).value;
+            data[endKey] = document.getElementById(endKey).value;
+            data[enableKey] = document.getElementById(enableKey).checked ? 1 : 0;
+
+            // Ensure all start and end values are provided
+            if (!data[startKey] || !data[endKey]) {
+                document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
+                return;
+            }
+        }
+
+        // Assuming 'data' contains the necessary start and end values
+        data.enable_config = [];
+        data.enable_billing = [];
+
+        for (let i = 1; i <= 15; i++) {
+            if (data[`enable${i}`] !== undefined) {
+                if (i <= 5) {
+                    data.enable_config.push(parseInt(data[`enable${i}`]));
+                } else {
+                    data.enable_billing.push(parseInt(data[`enable${i}`]));
                 }
             }
         }
+
+        fetch('/save_to_oracle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById("statusMessage").innerHTML = data.message;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
+            });
     }
 
-    // Function to toggle dropdown visibility
-    function toggleDropdown(dropdown) {
-        var content = dropdown.nextElementSibling;
-        if (content.style.display === 'block') {
-            content.style.display = 'none';
-            dropdown.classList.remove('active');
-        } else {
-            content.style.display = 'block';
-            dropdown.classList.add('active');
-        }
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdowns = document.querySelectorAll('.dropdown');
 
-    //* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-
-    for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
+        dropdowns.forEach(function (dropdown) {
+            dropdown.addEventListener('click', function () {
+                this.querySelector('.dropdown-content').classList.toggle('show');
+            });
         });
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown')) {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        };
+    });
+
+    let prevScrollPos = window.pageYOffset;
+
+    window.onscroll = function () {
+        const currentScrollPos = window.pageYOffset;
+
+        if (prevScrollPos > currentScrollPos) {
+            // ถ้าเลื่อนขึ้น
+            showMenuButton();
+        } else {
+            // ถ้าเลื่อนลง
+            hideMenuButton();
+        }
+
+        prevScrollPos = currentScrollPos;
+    };
+
+    function showMenuButton() {
+        document.querySelector('.btn').style.display = 'block';
+        document.querySelector('.close').style.display = 'none';
+    }
+
+    function hideMenuButton() {
+        document.querySelector('.btn').style.display = 'none';
+        document.querySelector('.close').style.display = 'block';
     }
 
 </script>
+
+</html>
