@@ -176,3 +176,9 @@ ServerAdmin postmaster@localhost
     ProxyPassReverse / http://127.0.0.1:5000/
 
 </VirtualHost>
+
+
+
+
+
+Oracle Error: DPI-1047: Cannot locate a 64-bit Oracle Client library: "The specified module could not be found". See https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html for help
