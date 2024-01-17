@@ -5,10 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+    * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        text-decoration: none;
+    }
+
     body {
-        font-family: 'Arial', sans-serif;
+        font-family: 'Roboto', sans-serif;
+        background-color: #181828;
+    }
+
+    body {
         background-color: #f4f4f4;
         margin: 0;
         padding: 0;
@@ -17,7 +32,59 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
+
     }
+
+    .header {
+        background-image: linear-gradient(to right, #0048a7, #41b6ff);
+        overflow: hidden;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+    }
+
+
+    .header a {
+        float: right;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        
+    }
+
+    .header a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .header a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .textW {
+        color: #ffffff;
+        font-size: 40px;
+        position: absolute;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+        text-align: center;
+        /* จัดวางตามแนวนอนตรงกลาง */
+        left: 50%;
+        /* ย้ายไปทางซ้ายครึ่งหนึ่งของพื้นที่ที่กำหนด */
+        transform: translateX(-50%);
+        /* ย้ายกลับไปทางขวาครึ่งหนึ่งของตัวข้อความ */
+        padding: -25px 16px;
+    }
+
 
     .form-container {
         width: 80%;
@@ -27,6 +94,7 @@
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin-top: 205%;
+
     }
 
     h1 {
@@ -85,26 +153,646 @@
         border: none;
         cursor: pointer;
         border-radius: 5px;
+        width: 100%;
         margin-top: 5%;
-        
+
     }
 
 
     #statusMessage {
         margin-top: 15px;
-        color: #4CAF50;
+        color: #dd4646;
         font-weight: bold;
         text-align: center;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background: #ffffff;
+        transition: all .5s ease;
+        transition: left 0.3s ease;
+        transition: transform 300ms, box-shadow 300ms;
+        overflow: hidden;
+        background-image: linear-gradient(to right, #0048a7, #61bff9);
+    }
+
+    .sidebar header {
+        font-size: 22px;
+        color: #00ffaaed;
+        line-height: 70px;
+        text-align: center;
+        background: #ffffff;
+        user-select: none;
+        position: relative;
+        /* Add position relative for absolute positioning */
+    }
+
+    .sidebar header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+
+    .sidebar ul a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        line-height: 45px;
+        font-size: 20px;
+        color: white;
+        padding-left: 20px;
+        box-sizing: border-box;
+        transition: .4s;
+    }
+
+    ul li:hover a {
+        padding-left: 50px;
+    }
+
+    .sidebar ul a i {
+        margin-right: 16px;
+    }
+
+    #check {
+        display: none;
+    }
+
+    label #btn,
+    label #cancel {
+        position: fixed;
+        background: #ffffff;
+        border-radius: 3px;
+        cursor: pointer;
+
+    }
+
+    label #btn {
+        left: 40px;
+        top: 45px;
+        font-size: 21px;
+        color: #1109ffbf;
+        box-shadow: #1109ffbf 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) -1px 20px 16px;
+        padding: 20px;
+        transition: all .4s;
+        border-radius: 50%;
+        z-index: 1111;
+    }
+
+    label #cancel {
+        padding: 20px;
+        z-index: 1111;
+        left: -190px;
+        top: 100px;
+        font-size: 19px;
+        color: #ff0000;
+        transition: all .4s ease;
+    }
+
+    #check:checked~.sidebar {
+        left: 0;
+    }
+
+    #check:checked~label #btn {
+        left: 250px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #check:checked~label #cancel {
+        top: 35px;
+        left: 255px;
+    }
+
+    #check:checked~section {
+        margin-left: 250px;
+    }
+
+    section {
+        background: url(bg.jpeg) no-repeat;
+        background-position: center;
+        background-size: cover;
+        height: 100vh;
+        transition: all .5s;
+    }
+
+    .text-active-blue.active {
+        color: #27a4fb !important;
+    }
+
+    .navigation__menu>li>a.active {
+        color: #dcf3ff;
+        background-color: #1e2a31;
+        border: .00001px solid #0096ff8a;
+        box-shadow: #00000073 0px 25px 20px -20px;
+    }
+
+    .navigation__menu>li>a {
+        border-radius: .25rem;
+        font-size: .95rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .navigation__menu {
+        padding: 28px 10px 0px;
+    }
+
+
+    .navigation__menu a {
+        color: #7996a9 !important;
+    }
+
+    .text-red {
+        color: #e53935 !important;
+    }
+
+    .text-green {
+        color: #2cc56f !important;
+    }
+
+    .text-amber {
+        color: #ffc021 !important;
+    }
+
+    .text-purple {
+        color: #ac66f5 !important;
+    }
+
+    .text-cyan {
+        color: #00f3e7 !important;
+    }
+
+    .text-pink {
+        color: #e91e63 !important;
+    }
+
+    .closebtn {
+        position: absolute;
+
+    }
+
+
+    /* Add this style for dropdown */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-right: 30px;
+        /* Add some spacing to the right of the dropdown */
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #222238;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        min-width: 160px;
+        /* Set a minimum width for the dropdown content */
+        border-radius: 5px;
+        /* Add border-radius for a rounded appearance */
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s;
+        /* Add smooth transition effect */
+    }
+
+    .dropdown-content a:hover {
+        background-color: #1e2a31;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Style the dropdown button */
+    .dropdown-button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 5%;
+        display: flex;
+        align-items: center;
+        /* Center the text and the arrow icon */
+    }
+
+    /* Style the arrow icon */
+    .dropdown-button i {
+        margin-left: 5px;
+    }
+
+    /* Add a green color when the dropdown is open */
+    .dropdown:hover .dropdown-button {
+        background-color: #45a049;
+    }
+
+    .logo {
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        object-position: 30% 38%;
+        /* ปรับตำแหน่งของรูป (X, Y) */
+        margin-top: 10%;
+    }
+
+    a.logout-link {
+        color: #ffffff;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        padding: 8px 16px;
+        /* ระยะห่างขอบของลิงก์ */
+        transition: background-color 0.3s, color 0.3s;
+        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
+    }
+
+    a.logout-link:hover {
+        color: #595656;
+        /* สีที่แตกต่างเมื่อ hover */
+    }
+
+    a.list-item-link {
+        color: #000000;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
+    }
+
+    a.list-item-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
+    }
+
+    .textSB {
+        color: #070707;
+        font-size: 20px;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+    }
+
+
+    .sidebar::before,
+    .sidebar::after {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-top-left-radius: 40%;
+        border-top-right-radius: 45%;
+        border-bottom-left-radius: 35%;
+        border-bottom-right-radius: 40%;
+        z-index: -1;
+    }
+
+    .sidebar::before {
+        left: 20%;
+        bottom: -50%;
+        background-color: rgba(8, 0, 255, 0.788);
+        animation: wawes 6s infinite linear;
+    }
+
+    .sidebar::after {
+        left: -188%;
+        bottom: -40%;
+        background-color: rgba(0, 223, 253, 0.2);
+        animation: wawes 7s infinite;
+    }
+
+    @keyframes wawes {
+        from {
+            transform: rotate(0);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    a.list-item-link {
+        color: #000000;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
+    }
+
+    a.list-item-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
+    }
+
+    .container {
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 30px;
+    }
+
+    .menu {
+        display: grid;
+        grid-template-rows: 40px max-content;
+        gap: 10px;
+        margin-top: 10%;
+
+    }
+
+    .toggle {
+        all: unset;
+        background-color: dodgerblue;
+        color: white;
+        width: 150px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggle::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-width: 0 3px 3px 0;
+        border-style: solid;
+        transform: rotate(45deg);
+        transition: 0.4s;
+    }
+
+    .list {
+        background-color: white;
+        color: #444;
+        list-style: none;
+        display: grid;
+        grid-template-rows: repeat(3, 40px);
+        border-radius: 5px;
+        overflow: hidden;
+        height: 0;
+        transition: 0.4s;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.4s, transform 0.4s var(--delay);
+        transform: translateX(-100%);
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .list-item:hover {
+        background-color: dodgerblue;
+        color: #fff;
+    }
+
+    .toggle:focus::after {
+        transform: rotate(225deg);
+    }
+
+    .toggle:focus~.list {
+        height: 130px;
+    }
+
+    .toggle:focus~.list .list-item {
+        transform: translateX(0);
+    }
+
+    /* ///////////////////////////////////////////////////////////// */
+    .toggleR {
+        all: unset;
+        background-color: dodgerblue;
+        color: white;
+        width: 150px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggleR::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-width: 0 3px 3px 0;
+        border-style: solid;
+        transform: rotate(45deg);
+        transition: 0.4s;
+    }
+
+    .listR {
+        background-color: white;
+        color: #444;
+        list-style: none;
+        display: grid;
+        grid-template-rows: repeat(6, 40px);
+        border-radius: 5px;
+        overflow: hidden;
+        height: 0;
+        transition: 0.4s;
+    }
+
+    .list-itemR {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.6s, transform 0.4s var(--delay);
+        transform: translateX(-100%);
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .list-itemR:hover {
+        background-color: dodgerblue;
+        color: #1b1a1a;
+    }
+
+    .toggleR:focus::after {
+        transform: rotate(225deg);
+    }
+
+    .toggleR:focus~.listR {
+        height: 250px;
+    }
+
+
+    .toggleR:focus~.listR .list-itemR {
+        transform: translateX(0);
+    }
+
+    /* ///////////////////////////////////////////////////////////// */
+    .form-containerSB {
+        background-color: #ffffff19;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.333);
+        /* Increased the shadow */
+        border-radius: 10px;
+        /* Slightly increased border-radius for a softer look */
+        text-align: center;
+        padding: 20px;
+        /* Increased padding for better spacing */
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 10px;
+        /* Adjusted margin for more spacing */
+    }
+
+    /* Add transition for a smooth hover effect */
+    .form-containerSB:hover {
+        transform: translateY(-5px);
+        transition: transform 0.5s ease;
+    }
+
+    .container {
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 10px;
     }
 </style>
 
 <body>
+    <!--dust particel-->
+    <div>
+
+        <div class="header">
+            <a href="login.html" class="logout-link">Log Out</a>
+            <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+        </div>
+    </div>
+
+
+    </div>
+
+
+    <input type="checkbox" id="check">
+    <label for="check" class="closebtn">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <div class="sidebar d-block">
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
+        <ul class="container">
+            <ul class="form-containerSB">
+                <div class="menu">
+                    <button class="toggleR">Reports Data</button>
+                    <ul class="listR">
+                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
+                                class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
+                                Status</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
+                                Summary</a></li>
+                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
+                                Summery</a></li>
+                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
+                                class="list-item-link">Site
+                                Detail</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
+                                Detail</a></li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Polling Actions</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
+                                class="list-item-link">Manual
+                                poll</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write
+                                Config</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu">
+                    <button class="toggle">Manage Sites</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu">
+                    <button class="toggle">Manage Users</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
+                                class="list-item-link">Add
+                                User</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}"
+                                class="list-item-link">Edit
+                                User</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}"
+                                class="list-item-link">Remove
+                                User</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="menu">
+                    <button class="toggle">Poll Sitting</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
+                                class="list-item-link">Add
+                                Mapping</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
+                                class="list-item-link">Add
+                                Polling</a>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+    </div>
+    </div>
+    <section></section>
+
+</body>
+
+<body>
+
     <div class="form-container">
         <h1>Poll Configurator</h1>
 
         <div class="address-pair">
-            <label for="evc_type">EVC_TYPE:</label>
-            <input type="text" id="evc_type" name="evc_type" required>
+            <label for="myDropdown">Select EVC_TYPE:</label>
+            <select id="myDropdown">
         </div>
 
         </form>
@@ -321,6 +1009,55 @@
                 document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
             });
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdowns.forEach(function (dropdown) {
+            dropdown.addEventListener('click', function () {
+                this.querySelector('.dropdown-content').classList.toggle('show');
+            });
+        });
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown')) {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        };
+    });
+
+    let prevScrollPos = window.pageYOffset;
+
+    window.onscroll = function () {
+        const currentScrollPos = window.pageYOffset;
+
+        if (prevScrollPos > currentScrollPos) {
+            // ถ้าเลื่อนขึ้น
+            showMenuButton();
+        } else {
+            // ถ้าเลื่อนลง
+            hideMenuButton();
+        }
+
+        prevScrollPos = currentScrollPos;
+    };
+
+    function showMenuButton() {
+        document.querySelector('.btn').style.display = 'block';
+        document.querySelector('.close').style.display = 'none';
+    }
+
+    function hideMenuButton() {
+        document.querySelector('.btn').style.display = 'none';
+        document.querySelector('.close').style.display = 'block';
+    }
+
 </script>
 
 </html>
