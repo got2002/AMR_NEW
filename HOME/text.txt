@@ -1,3 +1,18 @@
+#Listen 12.34.56.78:8080
+Listen 8080
+
+#
+# Dynamic Shared Object (DSO) Support
+#
+# To be able to use the functionality of a module which was built as a DSO you
+# have to place corresponding `LoadModule' lines at this location so the
+# directives contained in it are actually available _before_ they are used.
+# Statically compiled modules (those listed by `httpd -l') do not need
+# to be loaded here.
+#
+# Example:
+# LoadModule foo_module modules/mod_foo.so
+#
 LoadModule access_compat_module modules/mod_access_compat.so
 LoadModule actions_module modules/mod_actions.so
 LoadModule alias_module modules/mod_alias.so
@@ -112,13 +127,49 @@ LoadModule version_module modules/mod_version.so
 #LoadModule watchdog_module modules/mod_watchdog.so
 #LoadModule xml2enc_module modules/mod_xml2enc.so
 
+<IfModule unixd_module>
+#
+# If you wish httpd to run as a different user or group, you must run
+# httpd as root initially and it will switch.  
+#
+# User/Group: The name (or #number) of the user/group to run httpd as.
+# It is usually good practice to create a dedicated user and group for
+# running httpd, as with most system services.
+#
+User daemon
+Group daemon
 
+</IfModule>
 
+# 'Main' server configuration
+#
+# The directives in this section set up the values used by the 'main'
+# server, which responds to any requests that aren't handled by a
+# <VirtualHost> definition.  These values also provide defaults for
+# any <VirtualHost> containers you may define later in the file.
+#
+# All of these directives may appear inside <VirtualHost> containers,
+# in which case these default settings will be overridden for the
+# virtual host being defined.
+#
 
+#
+# ServerAdmin: Your address, where problems with the server should be
+# e-mailed.  This address appears on some server-generated pages, such
+# as error documents.  e.g. admin@your-domain.com
+#
+ServerAdmin postmaster@localhost
 
+#
+# ServerName gives the name and port that the server uses to identify itself.
+# This can often be determined automatically, but we recommend you specify
+# it explicitly to prevent problems during startup.
+#
+# If your host doesn't have a registered DNS name, enter its IP address here.
+#
 
-<VirtualHost *:80>
-    ServerName 192.168.102.192
+<VirtualHost *:8080>
+    ServerName 10.100.56.2
 
     # Proxy settings for Python server
     ProxyPass / http://127.0.0.1:5000/
@@ -128,8 +179,6 @@ LoadModule version_module modules/mod_version.so
 
 
 
-1:24:38 PM  [Apache] 	Problem detected!
-1:24:38 PM  [Apache] 	Port 80 in use by "Unable to open process" with PID 4!
-1:24:38 PM  [Apache] 	Apache WILL NOT start without the configured ports free!
-1:24:38 PM  [Apache] 	You need to uninstall/disable/reconfigure the blocking application
-1:24:38 PM  [Apache] 	or reconfigure Apache and the Control Panel to listen on a different port
+
+
+Oracle Error: DPI-1047: Cannot locate a 64-bit Oracle Client library: "The specified module could not be found". See https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html for help
