@@ -136,7 +136,7 @@ LoadModule version_module modules/mod_version.so
 
 
 
-#Listen 12.34.56.78:8080
+Listen 12.34.56.78:8080
 Listen 8080
 
 LoadModule proxy_module modules/mod_proxy.so
