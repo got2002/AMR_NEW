@@ -573,15 +573,11 @@
 
 
 <div>
-        <h1>remove User</h1>
-
-        <!-- Dropdown for selecting users -->
-      
-        <!-- Form for editing user details -->
+        
         <div id="form">
             <form id="editForm" method="post" action="{{ url_for('remove_user_route') }}">
+                <h1>Remove User</h1>
                 <select id="myDropdown">
-            
                 </select>
                 <label for="description">Description:</label>
                 <input type="text" id="description" name="description" readonly><br>
