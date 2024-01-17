@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Your Title</title>
+    
+    <style>
+          table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size:small;
+    
+}
+
+th, td {
+    border: 1px solid #5f5e5e;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #e1dede;
+}
+    </style>
+</head>
+<body>
+    <div class="main2" id="main2">
+        <img class="imgpttlogo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="AMR Logo" />
+            <h2>Site detail</h2>
+
+    <form method="get" action="{{ url_for('sitedetail_data') }}">
+  
+
+    <select id="region_dropdown" name="region_dropdown">
+        <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+        {% for region in region_options %}
+            <option value="{{ region }}" {% if selected_region == region %}selected{% endif %}>{{ region }}</option>
+        {% endfor %}
+    </select>
+    
+    <button type="submit">Sitedetail</button>
+    <button type="button" onclick="clearFilters()">Clear</button>
+</form>
+
+{{ tables[0]|safe }}  {# Assuming tables is a list with a single element containing the table HTML #}
+
+
+</div>
+<script>
+   
+    $(document).ready(function(){
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function(){
+        // Get the selected region value
+        var selectedRegion = $(this).val();
+
+        // Make an Ajax request to get updated tag options based on the selected region
+        $.ajax({
+            type: 'GET',
+            url: '/get_tags',
+            data: {'selected_region': selectedRegion},
+            success: function(response){
+                // Sort tag options alphabetically starting from 'a'
+                response.tag_options.sort(function(a, b) {
+                    return a.localeCompare(b);
+                });
+
+                // Update tag dropdown options
+                var tagDropdown = $('#tag_dropdown');
+                tagDropdown.empty();
+                $.each(response.tag_options, function(index, tagOption){
+                    tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                });
+            },
+            error: function(error){
+                console.log('Error fetching tag options:', error);
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
