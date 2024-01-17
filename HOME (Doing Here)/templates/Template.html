@@ -145,18 +145,12 @@
 
     a.list-item-link {
         color: #000000;
-        /* สีของลิงก์ */
         font-size: 16px;
-        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
-        /* ลบการเส้นใต้ลิงก์ */
-        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
     }
 
     a.list-item-link:hover {
         color: #ffffff;
-        /* สีที่แตกต่างเมื่อ hover */
-        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
     .container {
@@ -643,62 +637,4 @@
         });
     }
 
-</script>
-
-<script>
-    $(document).ready(function () {
-        // Load data from server
-        $.getJSON('/get_data', function (data) {
-            // Sort data alphabetically by description
-            data.sort(function (a, b) {
-                return a.description.localeCompare(b.description);
-            });
-
-            // Populate dropdown with sorted data
-            var dropdown = $('#myDropdown');
-            $.each(data, function (index, value) {
-                var optionText = value.description;
-                var optionValue = JSON.stringify(value);
-                dropdown.append($('<option>').text(optionText).attr('value', optionValue));
-            });
-
-            // Set initial details
-            var initialData = data[0];
-            displayDetails(initialData);
-        });
-
-        // Function to display details when an item is selected
-        $('#myDropdown').change(function () {
-            var selectedData = JSON.parse($(this).val());
-            displayDetails(selectedData);
-        });
-
-        function displayDetails(selectedData) {
-            $('#details #description').val(selectedData.description);
-            $('#details #user_name').val(selectedData.user_name);
-            $('#details #user_level').val(selectedData.user_level);
-
-            // Convert user_enable to readable text
-            var statusText = selectedData.user_enable === 1 ? 'Active' : 'Inactive';
-            $('#Show #status').val(statusText);
-
-            // สลับค่าใน Dropdown เมื่อแสดงรายละเอียด
-            swapDropdownValues(statusText);
-        }
-
-        function swapDropdownValues(statusText) {
-            var dropdown = $('#myDropdown');
-            var activeOption = dropdown.find('option[value="active"]');
-            var inactiveOption = dropdown.find('option[value="inactive"]');
-
-            // สลับค่าใน Dropdown
-            if (statusText === 'Active') {
-                activeOption.prop('selected', true);
-                inactiveOption.prop('selected', false);
-            } else {
-                inactiveOption.prop('selected', false);
-                activeOption.prop('selected', true);
-            }
-        }
-    });
 </script>
