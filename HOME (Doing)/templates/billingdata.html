@@ -477,14 +477,14 @@
 
         /* เรียงลำดับ div ใน plot-container */
         .plot-container {
-            display: center;
+            display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             /* จัดวางให้เรียงตามจำนวน div ที่มี */
             margin: 20px;
             margin-bottom: 20px;
             /* ขอบระหว่าง div */
-            width: 30px;
+            width: 100%;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: center; /* จัด div ให้อยู่ตรงกลาง */
@@ -515,20 +515,16 @@
         table {
     border-collapse: collapse;
     width: 100%;
-    font-size:xx-small;
+    font-size:x-small;
     table-layout: fixed;
     margin-top: -10px;
     
     
 }
 
-body {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+
 th, td {
+    font-size:x-small;
     border: 1px solid #000000;
     
     text-align: left;
@@ -536,6 +532,7 @@ th, td {
 }
 
 th {
+    font-size:x-small;
     background-color: #e1dede;
 }
 
@@ -547,6 +544,7 @@ th, td {
 
 
 .table1 {
+    font-size:xx-small;
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
@@ -556,28 +554,28 @@ th, td {
 }
 
 .table1 th, .table1 td {
+    font-size:xx-small;
     border: 1px solid #000000;
     text-align: center; /* จัดตำแหน่งตรงกลาง */
     padding: 8px;
 }
 
 .table1 th {
+    font-size:xx-small;
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 }
 
-@media (max-width: 768px) {
-    .table1 {
-        width: 100%;
-    }
-}
+
 .table-container {
+    font-size:xx-small;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
 
         .table {
+            font-size:xx-small;
     width: 100%; /* Adjust the width as needed */
     box-sizing: border-box;
     border: 1px solid #ccc;
@@ -601,7 +599,7 @@ th, td {
 }
 
 #date_picker {
-    width: 100%; /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
+    width: 40%; /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
 }
 .dropdown-menu {
     position: absolute;
@@ -623,6 +621,57 @@ th, td {
     border-radius: .25rem;
     max-width: 200px;
 }
+#region_dropdown {
+    width: 200px; /* กำหนดความกว้างของ dropdown */
+    padding: 8px; /* กำหนดระยะห่างขอบของ dropdown */
+    border: 1px solid #ccc; /* กำหนดเส้นขอบ */
+    border-radius: 4px; /* กำหนดเส้นขอบมน */
+    background-color: #fff; /* กำหนดพื้นหลัง */
+    color: #333; /* กำหนดสีของตัวอักษร */
+}
+
+#region_dropdown:hover {
+    border-color: #666; /* กำหนดสีขอบเมื่อ hover */
+}
+
+#region_dropdown option {
+    background-color: #fff; /* กำหนดพื้นหลังของแต่ละ option */
+    color: #333; /* กำหนดสีของตัวอักษรของแต่ละ option */
+}
+
+#region_dropdown option:hover {
+    background-color: #f2f2f2; /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+}
+/* กำหนดสไตล์ของ label */
+label[for="tag_dropdown"] {
+    display: block; /* กำหนดให้ label เป็น block element */
+    margin-bottom: 8px; /* กำหนดระยะห่างด้านล่าง */
+    font-weight: bold; /* กำหนดตัวหนา */
+}
+
+/* กำหนดสไตล์ของ dropdown */
+#tag_dropdown {
+    width: 200px; /* กำหนดความกว้างของ dropdown */
+    padding: 8px; /* กำหนดระยะห่างขอบของ dropdown */
+    border: 1px solid #ccc; /* กำหนดเส้นขอบ */
+    border-radius: 4px; /* กำหนดเส้นขอบมน */
+    background-color: #fff; /* กำหนดพื้นหลัง */
+    color: #333; /* กำหนดสีของตัวอักษร */
+}
+
+#tag_dropdown:hover {
+    border-color: #666; /* กำหนดสีขอบเมื่อ hover */
+}
+
+#tag_dropdown option {
+    background-color: #fff; /* กำหนดพื้นหลังของแต่ละ option */
+    color: #333; /* กำหนดสีของตัวอักษรของแต่ละ option */
+}
+
+#tag_dropdown option:hover {
+    background-color: #f2f2f2; /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+}
+
     </style>
 </head>
 <ul class="navbar-container">
@@ -699,51 +748,7 @@ th, td {
                     Filters</button>
             </form>
 
-            <div class="form-containerBOx">
-                <table class="table">
-                    {% if tables.get('daily_data') %}
-                    <h1>Daily Data</h1>
-                    {{ tables['daily_data']|safe }}
-                </table>
-            </div>
-            <div class="plot-container">
-                <div class="plot-container">
-                    {{ graph_corrected|safe }}
-                </div>
-
-                <div class="plot-container">
-                    {{ graph_uncorrected|safe }}
-                </div>
-
-                <div class="plot-container">
-                    {{ graph_pressure|safe }}
-                </div>
-
-                <div class="plot-container">
-                    {{ graph_temperature|safe }}
-                </div>
-
-                {% endif %}
-            </div>
-
-            <div class="container">
-                <table class="table">
-                    {% if tables.config_data %}
-                    <h2>Config Data</h2>
-                    <tbody>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <td>{{ value }}</td>
-                            {% endfor %}
-                            {{ tables.config_data | safe }}
-                            {% endif %}
-                            
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
+           
             <div class="table-container">
                 {% if tables.get('daily_data_run1') %}
                 <div class="table" id="table1">
