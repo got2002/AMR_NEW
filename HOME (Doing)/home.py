@@ -568,7 +568,7 @@ def billing_data():
                     yaxis_title="Values",
                     xaxis_title="Date",
                     hovermode="x unified",
-                    template="plotly_dark",  # ใช้ template dark
+                     # ใช้ template dark
                     yaxis=dict(type="linear", title="Values"),
                 )
             fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
@@ -576,7 +576,7 @@ def billing_data():
 
             # เพิ่มเติม: ปรับสีของแต่ละ trace
             for trace in fig.data:
-                trace.marker.line.color = 'rgba(255,255,255,0.7)'
+                trace.marker.line.color = 'rgba(255,255,255,0)'
             # แสดงกราฟ
             graph_corrected = fig_corrected.to_html(full_html=False)
             graph_uncorrected = fig_uncorrected.to_html(full_html=False)
@@ -1372,7 +1372,7 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
@@ -1385,7 +1385,7 @@ def process_selected_rows():
 
 
 def get_type_value_from_database(address):
-    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING WHERE ADDRESS = :address"
+    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
     result = fetch_data(query, params={"address": address})
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
