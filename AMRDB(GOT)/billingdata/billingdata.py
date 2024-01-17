@@ -5,15 +5,15 @@ import cx_Oracle
 app = Flask(__name__)
 
 # กำหนดการเชื่อมต่อฐานข้อมูล
-username = 'root'
-password = 'root'
-hostname = '192.168.102.192'
+username = 'AMR_DB'
+password = 'AMR_DB'
+hostname = '10.104.240.26'
 port = '1521'
-service_name = 'orcl'
+sid = "AMR"
 
 def fetch_data(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        dsn = cx_Oracle.makedsn(hostname, port, sid=sid)
         with cx_Oracle.connect(username, password, dsn) as connection:
             with connection.cursor() as cursor:
                 if params:
