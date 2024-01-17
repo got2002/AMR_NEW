@@ -1,0 +1,333 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+    </style>
+    <style>
+        body,
+        html {
+
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgb(186, 186, 186);
+        }
+
+        .login {
+            overflow: hidden;
+            background-color: white;
+            padding: 40px 30px 30px 30px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            transform: translate(-50%, -50%);
+            transition: transform 300ms, box-shadow 300ms;
+            box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+        }
+
+        .login::before,
+        .login::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-top-left-radius: 40%;
+            border-top-right-radius: 45%;
+            border-bottom-left-radius: 35%;
+            border-bottom-right-radius: 40%;
+            z-index: -1;
+        }
+
+        .login::before {
+            left: 70%;
+            bottom: -50%;
+            background-color: rgba(8, 0, 255, 0.788);
+            animation: wawes 6s infinite linear;
+        }
+
+        .login::after {
+            left: 48%;
+            bottom: -85%;
+            background-color: rgba(0, 223, 253, 0.2);
+            animation: wawes 7s infinite;
+        }
+
+        .login>input {
+            font-family: 'Asap', sans-serif;
+            display: block;
+            border-radius: 5px;
+            font-size: 16px;
+            background: white;
+            width: 100%;
+            border: 0;
+            padding: 10px 10px;
+            margin: 15px -10px;
+        }
+
+        .login>button {
+            font-family: 'Asap', sans-serif;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            width: 80px;
+            border: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            margin-left: -5px;
+            border-radius: 5px;
+            background-color: rgb(7, 200, 46);
+            transition: background-color 300ms;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .login>button:hover {
+            background-color: rgb(4, 125, 26);
+        }
+
+        @keyframes wawes {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            font-size: 12px;
+        }
+
+        .logo {
+            display: grid;
+            place-items: center;
+            /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
+            /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
+            height: 100px;
+            /* ตัวอย่างเท่านี้โลโก้จะปรับขนาดเพื่อแสดงในความสูง 100px */
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        /* Set a style for the submit button */
+        .btn {
+            background-color: dodgerblue;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        .btn:hover {
+            opacity: 1;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* แนะนำให้เพิ่มความกว้างและความสูงเพื่อให้เห็นการจัดวาง */
+            width: 100%;
+            /* สำหรับตัวอย่างเท่านี้เท่าที่รู้จัก */
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+
+
+        /* Input label styles */
+        label {
+            margin-bottom: 6px;
+            display: block;
+            font-weight: bold;
+        }
+
+        /* Input field styles */
+        input[type=text],
+        input[type=password] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type=text]:focus,
+        input[type=password]:focus {
+            border-color: #04AA6D;
+        }
+
+        /* Style the submit button */
+        input[type=submit] {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .logo-container {
+            display: grid;
+            place-items: center;
+            /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
+            /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
+
+        }
+    </style>
+
+</head>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<body>
+    <form class="login">
+        <div class="logo-container">
+            <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+                alt="Logo" class="logo">
+        </div>
+        <label for="usrname">Username</label>
+        <input type="text" id="usrname" name="usrname" required>
+
+        <label for="psw">Password</label>
+        <input type="password" id="psw" name="psw">
+
+        <label class="switch" for="togglePassword">
+            <input type="checkbox" id="togglePassword" onclick="togglePassword()">
+            <span class="slider round"></span>
+        </label>
+
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <button>Login</button>
+        </div>
+
+
+    </form>
+
+</body>
+
+</html>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        passwordField.dataset.show = passwordField.dataset.show === 'true' ? 'false' : 'true';
+        passwordField.type = passwordField.dataset.show === 'true' ? 'text' : 'password';
+    }
+</script>
+
+<script>
+    var myInput = document.getElementById("psw");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+
+    var showPassword = document.getElementById("togglePassword");
+    showPassword.addEventListener("change", function () {
+        if (showPassword.checked) {
+            myInput.type = "text";
+        } else {
+            myInput.type = "password";
+        }
+    });
+
+</script>
