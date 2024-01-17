@@ -6,233 +6,803 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
 </head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .form-container {
+        width: 90%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    .address-pair {
+        margin-bottom: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    label {
+        width: 120px;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        padding: 8px;
+        box-sizing: border-box;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    #statusMessage {
+        margin-top: 15px;
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    .header {
+        background-image: linear-gradient(to right, #0048a7, #41b6ff);
+        overflow: hidden;
+        color: white;
+        text-align: right;
+        padding: 10px;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+    }
+
+
+    .header a {
+        float: right;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    .header a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .header a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .textW {
+        margin-top: -15px;
+        color: #ffffff;
+        font-size: 40px;
+        position: absolute;
+        left: 17%;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+    }
+
+    .textSB {
+        color: #ffffff;
+        font-size: 20px;
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background-color: #221f1f;
+        background-image: linear-gradient(to right, #0048a7, #61bff9);
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 3;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        /* Add a subtle box shadow */
+        transition: left 0.3s ease;
+        /* Transition effect to slide in/out */
+        transition: transform 300ms, box-shadow 300ms;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+
+    }
+
+    .sidebar::before,
+    .sidebar::after {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-top-left-radius: 40%;
+        border-top-right-radius: 45%;
+        border-bottom-left-radius: 35%;
+        border-bottom-right-radius: 40%;
+        z-index: -1;
+    }
+
+    .sidebar::before {
+        left: 20%;
+        bottom: -50%;
+        background-color: rgba(8, 0, 255, 0.788);
+        animation: wawes 6s infinite linear;
+    }
+
+    .sidebar::after {
+        left: -188%;
+        bottom: -40%;
+        background-color: rgba(0, 223, 253, 0.2);
+        animation: wawes 7s infinite;
+    }
+
+    @keyframes wawes {
+        from {
+            transform: rotate(0);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    a.list-item-link {
+        color: #000000;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
+    }
+
+    a.list-item-link:hover {
+        color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
+    }
+
+    .container {
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 30px;
+    }
+
+    .menu {
+        display: grid;
+        grid-template-rows: 40px max-content;
+        gap: 10px;
+        margin-top: 10%;
+    }
+
+    .toggle {
+        all: unset;
+        background-color: dodgerblue;
+        color: white;
+        width: 150px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggle::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-width: 0 3px 3px 0;
+        border-style: solid;
+        transform: rotate(45deg);
+        transition: 0.4s;
+    }
+
+    .list {
+        background-color: white;
+        color: #444;
+        list-style: none;
+        display: grid;
+        grid-template-rows: repeat(3, 40px);
+        border-radius: 5px;
+        overflow: hidden;
+        height: 0;
+        transition: 0.4s;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.4s, transform 0.4s var(--delay);
+        transform: translateX(-100%);
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .list-item:hover {
+        background-color: dodgerblue;
+        color: #fff;
+    }
+
+    .toggle:focus::after {
+        transform: rotate(225deg);
+    }
+
+    .toggle:focus~.list {
+        height: 130px;
+    }
+
+    .toggle:focus~.list .list-item {
+        transform: translateX(0);
+    }
+
+    /* ///////////////////////////////////////////////////////////// */
+    .toggleR {
+        all: unset;
+        background-color: dodgerblue;
+        color: white;
+        width: 150px;
+        padding: 10px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggleR::after {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-width: 0 3px 3px 0;
+        border-style: solid;
+        transform: rotate(45deg);
+        transition: 0.4s;
+    }
+
+    .listR {
+        background-color: white;
+        color: #444;
+        list-style: none;
+        display: grid;
+        grid-template-rows: repeat(6, 40px);
+        border-radius: 5px;
+        overflow: hidden;
+        height: 0;
+        transition: 0.4s;
+    }
+
+    .list-itemR {
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        transition: 0.6s, transform 0.4s var(--delay);
+        transform: translateX(-100%);
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .list-itemR:hover {
+        background-color: dodgerblue;
+        color: #fff;
+    }
+
+    .toggleR:focus::after {
+        transform: rotate(225deg);
+    }
+
+    .toggleR:focus~.listR {
+        height: 250px;
+    }
+
+
+    .toggleR:focus~.listR .list-itemR {
+        transform: translateX(0);
+    }
+
+    /* ///////////////////////////////////////////////////////////// */
+
+    .logo {
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        object-position: 30% 38%;
+        /* ปรับตำแหน่งของรูป (X, Y) */
+    }
+
+
+    .MainDashboard {
+        width: calc(100% - 250px);
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(159deg, #ffffff 14.25%, #ffffff 56.45%, #ffffff 86.14%);
+        overflow: hidden;
+    }
+
+    .footer {
+        font-family: 'Noto Sans Thai Looped', sans-serif;
+        background-image: linear-gradient(to right, #abdfff, #0048a7);
+        color: white;
+        text-align: right;
+        padding: 15px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 16px;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+
+    .scrolling-text {
+        animation: scroll-left 60s linear infinite;
+        white-space: nowrap;
+    }
+
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    a.logout-link {
+        color: #ffffff;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        padding: 8px 16px;
+        /* ระยะห่างขอบของลิงก์ */
+        transition: background-color 0.3s, color 0.3s;
+        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
+    }
+
+    a.logout-link:hover {
+        color: #595656;
+        /* สีที่แตกต่างเมื่อ hover */
+    }
+
+
+    .form-containerSB {
+        background-color: #ffffff19;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.333);
+        /* Increased the shadow */
+        border-radius: 10px;
+        /* Slightly increased border-radius for a softer look */
+        text-align: center;
+        padding: 20px;
+        /* Increased padding for better spacing */
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 10px;
+        /* Adjusted margin for more spacing */
+    }
+
+    /* Add transition for a smooth hover effect */
+    .form-containerSB:hover {
+        transform: translateY(-5px);
+        transition: transform 0.5s ease;
+    }
+
+
+    form {
+        max-width: 100px;
+        margin: auto;
+        margin-top: 100px;
+        margin-bottom: 50px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
+    }
+
+    /* ตัวอย่าง label, input, submit button, link, hover styles ไม่เปลี่ยนแปลง */
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+
+
+    button[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    a {
+        display: block;
+        margin-top: 10px;
+        color: #4caf50;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #45a049;
+    }
+</style>
 
 <body>
 
-    <h1>Poll Configurator</h1>
-
-    </form>
-    <div class="address-pair">
-        <label for="evc_type">EVC_TYPE:</label>
-        <input type="text" id="evc_type" name="evc_type" required>
+    <div class="header">
+        <a href="login.html" class="logout-link">Log Out</a>
+        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
-    <br>
-    </form>
-
-    </form>
-    <!-- Address Pair 1 -->
-    <div class="address-pair">
-        <label for="start1">Start Address:</label>
-        <input type="text" id="start1" name="start1" required>
-        <label for="end1">End Address:</label>
-        <input type="text" id="end1" name="end1" required>
-        <label for="enable1">Enable:</label>
-        <input type="checkbox" id="enable1" name="enable1" checked>
     </div>
+    <div class="sidebar">
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
+        <div class="container">
+            <div class="form-containerSB">
+                <span class="textSB" alt="logo">Menu</span>
+                <div class="menu">
+                    <button class="toggleR">Reports Data</button>
+                    <ul class="listR">
+                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
+                                class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
+                                Status</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
+                                Summary</a></li>
+                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
+                                Summery</a></li>
+                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
+                                class="list-item-link">Site
+                                Detail</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
+                                Detail</a></li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Polling Actions</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
+                                class="list-item-link">Manual
+                                poll</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
+                        </li>
+                    </ul>
+                </div>
 
-    <!-- Address Pair 2 -->
-    <div class="address-pair">
-        <label for="start2">Start Address:</label>
-        <input type="text" id="start2" name="start2" required>
-        <label for="end2">End Address:</label>
-        <input type="text" id="end2" name="end2" required>
-        <label for="enable2">Enable:</label>
-        <input type="checkbox" id="enable2" name="enable2" checked>
-    </div>
+                <div class="menu">
+                    <button class="toggle">Manage Sites</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
+                        </li>
+                    </ul>
+                </div>
 
-    <!-- Address Pair 3 -->
-    <div class="address-pair">
-        <label for="start3">Start Address:</label>
-        <input type="text" id="start3" name="start3" required>
-        <label for="end3">End Address:</label>
-        <input type="text" id="end3" name="end3" required>
-        <label for="enable3">Enable:</label>
-        <input type="checkbox" id="enable3" name="enable3" checked>
-    </div>
-
-    <!-- Address Pair 4 -->
-    <div class="address-pair">
-        <label for="start4">Start Address:</label>
-        <input type="text" id="start4" name="start4" required>
-        <label for="end4">End Address:</label>
-        <input type="text" id="end4" name="end4" required>
-        <label for="enable4">Enable:</label>
-        <input type="checkbox" id="enable4" name="enable4" checked>
-    </div>
-
-    <!-- Address Pair 5 -->
-    <div class="address-pair">
-        <label for="start5">Start Address:</label>
-        <input type="text" id="start5" name="start5" required>
-        <label for="end5">End Address:</label>
-        <input type="text" id="end5" name="end5" required>
-        <label for="enable5">Enable:</label>
-        <input type="checkbox" id="enable5" name="enable5" checked>
-    </div>
-    </form>
-
-    <h1>Poll Billing</h1>
-    </form>
-    <div class="address-pair">
-        <label for="start6">Start Address:</label>
-        <input type="text" id="start6" name="start6" required>
-        <label for="end6">End Address:</label>
-        <input type="text" id="end6" name="end6" required>
-        <label for="enable6">Enable:</label>
-        <input type="checkbox" id="enable6" name="enable6" checked>
-    </div>
-
-    <!-- Address Pair 7 -->
-    <div class="address-pair">
-        <label for="start7">Start Address:</label>
-        <input type="text" id="start7" name="start7" required>
-        <label for="end7">End Address:</label>
-        <input type="text" id="end7" name="end7" required>
-        <label for="enable7">Enable:</label>
-        <input type="checkbox" id="enable7" name="enable7" checked>
-    </div>
-
-    <!-- Address Pair 8 -->
-    <div class="address-pair">
-        <label for="start8">Start Address:</label>
-        <input type="text" id="start8" name="start8" required>
-        <label for="end8">End Address:</label>
-        <input type="text" id="end8" name="end8" required>
-        <label for="enable8">Enable:</label>
-        <input type="checkbox" id="enable8" name="enable8" checked>
+                <div class="menu">
+                    <button class="toggle">Manage Users</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
+                                class="list-item-link">Add
+                                User</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
+                                User</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route"
+                                class="list-item-link">Remove
+                                User</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Poll Sitting</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
+                                class="list-item-link">Add
+                                Mapping</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
+                                class="list-item-link">Add Polling</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Address Pair 9 -->
-    <div class="address-pair">
-        <label for="start9">Start Address:</label>
-        <input type="text" id="start9" name="start9" required>
-        <label for="end9">End Address:</label>
-        <input type="text" id="end9" name="end9" required>
-        <label for="enable9">Enable:</label>
-        <input type="checkbox" id="enable9" name="enable9" checked>
-    </div>
-
-    <!-- Address Pair 10 -->
-    <div class="address-pair">
-        <label for="start10">Start Address:</label>
-        <input type="text" id="start10" name="start10" required>
-        <label for="end10">End Address:</label>
-        <input type="text" id="end10" name="end10" required>
-        <label for="enable10">Enable:</label>
-        <input type="checkbox" id="enable10" name="enable10" checked>
-    </div>
-
-    <!-- Address Pair 11 -->
-    <div class="address-pair">
-        <label for="start11">Start Address:</label>
-        <input type="text" id="start11" name="start11" required>
-        <label for="end11">End Address:</label>
-        <input type="text" id="end11" name="end11" required>
-        <label for="enable11">Enable:</label>
-        <input type="checkbox" id="enable11" name="enable11" checked>
-    </div>
-
-    <!-- Address Pair 12 -->
-    <div class="address-pair">
-        <label for="start12">Start Address:</label>
-        <input type="text" id="start12" name="start12" required>
-        <label for="end12">End Address:</label>
-        <input type="text" id="end12" name="end12" required>
-        <label for="enable12">Enable:</label>
-        <input type="checkbox" id="enable12" name="enable12" checked>
-    </div>
-
-    <!-- Address Pair 13 -->
-    <div class="address-pair">
-        <label for="start13">Start Address:</label>
-        <input type="text" id="start13" name="start13" required>
-        <label for="end13">End Address:</label>
-        <input type="text" id="end13" name="end13" required>
-        <label for="enable13">Enable:</label>
-        <input type="checkbox" id="enable13" name="enable13" checked>
-    </div>
-
-    <!-- Address Pair 14 -->
-    <div class="address-pair">
-        <label for="start14">Start Address:</label>
-        <input type="text" id="start14" name="start14" required>
-        <label for="end14">End Address:</label>
-        <input type="text" id="end14" name="end14" required>
-        <label for="enable14">Enable:</label>
-        <input type="checkbox" id="enable14" name="enable14" checked>
-    </div>
-
-    <!-- Address Pair 15 -->
-    <div class="address-pair">
-        <label for="start15">Start Address:</label>
-        <input type="text" id="start15" name="start15" required>
-        <label for="end15">End Address:</label>
-        <input type="text" id="end15" name="end15" required>
-        <label for="enable15">Enable:</label>
-        <input type="checkbox" id="enable15" name="enable15" checked>
-    </div>
-    </form>
-
-
-    <button type="button" onclick="saveToOracle()">Save to Oracle</button>
-    <div id="statusMessage"></div>
-
-    <script>
-        function saveToOracle() {
-            var data = {};
-
-            // Include EVC_TYPE in data
-            data.evc_type = document.getElementById("evc_type").value;
-
-            // Loop through address pairs 1 through 15
-            for (var i = 1; i <= 15; i++) {
-                var startKey = 'start' + i;
-                var endKey = 'end' + i;
-                var enableKey = 'enable' + i;
-
-                data[startKey] = document.getElementById(startKey).value;
-                data[endKey] = document.getElementById(endKey).value;
-                data[enableKey] = document.getElementById(enableKey).checked ? 1 : 0;
-
-                // Ensure all start and end values are provided
-                if (!data[startKey] || !data[endKey]) {
-                    document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
-                    return;
-                }
-            }
-
-            // Assuming 'data' contains the necessary start and end values
-            data.enable_config = [];
-            data.enable_billing = [];
-
-            for (let i = 1; i <= 15; i++) {
-                if (data[`enable${i}`] !== undefined) {
-                    if (i <= 5) {
-                        data.enable_config.push(parseInt(data[`enable${i}`]));
-                    } else {
-                        data.enable_billing.push(parseInt(data[`enable${i}`]));
-                    }
-                }
-            }
-
-            fetch('/save_to_oracle', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    document.getElementById("statusMessage").innerHTML = data.message;
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
-                });
-        }
-    </script>
 </body>
+
+<body>
+    <div class="form-container">
+        <h1>Poll Configurator</h1>
+
+        <div class="address-pair">
+            <label for="evc_type">EVC_TYPE:</label>
+            <input type="text" id="evc_type" name="evc_type" required>
+        </div>
+
+        </form>
+        <!-- Address Pair 1 -->
+        <div class="address-pair">
+            <label for="start1">Start Address:</label>
+            <input type="text" id="start1" name="start1" required>
+            <label for="end1">End Address:</label>
+            <input type="text" id="end1" name="end1" required>
+            <label for="enable1">Enable:</label>
+            <input type="checkbox" id="enable1" name="enable1" checked>
+        </div>
+
+        <!-- Address Pair 2 -->
+        <div class="address-pair">
+            <label for="start2">Start Address:</label>
+            <input type="text" id="start2" name="start2" required>
+            <label for="end2">End Address:</label>
+            <input type="text" id="end2" name="end2" required>
+            <label for="enable2">Enable:</label>
+            <input type="checkbox" id="enable2" name="enable2" checked>
+        </div>
+
+        <!-- Address Pair 3 -->
+        <div class="address-pair">
+            <label for="start3">Start Address:</label>
+            <input type="text" id="start3" name="start3" required>
+            <label for="end3">End Address:</label>
+            <input type="text" id="end3" name="end3" required>
+            <label for="enable3">Enable:</label>
+            <input type="checkbox" id="enable3" name="enable3" checked>
+        </div>
+
+        <!-- Address Pair 4 -->
+        <div class="address-pair">
+            <label for="start4">Start Address:</label>
+            <input type="text" id="start4" name="start4" required>
+            <label for="end4">End Address:</label>
+            <input type="text" id="end4" name="end4" required>
+            <label for="enable4">Enable:</label>
+            <input type="checkbox" id="enable4" name="enable4" checked>
+        </div>
+
+        <!-- Address Pair 5 -->
+        <div class="address-pair">
+            <label for="start5">Start Address:</label>
+            <input type="text" id="start5" name="start5" required>
+            <label for="end5">End Address:</label>
+            <input type="text" id="end5" name="end5" required>
+            <label for="enable5">Enable:</label>
+            <input type="checkbox" id="enable5" name="enable5" checked>
+        </div>
+        </form>
+
+        <h1>Poll Billing</h1>
+        </form>
+        <div class="address-pair">
+            <label for="start6">Start Address:</label>
+            <input type="text" id="start6" name="start6" required>
+            <label for="end6">End Address:</label>
+            <input type="text" id="end6" name="end6" required>
+            <label for="enable6">Enable:</label>
+            <input type="checkbox" id="enable6" name="enable6" checked>
+        </div>
+
+        <!-- Address Pair 7 -->
+        <div class="address-pair">
+            <label for="start7">Start Address:</label>
+            <input type="text" id="start7" name="start7" required>
+            <label for="end7">End Address:</label>
+            <input type="text" id="end7" name="end7" required>
+            <label for="enable7">Enable:</label>
+            <input type="checkbox" id="enable7" name="enable7" checked>
+        </div>
+
+        <!-- Address Pair 8 -->
+        <div class="address-pair">
+            <label for="start8">Start Address:</label>
+            <input type="text" id="start8" name="start8" required>
+            <label for="end8">End Address:</label>
+            <input type="text" id="end8" name="end8" required>
+            <label for="enable8">Enable:</label>
+            <input type="checkbox" id="enable8" name="enable8" checked>
+        </div>
+
+        <!-- Address Pair 9 -->
+        <div class="address-pair">
+            <label for="start9">Start Address:</label>
+            <input type="text" id="start9" name="start9" required>
+            <label for="end9">End Address:</label>
+            <input type="text" id="end9" name="end9" required>
+            <label for="enable9">Enable:</label>
+            <input type="checkbox" id="enable9" name="enable9" checked>
+        </div>
+
+        <!-- Address Pair 10 -->
+        <div class="address-pair">
+            <label for="start10">Start Address:</label>
+            <input type="text" id="start10" name="start10" required>
+            <label for="end10">End Address:</label>
+            <input type="text" id="end10" name="end10" required>
+            <label for="enable10">Enable:</label>
+            <input type="checkbox" id="enable10" name="enable10" checked>
+        </div>
+
+        <!-- Address Pair 11 -->
+        <div class="address-pair">
+            <label for="start11">Start Address:</label>
+            <input type="text" id="start11" name="start11" required>
+            <label for="end11">End Address:</label>
+            <input type="text" id="end11" name="end11" required>
+            <label for="enable11">Enable:</label>
+            <input type="checkbox" id="enable11" name="enable11" checked>
+        </div>
+
+        <!-- Address Pair 12 -->
+        <div class="address-pair">
+            <label for="start12">Start Address:</label>
+            <input type="text" id="start12" name="start12" required>
+            <label for="end12">End Address:</label>
+            <input type="text" id="end12" name="end12" required>
+            <label for="enable12">Enable:</label>
+            <input type="checkbox" id="enable12" name="enable12" checked>
+        </div>
+
+        <!-- Address Pair 13 -->
+        <div class="address-pair">
+            <label for="start13">Start Address:</label>
+            <input type="text" id="start13" name="start13" required>
+            <label for="end13">End Address:</label>
+            <input type="text" id="end13" name="end13" required>
+            <label for="enable13">Enable:</label>
+            <input type="checkbox" id="enable13" name="enable13" checked>
+        </div>
+
+        <!-- Address Pair 14 -->
+        <div class="address-pair">
+            <label for="start14">Start Address:</label>
+            <input type="text" id="start14" name="start14" required>
+            <label for="end14">End Address:</label>
+            <input type="text" id="end14" name="end14" required>
+            <label for="enable14">Enable:</label>
+            <input type="checkbox" id="enable14" name="enable14" checked>
+        </div>
+
+        <!-- Address Pair 15 -->
+        <div class="address-pair">
+            <label for="start15">Start Address:</label>
+            <input type="text" id="start15" name="start15" required>
+            <label for="end15">End Address:</label>
+            <input type="text" id="end15" name="end15" required>
+            <label for="enable15">Enable:</label>
+            <input type="checkbox" id="enable15" name="enable15" checked>
+        </div>
+        </form>
+
+
+        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+        <div id="statusMessage"></div>
+</body>
+<div class="footer">
+    <span>POWERED BY ATOS.ASGS</span>
+</div>
+<script>
+    function saveToOracle() {
+        var data = {};
+
+        // Include EVC_TYPE in data
+        data.evc_type = document.getElementById("evc_type").value;
+
+        // Loop through address pairs 1 through 15
+        for (var i = 1; i <= 15; i++) {
+            var startKey = 'start' + i;
+            var endKey = 'end' + i;
+            var enableKey = 'enable' + i;
+
+            data[startKey] = document.getElementById(startKey).value;
+            data[endKey] = document.getElementById(endKey).value;
+            data[enableKey] = document.getElementById(enableKey).checked ? 1 : 0;
+
+            // Ensure all start and end values are provided
+            if (!data[startKey] || !data[endKey]) {
+                document.getElementById("statusMessage").innerHTML = "Please enter both start and end addresses for all pairs.";
+                return;
+            }
+        }
+
+        // Assuming 'data' contains the necessary start and end values
+        data.enable_config = [];
+        data.enable_billing = [];
+
+        for (let i = 1; i <= 15; i++) {
+            if (data[`enable${i}`] !== undefined) {
+                if (i <= 5) {
+                    data.enable_config.push(parseInt(data[`enable${i}`]));
+                } else {
+                    data.enable_billing.push(parseInt(data[`enable${i}`]));
+                }
+            }
+        }
+
+        fetch('/save_to_oracle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById("statusMessage").innerHTML = data.message;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById("statusMessage").innerHTML = "An error occurred while saving data.";
+            });
+    }
+</script>
 
 </html>
