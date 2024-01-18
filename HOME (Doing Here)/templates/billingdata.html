@@ -811,18 +811,19 @@
                 <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
                 <form id="loadingOverlay" action="billing_data" method="post">
-                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
-                        Data</button>
-                    <button class="btn btn-primary custom-btn" type="submit" name="query_type"
-                        value="config_data">Config Data</button>
+                    <!-- ... ปุ่มอื่น ๆ ... -->
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data"
+                        onclick="showLoading()">Daily Data</button>
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data"
+                        onclick="showLoading()">Config Data</button>
                     <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
                         Filters</button>
+                    <!-- ตำแหน่งของ LoadingOverlay -->
+                    <div id="loadingOverlay" style="display: none;">
+                        <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
+                    </div>
                 </form>
 
-                <!-- ตำแหน่งของ LoadingOverlay -->
-                <div id="loadingOverlay" style="display: none;">
-                    <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
-                </div>
             </form>
 
             <div>
@@ -957,12 +958,12 @@
                     <div class="table-container">
                         {% if tables.get('daily_data_run1') %}
                         <div class="table" id="table1">
-                            <h5>{{ 'DailyRun 1: ' }}{{ selected_tag }}</h5>
+                            <h5>{{ 'Daily Run 1: ' }}{{ selected_tag }}</h5>
                             {{ tables['daily_data_run1']|default('N/A')|safe }}
                         </div>
                         {% else %}
                         <div class="table" id="table1">
-                            <h5>{{ 'Run 1: N/A' }}</h5>
+                            <h5>{{ 'Daily Run 1: N/A' }}</h5>
                         </div>
                         {% endif %}
 
@@ -973,7 +974,7 @@
                         </div>
                         {% else %}
                         <div class="table" id="table2">
-                            <h5>{{ 'Run 2: N/A' }}</h5>
+                            <h5>{{ 'Daily Run 2: N/A' }}</h5>
                         </div>
                         {% endif %}
 
@@ -984,7 +985,7 @@
                         </div>
                         {% else %}
                         <div class="table" id="table3">
-                            <h5>{{ 'Run 3: N/A' }}</h5>
+                            <h5>{{ 'Daily Run 3: N/A' }}</h5>
                         </div>
                         {% endif %}
 
@@ -995,7 +996,7 @@
                         </div>
                         {% else %}
                         <div class="table" id="table4">
-                            <h5>{{ 'Run 4: N/A' }}</h5>
+                            <h5>{{ 'Daily Run 4: N/A' }}</h5>
                         </div>
                         {% endif %}
                     </div>
@@ -1017,48 +1018,126 @@
                     </div>
 </body>
 
+
+<!-- Add this script for the JavaScript functionality -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Assuming you have JavaScript/jQuery to handle changes and update the display
-        // Update the following code based on your actual implementation
+        var selectedRegion = null;
+        var selectedTag = null;
+        var selectedDate = null;
+
         document.getElementById('region_dropdown').addEventListener('change', function () {
-            document.getElementById('selected_region').innerText = this.value;
+            selectedRegion = this.value;
         });
 
         document.getElementById('tag_dropdown').addEventListener('change', function () {
-            document.getElementById('selected_tag').innerText = this.value;
+            selectedTag = this.value;
         });
 
         document.getElementById('date_picker').addEventListener('change', function () {
-            document.getElementById('selected_date').innerText = this.value;
+            selectedDate = this.value;
         });
 
-        // Event listener for form submission
-        var form = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-        form.addEventListener('submit', function () {
+        // Event listener for form submission with 'daily_data' event
+        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        formDailyData.addEventListener('config_data', function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
             showLoadingOverlay();
+
+            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+            setTimeout(function () {
+                // Update the displayed values after the loading is complete
+                document.getElementById('selected_region').innerText = selectedRegion;
+                document.getElementById('selected_tag').innerText = selectedTag;
+                document.getElementById('selected_date').innerText = selectedDate;
+
+                // Optionally, update the meter ID
+                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                if (selectedMeterIdSpan) {
+                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                }
+
+                // Reset selected values
+                selectedRegion = null;
+                selectedTag = null;
+                selectedDate = null;
+
+                // Submit the form programmatically
+                formDailyData.submit();
+            }, 2000); // Adjust the delay time as needed (in milliseconds)
+        });
+
+        // Event listener for form submission with 'config_data' event
+        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        formConfigData.addEventListener('daily_data', function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            showLoadingOverlay();
+
+            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+            setTimeout(function () {
+                // Update the displayed values after the loading is complete
+                document.getElementById('selected_region').innerText = selectedRegion;
+                document.getElementById('selected_tag').innerText = selectedTag;
+                document.getElementById('selected_date').innerText = selectedDate;
+
+                // Optionally, update the meter ID
+                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                if (selectedMeterIdSpan) {
+                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                }
+
+                // Reset selected values
+                selectedRegion = null;
+                selectedTag = null;
+                selectedDate = null;
+
+                // Submit the form programmatically
+                formConfigData.submit();
+            }, 2000); // Adjust the delay time as needed (in milliseconds)
         });
     });
-
-    function showLoadingOverlay() {
+    function showLoading() {
+        // แสดง loading overlay
         document.getElementById('loadingOverlay').style.display = 'block';
     }
 
-    function hideLoadingOverlay() {
+    // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
+    function hideLoading() {
+        // ซ่อน loading overlay
         document.getElementById('loadingOverlay').style.display = 'none';
     }
 
-    function clearFilters() {
-        showLoadingOverlay();
-        // Add any additional logic for clearing filters here
+    function loadData() {
+        // แสดง loading overlay ก่อนทำการโหลดข้อมูล
+        showLoading();
 
-        // Simulating delay with setTimeout (Remove this in your actual code)
-        setTimeout(function () {
-            // Perform any other actions...
-            hideLoadingOverlay();
-        }, 2000); // Simulated delay of 2 seconds
+        // ทำการโหลดข้อมูลด้วย Ajax
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'billing_data', true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                // เมื่อโหลดเสร็จสิ้น ให้เรียก hideLoading()
+                hideLoading();
+
+                // ตรวจสอบสถานะการตอบกลับ
+                if (xhr.status == 200) {
+                    // ดำเนินการกับข้อมูลที่ได้รับ
+                    var responseData = xhr.responseText;
+                    // ...
+
+                } else {
+                    // แสดงข้อความหรือดำเนินการที่เหมาะสมเมื่อมีข้อผิดพลาด
+                    console.error('เกิดข้อผิดพลาด: ' + xhr.status);
+                }
+            }
+        };
+
+        xhr.send();
     }
-
     // Wait for the document to be ready
     $(document).ready(function () {
         $('#date_picker').datepicker({
