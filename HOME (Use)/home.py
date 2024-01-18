@@ -61,16 +61,16 @@ def md5_hash(input_string):
 
 
 ############  connect database  #####################
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
+username = "AMR_DB"
+password = "AMR_DB"
+hostname = "10.104.240.26"
 port = "1521"
-service_name = "orcl"
+sid = "AMR"
 
 
 def fetch_data(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        dsn = cx_Oracle.makedsn(hostname, port, sid)
         with cx_Oracle.connect(username, password, dsn) as connection:
             with connection.cursor() as cursor:
                 if params:
@@ -87,7 +87,7 @@ def fetch_data(query, params=None):
 
 def execute_query(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        dsn = cx_Oracle.makedsn(hostname, port, sid)
         with cx_Oracle.connect(username, password, dsn) as connection:
             with connection.cursor() as cursor:
                 if params:
@@ -155,7 +155,7 @@ def add_user_route():
 def get_data(filter_text=None, sort_column=None):
     try:
         connection = cx_Oracle.connect(
-            user=username, password=password, dsn=f"{hostname}:{port}/{service_name}"
+            user=username, password=password, dsn=f"{hostname}:{port}/{sid}"
         )
         cursor = connection.cursor()
 
@@ -1419,7 +1419,7 @@ def logout():
 def insert_address_range_to_oracle(
     poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
-    dsn = cx_Oracle.makedsn(hostname, port, service_name)
+    dsn = cx_Oracle.makedsn(hostname, port, sid)
 
     with cx_Oracle.connect(
         user=username, password=password, dsn=dsn
@@ -1545,7 +1545,7 @@ def submit_form():
             )
 
         dsn_tns = cx_Oracle.makedsn(
-            hostname, port, service_name
+            hostname, port, sid
         )
         connection = cx_Oracle.connect(
             user=username, password=password, dsn=dsn_tns
@@ -1633,7 +1633,7 @@ def submit_new_form():
             )
 
         dsn_tns = cx_Oracle.makedsn(
-            hostname, port, service_name
+            hostname, port, sid
         )
         connection = cx_Oracle.connect(
             user=username, password=password, dsn=dsn_tns
