@@ -51,17 +51,9 @@
     </header>
 
     <nav>
-        <a href="{{ url_for('add_polling_route') }}">polling</a>
+        <a href="{{ url_for('polling_route') }}">polling</a>
         <a href="{{ url_for('add_mapping_route') }}">mapping</a>
     </nav>
-
- <h1>polling</h1>
-    {{ region_table|safe }}
-
-    <h1>Mapping </h1>
-    {{ address_mapping_table|safe }}
-
-    
 
 
 </body>
