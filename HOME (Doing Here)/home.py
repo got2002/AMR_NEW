@@ -801,6 +801,7 @@ def billing_data():
                 selected_meter_id=selected_meter_id,
             )
 
+
     else:
         # Render the template without executing the query
         return render_template(
