@@ -109,10 +109,11 @@ def execute_query(query, params=None):
 @app.route("/")
 def home():
     return render_template("home.html")
-
-
 ############ / Home page  #####################
 
+@app.route("/homeasgs")
+def homeasgs():
+    return render_template("homeasgs.html")
 
 ############  Add User  #####################
 @app.route("/add_user", methods=["GET", "POST"])
@@ -153,7 +154,7 @@ def add_user_route():
 
 
 def get_data(filter_text=None, sort_column=None):
-    try:
+    # try:
         connection = cx_Oracle.connect(
             user=username, password=password, dsn=f"{hostname}:{port}/{sid}"
         )
@@ -194,21 +195,21 @@ def get_data(filter_text=None, sort_column=None):
             )
 
         return data
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return []
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+#     except cx_Oracle.Error as e:
+#         (error,) = e.args
+#         print("Oracle Error:", error)
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if connection:
+#             connection.close()
 
 
-# Example usage with filtering and sorting
-filter_text = "example"  # Replace with your filter text or None for no filtering
-sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
-filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_column)
+# # Example usage with filtering and sorting
+# filter_text = "example"  # Replace with your filter text or None for no filtering
+# sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
+# filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_column)
 
 
 @app.route("/get_data")
