@@ -61,16 +61,16 @@ def md5_hash(input_string):
 
 
 ############  connect database  #####################
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
+username = "AMR_DB"
+password = "AMR_DB"
+hostname = "10.104.240.26"
 port = "1521"
-service_name = "orcl"
+sid = "AMR"
 
 
 def fetch_data(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        dsn = cx_Oracle.makedsn(hostname, port, sid)
         with cx_Oracle.connect(username, password, dsn) as connection:
             with connection.cursor() as cursor:
                 if params:
@@ -87,7 +87,7 @@ def fetch_data(query, params=None):
 
 def execute_query(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        dsn = cx_Oracle.makedsn(hostname, port, sid)
         with cx_Oracle.connect(username, password, dsn) as connection:
             with connection.cursor() as cursor:
                 if params:
@@ -109,10 +109,11 @@ def execute_query(query, params=None):
 @app.route("/")
 def home():
     return render_template("home.html")
-
-
 ############ / Home page  #####################
 
+@app.route("/homeasgs")
+def homeasgs():
+    return render_template("homeasgs.html")
 
 ############  Add User  #####################
 @app.route("/add_user", methods=["GET", "POST"])
@@ -153,9 +154,9 @@ def add_user_route():
 
 
 def get_data(filter_text=None, sort_column=None):
-    try:
+    # try:
         connection = cx_Oracle.connect(
-            user=username, password=password, dsn=f"{hostname}:{port}/{service_name}"
+            user=username, password=password, dsn=f"{hostname}:{port}/{sid}"
         )
         cursor = connection.cursor()
 
@@ -194,21 +195,21 @@ def get_data(filter_text=None, sort_column=None):
             )
 
         return data
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return []
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+#     except cx_Oracle.Error as e:
+#         (error,) = e.args
+#         print("Oracle Error:", error)
+#         return []
+#     finally:
+#         if cursor:
+#             cursor.close()
+#         if connection:
+#             connection.close()
 
 
-# Example usage with filtering and sorting
-filter_text = "example"  # Replace with your filter text or None for no filtering
-sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
-filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_column)
+# # Example usage with filtering and sorting
+# filter_text = "example"  # Replace with your filter text or None for no filtering
+# sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
+# filtered_and_sorted_data = get_data(filter_text=filter_text, sort_column=sort_column)
 
 
 @app.route("/get_data")
@@ -1419,7 +1420,7 @@ def logout():
 def insert_address_range_to_oracle(
     poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
-    dsn = cx_Oracle.makedsn(hostname, port, service_name)
+    dsn = cx_Oracle.makedsn(hostname, port, sid)
 
     with cx_Oracle.connect(
         user=username, password=password, dsn=dsn
@@ -1545,7 +1546,7 @@ def submit_form():
             )
 
         dsn_tns = cx_Oracle.makedsn(
-            hostname, port, service_name
+            hostname, port, sid
         )
         connection = cx_Oracle.connect(
             user=username, password=password, dsn=dsn_tns
@@ -1633,7 +1634,7 @@ def submit_new_form():
             )
 
         dsn_tns = cx_Oracle.makedsn(
-            hostname, port, service_name
+            hostname, port, sid
         )
         connection = cx_Oracle.connect(
             user=username, password=password, dsn=dsn_tns

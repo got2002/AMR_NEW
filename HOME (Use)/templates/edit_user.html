@@ -8,17 +8,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Site Detail</title>
+    <title>Edit User</title>
 </head>
 
 <style>
     /* Global styles */
+    
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-
+    
     body,
     html {
         margin: 0;
@@ -29,7 +30,7 @@
         ;
         font-family: 'Noto Sans Thai Looped', sans-serif;
     }
-
+    
     .header {
         background-image: linear-gradient(to right, #0048a7, #41b6ff);
         overflow: hidden;
@@ -44,8 +45,7 @@
         width: 100%;
         z-index: 0;
     }
-
-
+    
     .header a {
         float: right;
         color: #f2f2f2;
@@ -54,17 +54,17 @@
         text-decoration: none;
         font-size: 17px;
     }
-
+    
     .header a:hover {
         background-color: #ddd;
         color: black;
     }
-
+    
     .header a:hover {
         background-color: #ddd;
         color: black;
     }
-
+    
     .textW {
         margin-top: -15px;
         color: #ffffff;
@@ -74,14 +74,14 @@
         font-family: 'Noto Sans Thai Looped', sans-serif;
         text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
     }
-
+    
     .textSB {
         color: #ffffff;
         font-size: 20px;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
     }
-
+    
     .sidebar {
         width: 250px;
         height: 100vh;
@@ -103,9 +103,8 @@
         transition: transform 300ms, box-shadow 300ms;
         box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
         overflow: hidden;
-
     }
-
+    
     .sidebar::before,
     .sidebar::after {
         content: '';
@@ -118,54 +117,59 @@
         border-bottom-right-radius: 40%;
         z-index: -1;
     }
-
+    
     .sidebar::before {
         left: 20%;
         bottom: -50%;
         background-color: rgba(8, 0, 255, 0.788);
         animation: wawes 6s infinite linear;
     }
-
+    
     .sidebar::after {
         left: -188%;
         bottom: -40%;
         background-color: rgba(0, 223, 253, 0.2);
         animation: wawes 7s infinite;
     }
-
+    
     @keyframes wawes {
         from {
             transform: rotate(0);
         }
-
         to {
             transform: rotate(360deg);
         }
     }
-
+    
     a.list-item-link {
         color: #000000;
+        /* สีของลิงก์ */
         font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
     }
-
+    
     a.list-item-link:hover {
         color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
-
+    
     .container {
         justify-content: center;
         align-items: flex-start;
         padding-top: 30px;
     }
-
+    
     .menu {
         display: grid;
         grid-template-rows: 40px max-content;
         gap: 10px;
         margin-top: 10%;
     }
-
+    
     .toggle {
         all: unset;
         background-color: dodgerblue;
@@ -179,7 +183,7 @@
         border-radius: 5px;
         cursor: pointer;
     }
-
+    
     .toggle::after {
         content: "";
         width: 6px;
@@ -189,7 +193,7 @@
         transform: rotate(45deg);
         transition: 0.4s;
     }
-
+    
     .list {
         background-color: white;
         color: #444;
@@ -201,7 +205,7 @@
         height: 0;
         transition: 0.4s;
     }
-
+    
     .list-item {
         display: flex;
         align-items: center;
@@ -211,25 +215,25 @@
         user-select: none;
         cursor: pointer;
     }
-
+    
     .list-item:hover {
         background-color: dodgerblue;
         color: #fff;
     }
-
+    
     .toggle:focus::after {
         transform: rotate(225deg);
     }
-
+    
     .toggle:focus~.list {
         height: 130px;
     }
-
+    
     .toggle:focus~.list .list-item {
         transform: translateX(0);
     }
-
     /* ///////////////////////////////////////////////////////////// */
+    
     .toggleR {
         all: unset;
         background-color: dodgerblue;
@@ -243,7 +247,7 @@
         border-radius: 5px;
         cursor: pointer;
     }
-
+    
     .toggleR::after {
         content: "";
         width: 6px;
@@ -253,7 +257,7 @@
         transform: rotate(45deg);
         transition: 0.4s;
     }
-
+    
     .listR {
         background-color: white;
         color: #444;
@@ -265,7 +269,7 @@
         height: 0;
         transition: 0.4s;
     }
-
+    
     .list-itemR {
         display: flex;
         align-items: center;
@@ -275,35 +279,32 @@
         user-select: none;
         cursor: pointer;
     }
-
+    
     .list-itemR:hover {
         background-color: dodgerblue;
         color: #fff;
     }
-
+    
     .toggleR:focus::after {
         transform: rotate(225deg);
     }
-
+    
     .toggleR:focus~.listR {
         height: 250px;
     }
-
-
+    
     .toggleR:focus~.listR .list-itemR {
         transform: translateX(0);
     }
-
     /* ///////////////////////////////////////////////////////////// */
-
+    
     .logo {
         width: 200px;
         /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
         object-position: 30% 38%;
         /* ปรับตำแหน่งของรูป (X, Y) */
     }
-
-
+    
     .MainDashboard {
         width: calc(100% - 250px);
         height: 100%;
@@ -313,7 +314,7 @@
         background: linear-gradient(159deg, #ffffff 14.25%, #ffffff 56.45%, #ffffff 86.14%);
         overflow: hidden;
     }
-
+    
     .footer {
         font-family: 'Noto Sans Thai Looped', sans-serif;
         background-image: linear-gradient(to right, #abdfff, #0048a7);
@@ -325,33 +326,32 @@
         left: 0;
         width: 100%;
     }
-
+    
     .footer a {
         color: white;
         text-decoration: none;
         margin: 0 10px;
         font-size: 16px;
     }
-
+    
     .footer a:hover {
         text-decoration: underline;
     }
-
+    
     .scrolling-text {
         animation: scroll-left 60s linear infinite;
         white-space: nowrap;
     }
-
+    
     @keyframes scroll-left {
         0% {
             transform: translateX(100%);
         }
-
         100% {
             transform: translateX(-100%);
         }
     }
-
+    
     a.logout-link {
         color: #ffffff;
         /* สีของลิงก์ */
@@ -364,12 +364,12 @@
         transition: background-color 0.3s, color 0.3s;
         /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
     }
-
+    
     a.logout-link:hover {
         color: #595656;
         /* สีที่แตกต่างเมื่อ hover */
     }
-
+    
     .form-container {
         background-color: #ffffff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -380,7 +380,7 @@
         width: 100%;
         margin-top: 20px;
     }
-
+    
     .form-containerSB {
         background-color: #ffffff19;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.333);
@@ -395,20 +395,13 @@
         margin-top: 10px;
         /* Adjusted margin for more spacing */
     }
-
     /* Add transition for a smooth hover effect */
+    
     .form-containerSB:hover {
         transform: translateY(-5px);
         transition: transform 0.5s ease;
     }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 20px;
-        padding: 20px;
-    }
-
+    
     form {
         max-width: 400px;
         margin: auto;
@@ -421,13 +414,13 @@
         text-align: left;
         /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
     }
-
     /* ตัวอย่าง label, input, submit button, link, hover styles ไม่เปลี่ยนแปลง */
+    
     label {
         display: block;
         margin-bottom: 8px;
     }
-
+    
     input {
         width: 100%;
         padding: 10px;
@@ -436,7 +429,7 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-
+    
     button {
         width: 100%;
         padding: 10px;
@@ -445,24 +438,24 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
-
+    
     button[type="submit"] {
         background-color: #4caf50;
         color: #fff;
         cursor: pointer;
     }
-
+    
     button[type="submit"]:hover {
         background-color: #45a049;
     }
-
+    
     a {
         display: block;
         margin-top: 10px;
         color: #4caf50;
         text-decoration: none;
     }
-
+    
     a:hover {
         color: #45a049;
     }
@@ -474,27 +467,23 @@
         <a href="login.html" class="logout-link">Log Out</a>
         <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
-    </div>
+    
     <div class="sidebar">
-        <img class="logo"
-            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-            alt="logo">
+        <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
         <div class="container">
             <div class="form-containerSB">
                 <span class="textSB" alt="logo">Menu</span>
                 <div class="menu">
                     <button class="toggleR">Reports Data</button>
                     <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
-                                class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}" class="list-item-link">View Billing Data</a></li>
                         <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
                                 Status</a></li>
                         <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
                                 Summary</a></li>
                         <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
                                 Summery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
-                                class="list-item-link">Site
+                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data" class="list-item-link">Site
                                 Detail</a></li>
                         <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
                                 Detail</a></li>
@@ -503,8 +492,7 @@
                 <div class="menu">
                     <button class="toggle">Polling Actions</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
-                                class="list-item-link">Manual
+                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data" class="list-item-link">Manual
                                 poll</a>
                         </li>
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
@@ -526,8 +514,7 @@
                 <div class="menu">
                     <button class="toggle">Manage Users</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
-                                class="list-item-link">Add
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}" class="list-item-link">Add
                                 User</a></li>
                         <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
                                 User</a>
@@ -551,71 +538,41 @@
             </div>
         </div>
     </div>
+    
+    <div id="details">
+        <form id="editForm" method="post" action="{{ url_for('edit_user_route') }}">
+            <h1>Edit User & Password</h1>
+            <select id="myDropdown">
+            </select>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description"><br>
+            <label for="user_name">User Name:</label>
+            <input type="text" id="user_name" name="user_name"><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br>
+            <label for="user_level">User Level:</label>
+            <input type="text" id="user_level" name="user_level"><br>
 
-    <body>
-        <div class="main2" id="main2">
-            <form method="get" action="{{ url_for('sitedetail_data') }}">
-                <h2>Site Detail</h2>
+            <!-- Update button -->
+            <button type="submit">Save Changes</button>
 
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
-
-                <button type="submit">Submit</button>
-                <button type="button" onclick="clearFilters()">Clear</button>
-                {{ tables[0]|safe }}
-            </form>
-
-            
-
-
-
-            <div class="footer">
-                <span>POWERED BY ATOS.ASGS</span>
-            </div>
-        <div>
-
-    </body>
-
+        </form>
+        <a href="{{ url_for('home') }}">Back to Home</a><br> {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li class="{{ message.category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    </div>
+    <div class="footer">
+        <span>POWERED BY ATOS.ASGS</span>
+    </div>
+</body>
 
 </html>
-
+<!-- 
 <script>
-    $(document).ready(function () {
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-            // Get the selected region value
-            var selectedRegion = $(this).val();
-
-            // Make an Ajax request to get updated tag options based on the selected region
-            $.ajax({
-                type: 'GET',
-                url: '/get_tags',
-                data: { 'selected_region': selectedRegion },
-                success: function (response) {
-                    // Sort tag options alphabetically starting from 'a'
-                    response.tag_options.sort(function (a, b) {
-                        return a.localeCompare(b);
-                    });
-
-                    // Update tag dropdown options
-                    var tagDropdown = $('#tag_dropdown');
-                    tagDropdown.empty();
-                    $.each(response.tag_options, function (index, tagOption) {
-                        tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                    });
-                },
-                error: function (error) {
-                    console.log('Error fetching tag options:', error);
-                }
-            });
-        });
-    });
-
     function updateTime() {
         const today = new Date();
         const date = today.toLocaleDateString(undefined, {
@@ -631,7 +588,7 @@
     updateTime();
     setInterval(updateTime, 1000);
 
-    window.onclick = function (event) {
+    window.onclick = function(event) {
         if (!event.target.matches('.dropbtn')) {
             var dropdowns = document.getElementsByClassName("dropdown");
             for (var i = 0; i < dropdowns.length; i++) {
@@ -661,7 +618,7 @@
     var i;
 
     for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function () {
+        dropdown[i].addEventListener("click", function() {
             this.classList.toggle("active");
             var dropdownContent = this.nextElementSibling;
             if (dropdownContent.style.display === "block") {
@@ -671,4 +628,42 @@
             }
         });
     }
+</script> -->
+
+<script>
+    $(document).ready(function() {
+        // Load data from server
+        $.getJSON('/get_data', function(data) {
+            // Sort data alphabetically by description
+            data.sort(function(a, b) {
+                return a.description.localeCompare(b.description);
+            });
+
+            // Populate dropdown with sorted data
+            var dropdown = $('#myDropdown');
+            $.each(data, function(index, value) {
+                var optionText = value.description;
+                var optionValue = JSON.stringify(value);
+                dropdown.append($('<option>').text(optionText).attr('value', optionValue));
+            });
+
+            // Set initial details
+            var initialData = data[0];
+            displayDetails(initialData);
+        });
+
+        // Function to display details when an item is selected
+        $('#myDropdown').change(function() {
+            var selectedData = JSON.parse($(this).val());
+            displayDetails(selectedData);
+        });
+
+        // Function to display details
+        function displayDetails(selectedData) {
+            $('#details #description').val(selectedData.description);
+            $('#details #user_name').val(selectedData.user_name);
+            $('#details #password').val(""); // Clear password field for security
+            $('#details #user_level').val(selectedData.user_level);
+        }
+    });
 </script>

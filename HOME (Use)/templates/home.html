@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Site Detail</title>
+    <title>ASGS</title>
 </head>
 
 <style>
@@ -145,12 +145,18 @@
 
     a.list-item-link {
         color: #000000;
+        /* สีของลิงก์ */
         font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
         text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
     }
 
     a.list-item-link:hover {
         color: #ffffff;
+        /* สีที่แตกต่างเมื่อ hover */
+        /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
     .container {
@@ -269,7 +275,7 @@
     .list-itemR {
         display: flex;
         align-items: center;
-        padding-left: 10px;
+        padding-left: 15px;
         transition: 0.6s, transform 0.4s var(--delay);
         transform: translateX(-100%);
         user-select: none;
@@ -402,12 +408,6 @@
         transition: transform 0.5s ease;
     }
 
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 20px;
-        padding: 20px;
-    }
 
     form {
         max-width: 400px;
@@ -437,22 +437,13 @@
         box-sizing: border-box;
     }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
+    input[type="submit"] {
         background-color: #4caf50;
         color: #fff;
         cursor: pointer;
     }
 
-    button[type="submit"]:hover {
+    input[type="submit"]:hover {
         background-color: #45a049;
     }
 
@@ -472,7 +463,7 @@
 
     <div class="header">
         <a href="login.html" class="logout-link">Log Out</a>
-        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+        <span class="textW" alt="logo">Automatic Meter Reading (AMR)</span>
     </div>
     </div>
     <div class="sidebar">
@@ -500,7 +491,7 @@
                                 Detail</a></li>
                     </ul>
                 </div>
-                <div class="menu">
+                <!-- <div class="menu">
                     <button class="toggle">Polling Actions</button>
                     <ul class="list">
                         <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
@@ -510,7 +501,7 @@
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <div class="menu">
                     <button class="toggle">Manage Sites</button>
@@ -529,14 +520,15 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}" class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}" class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
                 </div>
+
                 <div class="menu">
                     <button class="toggle">Poll Sitting</button>
                     <ul class="list">
@@ -548,82 +540,21 @@
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </div>
-
-    <body>
-        <div class="main2" id="main2">
-            <form method="get" action="{{ url_for('sitedetail_data') }}">
-                <h2>Site Detail</h2>
-
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
-
-                <button type="submit">Submit</button>
-                <button type="button" onclick="clearFilters()">Clear</button>
-                {{ tables[0]|safe }}
-            </form>
-
-            
-
-
-
-            <div class="footer">
-                <span>POWERED BY ATOS.ASGS</span>
-            </div>
-        <div>
-
-    </body>
-
+    <div class="footer">
+        <span>POWERED BY ATOS.ASGS</span>
+    </div>
+</body>
 
 </html>
 
 <script>
-    $(document).ready(function () {
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-            // Get the selected region value
-            var selectedRegion = $(this).val();
-
-            // Make an Ajax request to get updated tag options based on the selected region
-            $.ajax({
-                type: 'GET',
-                url: '/get_tags',
-                data: { 'selected_region': selectedRegion },
-                success: function (response) {
-                    // Sort tag options alphabetically starting from 'a'
-                    response.tag_options.sort(function (a, b) {
-                        return a.localeCompare(b);
-                    });
-
-                    // Update tag dropdown options
-                    var tagDropdown = $('#tag_dropdown');
-                    tagDropdown.empty();
-                    $.each(response.tag_options, function (index, tagOption) {
-                        tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                    });
-                },
-                error: function (error) {
-                    console.log('Error fetching tag options:', error);
-                }
-            });
-        });
-    });
-
     function updateTime() {
         const today = new Date();
-        const date = today.toLocaleDateString(undefined, {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        const date = today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const time = today.toLocaleTimeString();
         document.getElementById('datetime').innerHTML = `${date} - ${time}`;
     }

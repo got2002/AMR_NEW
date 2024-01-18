@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/HOME (Doing)/templates/about-logo.png" type="image/png">
-    <title>Site Detail</title>
+    <title>Add User</title>
 </head>
 
 <style>
@@ -529,10 +529,10 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_userr_route" class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_userr_route" class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
@@ -552,67 +552,58 @@
         </div>
     </div>
 
-    <body>
-        <div class="main2" id="main2">
-            <form method="get" action="{{ url_for('sitedetail_data') }}">
-                <h2>Site Detail</h2>
 
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
+    
+    <form method="post" action="{{ url_for('add_user_route') }}">
+        <h1>Add User</h1>
+        <label for="description">Description:</label>
+        <input type="text" name="description" required>
 
-                <button type="submit">Submit</button>
-                <button type="button" onclick="clearFilters()">Clear</button>
-                {{ tables[0]|safe }}
-            </form>
+        <label for="user_name">Username:</label>
+        <input type="text" name="user_name" required>
 
-            
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+
+        <label for="user_level">User Level:</label>
+        <input type="number" name="user_level" required>
+
+        <input type="submit" value="Add User">
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for message in messages %}
+        <li class="{{ message.category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
 
+    <div class="footer">
+        <span>POWERED BY ATOS.ASGS</span>
+    </div>
 
-            <div class="footer">
-                <span>POWERED BY ATOS.ASGS</span>
-            </div>
-        <div>
-
-    </body>
 
 
 </html>
 
 <script>
-    $(document).ready(function () {
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-            // Get the selected region value
-            var selectedRegion = $(this).val();
+    document.addEventListener('DOMContentLoaded', function () {
+        var flashMessages = document.querySelectorAll('.flash-messages li');
 
-            // Make an Ajax request to get updated tag options based on the selected region
-            $.ajax({
-                type: 'GET',
-                url: '/get_tags',
-                data: { 'selected_region': selectedRegion },
-                success: function (response) {
-                    // Sort tag options alphabetically starting from 'a'
-                    response.tag_options.sort(function (a, b) {
-                        return a.localeCompare(b);
-                    });
+        flashMessages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.opacity = '0';
+                message.style.transition = 'opacity 0.5s';
 
-                    // Update tag dropdown options
-                    var tagDropdown = $('#tag_dropdown');
-                    tagDropdown.empty();
-                    $.each(response.tag_options, function (index, tagOption) {
-                        tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                    });
-                },
-                error: function (error) {
-                    console.log('Error fetching tag options:', error);
-                }
-            });
+                setTimeout(function () {
+                    message.style.display = 'none';
+                }, 500);
+            }, 3000); // Adjust the timeout value (in milliseconds) as needed
         });
     });
 
