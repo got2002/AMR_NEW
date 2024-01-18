@@ -1,14 +1,33 @@
 from flask import Flask, render_template, request, jsonify
 import cx_Oracle
+import pandas as pd
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Replace these values with your Oracle credentials
-oracle_username = "root"
-oracle_password = "root"
-oracle_host = "192.168.102.192"
-oracle_port = "1521"
-oracle_service = "orcl"
+# กำหนดการเชื่อมต่อฐานข้อมูล
+username = "root"
+password = "root"
+hostname = "192.168.102.192"
+port = "1521"
+service_name = "orcl"
+
+
+def fetch_data(query, params=None):
+    try:
+        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        with cx_Oracle.connect(username, password, dsn) as connection:
+            with connection.cursor() as cursor:
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                results = cursor.fetchall()
+        return results
+    except cx_Oracle.Error as e:
+        (error,) = e.args
+        print("Oracle Error:", error)
+        return []
 
 
 def insert_address_range_to_oracle(
@@ -44,7 +63,61 @@ def insert_address_range_to_oracle(
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    region_query = """
+        SELECT
+            EVC_TYPE,
+            POLL_CONFIG,
+            POLL_BILLING,
+            POLL_CONFIG_ENABLE,
+            POLL_BILLING_ENABLE
+        FROM
+            AMR_POLL_RANGE
+    """
+
+    address_mapping_query = """
+        SELECT
+            ADDRESS,
+            DESCRIPTION,
+            TYPE_VALUE,
+            EVC_TYPE,
+            OR_DER,
+            DATA_TYPE
+        FROM
+            AMR_ADDRESS_MAPPING1
+    """
+
+    # Fetch data for both queries
+    region_data = fetch_data(region_query)
+    address_mapping_data = fetch_data(address_mapping_query)
+
+    # Convert the result to Pandas DataFrames for easier manipulation (optional)
+    region_column_names = [
+        "EVC Type",
+        "Poll Config",
+        "Poll Billing",
+        "Poll Config Enable",
+        "Poll Billing Enable",
+    ]
+    region_df = pd.DataFrame(region_data, columns=region_column_names)
+
+    address_mapping_column_names = [
+        "ADDRESS",
+        "DESCRIPTION",
+        "TYPE_VALUE",
+        "EVC_TYPE",
+        "OR_DER",
+        "DATA_TYPE",
+    ]
+    address_mapping_df = pd.DataFrame(
+        address_mapping_data, columns=address_mapping_column_names
+    )
+
+    # Pass the DataFrames to the HTML template
+    return render_template(
+        "index.html",
+        region_table=region_df.to_html(index=False),
+        address_mapping_table=address_mapping_df.to_html(index=False),
+    )
 
 
 MAX_ADDRESS_LENGTH = 249
@@ -113,9 +186,20 @@ def save_to_oracle():
     except ValueError as ve:
         response = {"status": "error", "message": str(ve)}
     except cx_Oracle.DatabaseError as e:
-        response = {"status": "error", "message": f"Database Error: {e}"}
+        (error,) = e.args
+        print(f"Oracle Database Error {error.code}: {error.message}")
+        traceback.print_exc()  # Print detailed traceback information
+        response = {
+            "status": "error",
+            "message": f"Database Error: {error.code} - {error.message}",
+        }
     except Exception as e:
-        response = {"status": "error", "message": f"Error: {e}"}
+        print(f"Error: {e}")
+        traceback.print_exc()  # Print detailed traceback information
+        response = {
+            "status": "error",
+            "message": f"An error occurred while saving data: {str(e)}",
+        }
 
     return jsonify(response)
 
@@ -125,8 +209,8 @@ def edit_polling_route():
     return render_template("edit_polling.html")
 
 
-@app.route("/edit_polling", methods=["POST"])
-def edit_polling():
+@app.route("/save_edited_to_oracle", methods=["POST"])
+def save_edited_to_oracle():
     try:
         data = request.get_json()
 
@@ -171,7 +255,8 @@ def edit_polling():
             }
             return jsonify(response)
 
-        insert_address_range_to_oracle(
+        # Add a function to update the existing records in Oracle
+        update_address_range_in_oracle(
             combined_address_config,
             combined_address_billing,
             enable_config,
@@ -179,13 +264,24 @@ def edit_polling():
             evc_type,
         )
 
-        response = {"status": "success", "message": "Data saved successfully"}
+        response = {"status": "success", "message": "Data updated successfully"}
     except ValueError as ve:
         response = {"status": "error", "message": str(ve)}
     except cx_Oracle.DatabaseError as e:
-        response = {"status": "error", "message": f"Database Error: {e}"}
+        (error,) = e.args
+        print(f"Oracle Database Error {error.code}: {error.message}")
+        traceback.print_exc()  # Print detailed traceback information
+        response = {
+            "status": "error",
+            "message": f"Database Error: {error.code} - {error.message}",
+        }
     except Exception as e:
-        response = {"status": "error", "message": f"Error: {e}"}
+        print(f"Error: {e}")
+        traceback.print_exc()  # Print detailed traceback information
+        response = {
+            "status": "error",
+            "message": f"An error occurred while updating data: {str(e)}",
+        }
 
     return jsonify(response)
 
