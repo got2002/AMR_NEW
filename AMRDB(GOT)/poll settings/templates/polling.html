@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #eee;
+            padding: 10px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        nav a:hover {
+            background-color: #dd2d;
+        }
+
+            .hidden {
+            display: none;
+        
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>Manual Poll</h1>
+    </header>
+
+    <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+</nav>
+<nav>
+    <a href="{{ url_for('add_polling_route') }}">Add polling</a>
+    <a href="{{ url_for('edit_polling_route') }}">Edit polling</a>
+</nav>
+
+<form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
+    <select id="type_dropdown" name="type_dropdown">
+        {% for type in type_options %}
+            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="button" onclick="submitForm()">Submit</button>
+    
+</form>
+
+{{ tables[0]|safe }}
+
+<script>
+    function submitForm() {
+        // Trigger the form submission
+        document.getElementById("pollingForm").submit();
+    }
+
+    // Add an event listener to dynamically update the dropdown options
+    document.getElementById("type_dropdown").addEventListener("change", function () {
+        // Get the selected value
+        var selectedtype = this.value;
+
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
+        }
+    });
+</script>
+
+</body>
+
+</html>

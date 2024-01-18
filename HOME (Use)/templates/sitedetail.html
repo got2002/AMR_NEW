@@ -407,10 +407,11 @@
         background-color: #f4f4f4;
         margin: 20px;
         padding: 20px;
+        
     }
 
     form {
-        max-width: 400px;
+        max-width: 600px;
         margin: auto;
         margin-top: 100px;
         margin-bottom: 50px;
@@ -419,6 +420,7 @@
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         text-align: left;
+        
         /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
     }
 
@@ -465,6 +467,39 @@
 
     a:hover {
         color: #45a049;
+    }
+    #region_dropdown {
+    /* ระบุความกว้าง, สูง, สีพื้นหลัง, สีตัวอักษร, ระยะห่างของตัวเลือก, ฯลฯ */
+    width: 200px;
+    height: 30px;
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#region_dropdown option {
+    /* ระบุสไตล์สำหรับตัวเลือกแต่ละตัว */
+    background-color: #fff; /* สีพื้นหลังของตัวเลือก */
+    color: #333; /* สีตัวอักษรของตัวเลือก */
+}
+table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    /* ตั้งค่าสไตล์เฮดเดอร์ของตาราง */
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* สีพื้นหลังของหัวข้อตาราง */
+    th {
+        background-color: #f2f2f2;
     }
 </style>
 
