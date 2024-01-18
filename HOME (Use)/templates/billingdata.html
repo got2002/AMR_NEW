@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+    <title>Billing Data</title>
+
+    <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            background-image: linear-gradient(to right, #5b707e, #abb2b9);
+            font-family: 'Noto Sans Thai Looped', sans-serif;
+        }
+
+        .header {
+            background-image: linear-gradient(to right, #0048a7, #6ac3fb);
+            overflow: hidden;
+            text-align: right;
+            padding: 10px;
+            font-family: 'Noto Sans Thai Looped', sans-serif;
+            box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+            position: fixed;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            /* สีข้อความ */
+        }
+
+        input {
+            width: 25%;
+            padding: 10px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #555;
+            /* สีข้อความใน input */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+
+
+        .header a {
+            float: right;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .header a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .header a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .textW {
+            margin-top: -10px;
+            color: #ffffff;
+            font-size: 40px;
+            position: absolute;
+            left: 2%;
+            font-family: 'Noto Sans Thai Looped', sans-serif;
+            text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
+        }
+
+
+
+        a.list-item-link {
+            color: #000000;
+            /* สีของลิงก์ */
+            font-size: 16px;
+            /* ขนาดตัวอักษรของลิงก์ */
+            text-decoration: none;
+            /* ลบการเส้นใต้ลิงก์ */
+            /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
+        }
+
+        a.list-item-link:hover {
+            color: #ffffff;
+            /* สีที่แตกต่างเมื่อ hover */
+            /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
+        }
+
+
+
+        .menu {
+            display: grid;
+            grid-template-rows: 40px max-content;
+            gap: 10px;
+            margin-top: 10%;
+        }
+
+        .toggle {
+            all: unset;
+            background-color: dodgerblue;
+            color: white;
+            width: 150px;
+            padding: 10px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .toggle::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-width: 0 3px 3px 0;
+            border-style: solid;
+            transform: rotate(45deg);
+            transition: 0.4s;
+        }
+
+        .list {
+            background-color: white;
+            color: #444;
+            list-style: none;
+            display: grid;
+            grid-template-rows: repeat(4, 40px);
+            border-radius: 5px;
+            overflow: hidden;
+            height: 0;
+            transition: 0.4s;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            transition: 0.4s, transform 0.4s var(--delay);
+            transform: translateX(-100%);
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .list-item:hover {
+            background-color: dodgerblue;
+            color: #fff;
+        }
+
+        .toggle:focus::after {
+            transform: rotate(225deg);
+        }
+
+        .toggle:focus~.list {
+            height: 160px;
+        }
+
+        .toggle:focus~.list .list-item {
+            transform: translateX(0);
+        }
+
+
+        .logo {
+            width: 200px;
+            /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+            object-position: 30% 38%;
+            background-color: #ffffff;
+            display: flex;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 0px;
+            padding: 5px;
+        }
+
+
+        td {
+            background-color: rgb(255, 255, 255);
+            border: 1.5px solid #171717;
+            height: 20px;
+            width: 65px;
+            align-items: center;
+            text-align: center;
+            font-size: small;
+            padding: 3px;
+        }
+
+        th {
+            background-color: #9d9d9d;
+            border: 2px solid #171717;
+            height: 50px;
+            width: 65px;
+            font-weight: bold;
+            text-align: center;
+            font-size: xx-small;
+            align-items: center;
+            padding: 2px;
+        }
+
+        form {
+            max-width: 650px;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: left;
+
+        }
+
+        .form-container {
+            text-align: center;
+        }
+
+
+        .form-containerBOx {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            padding: 1px;
+            box-sizing: border-box;
+            width: 95%;
+            overflow: auto;
+            font-family: Arial, sans-serif;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer {
+            font-family: 'Noto Sans Thai Looped', sans-serif;
+            background-image: linear-gradient(to right, #abdfff, #0048a7);
+            color: white;
+            text-align: right;
+            padding: 5px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            margin-top: 0px;
+        }
+
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .scrolling-text {
+            animation: scroll-left 60s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        a.logout-link {
+            color: #ffffff;
+            /* สีของลิงก์ */
+            font-size: 16px;
+            /* ขนาดตัวอักษรของลิงก์ */
+            text-decoration: none;
+            /* ลบการเส้นใต้ลิงก์ */
+            padding: 8px 16px;
+            /* ระยะห่างขอบของลิงก์ */
+            transition: background-color 0.3s, color 0.3s;
+            /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
+        }
+
+        a.logout-link:hover {
+            color: #595656;
+            /* สีที่แตกต่างเมื่อ hover */
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        :root {
+            --color1: #0b1d5b;
+            --color2: #ffffff;
+            --color3: #102dbb;
+            --color4: #476aec;
+            --color5: #6885ef;
+        }
+
+
+        .navbar {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70rem;
+            margin-top: 10vw;
+            transition: all .5s ease;
+
+        }
+
+        .navbar-container {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            perspective: 50rem;
+            background-color: rgba(66, 64, 64, 0.8);
+            /* Darken color1 with 20% transparency */
+
+            box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+
+        }
+
+        .navbar-container_sub {
+            position: absolute;
+            width: 100%;
+            list-style: none;
+            border-radius: 0 0 5px 5px;
+            top: 100%;
+            left: 0;
+            padding: 0;
+            transform: rotateY(180deg) scaleY(0);
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .7s ease;
+            box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-item {
+            flex-grow: 1;
+            padding: 1rem;
+            font-size: 2rem;
+            background-color: var(--color3);
+            font-weight: bold;
+            text-align: center;
+            color: whitesmoke;
+            transition: all .7s ease;
+            transform: rotateY(0deg);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            font-size: 15px;
+
+        }
+
+        .navbar-item:hover {
+            transform: rotateY(180deg);
+        }
+
+        .navbar-item:hover .navbar-container_sub {
+            transform: rotateY(180deg) scaleY(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navbar-item:hover .navbar-item_label {
+            transform: scaley(1) rotateY(180deg);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navbar-item_sub {
+            padding: 1rem;
+            font-size: 2rem;
+            background-color: transparent;
+            position: relative;
+            overflow: hidden;
+            color: whitesmoke;
+            text-align: end;
+            transition: color .3s ease-in;
+            font-size: 15px;
+            overflow: hidden;
+        }
+
+        .navbar-item_sub:hover {
+            color: var(--color3);
+        }
+
+        .navbar-item_sub:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-color: var(--color4);
+        }
+
+        .navbar-item_sub:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 120%;
+            width: 120%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--color2);
+            transform: skewX(-30deg);
+            transform-origin: right;
+            transition: all .3s ease-in;
+        }
+
+        .navbar-item_sub:hover:before {
+            left: -10%;
+        }
+
+        .navbar-item_label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: inherit;
+            font-size: inherit;
+            font-weight: bold;
+            text-align: right;
+            transform: scaleY(0) rotateY(180deg);
+            transform-origin: top;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .4s ease .1s;
+            background-color: var(--color2);
+            color: var(--color3);
+        }
+
+
+
+        /* เรียงลำดับ div ใน plot-container */
+        .plot-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            /* จัดวางให้เรียงตามจำนวน div ที่มี */
+            margin: 20px;
+            margin-bottom: 20px;
+            /* ขอบระหว่าง div */
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: center;
+            /* จัด div ให้อยู่ตรงกลาง */
+        }
+
+        /* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
+        .plot-container>div {
+            width: 45%;
+            /* กำหนดขนาดของแต่ละ div */
+            margin: 10px;
+            /* ขอบระหว่าง div */
+            border: 1px solid #ddd;
+            /* เส้นขอบของ div */
+            border-radius: 8px;
+            /* ทำให้มีมุมโค้ง */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* เงาใต้ div */
+            margin: center;
+            /* จัด div ให้อยู่ตรงกลาง */
+        }
+
+        /* ปรับสีของกราฟ */
+        .plot-container>div .plotly {
+            background-color: #fff;
+            /* สีพื้นหลังของกราฟ */
+            border-radius: 8px;
+            /* ทำให้มีมุมโค้ง */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: x-small;
+            table-layout: fixed;
+            margin-top: -10px;
+
+
+        }
+
+
+        th,
+        td {
+            font-size: x-small;
+            border: 1px solid #000000;
+
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            font-size: x-small;
+            background-color: #e1dede;
+        }
+
+
+        th,
+        td {
+            width: 63px;
+        }
+
+
+
+        .table1 {
+            font-size: xx-small;
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            margin: 10px auto;
+        }
+
+        .table1 th,
+        .table1 td {
+            font-size: xx-small;
+            border: 1px solid #000000;
+            text-align: center;
+            /* จัดตำแหน่งตรงกลาง */
+            padding: 8px;
+        }
+
+        .table1 th {
+            font-size: xx-small;
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
+
+
+        .table-container {
+            font-size: xx-small;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .table {
+            font-size: xx-small;
+            width: 100%;
+            /* Adjust the width as needed */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 30px;
+            margin: 10px auto;
+            /* Center-align the table */
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                width: 100%;
+            }
+        }
+
+        .ui-datepicker {
+            width: 50%;
+            max-height: 400px;
+            /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
+            overflow-y: auto;
+            /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
+        }
+
+        .ui-datepicker table {
+            width: 100%;
+        }
+
+        #date_picker {
+            width: 40%;
+            /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            min-width: 10rem;
+            padding: .5rem 0;
+            margin: .125rem 0 0;
+            font-size: 1rem;
+            color: #212529;
+            text-align: left;
+            list-style: none;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: .25rem;
+            max-width: 200px;
+        }
+
+        #region_dropdown {
+            width: 200px;
+            /* กำหนดความกว้างของ dropdown */
+            padding: 8px;
+            /* กำหนดระยะห่างขอบของ dropdown */
+            border: 1px solid #ccc;
+            /* กำหนดเส้นขอบ */
+            border-radius: 4px;
+            /* กำหนดเส้นขอบมน */
+            background-color: #fff;
+            /* กำหนดพื้นหลัง */
+            color: #333;
+            /* กำหนดสีของตัวอักษร */
+        }
+
+        #region_dropdown:hover {
+            border-color: #666;
+            /* กำหนดสีขอบเมื่อ hover */
+        }
+
+        #region_dropdown option {
+            background-color: #fff;
+            /* กำหนดพื้นหลังของแต่ละ option */
+            color: #333;
+            /* กำหนดสีของตัวอักษรของแต่ละ option */
+        }
+
+        #region_dropdown option:hover {
+            background-color: #f2f2f2;
+            /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+        }
+
+        /* กำหนดสไตล์ของ label */
+        label[for="tag_dropdown"] {
+            display: block;
+            /* กำหนดให้ label เป็น block element */
+            margin-bottom: 8px;
+            /* กำหนดระยะห่างด้านล่าง */
+            font-weight: bold;
+            /* กำหนดตัวหนา */
+        }
+
+        /* กำหนดสไตล์ของ dropdown */
+        #tag_dropdown {
+            width: 200px;
+            /* กำหนดความกว้างของ dropdown */
+            padding: 8px;
+            /* กำหนดระยะห่างขอบของ dropdown */
+            border: 1px solid #ccc;
+            /* กำหนดเส้นขอบ */
+            border-radius: 4px;
+            /* กำหนดเส้นขอบมน */
+            background-color: #fff;
+            /* กำหนดพื้นหลัง */
+            color: #333;
+            /* กำหนดสีของตัวอักษร */
+        }
+
+        #tag_dropdown:hover {
+            border-color: #666;
+            /* กำหนดสีขอบเมื่อ hover */
+        }
+
+        #tag_dropdown option {
+            background-color: #fff;
+            /* กำหนดพื้นหลังของแต่ละ option */
+            color: #333;
+            /* กำหนดสีของตัวอักษรของแต่ละ option */
+        }
+
+        #tag_dropdown option:hover {
+            background-color: #f2f2f2;
+            /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding-top: 20%;
+        }
+
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<ul class="navbar-container">
+    <img class="logo" src="{{ url_for('static', filename='logo_PTT_3.png') }}" alt="logo">
+    <li class="navbar-item">Reports Data<span class="navbar-item_label">Reports Data</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="{{ url_for('billing_data') }}" class="list-item-link"><a href=""
+                        class="list-item-link"></a>View Billing Data</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">View EVC Status</a></li>
+            <li class="navbar-item_sub"><a href="Daily_summary" class="list-item-link">Daily Summary</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Monthly Summery</a></li>
+            <li class="navbar-item_sub"><a href="sitedetail_data" class="list-item-link">Site Detail</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">New Site Detail</a></li>
+        </ul>
+    </li>
+    <li class="navbar-item">Polling Actions<span class="navbar-item_label">Polling Actions</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="Manualpoll_data" class="list-item-link"></a>Manualpoll</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Write Config</a></li>
+        </ul>
+    </li>
+    <li class="navbar-item">Manage Sites<span class="navbar-item_label">Manage Sites</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Add Site</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Edit Site</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Remove Site</a></li>
+        </ul>
+    </li>
+    <li class="navbar-item">Manage Users<span class="navbar-item_label">Manage Users</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="add_user_route" class="list-item-link">Add User</a></li>
+            <li class="navbar-item_sub"><a href="edit_userr_route" class="list-item-link">Edit User</a></li>
+            <li class="navbar-item_sub"><a href="remove_userr_route" class="list-item-link">Remove User</a></li>
+        </ul>
+    </li>
+    <li class="navbar-item">Poll Sitting<span class="navbar-item_label">Poll Sitting</span>
+        <ul class="navbar-container_sub">
+            <li class="navbar-item_sub"><a href="add_mapping_route" class="list-item-link">Add Mapping</a></li>
+            <li class="navbar-item_sub"><a href="add_polling_route" class="list-item-link">Add Polling</a></li>
+        </ul>
+    </li>
+</ul>
+</nav>
+
+<body>
+    <div class="form-containerBOx">
+        <div class="form-container">
+            <form method="get" action="{{ url_for('billing_data') }}">
+                <label for="tag_dropdown">Select Region :</label>
+                <select id="region_dropdown" name="region_dropdown">
+                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                    {% for region in region_options %}
+                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="tag_dropdown">Select Site :</label>
+                <select id="tag_dropdown" name="tag_dropdown">
+                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                    {% for tag in tag_options %}
+                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                    {% endfor %}
+                </select>
+                <label for="date_picker">Select Date :</label>
+                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+
+                <form id="loadingOverlay" action="billing_data" method="post">
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
+                        Data</button>
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type"
+                        value="config_data">Config Data</button>
+                    <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
+                        Filters</button>
+                </form>
+
+                <!-- ตำแหน่งของ LoadingOverlay -->
+                <div id="loadingOverlay" style="display: none;">
+                    <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
+                </div>
+            </form>
+
+            <div>
+
+                <div>
+                    <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+                    <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+                    <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+                    <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
+                </div>
+
+
+                <div class="table-container1">
+                    {% if tables.get('config_data_run1') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 1: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run1']|safe }}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+
+
+
+                    {% if tables.get('config_data_run2') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 2: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run2']|safe }}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    {% if tables.get('config_data_run3') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 3: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run3']|safe }}
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    {% endif %}
+
+                    {% if tables.get('config_data_run4') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 4: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run4']|safe }}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% if tables.get('config_data_run5') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 5: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run5']|safe }}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    {% if tables.get('config_data_run6') %}
+                    <div class="table" id="table1">
+                        <h5>Config Run 6: {{ selected_tag }}</h5>
+                        <table class="table1">
+                            <!-- The following line combines thead and tbody into a single block -->
+                            <thead>
+                                <tr>
+                                    {% for key, value in dropped_columns_data[0].items() %}
+                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ tables['config_data_run6']|safe }}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    <div class="table-container">
+                        {% if tables.get('daily_data_run1') %}
+                        <div class="table" id="table1">
+                            <h5>{{ 'DailyRun 1: ' }}{{ selected_tag }}</h5>
+                            {{ tables['daily_data_run1']|default('N/A')|safe }}
+                        </div>
+                        {% else %}
+                        <div class="table" id="table1">
+                            <h5>{{ 'Run 1: N/A' }}</h5>
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run2') %}
+                        <div class="table" id="table2">
+                            <h5>{{ 'Daily Run 2: ' }}{{ selected_tag }}</h5>
+                            {{ tables['daily_data_run2']|default('N/A')|safe }}
+                        </div>
+                        {% else %}
+                        <div class="table" id="table2">
+                            <h5>{{ 'Run 2: N/A' }}</h5>
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run3') %}
+                        <div class="table" id="table3">
+                            <h5>{{ 'Daily Run 3: ' }}{{ selected_tag }}</h5>
+                            {{ tables['daily_data_run3']|default('N/A')|safe }}
+                        </div>
+                        {% else %}
+                        <div class="table" id="table3">
+                            <h5>{{ 'Run 3: N/A' }}</h5>
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run4') %}
+                        <div class="table" id="table4">
+                            <h5>{{ 'Daily Run 4: ' }}{{ selected_tag }}</h5>
+                            {{ tables['daily_data_run4']|default('N/A')|safe }}
+                        </div>
+                        {% else %}
+                        <div class="table" id="table4">
+                            <h5>{{ 'Run 4: N/A' }}</h5>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="plot-container">
+                        {{ graph_corrected|safe }}
+                    </div>
+
+                    <div class="plot-container">
+                        {{ graph_uncorrected|safe }}
+                    </div>
+
+                    <div class="plot-container">
+                        {{ graph_pressure|safe }}
+                    </div>
+
+                    <div class="plot-container">
+                        {{ graph_temperature|safe }}
+                    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Assuming you have JavaScript/jQuery to handle changes and update the display
+        // Update the following code based on your actual implementation
+        document.getElementById('region_dropdown').addEventListener('change', function () {
+            document.getElementById('selected_region').innerText = this.value;
+        });
+
+        document.getElementById('tag_dropdown').addEventListener('change', function () {
+            document.getElementById('selected_tag').innerText = this.value;
+        });
+
+        document.getElementById('date_picker').addEventListener('change', function () {
+            document.getElementById('selected_date').innerText = this.value;
+        });
+
+        // Event listener for form submission
+        var form = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        form.addEventListener('submit', function () {
+            showLoadingOverlay();
+        });
+    });
+
+    function showLoadingOverlay() {
+        document.getElementById('loadingOverlay').style.display = 'block';
+    }
+
+    function hideLoadingOverlay() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    function clearFilters() {
+        showLoadingOverlay();
+        // Add any additional logic for clearing filters here
+
+        // Simulating delay with setTimeout (Remove this in your actual code)
+        setTimeout(function () {
+            // Perform any other actions...
+            hideLoadingOverlay();
+        }, 2000); // Simulated delay of 2 seconds
+    }
+
+    // Wait for the document to be ready
+    $(document).ready(function () {
+        $('#date_picker').datepicker({
+            format: 'mm/yyyy',
+            startView: 'months',
+            minViewMode: 'months',
+            autoclose: true
+        });
+
+        // Event listener for region dropdown change
+        $('#region_dropdown').change(function () {
+            var selectedRegion = $(this).val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/get_tags',
+                data: { 'selected_region': selectedRegion },
+                success: function (response) {
+                    // Clear existing options in the tag dropdown
+                    $('#tag_dropdown').empty();
+                    // Add the 'All' option
+                    $('#tag_dropdown').append('<option value="" selected>All</option>');
+                    // Add new tag options based on the response
+                    for (var i = 0; i < response.tag_options.length; i++) {
+                        var tag = response.tag_options[i];
+                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                    }
+                    hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
+                },
+                error: function (error) {
+                    console.log('Error fetching tag options:', error);
+                    hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+                }
+            });
+        });
+    });
+</script>
