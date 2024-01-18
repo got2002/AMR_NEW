@@ -567,9 +567,10 @@
 
                 <button type="submit">Submit</button>
                 <button type="button" onclick="clearFilters()">Clear</button>
+                {{ tables[0]|safe }}
             </form>
 
-            {{ tables[0]|safe }} {# Assuming tables is a list with a single element containing the table HTML #}
+            
 
 
 
