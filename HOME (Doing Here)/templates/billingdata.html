@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -487,7 +489,8 @@
             width: 100%;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: center; /* จัด div ให้อยู่ตรงกลาง */
+            margin: center;
+            /* จัด div ให้อยู่ตรงกลาง */
         }
 
         /* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
@@ -502,7 +505,8 @@
             /* ทำให้มีมุมโค้ง */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             /* เงาใต้ div */
-            margin: center; /* จัด div ให้อยู่ตรงกลาง */
+            margin: center;
+            /* จัด div ให้อยู่ตรงกลาง */
         }
 
         /* ปรับสีของกราฟ */
@@ -512,166 +516,234 @@
             border-radius: 8px;
             /* ทำให้มีมุมโค้ง */
         }
+
         table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size:x-small;
-    table-layout: fixed;
-    margin-top: -10px;
-    
-    
-}
+            border-collapse: collapse;
+            width: 100%;
+            font-size: x-small;
+            table-layout: fixed;
+            margin-top: -10px;
 
 
-th, td {
-    font-size:x-small;
-    border: 1px solid #000000;
-    
-    text-align: left;
-    padding: 8px;
-}
-
-th {
-    font-size:x-small;
-    background-color: #e1dede;
-}
+        }
 
 
-th, td {
-    width: 63px; 
-}
+        th,
+        td {
+            font-size: x-small;
+            border: 1px solid #000000;
+
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            font-size: x-small;
+            background-color: #e1dede;
+        }
+
+
+        th,
+        td {
+            width: 63px;
+        }
 
 
 
-.table1 {
-    font-size:xx-small;
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 30px;
-    margin: 10px auto;
-}
+        .table1 {
+            font-size: xx-small;
+            table-layout: fixed;
+            border-collapse: collapse;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 30px;
+            margin: 10px auto;
+        }
 
-.table1 th, .table1 td {
-    font-size:xx-small;
-    border: 1px solid #000000;
-    text-align: center; /* จัดตำแหน่งตรงกลาง */
-    padding: 8px;
-}
+        .table1 th,
+        .table1 td {
+            font-size: xx-small;
+            border: 1px solid #000000;
+            text-align: center;
+            /* จัดตำแหน่งตรงกลาง */
+            padding: 8px;
+        }
 
-.table1 th {
-    font-size:xx-small;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
+        .table1 th {
+            font-size: xx-small;
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
 
 
-.table-container {
-    font-size:xx-small;
+        .table-container {
+            font-size: xx-small;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
 
         .table {
-            font-size:xx-small;
-    width: 100%; /* Adjust the width as needed */
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    padding: 30px;
-    margin: 10px auto; /* Center-align the table */
-}
+            font-size: xx-small;
+            width: 100%;
+            /* Adjust the width as needed */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 30px;
+            margin: 10px auto;
+            /* Center-align the table */
+        }
 
         @media (max-width: 768px) {
             .table {
                 width: 100%;
             }
         }
-.ui-datepicker {
-    width: 50%;
-    max-height: 400px; /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
-    overflow-y: auto; /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
-}
 
-.ui-datepicker table {
-    width: 100%;
-}
+        .ui-datepicker {
+            width: 50%;
+            max-height: 400px;
+            /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
+            overflow-y: auto;
+            /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
+        }
 
-#date_picker {
-    width: 40%; /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
-}
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
-    max-width: 200px;
-}
-#region_dropdown {
-    width: 200px; /* กำหนดความกว้างของ dropdown */
-    padding: 8px; /* กำหนดระยะห่างขอบของ dropdown */
-    border: 1px solid #ccc; /* กำหนดเส้นขอบ */
-    border-radius: 4px; /* กำหนดเส้นขอบมน */
-    background-color: #fff; /* กำหนดพื้นหลัง */
-    color: #333; /* กำหนดสีของตัวอักษร */
-}
+        .ui-datepicker table {
+            width: 100%;
+        }
 
-#region_dropdown:hover {
-    border-color: #666; /* กำหนดสีขอบเมื่อ hover */
-}
+        #date_picker {
+            width: 40%;
+            /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
+        }
 
-#region_dropdown option {
-    background-color: #fff; /* กำหนดพื้นหลังของแต่ละ option */
-    color: #333; /* กำหนดสีของตัวอักษรของแต่ละ option */
-}
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            min-width: 10rem;
+            padding: .5rem 0;
+            margin: .125rem 0 0;
+            font-size: 1rem;
+            color: #212529;
+            text-align: left;
+            list-style: none;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: .25rem;
+            max-width: 200px;
+        }
 
-#region_dropdown option:hover {
-    background-color: #f2f2f2; /* กำหนดพื้นหลังเมื่อ hover ที่ option */
-}
-/* กำหนดสไตล์ของ label */
-label[for="tag_dropdown"] {
-    display: block; /* กำหนดให้ label เป็น block element */
-    margin-bottom: 8px; /* กำหนดระยะห่างด้านล่าง */
-    font-weight: bold; /* กำหนดตัวหนา */
-}
+        #region_dropdown {
+            width: 200px;
+            /* กำหนดความกว้างของ dropdown */
+            padding: 8px;
+            /* กำหนดระยะห่างขอบของ dropdown */
+            border: 1px solid #ccc;
+            /* กำหนดเส้นขอบ */
+            border-radius: 4px;
+            /* กำหนดเส้นขอบมน */
+            background-color: #fff;
+            /* กำหนดพื้นหลัง */
+            color: #333;
+            /* กำหนดสีของตัวอักษร */
+        }
 
-/* กำหนดสไตล์ของ dropdown */
-#tag_dropdown {
-    width: 200px; /* กำหนดความกว้างของ dropdown */
-    padding: 8px; /* กำหนดระยะห่างขอบของ dropdown */
-    border: 1px solid #ccc; /* กำหนดเส้นขอบ */
-    border-radius: 4px; /* กำหนดเส้นขอบมน */
-    background-color: #fff; /* กำหนดพื้นหลัง */
-    color: #333; /* กำหนดสีของตัวอักษร */
-}
+        #region_dropdown:hover {
+            border-color: #666;
+            /* กำหนดสีขอบเมื่อ hover */
+        }
 
-#tag_dropdown:hover {
-    border-color: #666; /* กำหนดสีขอบเมื่อ hover */
-}
+        #region_dropdown option {
+            background-color: #fff;
+            /* กำหนดพื้นหลังของแต่ละ option */
+            color: #333;
+            /* กำหนดสีของตัวอักษรของแต่ละ option */
+        }
 
-#tag_dropdown option {
-    background-color: #fff; /* กำหนดพื้นหลังของแต่ละ option */
-    color: #333; /* กำหนดสีของตัวอักษรของแต่ละ option */
-}
+        #region_dropdown option:hover {
+            background-color: #f2f2f2;
+            /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+        }
 
-#tag_dropdown option:hover {
-    background-color: #f2f2f2; /* กำหนดพื้นหลังเมื่อ hover ที่ option */
-}
+        /* กำหนดสไตล์ของ label */
+        label[for="tag_dropdown"] {
+            display: block;
+            /* กำหนดให้ label เป็น block element */
+            margin-bottom: 8px;
+            /* กำหนดระยะห่างด้านล่าง */
+            font-weight: bold;
+            /* กำหนดตัวหนา */
+        }
 
+        /* กำหนดสไตล์ของ dropdown */
+        #tag_dropdown {
+            width: 200px;
+            /* กำหนดความกว้างของ dropdown */
+            padding: 8px;
+            /* กำหนดระยะห่างขอบของ dropdown */
+            border: 1px solid #ccc;
+            /* กำหนดเส้นขอบ */
+            border-radius: 4px;
+            /* กำหนดเส้นขอบมน */
+            background-color: #fff;
+            /* กำหนดพื้นหลัง */
+            color: #333;
+            /* กำหนดสีของตัวอักษร */
+        }
+
+        #tag_dropdown:hover {
+            border-color: #666;
+            /* กำหนดสีขอบเมื่อ hover */
+        }
+
+        #tag_dropdown option {
+            background-color: #fff;
+            /* กำหนดพื้นหลังของแต่ละ option */
+            color: #333;
+            /* กำหนดสีของตัวอักษรของแต่ละ option */
+        }
+
+        #tag_dropdown option:hover {
+            background-color: #f2f2f2;
+            /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding-top: 20%;
+        }
+
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <ul class="navbar-container">
@@ -682,37 +754,37 @@ label[for="tag_dropdown"] {
         <ul class="navbar-container_sub">
             <li class="navbar-item_sub"><a href="{{ url_for('billing_data') }}" class="list-item-link"><a href=""
                         class="list-item-link"></a>View Billing Data</a></li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>View EVC Status</li>
-            <li class="navbar-item_sub"><a href="Daily_summary" class="list-item-link"></a>Daily Summary</li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Monthly Summery</li>
-            <li class="navbar-item_sub"><a href="sitedetail_data" class="list-item-link"></a>Site Detail</li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>New Site Detail</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">View EVC Status</a></li>
+            <li class="navbar-item_sub"><a href="Daily_summary" class="list-item-link">Daily Summary</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Monthly Summery</a></li>
+            <li class="navbar-item_sub"><a href="sitedetail_data" class="list-item-link">Site Detail</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">New Site Detail</a></li>
         </ul>
     </li>
     <li class="navbar-item">Polling Actions<span class="navbar-item_label">Polling Actions</span>
         <ul class="navbar-container_sub">
-            <li class="navbar-item_sub"><a href="Manualpoll_data" class="list-item-link"></a>Manualpoll</li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Write Config</li>
+            <li class="navbar-item_sub"><a href="Manualpoll_data" class="list-item-link"></a>Manualpoll</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Write Config</a></li>
         </ul>
     </li>
     <li class="navbar-item">Manage Sites<span class="navbar-item_label">Manage Sites</span>
         <ul class="navbar-container_sub">
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Add Site</li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>Edit Site</li>
-            <li class="navbar-item_sub"><a href="" class="list-item-link"></a>>Remove Site</li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Add Site</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Edit Site</a></li>
+            <li class="navbar-item_sub"><a href="" class="list-item-link">Remove Site</a></li>
         </ul>
     </li>
     <li class="navbar-item">Manage Users<span class="navbar-item_label">Manage Users</span>
         <ul class="navbar-container_sub">
-            <li class="navbar-item_sub"><a href="add_user_route" class="list-item-link"></a>Add User</li>
-            <li class="navbar-item_sub"><a href="edit_userr_route" class="list-item-link"></a>Edit User</li>
-            <li class="navbar-item_sub"><a href="remove_userr_route" class="list-item-link"></a>Remove User</li>
+            <li class="navbar-item_sub"><a href="add_user_route" class="list-item-link">Add User</a></li>
+            <li class="navbar-item_sub"><a href="edit_userr_route" class="list-item-link">Edit User</a></li>
+            <li class="navbar-item_sub"><a href="remove_userr_route" class="list-item-link">Remove User</a></li>
         </ul>
     </li>
     <li class="navbar-item">Poll Sitting<span class="navbar-item_label">Poll Sitting</span>
         <ul class="navbar-container_sub">
-            <li class="navbar-item_sub"><a href="add_mapping_route" class="list-item-link"></a>Add Mapping</li>
-            <li class="navbar-item_sub"><a href="add_polling_route" class="list-item-link"></a>Add Polling</li>
+            <li class="navbar-item_sub"><a href="add_mapping_route" class="list-item-link">Add Mapping</a></li>
+            <li class="navbar-item_sub"><a href="add_polling_route" class="list-item-link">Add Polling</a></li>
         </ul>
     </li>
 </ul>
@@ -739,23 +811,35 @@ label[for="tag_dropdown"] {
                 </select>
                 <label for="date_picker">Select Date :</label>
                 <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
-                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily
-                    Data</button>
-                <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config
-                    Data</button>
-                <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
-                    Filters</button>
+                <form id="loadingOverlay" action="billing_data" method="post">
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data">Daily Data</button>
+                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data">Config Data</button>
+                    <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear Filters</button>
+                </form>                
             </form>
+            <div>
+                <div id="loadingOverlay">
+                    <<iframe src="https://giphy.com/embed/uIJBFZoOaifHf52MER" width="480" height="439" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/UniversalMusicIndia-elvish-dg-immortals-bawli-uIJBFZoOaifHf52MER" alt="Loading...">
+                </div>
+                <div>
+                    <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+                    <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+                    <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+                    <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
+                </div>
+                
 
-           
+                
             <div class="table-container">
                 {% if tables.get('daily_data_run1') %}
-                <div class="table" id="table1">
-                    <h5>Run 1: {{ selected_tag }}</h5>
-                    {{ tables['daily_data_run1']|safe }}
-                </div>
-                <div class="plot-container">
+                    <div class="table" id="table1">
+                        <h5>{{ 'Run 1: ' }}{{ selected_tag }}</h5>
+                        {{ tables['daily_data_run1']|safe }}
+                    </div>
+                {% endif %}
+            </div>
+
+                <!-- <div class="plot-container">
                     {{ graph_corrected|safe }}
                 </div>
 
@@ -769,8 +853,8 @@ label[for="tag_dropdown"] {
 
                 <div class="plot-container">
                     {{ graph_temperature|safe }}
-                </div>
-                {% endif %}
+                </div> -->
+
 
                 {% if tables.get('daily_data_run2') %}
                 <div class="table" id="table2">
@@ -796,124 +880,124 @@ label[for="tag_dropdown"] {
 
 
 
-           
-    <div class="table-container1">
-        {% if tables.get('config_data_run1') %}
-        <div class="table" id="table1">
-            <h5>Run 1: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run1']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
+
+            <div class="table-container1">
+                {% if tables.get('config_data_run1') %}
+                <div class="table" id="table1">
+                    <h5>Run 1: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run1']|safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
 
 
 
 
-        {% if tables.get('config_data_run2') %}
-        <div class="table" id="table1">
-            <h5>Run 2: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run2']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
+                {% if tables.get('config_data_run2') %}
+                <div class="table" id="table1">
+                    <h5>Run 2: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run2']|safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
 
-        {% if tables.get('config_data_run3') %}
-        <div class="table" id="table1">
-            <h5>Run 3: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run3']|safe }}
-                </tbody>
-            </table>
+                {% if tables.get('config_data_run3') %}
+                <div class="table" id="table1">
+                    <h5>Run 3: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run3']|safe }}
+                        </tbody>
+                    </table>
 
 
-        </div>
-        {% endif %}
+                </div>
+                {% endif %}
 
-        {% if tables.get('config_data_run4') %}
-        <div class="table" id="table1">
-            <h5>Run 4: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run4']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-        {% if tables.get('config_data_run5') %}
-        <div class="table" id="table1">
-            <h5>Run 5: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run5']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-        {% if tables.get('config_data_run6') %}
-        <div class="table" id="table1">
-            <h5>Run 6: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run6']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
+                {% if tables.get('config_data_run4') %}
+                <div class="table" id="table1">
+                    <h5>Run 4: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run4']|safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                {% if tables.get('config_data_run5') %}
+                <div class="table" id="table1">
+                    <h5>Run 5: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run5']|safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                {% if tables.get('config_data_run6') %}
+                <div class="table" id="table1">
+                    <h5>Run 6: {{ selected_tag }}</h5>
+                    <table class="table1">
+                        <!-- The following line combines thead and tbody into a single block -->
+                        <thead>
+                            <tr>
+                                {% for key, value in dropped_columns_data[0].items() %}
+                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ tables['config_data_run6']|safe }}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
 
 
 
@@ -921,8 +1005,47 @@ label[for="tag_dropdown"] {
 
 
 </div>
-
 <script>
+    // Assuming you have JavaScript/jQuery to handle changes and update the display
+    // Update the following code based on your actual implementation
+    document.getElementById('region_dropdown').addEventListener('change', function() {
+        document.getElementById('selected_region').innerText = this.value;
+    });
+
+    document.getElementById('tag_dropdown').addEventListener('change', function() {
+        document.getElementById('selected_tag').innerText = this.value;
+    });
+
+    document.getElementById('date_picker').addEventListener('change', function() {
+        document.getElementById('selected_date').innerText = this.value;
+    });
+
+    
+    function showLoadingOverlay() {
+        document.getElementById('loadingOverlay').style.display = 'block';
+    }
+
+    function hideLoadingOverlay() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    function clearFilters() {
+        showLoadingOverlay();
+        // Add any additional logic for clearing filters here
+
+        // Simulating delay with setTimeout (Remove this in your actual code)
+        setTimeout(function () {
+            // Perform any other actions...
+            hideLoadingOverlay();
+        }, 2000); // Simulated delay of 2 seconds
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('loadingOverlay'); // Replace 'yourFormId' with the actual ID of your form
+        form.addEventListener('submit', function () {
+            showLoadingOverlay();
+        });
+    });
+
     // Wait for the document to be ready
     $(document).ready(function () {
         $('#date_picker').datepicker({
@@ -965,7 +1088,7 @@ label[for="tag_dropdown"] {
         });
     });
 
-    function clearForm() {
+    function clearFilters() {
         // เรียกใช้ฟังก์ชันที่เคลียร์ฟอร์ม
         document.getElementById('inputRegion').value = '';
         document.getElementById('inputSite').value = '';
