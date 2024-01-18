@@ -434,7 +434,6 @@ def billing_data():
             {region_condition}
         """
 
-
     # Get selected values from the dropdowns
     billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
     configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
@@ -495,7 +494,7 @@ def billing_data():
                 ],
             )
             # Get the selected Meter ID before removing it from the DataFrame
-            # selected_meter_id = df["METER_ID"].iloc[0]
+            selected_meter_id = df["METER_ID"].iloc[0]
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -641,7 +640,12 @@ def billing_data():
                     selected_region=selected_region,
                     region_options=region_options,
                     tag_options=tag_options,
-                    graphs=graphs,
+                    selected_meter_id=selected_meter_id,
+                    graph_corrected=graph_corrected,
+                    graph_uncorrected=graph_uncorrected,
+                    graph_pressure=graph_pressure,
+                    graph_temperature=graph_temperature,
+
                 )
 
 
@@ -794,6 +798,7 @@ def billing_data():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options, dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
             )
 
     else:
