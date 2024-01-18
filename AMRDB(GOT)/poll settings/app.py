@@ -33,11 +33,9 @@ def fetch_data(query, params=None):
 def insert_address_range_to_oracle(
     poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
-    dsn = cx_Oracle.makedsn(oracle_host, oracle_port, service_name=oracle_service)
+    dsn = cx_Oracle.makedsn(host, port, service_name=service)
 
-    with cx_Oracle.connect(
-        user=oracle_username, password=oracle_password, dsn=dsn
-    ) as connection:
+    with cx_Oracle.connect(user=username, password=password, dsn=dsn) as connection:
         with connection.cursor() as cursor:
             sql_insert = """
                 INSERT INTO AMR_POLL_RANGE (POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE, EVC_TYPE)
@@ -63,60 +61,71 @@ def insert_address_range_to_oracle(
 
 @app.route("/")
 def index():
-    region_query = """
-        SELECT
-            EVC_TYPE,
-            POLL_CONFIG,
-            POLL_BILLING,
-            POLL_CONFIG_ENABLE,
-            POLL_BILLING_ENABLE
-        FROM
-            AMR_POLL_RANGE
+    return render_template("index.html")
+
+
+@app.route("/polling_route")
+def polling_route():
+    # Fetch type options for the dropdown
+    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
+    type_results = fetch_data(type_query)
+    type_options = [str(type[0]) for type in type_results]
+
+    # Define the base query for fetching polling data
+    base_query = """
+    SELECT
+        apr.evc_type,
+        apr.poll_config,
+        apr.poll_billing,
+        apr.poll_config_enable,
+        apr.poll_billing_enable
+    FROM
+        amr_poll_range apr
+    JOIN
+        amr_vc_type avt ON apr.evc_type = avt.id
+    {type_condition}
     """
 
-    address_mapping_query = """
-        SELECT
-            ADDRESS,
-            DESCRIPTION,
-            TYPE_VALUE,
-            EVC_TYPE,
-            OR_DER,
-            DATA_TYPE
-        FROM
-            AMR_ADDRESS_MAPPING1
-    """
+    # Get selected type from the dropdown
+    selected_type = request.args.get("type_dropdown")
 
-    # Fetch data for both queries
-    region_data = fetch_data(region_query)
-    address_mapping_data = fetch_data(address_mapping_query)
+    # Define type condition based on the selected type
+    type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
 
-    # Convert the result to Pandas DataFrames for easier manipulation (optional)
-    region_column_names = [
-        "EVC Type",
-        "Poll Config",
-        "Poll Billing",
-        "Poll Config Enable",
-        "Poll Billing Enable",
-    ]
-    region_df = pd.DataFrame(region_data, columns=region_column_names)
+    # Check if a type is selected before executing the query
+    if selected_type:
+        # Modify the base query with the selected conditions
+        query = base_query.format(type_condition=type_condition)
 
-    address_mapping_column_names = [
-        "ADDRESS",
-        "DESCRIPTION",
-        "TYPE_VALUE",
-        "EVC_TYPE",
-        "OR_DER",
-        "DATA_TYPE",
-    ]
-    address_mapping_df = pd.DataFrame(
-        address_mapping_data, columns=address_mapping_column_names
-    )
+        # Fetch data using the modified query
+        results = fetch_data(query)
 
-    # Pass the DataFrames to the HTML template
+        # Create a DataFrame from the results
+        columns = [
+            "evc_type",
+            "poll_config",
+            "poll_billing",
+            "poll_config_enable",
+            "poll_billing_enable",
+        ]
+        df = pd.DataFrame(results, columns=columns)
+
+        # Render the HTML template with the DataFrame and other variables
+        return render_template(
+            "polling.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=columns,
+            selected_type=selected_type,
+            type_options=type_options,
+        )
+
+    # Render the HTML template without the table if no type is selected
     return render_template(
-        "index.html",
-        region_table=region_df.to_html(index=False),
-        address_mapping_table=address_mapping_df.to_html(index=False),
+        "polling.html",
+        tables=[],
+        titles=[],
+        selected_type=None,
+        type_options=type_options,
     )
 
 
@@ -310,12 +319,8 @@ def submit_form():
                 (address, description, type_value, evc_type, or_der, data_type)
             )
 
-        dsn_tns = cx_Oracle.makedsn(
-            oracle_host, oracle_port, service_name=oracle_service
-        )
-        connection = cx_Oracle.connect(
-            user=oracle_username, password=oracle_password, dsn=dsn_tns
-        )
+        dsn_tns = cx_Oracle.makedsn(host, port, service_name=service)
+        connection = cx_Oracle.connect(user=username, password=password, dsn=dsn_tns)
 
         cursor = connection.cursor()
 
@@ -398,12 +403,8 @@ def submit_new_form():
                 (address, description, type_value, evc_type, or_der, data_type)
             )
 
-        dsn_tns = cx_Oracle.makedsn(
-            oracle_host, oracle_port, service_name=oracle_service
-        )
-        connection = cx_Oracle.connect(
-            user=oracle_username, password=oracle_password, dsn=dsn_tns
-        )
+        dsn_tns = cx_Oracle.makedsn(host, port, service_name=service)
+        connection = cx_Oracle.connect(user=username, password=password, dsn=dsn_tns)
 
         cursor = connection.cursor()
 
