@@ -494,18 +494,17 @@ def billing_data():
                     "METER_STREAM_NO",
                 ],
             )
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
+
+            # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+
+            # Continue with the rest of your DataFrame processing
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-
-            # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-            # Remove newline characters
-            df = df.apply(
-                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-            )
-
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
             # สร้าง subplot และ traces สำหรับแต่ละกราฟ
             fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=["Corrected"])
@@ -640,6 +639,7 @@ def billing_data():
                 graph_uncorrected=graph_uncorrected,
                 graph_pressure=graph_pressure,
                 graph_temperature=graph_temperature,
+                selected_meter_id=selected_meter_id,
             )
 
 
@@ -733,6 +733,10 @@ def billing_data():
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
             print(df.columns)
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
+
+            # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
             # Remove newline characters
@@ -787,7 +791,8 @@ def billing_data():
                 selected_tag=selected_tag,
                 selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options, dropped_columns_data=dropped_columns_data
+                tag_options=tag_options, dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
             )
 
     else:
@@ -799,6 +804,7 @@ def billing_data():
             selected_tag=selected_tag,
             region_options=region_options,
             tag_options=tag_options,
+            selected_meter_id=selected_meter_id,
             tables={},
         )
 
