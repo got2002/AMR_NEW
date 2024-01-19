@@ -64,20 +64,49 @@
 </nav>
 
 <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
-    <select id="type_dropdown" name="type_dropdown">
-        {% for type in type_options %}
-            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
-        {% endfor %}
-    </select>
+        <label for="type_dropdown">Select Type:</label>
+        <select id="type_dropdown" name="type_dropdown">
+            {% for type in type_options %}
+                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
 
-    
+        <!-- Button to submit the form -->
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
 
-    <button type="button" onclick="submitForm()">Submit</button>
-    
+       {{ tables[0]|safe }}
+
+<form>
+<div class="textbox-container">
+  {% for i in range(0, list_str|length, 2) %}
+    <div class="textbox-pair">
+      <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
+      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ list_str[i] }}">
+      
+      {% if i+1 < list_str|length %}
+        <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
+        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ list_str[i+1] }}">
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+<div class="textbox-container">
+  {% for i in range(0, lite_str|length, 2) %}
+    <div class="textbox-pair">
+      <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
+      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ lite_str[i] }}">
+      
+      {% if i+1 < lite_str|length %}
+        <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
+        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ lite_str[i+1] }}">
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
 </form>
-
-{{ tables[0]|safe }}
-
  
 <script>
     function submitForm() {
