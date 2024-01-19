@@ -529,10 +529,12 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_userr_route" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_userr_route"
+                                class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_userr_route" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_userr_route"
+                                class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
@@ -553,7 +555,7 @@
     </div>
 
 
-    
+
     <form method="post" action="{{ url_for('add_user_route') }}">
         <h1>Add User</h1>
         <label for="description">Description:</label>
@@ -568,8 +570,7 @@
         <label for="user_level">User Level:</label>
         <input type="number" name="user_level" required>
 
-        <input type="submit" value="Add User">
-        <a href="{{ url_for('home') }}">Back to Home</a>
+        <button class="btn btn-primary custom-btn" type="submit">Add User</button>
     </form>
 
     {% with messages = get_flashed_messages() %}
