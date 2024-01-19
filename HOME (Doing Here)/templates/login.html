@@ -294,25 +294,15 @@
             <input type="checkbox" id="togglePassword" onclick="togglePassword()">
             <span class="slider round"></span>
         </label>
-
         <div class="container" style="display: flex; justify-content: center; align-items: center;">
             <button>Login</button>
-        </div>
-
-
     </form>
 
 </body>
 
 </html>
 
-<script>
-    function togglePassword() {
-        const passwordField = document.getElementById('password');
-        passwordField.dataset.show = passwordField.dataset.show === 'true' ? 'false' : 'true';
-        passwordField.type = passwordField.dataset.show === 'true' ? 'text' : 'password';
-    }
-</script>
+
 
 <script>
     var myInput = document.getElementById("psw");
