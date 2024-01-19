@@ -70,6 +70,7 @@ def polling_route():
     type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
     type_results = fetch_data(type_query)
     type_options = [str(type[0]) for type in type_results]
+    # print(type_results)
 
     # Define the base query for fetching polling data
     base_query = """
@@ -99,7 +100,7 @@ def polling_route():
 
         # Fetch data using the modified query
         results = fetch_data(query)
-
+        # print(results)
         # Create a DataFrame from the results
         columns = [
             "evc_type",
@@ -110,14 +111,37 @@ def polling_route():
         ]
         df = pd.DataFrame(results, columns=columns)
 
-        # Render the HTML template with the DataFrame and other variables
-        return render_template(
-            "polling.html",
-            tables=[df.to_html(classes="data", index=False)],
-            titles=columns,
-            selected_type=selected_type,
-            type_options=type_options,
-        )
+        poll_config_list = df.get(["poll_config"]).values.tolist()
+        # print(poll_config_list[0])
+        list_str = str(poll_config_list[0]).strip("[]'").split(",")
+        for i in range(0, len(list_str)):
+            print(list_str[i])
+
+        poll_billing_list = df.get(["poll_billing"]).values.tolist()
+        # pint(poll_config_list[0])
+        lite_str = str(poll_billing_list[0]).strip("[]'").split(",")
+        for i in range(0, len(lite_str)):
+            poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+            # pint(poll_config_list[0])
+            end_str = str(poll_billing_list[0]).strip("[]'").split(",")
+            for i in range(0, len(end_str)):
+                poll_billing_enble_list = df.get(
+                    ["poll_billing_enable"]
+                ).values.tolist()
+                # pint(poll_config_list[0])
+                end1_str = str(poll_billing_list[0]).strip("[]'").split(",")
+                for i in range(0, len(end1_str)):
+                    return render_template(
+                        "polling.html",
+                        tables=[df.to_html(classes="data", index=False)],
+                        titles=columns,
+                        selected_type=selected_type,
+                        type_options=type_options,
+                        list_str=list_str,  # Pass the list_str to the template
+                        lite_str=lite_str,
+                        end_str=end_str,
+                        end1_str=end1_str,
+                    )
 
     # Render the HTML template without the table if no type is selected
     return render_template(
@@ -126,6 +150,10 @@ def polling_route():
         titles=[],
         selected_type=None,
         type_options=type_options,
+        list_str=[],  # Pass an empty list_str to the template
+        lite_str=[],
+        end_str=[],
+        end1_str=[],
     )
 
 
