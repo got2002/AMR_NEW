@@ -76,6 +76,39 @@
 
 {{ tables[0]|safe }}
 
+ <div class="address-pair">
+            <label for="evc_type">EVC_TYPE:</label>
+            <input type="text" id="evc_type" name="evc_type" required>
+        </div>
+        <br>
+
+        <!-- Address Pairs 1-5 -->
+        {% for i in range(1, 6) %}
+            <div class="address-pair">
+                <label for="start{{ i }}">Start Address:</label>
+                <input type="text" id="start{{ i }}" name="start{{ i }}" required>
+                <label for="end{{ i }}">End Address:</label>
+                <input type="text" id="end{{ i }}" name="end{{ i }}" required>
+                <label for="enable{{ i }}">Enable:</label>
+                <input type="checkbox" id="enable{{ i }}" name="enable{{ i }}" checked>
+            </div>
+        {% endfor %}
+
+        <h1>Add Billing</h1>
+
+        <!-- Address Pairs 6-15 -->
+        {% for i in range(6, 16) %}
+            <div class="address-pair">
+                <label for="start{{ i }}">Start Address:</label>
+                <input type="text" id="start{{ i }}" name="start{{ i }}" required>
+                <label for="end{{ i }}">End Address:</label>
+                <input type="text" id="end{{ i }}" name="end{{ i }}" required>
+                <label for="enable{{ i }}">Enable:</label>
+                <input type="checkbox" id="enable{{ i }}" name="enable{{ i }}" checked>
+            </div>
+        {% endfor %}
+
+    </form>
 <script>
     function submitForm() {
         // Trigger the form submission
