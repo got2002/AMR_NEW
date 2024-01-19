@@ -20,7 +20,6 @@
 
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #181828;
     }
 
     body {
@@ -103,23 +102,6 @@
         text-align: center;
     }
 
-    .address-pair {
-        margin-bottom: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        border-bottom: 2px solid #ccc;
-        /* เส้น border 2px ด้านล่าง */
-        padding-bottom: 15px;
-        /* เส้น border 2px ด้านล่าง */
-        padding-top: 10px;
-        width: 80%;
-        /* เพิ่มเติมความยาวเป็น 80% ของพื้นที่ข้างใน */
-        max-width: 600px;
-        /* หรือจำกัดความยาวสูงสุดที่ 600px */
-        margin: 0 auto;
-        /* เพิ่มบรรทัดนี้เพื่อให้เนื้อที่อยู่ตรงกลาง */
-    }
 
 
     label {
@@ -168,7 +150,6 @@
     }
 
     .sidebar {
-        align-items: center;
         position: fixed;
         left: -250px;
         width: 250px;
@@ -179,7 +160,7 @@
         transition: transform 300ms, box-shadow 300ms;
         overflow: hidden;
         background-image: linear-gradient(to right, #0048a7, #61bff9);
-        z-index: 6;
+        z-index: 666;
     }
 
     .sidebar header {
@@ -190,7 +171,6 @@
         background: #ffffff;
         user-select: none;
         position: relative;
-        z-index: 4;
         /* Add position relative for absolute positioning */
     }
 
@@ -201,7 +181,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 4;
+        z-index: 666;
     }
 
 
@@ -215,7 +195,6 @@
         padding-left: 20px;
         box-sizing: border-box;
         transition: .4s;
-        z-index: 4;
     }
 
     ul li:hover a {
@@ -241,7 +220,7 @@
 
     label #btn {
         left: 40px;
-        top: 45px;
+        top: 95px;
         font-size: 21px;
         color: #1109fffe;
         box-shadow: #1109ffbf 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) -1px 20px 16px;
@@ -272,12 +251,13 @@
     }
 
     #check:checked~label #cancel {
-        top: 35px;
+        top: 85px;
         left: 255px;
     }
 
     #check:checked~section {
         margin-left: 250px;
+
     }
 
     section {
@@ -295,7 +275,7 @@
     .navigation__menu>li>a.active {
         color: #dcf3ff;
         background-color: #1e2a31;
-        border: .00001px solid #0096ff8a;
+        border: .00001px solid #0004ff8a;
         box-shadow: #00000073 0px 25px 20px -20px;
     }
 
@@ -349,66 +329,6 @@
     }
 
 
-    /* Add this style for dropdown */
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        margin-right: 30px;
-        /* Add some spacing to the right of the dropdown */
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #222238;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-        min-width: 160px;
-        /* Set a minimum width for the dropdown content */
-        border-radius: 5px;
-        /* Add border-radius for a rounded appearance */
-    }
-
-    .dropdown-content a {
-        color: white;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.3s;
-        /* Add smooth transition effect */
-    }
-
-    .dropdown-content a:hover {
-        background-color: #1e2a31;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Style the dropdown button */
-    .dropdown-button {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 5%;
-        display: flex;
-        align-items: center;
-        /* Center the text and the arrow icon */
-    }
-
-    /* Style the arrow icon */
-    .dropdown-button i {
-        margin-left: 5px;
-    }
-
-    /* Add a green color when the dropdown is open */
-    .dropdown:hover .dropdown-button {
-        background-color: #45a049;
-    }
 
     .logo {
         width: 200px;
@@ -416,7 +336,7 @@
         object-position: 30% 38%;
         /* ปรับตำแหน่งของรูป (X, Y) */
         margin-top: 10%;
-        
+        margin-left: 10%;
     }
 
     a.logout-link {
@@ -456,7 +376,7 @@
         border-top-right-radius: 45%;
         border-bottom-left-radius: 35%;
         border-bottom-right-radius: 40%;
-        z-index: 4;
+        z-index: -1;
     }
 
     .sidebar::before {
@@ -464,7 +384,6 @@
         bottom: -50%;
         background-color: rgba(8, 0, 255, 0.788);
         animation: wawes 6s infinite linear;
-        z-index: 4;
     }
 
     .sidebar::after {
@@ -472,7 +391,6 @@
         bottom: -40%;
         background-color: rgba(0, 223, 253, 0.2);
         animation: wawes 7s infinite;
-        z-index: 4;
     }
 
     @keyframes wawes {
@@ -518,7 +436,7 @@
     .toggle {
         all: unset;
         background-color: dodgerblue;
-        color: rgb(239, 237, 237);
+        color: white;
         width: 150px;
         padding: 10px;
         font-weight: 700;
@@ -540,7 +458,7 @@
     }
 
     .list {
-        background-color: rgb(0, 0, 0);
+        background-color: white;
         color: #444;
         list-style: none;
         display: grid;
@@ -563,7 +481,7 @@
 
     .list-item:hover {
         background-color: dodgerblue;
-
+        color: #fff;
     }
 
     .toggle:focus::after {
@@ -604,7 +522,7 @@
     }
 
     .listR {
-        background-color: rgb(33, 29, 29);
+        background-color: white;
         color: #444;
         list-style: none;
         display: grid;
@@ -618,7 +536,7 @@
     .list-itemR {
         display: flex;
         align-items: center;
-        padding-left: 10px;
+        padding-left: 15px;
         transition: 0.6s, transform 0.4s var(--delay);
         transform: translateX(-100%);
         user-select: none;
@@ -627,7 +545,7 @@
 
     .list-itemR:hover {
         background-color: dodgerblue;
-        color: #1b1a1a;
+        color: #fff;
     }
 
     .toggleR:focus::after {
@@ -672,30 +590,6 @@
         width: 100%;
         margin-top: 10px;
     }
-    .footer {
-        font-family: 'Noto Sans Thai Looped', sans-serif;
-        background-image: linear-gradient(to right, #abdfff, #0048a7);
-        color: white;
-        text-align: right;
-        padding: 15px;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        z-index: 1;
-        /* กำหนดค่า z-index เพื่อให้ .footer อยู่ด้านล่างสุด */
-    }
-
-
-    .footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 10px;
-        font-size: 16px;
-    }
-
-    .footer a:hover {
-        text-decoration: underline;
-    }
 </style>
 
 <body>
@@ -720,12 +614,82 @@
         <img class="logo"
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
+        <div class="container">
+            <div class="form-containerSB">
+                <span class="textSB" alt="logo">Menu</span>
+                <div class="menu">
+                    <button class="toggleR">Reports Data</button>
+                    <ul class="listR">
+                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
+                                class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
+                                Status</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
+                                Summary</a></li>
+                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
+                                Summery</a></li>
+                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
+                                class="list-item-link">Site
+                                Detail</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
+                                Detail</a></li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Polling Actions</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
+                                class="list-item-link">Manual
+                                poll</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
+                        </li>
+                    </ul>
+                </div>
 
+                <div class="menu">
+                    <button class="toggle">Manage Sites</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <div class="footer">
-            <span>POWERED BY ATOS.ASGS</span>
+                <div class="menu">
+                    <button class="toggle">Manage Users</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
+                                class="list-item-link">Add
+                                User</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
+                                User</a>
+                        </li>
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route"
+                                class="list-item-link">Remove
+                                User</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu">
+                    <button class="toggle">Poll Sitting</button>
+                    <ul class="list">
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
+                                class="list-item-link">Add
+                                Mapping</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
+                                class="list-item-link">Add Polling</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div>
+    </div>
+
+
+
 </body>
 
 
