@@ -515,6 +515,7 @@
             /* สีพื้นหลังของกราฟ */
             border-radius: 8px;
             /* ทำให้มีมุมโค้ง */
+
         }
 
         table {
@@ -613,7 +614,7 @@
         }
 
         #date_picker {
-            width: 40%;
+            width: 33%;
             /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
         }
 
@@ -735,6 +736,19 @@
             margin: 0 auto;
         }
 
+        /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+        #region_dropdown {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: none;
+            width: 200px;
+            /* ปรับขนาดตามความต้องการ */
+            margin-bottom: 2%;
+            margin-top: 1%;
+        }
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -747,7 +761,7 @@
     </style>
 </head>
 <ul class="navbar-container">
-    <img class="logo" src="{{ url_for('static', filename='logo_PTT_3.png') }}" alt="logo">
+    <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
     <li class="navbar-item">Reports Data<span class="navbar-item_label">Reports Data</span>
         <ul class="navbar-container_sub">
             <li class="navbar-item_sub"><a href="{{ url_for('billing_data') }}" class="list-item-link"><a href=""
@@ -818,16 +832,15 @@
                         onclick="showLoading()">Config Data</button>
                     <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
                         Filters</button>
-                    <!-- ตำแหน่งของ LoadingOverlay -->
-                    <div id="loadingOverlay" style="display: none;">
-                        <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
-                    </div>
                 </form>
 
             </form>
 
             <div>
-
+                <!-- ตำแหน่งของ LoadingOverlay -->
+                <div id="loadingOverlay" style="display: none;">
+                    <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
+                </div>
                 <div>
                     <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
                     <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
@@ -836,342 +849,321 @@
                 </div>
 
 
-                <div class="table-container1">
-                    {% if tables.get('config_data_run1') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 1: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run1']|safe }}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endif %}
+                <body>
+                    <div class="form-containerBOx">
+                        <div class="form-container">
+
+                            <div class="table-container">
+                                {% if tables.get('daily_data_run1') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 1: {{ selected_tag }}</h5>
+                                    {{ tables['daily_data_run1']|safe }}
+                                </div>
+                                <div class="plot-container">
+                                    {{ graph_corrected|safe }}
+                                </div>
+
+                                <div class="plot-container">
+                                    {{ graph_uncorrected|safe }}
+                                </div>
+
+                                <div class="plot-container">
+                                    {{ graph_pressure|safe }}
+                                </div>
+
+                                <div class="plot-container">
+                                    {{ graph_temperature|safe }}
+                                </div>
+                                {% endif %}
+
+                                {% if tables.get('daily_data_run2') %}
+                                <div class="table" id="table2">
+                                    <h5>Run 2: {{ selected_tag }}</h5>
+                                    {{ tables['daily_data_run2']|safe }}
+                                </div>
+                                {% endif %}
+
+                                {% if tables.get('daily_data_run3') %}
+                                <div class="table" id="table3">
+                                    <h5>Run 3: {{ selected_tag }}</h5>
+                                    {{ tables['daily_data_run3']|safe }}
+                                </div>
+                                {% endif %}
+
+                                {% if tables.get('daily_data_run4') %}
+                                <div class="table" id="table4">
+                                    <h5>Run 4: {{ selected_tag }}</h5>
+                                    {{ tables['daily_data_run4']|safe }}
+                                </div>
+                                {% endif %}
+                            </div>
 
 
 
 
-                    {% if tables.get('config_data_run2') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 2: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run2']|safe }}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endif %}
-
-                    {% if tables.get('config_data_run3') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 3: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run3']|safe }}
-                            </tbody>
-                        </table>
+                            <div class="table-container1">
+                                {% if tables.get('config_data_run1') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 1: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run1']|safe }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
 
 
-                    </div>
-                    {% endif %}
-
-                    {% if tables.get('config_data_run4') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 4: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run4']|safe }}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endif %}
-                    {% if tables.get('config_data_run5') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 5: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run5']|safe }}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endif %}
-
-                    {% if tables.get('config_data_run6') %}
-                    <div class="table" id="table1">
-                        <h5>Config Run 6: {{ selected_tag }}</h5>
-                        <table class="table1">
-                            <!-- The following line combines thead and tbody into a single block -->
-                            <thead>
-                                <tr>
-                                    {% for key, value in dropped_columns_data[0].items() %}
-                                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ tables['config_data_run6']|safe }}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endif %}
-
-                    <div class="table-container">
-                        {% if tables.get('daily_data_run1') %}
-                        <div class="table" id="table1">
-                            <h5>{{ 'Daily Run 1: ' }}{{ selected_tag }}</h5>
-                            {{ tables['daily_data_run1']|default('N/A')|safe }}
-                        </div>
-                        {% else %}
-                        <div class="table" id="table1">
-                            <h5>{{ 'Daily Run 1: N/A' }}</h5>
-                        </div>
-                        {% endif %}
-
-                        {% if tables.get('daily_data_run2') %}
-                        <div class="table" id="table2">
-                            <h5>{{ 'Daily Run 2: ' }}{{ selected_tag }}</h5>
-                            {{ tables['daily_data_run2']|default('N/A')|safe }}
-                        </div>
-                        {% else %}
-                        <div class="table" id="table2">
-                            <h5>{{ 'Daily Run 2: N/A' }}</h5>
-                        </div>
-                        {% endif %}
-
-                        {% if tables.get('daily_data_run3') %}
-                        <div class="table" id="table3">
-                            <h5>{{ 'Daily Run 3: ' }}{{ selected_tag }}</h5>
-                            {{ tables['daily_data_run3']|default('N/A')|safe }}
-                        </div>
-                        {% else %}
-                        <div class="table" id="table3">
-                            <h5>{{ 'Daily Run 3: N/A' }}</h5>
-                        </div>
-                        {% endif %}
-
-                        {% if tables.get('daily_data_run4') %}
-                        <div class="table" id="table4">
-                            <h5>{{ 'Daily Run 4: ' }}{{ selected_tag }}</h5>
-                            {{ tables['daily_data_run4']|default('N/A')|safe }}
-                        </div>
-                        {% else %}
-                        <div class="table" id="table4">
-                            <h5>{{ 'Daily Run 4: N/A' }}</h5>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="plot-container">
-                        {{ graph_corrected|safe }}
-                    </div>
-
-                    <div class="plot-container">
-                        {{ graph_uncorrected|safe }}
-                    </div>
-
-                    <div class="plot-container">
-                        {{ graph_pressure|safe }}
-                    </div>
-
-                    <div class="plot-container">
-                        {{ graph_temperature|safe }}
-                    </div>
-</body>
 
 
-<!-- Add this script for the JavaScript functionality -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Assuming you have JavaScript/jQuery to handle changes and update the display
-        var selectedRegion = null;
-        var selectedTag = null;
-        var selectedDate = null;
+                                {% if tables.get('config_data_run2') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 2: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run2']|safe }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
 
-        document.getElementById('region_dropdown').addEventListener('change', function () {
-            selectedRegion = this.value;
-        });
+                                {% if tables.get('config_data_run3') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 3: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run3']|safe }}
+                                        </tbody>
+                                    </table>
 
-        document.getElementById('tag_dropdown').addEventListener('change', function () {
-            selectedTag = this.value;
-        });
 
-        document.getElementById('date_picker').addEventListener('change', function () {
-            selectedDate = this.value;
-        });
+                                </div>
+                                {% endif %}
 
-        // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-        formDailyData.addEventListener('config_data', function (event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
+                                {% if tables.get('config_data_run4') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 4: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run4']|safe }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                {% if tables.get('config_data_run5') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 5: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run5']|safe }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                {% if tables.get('config_data_run6') %}
+                                <div class="table" id="table1">
+                                    <h5>Run 6: {{ selected_tag }}</h5>
+                                    <table class="table1">
+                                        <!-- The following line combines thead and tbody into a single block -->
+                                        <thead>
+                                            <tr>
+                                                {% for key, value in dropped_columns_data[0].items() %}
+                                                <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                                {% endfor %}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{ tables['config_data_run6']|safe }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
 
-            showLoadingOverlay();
 
-            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-            setTimeout(function () {
-                // Update the displayed values after the loading is complete
-                document.getElementById('selected_region').innerText = selectedRegion;
-                document.getElementById('selected_tag').innerText = selectedTag;
-                document.getElementById('selected_date').innerText = selectedDate;
+                </body>
 
-                // Optionally, update the meter ID
-                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                if (selectedMeterIdSpan) {
-                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                }
 
-                // Reset selected values
-                selectedRegion = null;
-                selectedTag = null;
-                selectedDate = null;
+                <!-- Add this script for the JavaScript functionality -->
+                <script>
+                    function clearFilters() {
+                        // ล้างค่า dropdowns
+                        document.getElementById('region_dropdown').value = '';
+                        document.getElementById('tag_dropdown').value = '';
 
-                // Submit the form programmatically
-                formDailyData.submit();
-            }, 2000); // Adjust the delay time as needed (in milliseconds)
-        });
-
-        // Event listener for form submission with 'config_data' event
-        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-        formConfigData.addEventListener('daily_data', function (event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
-
-            showLoadingOverlay();
-
-            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-            setTimeout(function () {
-                // Update the displayed values after the loading is complete
-                document.getElementById('selected_region').innerText = selectedRegion;
-                document.getElementById('selected_tag').innerText = selectedTag;
-                document.getElementById('selected_date').innerText = selectedDate;
-
-                // Optionally, update the meter ID
-                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                if (selectedMeterIdSpan) {
-                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                }
-
-                // Reset selected values
-                selectedRegion = null;
-                selectedTag = null;
-                selectedDate = null;
-
-                // Submit the form programmatically
-                formConfigData.submit();
-            }, 2000); // Adjust the delay time as needed (in milliseconds)
-        });
-    });
-    function showLoading() {
-        // แสดง loading overlay
-        document.getElementById('loadingOverlay').style.display = 'block';
-    }
-
-    // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
-    function hideLoading() {
-        // ซ่อน loading overlay
-        document.getElementById('loadingOverlay').style.display = 'none';
-    }
-
-    function loadData() {
-        // แสดง loading overlay ก่อนทำการโหลดข้อมูล
-        showLoading();
-
-        // ทำการโหลดข้อมูลด้วย Ajax
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'billing_data', true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                // เมื่อโหลดเสร็จสิ้น ให้เรียก hideLoading()
-                hideLoading();
-
-                // ตรวจสอบสถานะการตอบกลับ
-                if (xhr.status == 200) {
-                    // ดำเนินการกับข้อมูลที่ได้รับ
-                    var responseData = xhr.responseText;
-                    // ...
-
-                } else {
-                    // แสดงข้อความหรือดำเนินการที่เหมาะสมเมื่อมีข้อผิดพลาด
-                    console.error('เกิดข้อผิดพลาด: ' + xhr.status);
-                }
-            }
-        };
-
-        xhr.send();
-    }
-    // Wait for the document to be ready
-    $(document).ready(function () {
-        $('#date_picker').datepicker({
-            format: 'mm/yyyy',
-            startView: 'months',
-            minViewMode: 'months',
-            autoclose: true
-        });
-
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-            var selectedRegion = $(this).val();
-
-            $.ajax({
-                type: 'GET',
-                url: '/get_tags',
-                data: { 'selected_region': selectedRegion },
-                success: function (response) {
-                    // Clear existing options in the tag dropdown
-                    $('#tag_dropdown').empty();
-                    // Add the 'All' option
-                    $('#tag_dropdown').append('<option value="" selected>All</option>');
-                    // Add new tag options based on the response
-                    for (var i = 0; i < response.tag_options.length; i++) {
-                        var tag = response.tag_options[i];
-                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                        // ล้างค่า input
+                        document.getElementById('date_picker').value = '';
+                        function showLoading() {
+                            // แสดง loading overlay
+                            document.getElementById('loadingOverlay').style.display = 'block';
+                        }
                     }
-                    hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
-                },
-                error: function (error) {
-                    console.log('Error fetching tag options:', error);
-                    hideLoadingOverlay(); // Hide loading overlay after AJAX request error
-                }
-            });
-        });
-    });
-</script>
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Assuming you have JavaScript/jQuery to handle changes and update the display
+                        var selectedRegion = null;
+                        var selectedTag = null;
+                        var selectedDate = null;
+
+                        document.getElementById('region_dropdown').addEventListener('change', function () {
+                            selectedRegion = this.value;
+                        });
+
+                        document.getElementById('tag_dropdown').addEventListener('change', function () {
+                            selectedTag = this.value;
+                        });
+
+                        document.getElementById('date_picker').addEventListener('change', function () {
+                            selectedDate = this.value;
+                        });
+
+                        // Event listener for form submission with 'daily_data' event
+                        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+                        formDailyData.addEventListener('config_data', function (event) {
+                            event.preventDefault(); // Prevent the form from submitting immediately
+
+                            showLoadingOverlay();
+
+                            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+                            setTimeout(function () {
+                                // Update the displayed values after the loading is complete
+                                document.getElementById('selected_region').innerText = selectedRegion;
+                                document.getElementById('selected_tag').innerText = selectedTag;
+                                document.getElementById('selected_date').innerText = selectedDate;
+
+                                // Optionally, update the meter ID
+                                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                                if (selectedMeterIdSpan) {
+                                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                                }
+
+                                // Reset selected values
+                                selectedRegion = null;
+                                selectedTag = null;
+                                selectedDate = null;
+
+                                // Submit the form programmatically
+                                formDailyData.submit();
+                            }, 2000); // Adjust the delay time as needed (in milliseconds)
+                        });
+
+                        // Event listener for form submission with 'config_data' event
+                        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+                        formConfigData.addEventListener('daily_data', function (event) {
+                            event.preventDefault(); // Prevent the form from submitting immediately
+
+                            showLoadingOverlay();
+
+                            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+                            setTimeout(function () {
+                                // Update the displayed values after the loading is complete
+                                document.getElementById('selected_region').innerText = selectedRegion;
+                                document.getElementById('selected_tag').innerText = selectedTag;
+                                document.getElementById('selected_date').innerText = selectedDate;
+
+                                // Optionally, update the meter ID
+                                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                                if (selectedMeterIdSpan) {
+                                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                                }
+
+                                // Reset selected values
+                                selectedRegion = null;
+                                selectedTag = null;
+                                selectedDate = null;
+
+                                // Submit the form programmatically
+                                formConfigData.submit();
+                            }, 2000); // Adjust the delay time as needed (in milliseconds)
+                        });
+                    });
+                    function showLoading() {
+                        // แสดง loading overlay
+                        document.getElementById('loadingOverlay').style.display = 'block';
+                    }
+
+                    // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
+                    function hideLoading() {
+                        // ซ่อน loading overlay
+                        document.getElementById('loadingOverlay').style.display = 'none';
+                    }
+
+
+                    // Wait for the document to be ready
+                    $(document).ready(function () {
+                        $('#date_picker').datepicker({
+                            format: 'mm/yyyy',
+                            startView: 'months',
+                            minViewMode: 'months',
+                            autoclose: true
+                        });
+
+                        // Event listener for region dropdown change
+                        $('#region_dropdown').change(function () {
+                            var selectedRegion = $(this).val();
+
+                            $.ajax({
+                                type: 'GET',
+                                url: '/get_tags',
+                                data: { 'selected_region': selectedRegion },
+                                success: function (response) {
+                                    // Clear existing options in the tag dropdown
+                                    $('#tag_dropdown').empty();
+                                    // Add the 'All' option
+                                    $('#tag_dropdown').append('<option value="" selected>All</option>');
+                                    // Add new tag options based on the response
+                                    for (var i = 0; i < response.tag_options.length; i++) {
+                                        var tag = response.tag_options[i];
+                                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                                    }
+                                    hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
+                                },
+                                error: function (error) {
+                                    console.log('Error fetching tag options:', error);
+                                    hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+                                }
+                            });
+                        });
+                    });
+
+
+                </script>

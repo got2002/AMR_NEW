@@ -24,9 +24,7 @@
         margin: 0;
         padding: 0;
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
-        overflow-x: hidden;
-        overflow-y: hidden;
-        ;
+        overflow: hidden;
         font-family: 'Noto Sans Thai Looped', sans-serif;
     }
 
@@ -42,7 +40,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 0;
+        z-index: 3;
     }
 
 
@@ -322,9 +320,11 @@
         padding: 15px;
         position: fixed;
         bottom: 0;
-        left: 0;
         width: 100%;
+        z-index: 1;
+        /* กำหนดค่า z-index เพื่อให้ .footer อยู่ด้านล่างสุด */
     }
+
 
     .footer a {
         color: white;
@@ -402,24 +402,45 @@
         transition: transform 0.5s ease;
     }
 
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 20px;
-        padding: 20px;
-    }
 
     form {
-        max-width: 400px;
-        margin: auto;
-        margin-top: 100px;
-        margin-bottom: 50px;
+        margin-top: 10px;
+        margin-bottom: 0px;
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        /* เพิ่มบรรทัดนี้เพื่อจัดวางซ้าย-ขวาตามแนวนอน */
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 2;
+        max-height: 80vh;
+        /* กำหนดความสูงสูงสุด */
+    }
+
+    /* เพิ่มสไตล์สำหรับส่วนที่มีเนื้อหาเกินพื้นที่แสดง */
+    form .scrollable-content {
+        max-height: 60vh;
+        /* กำหนดความสูงสูงสุด */
+        overflow-y: auto;
+    }
+
+    /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+    #region_dropdown {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: none;
+        width: 200px;
+        /* ปรับขนาดตามความต้องการ */
+        margin-bottom: 5%;
+        margin-top: 5%;
     }
 
     /* ตัวอย่าง label, input, submit button, link, hover styles ไม่เปลี่ยนแปลง */
@@ -437,34 +458,30 @@
         box-sizing: border-box;
     }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
-        background-color: #4caf50;
+    .custom-btn {
+        margin: 1%;
         color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
         cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
     }
 
-    a {
-        display: block;
-        margin-top: 10px;
-        color: #4caf50;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #45a049;
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
     }
 </style>
 
@@ -532,7 +549,8 @@
                         <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route"
+                                class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
@@ -553,34 +571,29 @@
     </div>
 
     <body>
-        <div class="main2" id="main2">
-            <form method="get" action="{{ url_for('sitedetail_data') }}">
-                <h2>Site Detail</h2>
+        <form method="get" action="{{ url_for('sitedetail_data') }}">
+            <h2>Site Detail</h2>
 
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
+            <select id="region_dropdown" name="region_dropdown">
+                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
+                {% endfor %}
+            </select>
 
-                <button type="submit">Submit</button>
-                <button type="button" onclick="clearFilters()">Clear</button>
+            <button class="custom-btn btn-2" type="submit">Submit</button>
+            <!-- ใส่เครื่องหมายข้อความหรือ class เพื่อให้เป็นจุดที่เราต้องการเลื่อน -->
+            <div class="scrollable-content">
                 {{ tables[0]|safe }}
-            </form>
-
-            
-
-
-
-            <div class="footer">
-                <span>POWERED BY ATOS.ASGS</span>
             </div>
+        </form>
+
+
+        <div class="footer">
+            <span>POWERED BY ATOS.ASGS</span>
+        </div>
         <div>
-
     </body>
-
 
 </html>
 
@@ -670,5 +683,9 @@
                 dropdownContent.style.display = "block";
             }
         });
+    }
+
+    function clearFilters() {
+        document.getElementById('region_dropdown').value = '';
     }
 </script>
