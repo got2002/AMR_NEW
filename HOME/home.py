@@ -490,7 +490,8 @@ def billing_data():
                     "METER_STREAM_NO",
                 ],
             )
-
+            
+            
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
