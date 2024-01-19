@@ -7,19 +7,109 @@
     <title>Form</title>
 </head>
 
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    h1 {
+        color: #333;
+    }
+
+    .textbox-group {
+        width: 70%;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .textbox-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+        padding: 8px;
+        box-sizing: border-box;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    #statusMessage {
+        margin-top: 15px;
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    .link-button {
+        display: inline-block;
+        margin-top: 15px;
+        text-decoration: none;
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border-radius: 5px;
+    }
+
+    /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+    #region_dropdown {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: none;
+        width: 200px;
+        /* ปรับขนาดตามความต้องการ */
+        margin-bottom: 5%;
+        margin-top: 5%;
+    }
+
+</style>
 
 <body>
-
+    <div class="textbox-group">
     <form action="/submit_form" method="post">
         <h1>Mapping config</h1>
 
-        <div style="display: inline-block; border: 0.5px solid #6e6767; padding: 10px; border-radius: 10px; background-color: #1eff00;">
-            <a href="{{ url_for('add_mapping_route') }}" style="text-decoration: none; color: #333; font-weight: bold;">Elter</a>
+        <div
+            style="display: inline-block; border: 0.5px solid #6e6767; padding: 10px; border-radius: 10px; background-color: #1eff00;">
+            <a href="{{ url_for('add_mapping_route') }}"
+                style="text-decoration: none; color: #333; font-weight: bold;">Elter</a>
         </div>
 
-        <div style="display: inline-block; border: 0.5px solid #ffffff; padding: 10px; border-radius: 10px; background-color: #cbdacb;">
-            <a href="{{ url_for('add_actraris_route') }}" style="text-decoration: none; color: #1a1818; font-weight: bold;">Actraris</a>
+        <div
+            style="display: inline-block; border: 0.5px solid #ffffff; padding: 10px; border-radius: 10px; background-color: #cbdacb;">
+            <a href="{{ url_for('add_actraris_route') }}"
+                style="text-decoration: none; color: #1a1818; font-weight: bold;">Actraris</a>
         </div>
 
         <div class="textbox-group">
@@ -31,10 +121,10 @@
 
             <label for="type_value1">TYPE_VALUE:</label>
             <select id="type_value1" name="type_value1" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type1">EVC_TYPE:</label>
             <input type="text" id="evc_type1" name="evc_type1" required>
@@ -55,10 +145,10 @@
 
             <label for="type_value2">TYPE_VALUE:</label>
             <select id="type_value2" name="type_value2" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type2">EVC_TYPE:</label>
             <input type="text" id="evc_type2" name="evc_type2" required>
@@ -79,10 +169,10 @@
 
             <label for="type_value3">TYPE_VALUE:</label>
             <select id="type_value3" name="type_value3" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type3">EVC_TYPE:</label>
             <input type="text" id="evc_type3" name="evc_type3" required>
@@ -103,10 +193,10 @@
 
             <label for="type_value4">TYPE_VALUE:</label>
             <select id="type_value4" name="type_value4" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type4">EVC_TYPE:</label>
             <input type="text" id="evc_type4" name="evc_type4" required>
@@ -127,10 +217,10 @@
 
             <label for="type_value5">TYPE_VALUE:</label>
             <select id="type_value5" name="type_value5" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type5">EVC_TYPE:</label>
             <input type="text" id="evc_type5" name="evc_type5" required>
@@ -152,10 +242,10 @@
 
             <label for="type_value6">TYPE_VALUE:</label>
             <select id="type_value6" name="type_value6" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type6">EVC_TYPE:</label>
             <input type="text" id="evc_type6" name="evc_type6" required>
@@ -177,10 +267,10 @@
 
             <label for="type_value7">TYPE_VALUE:</label>
             <select id="type_value7" name="type_value7" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type7">EVC_TYPE:</label>
             <input type="text" id="evc_type7" name="evc_type7" required>
@@ -202,10 +292,10 @@
 
             <label for="type_value8">TYPE_VALUE:</label>
             <select id="type_value8" name="type_value8" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type8">EVC_TYPE:</label>
             <input type="text" id="evc_type8" name="evc_type8" required>
@@ -227,10 +317,10 @@
 
             <label for="type_value9">TYPE_VALUE:</label>
             <select id="type_value9" name="type_value9" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type9">EVC_TYPE:</label>
             <input type="text" id="evc_type9" name="evc_type9" required>
@@ -252,10 +342,10 @@
 
             <label for="type_value10">TYPE_VALUE:</label>
             <select id="type_value10" name="type_value10" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type10">EVC_TYPE:</label>
             <input type="text" id="evc_type10" name="evc_type10" required>
@@ -277,10 +367,10 @@
 
             <label for="type_value11">TYPE_VALUE:</label>
             <select id="type_value11" name="type_value11" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type11">EVC_TYPE:</label>
             <input type="text" id="evc_type11" name="evc_type11" required>
@@ -302,10 +392,10 @@
 
             <label for="type_value12">TYPE_VALUE:</label>
             <select id="type_value12" name="type_value12" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type12">EVC_TYPE:</label>
             <input type="text" id="evc_type12" name="evc_type12" required>
@@ -327,10 +417,10 @@
 
             <label for="type_value13">TYPE_VALUE:</label>
             <select id="type_value13" name="type_value13" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type13">EVC_TYPE:</label>
             <input type="text" id="evc_type13" name="evc_type13" required>
@@ -352,10 +442,10 @@
 
             <label for="type_value14">TYPE_VALUE:</label>
             <select id="type_value14" name="type_value14" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type14">EVC_TYPE:</label>
             <input type="text" id="evc_type14" name="evc_type14" required>
@@ -377,10 +467,10 @@
 
             <label for="type_value15">TYPE_VALUE:</label>
             <select id="type_value15" name="type_value15" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type15">EVC_TYPE:</label>
             <input type="text" id="evc_type15" name="evc_type15" required>
@@ -402,10 +492,10 @@
 
             <label for="type_value16">TYPE_VALUE:</label>
             <select id="type_value16" name="type_value16" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type16">EVC_TYPE:</label>
             <input type="text" id="evc_type16" name="evc_type16" required>
@@ -427,10 +517,10 @@
 
             <label for="type_value17">TYPE_VALUE:</label>
             <select id="type_value17" name="type_value17" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type17">EVC_TYPE:</label>
             <input type="text" id="evc_type17" name="evc_type17" required>
@@ -452,10 +542,10 @@
 
             <label for="type_value18">TYPE_VALUE:</label>
             <select id="type_value18" name="type_value18" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type18">EVC_TYPE:</label>
             <input type="text" id="evc_type18" name="evc_type18" required>
@@ -477,10 +567,10 @@
 
             <label for="type_value19">TYPE_VALUE:</label>
             <select id="type_value19" name="type_value19" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type19">EVC_TYPE:</label>
             <input type="text" id="evc_type19" name="evc_type19" required>
@@ -502,10 +592,10 @@
 
             <label for="type_value20">TYPE_VALUE:</label>
             <select id="type_value20" name="type_value20" required>
-        <option value="ARRAY6">ARRAY6</option>
-        <option value="signed">Short</option>
-        <option value="Float">Long</option>
-    </select>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
             <label for="evc_type20">EVC_TYPE:</label>
             <input type="text" id="evc_type20" name="evc_type20" required>
@@ -517,15 +607,10 @@
             <input type="text" id="data_type20" name="data_type20" required>
         </div>
 
-
         <input type="submit" value="Submit">
     </form>
 
 
-</body>
-
-<body>
-    <a href="{{ url_for('home') }}">Home</a>
 </body>
 
 </html>
