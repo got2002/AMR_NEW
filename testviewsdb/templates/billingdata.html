@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Data</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap-datepicker CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap-datepicker JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            // Event listener for changes in the REGION_NAME dropdown
+            $('#region-dropdown').change(function(){
+                // Get the selected REGION_NAME
+                var selectedRegion = $(this).val();
+
+                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
+                $.ajax({
+                    url: '/get_tags',
+                    method: 'GET',
+                    data: { region: selectedRegion },
+                    success: function(data){
+                        // Clear existing options in tag_id dropdown
+                        $('#tag-dropdown').empty();
+
+                        // Add a default option
+                        $('#tag-dropdown').append($('<option>', {
+                            value: '',
+                            text: 'Select Tag'
+                        }));
+
+                        // Add new options based on the retrieved data
+                        $.each(data, function(index, value){
+                            $('#tag-dropdown').append($('<option>', {
+                                value: value,
+                                text: value
+                            }));
+                        });
+                    }
+                });
+            });
+
+            // Initialize the month and year datepicker
+            $('#monthYearPicker').datepicker({
+                format: "mm/yyyy",
+                viewMode: "months",
+                minViewMode: "months",
+                autoclose: true,
+                showOnFocus: true  // Display the calendar when the input field is focused
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <form method="GET" action="{{ url_for('billing_data') }}">
+        <div class="form-row">
+            <!-- Dropdown for REGION_NAME -->
+            <div class="form-group col-md-4">
+                <label for="region-dropdown">Select Region:</label>
+                <select id="region-dropdown" name="region" class="form-control">
+                    <option value="">Select Region</option>
+                    {% for result in region_results %}
+                        <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <!-- Dropdown for tag_id -->
+            <div class="form-group col-md-4">
+                <label for="tag-dropdown">Select Tag:</label>
+                <select id="tag-dropdown" name="tag" class="form-control">
+                    <option value="">Select Tag</option>
+                    {% for result in tag_results %}
+                        <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Input field for selecting month and year -->
+            <div class="form-group col-md-4">
+                <label for="monthYearPicker">Month & Year:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_date }}" autocomplete="off">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="monthYearAddon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+   <!-- Add this section after the form -->
+   <div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>DATA_DATE</th>
+                <th>REGION_NAME</th>
+                <th>TAG_ID</th>
+                <th>METER_ID</th>
+                <th>METER_STREAM_NO</th>
+                <th>CORRECTED_VOL</th>
+                <th>CORRECTED_VOL_UNIT</th>
+                <th>UNCORRECTED_VOL</th>
+                <th>UNCORRECTED_VOL_UNIT</th>
+                <th>AVR_TF</th>
+                <th>AVR_TF_UNIT</th>
+                <th>AVR_PF</th>
+                <th>AVR_PF_UNIT</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                    <td>{{ row[7] }}</td>
+                    <td>{{ row[8] }}</td>
+                    <td>{{ row[9] }}</td>
+                    <td>{{ row[10] }}</td>
+                    <td>{{ row[11] }}</td>
+                    <td>{{ row[12] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+    
+</body>
+</html>
