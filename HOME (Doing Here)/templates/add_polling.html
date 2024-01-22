@@ -75,25 +75,69 @@
         margin-bottom: 5%;
         margin-top: 5%;
     }
+
     .logo {
-            width: 200px;
-            /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-            margin: auto;
-            background-color: #ffffff;
-            display: flex;
-        }
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        margin: auto;
+        background-color: #ffffff;
+        display: flex;
+    }
+
+
+    .custom-btn {
+        margin: auto;
+        color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
+    }
+
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    }
+
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+    }
 </style>
 
 <body>
     <div class="textbox-group">
-        <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
         <h1>Poll Configurator</h1>
 
         <div. class="address-pair">
             <label for="evc_type">EVC_TYPE:</label>
             <input type="text" id="evc_type" name="evc_type" required>
-        </div>
-        <div class="textbox-group">
+    </div>
+    <div class="textbox-group">
         </form>
         <!-- Address Pair 1 -->
         <div class="address-pair">
@@ -249,7 +293,7 @@
         </form>
 
 
-        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+        <button class="custom-btn btn-2" type="button" onclick="saveToOracle()">Save to Oracle</button>
         <div id="statusMessage"></div>
 </body>
 
