@@ -175,8 +175,8 @@
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
         <h1>Mapping config</h1>
-        <button id="btnElter" class="custom-btn btn-2">Elter</button>
-        <button id="btnActraris" class="custom-btn btn-1">Actraris</button>
+        <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-1">Elter</button>
+        <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-2">Actraris</button>
     </div>
     <div class="textbox-group">
         <form action="/submit_form" method="post">
@@ -674,19 +674,6 @@
         <input type="text" id="data_type20" name="data_type20" required>
 
         <input class="custom-btn btn-2" type="submit" value="Submit">
-
-
-        <script>
-            document.getElementById("btnElter").addEventListener("click", function () {
-                // ทำสิ่งที่คุณต้องการทำเมื่อคลิกปุ่ม Elter
-                alert("Elter button clicked");
-            });
-
-            document.getElementById("btnActraris").addEventListener("click", function () {
-                // ทำสิ่งที่คุณต้องการทำเมื่อคลิกปุ่ม Actraris
-                alert("Actraris button clicked");
-            });
-        </script>
 </body>
 
 </html>
