@@ -117,7 +117,7 @@
 
     .btn {
         margin: 10px;
-        
+
     }
 
     .custom-btn {
@@ -160,6 +160,11 @@
     .btn-2:hover {
         box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
     }
+
+    button {
+        margin: 10px;
+        border-radius: 5px;
+    }
 </style>
 
 <body>
@@ -168,8 +173,9 @@
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
         <h1>Mapping config</h1>
-        <button class="custom-btn btn-2" href="add_mapping_route" >Elter</button>
-        <button href="add_actraris_route" class="custom-btn btn-1">Actraris</button>
+        <button class="custom-btn btn-2" onclick="window.location.href='add_mapping_route'">Elter</button>
+        <button class="custom-btn btn-1" onclick="window.location.href='add_actraris_route'">Actraris</button>
+
     </div>
     <div class="textbox-group">
         <form action="/submit_form" method="post">
