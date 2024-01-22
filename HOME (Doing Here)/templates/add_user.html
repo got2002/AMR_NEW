@@ -466,6 +466,44 @@
     a:hover {
         color: #45a049;
     }
+
+    .custom-btn {
+            margin: 1%;
+            color: #fff;
+            width: 140px;
+            height: 40px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 1 */
+        .btn-1 {
+            border: none;
+            background-color: #333;
+            box-shadow: 0 0 5px #333;
+        }
+
+        .btn-1:hover {
+            box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+        }
+
+
+        /* 1 */
+        .btn-2 {
+            border: none;
+            background-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+        }
+
+        .btn-2:hover {
+            box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+        }
 </style>
 
 <body>
@@ -570,7 +608,7 @@
         <label for="user_level">User Level:</label>
         <input type="number" name="user_level" required>
 
-        <button class="btn btn-primary custom-btn" type="submit">Add User</button>
+        <button class="custom-btn btn-2" type="submit">Add User</button>
     </form>
 
     {% with messages = get_flashed_messages() %}
