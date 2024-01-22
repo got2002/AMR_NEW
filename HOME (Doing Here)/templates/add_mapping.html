@@ -124,7 +124,7 @@
         /* สีพื้นหลังเมื่อเม้าส์ hover */
     }
 
-    button {
+    .btnA {
         margin: 10px;
     }
 
@@ -139,7 +139,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
-        margin-bottom: 5%;
+        margin-bottom: 2%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -171,39 +171,36 @@
 
 <body>
     <div class="textbox-group">
-        <form action="/submit_form" method="post">
-            <img class="logo"
-                src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="logo">
-            <h1>Mapping config</h1>
-
-
-            <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-2">Elter</button>
-            <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-1">Actraris</button>
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
+        <h1>Mapping config</h1>
+        <button id="btnElter" class="custom-btn btn-2">Elter</button>
+        <button id="btnActraris" class="custom-btn btn-1">Actraris</button>
     </div>
     <div class="textbox-group">
+        <form action="/submit_form" method="post">
+            <label for="address1">ADDRESS:</label>
+            <input type="text" id="address1" name="address1" required>
 
-        <label for="address1">ADDRESS:</label>
-        <input type="text" id="address1" name="address1" required>
+            <label for="description1">DESCRIPTION:</label>
+            <input type="text" id="description1" name="description1" required>
 
-        <label for="description1">DESCRIPTION:</label>
-        <input type="text" id="description1" name="description1" required>
+            <label for="type_value1">TYPE_VALUE:</label>
+            <select id="type_value1" name="type_value1" required>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
-        <label for="type_value1">TYPE_VALUE:</label>
-        <select id="type_value1" name="type_value1" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
+            <label for="evc_type1">EVC_TYPE:</label>
+            <input type="text" id="evc_type1" name="evc_type1" required>
 
-        <label for="evc_type1">EVC_TYPE:</label>
-        <input type="text" id="evc_type1" name="evc_type1" required>
+            <label for="or_der1">OR_DER:</label>
+            <input type="text" id="or_der1" name="or_der1" required>
 
-        <label for="or_der1">OR_DER:</label>
-        <input type="text" id="or_der1" name="or_der1" required>
-
-        <label for="data_type1">DATA_TYPE:</label>
-        <input type="text" id="data_type1" name="data_type1" required>
+            <label for="data_type1">DATA_TYPE:</label>
+            <input type="text" id="data_type1" name="data_type1" required>
     </div>
 
     <div class="textbox-group">
@@ -679,7 +676,17 @@
         <input class="custom-btn btn-2" type="submit" value="Submit">
 
 
+        <script>
+            document.getElementById("btnElter").addEventListener("click", function () {
+                // ทำสิ่งที่คุณต้องการทำเมื่อคลิกปุ่ม Elter
+                alert("Elter button clicked");
+            });
 
+            document.getElementById("btnActraris").addEventListener("click", function () {
+                // ทำสิ่งที่คุณต้องการทำเมื่อคลิกปุ่ม Actraris
+                alert("Actraris button clicked");
+            });
+        </script>
 </body>
 
 </html>
