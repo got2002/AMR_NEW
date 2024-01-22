@@ -5,179 +5,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
+    <link rel="stylesheet" href="/HOME%20%28Doing%20Here%29/Css/styles_add_actraris.css">
+
 </head>
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    h1 {
-        color: #333;
-    }
-
-    .textbox-group {
-        width: 70%;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: 20px;
-    }
-
-    .textbox-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    select {
-        padding: 8px;
-        box-sizing: border-box;
-        width: 60%;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    input[type="checkbox"] {
-        margin-right: 5px;
-    }
-
-    button {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 15px;
-    }
-
-    #statusMessage {
-        margin-top: 15px;
-        color: #4CAF50;
-        font-weight: bold;
-    }
-
-    .link-button {
-        display: inline-block;
-        margin-top: 15px;
-        text-decoration: none;
-        padding: 10px;
-        background-color: #333;
-        color: white;
-        border-radius: 5px;
-    }
-
-    /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
-    #region_dropdown {
-        padding: 8px;
-        font-size: 14px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: none;
-        width: 200px;
-        /* ปรับขนาดตามความต้องการ */
-        margin-bottom: 5%;
-        margin-top: 5%;
-    }
-
-    .logo {
-        width: 200px;
-        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-        object-position: 30% 38%;
-        background-color: #ffffff;
-        display: flex;
-    }
-
-    button {
-        margin: 10px;
-    }
-
-    .custom-btn {
-        color: #fff;
-        width: 130px;
-        height: 40px;
-        padding: 10px 25px;
-        font-family: 'Lato', sans-serif;
-        font-weight: 500;
-        background: transparent;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        display: inline-block;
-    }
-
-    /* 1 */
-    .btn-1 {
-        border: none;
-        background-color: #333;
-        box-shadow: 0 0 5px #333;
-    }
-
-    .btn-1:hover {
-        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-    }
-
-
-    /* 1 */
-    .btn-2 {
-        border: none;
-        background-color: #4CAF50;
-        box-shadow: 0 0 5px #4CAF50;
-    }
-
-    .btn-2:hover {
-        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
-    }
-</style>
-
-
 
 <body>
     <div class="textbox-group">
-        <form action="/new_form" method="post">
-            <img class="logo"
-                src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="logo">
-            <h1>Mapping config</h1>
-            <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-1">Elter</button>
-            <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-2">Actraris</button>
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
+        <h1>Mapping config</h1>
+        <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-1">Elter</button>
+        <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-2">Actraris</button>
     </div>
 
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .textbox-group {
+            width: 70%;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .textbox-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            padding: 8px;
+            box-sizing: border-box;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        #statusMessage {
+            margin-top: 15px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .link-button {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+        }
+
+        /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+        #region_dropdown {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: none;
+            width: 200px;
+            /* ปรับขนาดตามความต้องการ */
+            margin-bottom: 5%;
+            margin-top: 5%;
+        }
+
+        .logo {
+            width: 200px;
+            /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+            object-position: 30% 38%;
+            background-color: #ffffff;
+            display: flex;
+            margin: auto;
+        }
+
+        button {
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .custom-btn {
+            color: #fff;
+            width: 130px;
+            height: 40px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin-bottom: 2%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 1 */
+        .btn-1 {
+            border: none;
+            background-color: #333;
+            box-shadow: 0 0 5px #333;
+        }
+
+        .btn-1:hover {
+            box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+        }
+
+
+        /* 1 */
+        .btn-2 {
+            border: none;
+            background-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+        }
+
+        .btn-2:hover {
+            box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+        }
+    </style>
 
     <div class="textbox-group">
-        <label for="address1">ADDRESS:</label>
-        <input type="text" id="address1" name="address1" required>
+        <form action="/new_form" method="post">
+            <label for="address1">ADDRESS:</label>
+            <input type="text" id="address1" name="address1" required>
 
-        <label for="description1">DESCRIPTION:</label>
-        <input type="text" id="description1" name="description1" required>
+            <label for="description1">DESCRIPTION:</label>
+            <input type="text" id="description1" name="description1" required>
 
-        <label for="type_value1">TYPE_VALUE:</label>
-        <select id="type_value1" name="type_value1" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
+            <label for="type_value1">TYPE_VALUE:</label>
+            <select id="type_value1" name="type_value1" required>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
-        <label for="evc_type1">EVC_TYPE:</label>
-        <input type="text" id="evc_type1" name="evc_type1" required>
+            <label for="evc_type1">EVC_TYPE:</label>
+            <input type="text" id="evc_type1" name="evc_type1" required>
 
-        <label for="or_der1">OR_DER:</label>
-        <input type="text" id="or_der1" name="or_der1" required>
+            <label for="or_der1">OR_DER:</label>
+            <input type="text" id="or_der1" name="or_der1" required>
 
-        <label for="data_type1">DATA_TYPE:</label>
-        <input type="text" id="data_type1" name="data_type1" required>
+            <label for="data_type1">DATA_TYPE:</label>
+            <input type="text" id="data_type1" name="data_type1" required>
     </div>
 
     <div class="textbox-group">
@@ -576,14 +571,10 @@
         <input type="text" id="data_type17" name="data_type17" required>
     </div>
 
-    <input type="submit" value="Submit">
-    </form>
+    <button class="custom-btn btn-2" type="submit" value="Submit">
+        </form>
 
-
-</body>
-
-<body>
-    <a href="{{ url_for('index') }}">Home</a>
+        <script src="add_actraris.js"></script>
 </body>
 
 </html>
