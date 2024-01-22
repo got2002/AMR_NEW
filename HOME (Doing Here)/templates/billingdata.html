@@ -94,6 +94,7 @@
         }
 
         .textW {
+            margin-left: 2%;
             margin-top: -10px;
             color: #ffffff;
             font-size: 40px;
@@ -845,8 +846,8 @@
 
 <body>
     <div class="form-containerBOx">
-        <div class="form-container">
             <form method="get" action="{{ url_for('billing_data') }}">
+                <h1>View Billing Data</h1>
                 <label for="tag_dropdown">Select Region :</label>
                 <select id="region_dropdown" name="region_dropdown">
                     <option value="" {% if not selected_region %}selected{% endif %}>All</option>
