@@ -45,6 +45,26 @@
             display: none;
         
         }
+
+        /* textbox */
+
+    /* General styling for all textboxes */
+.textbox-container {
+  margin-bottom: 10px;
+
+}
+
+.textbox-pair {
+  margin-bottom: 3px;
+}
+
+input[type="text"] {
+  width: 200px; /* Adjust the width as needed */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
     </style>
 
 </head>
@@ -77,21 +97,45 @@
 
        {{ tables[0]|safe }}
 
-<form>
+<form> 
+    <h1>Poll Configure</h1>
 <div class="textbox-container">
-  {% for i in range(0, list_str|length, 2) %}
+  {% for i in range(0, list_config|length, 2) %}  
     <div class="textbox-pair">
       <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
-      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ list_str[i] }}">
+      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ list_config[i] }}">
       
-      {% if i+1 < list_str|length %}
+      {% if i+1 < list_config|length %}
         <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
-        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ list_str[i+1] }}">
+        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ list_config[i+1] }}">
+        
+         
+        <label for="enable{{ i }}" > {{ 'enable' }}: <{{i}} {{list_enable_config[i]}} xx></label>
+        {% if list_enable_config[i] == '1' %}
+          <input type="checkbox" id="enable{{ i+1 }}" name="enable"  checked>
+        {% else %}
+          <input type="checkbox" id="enable{{ i+1 }}" name="enable">
+        {% endif %}
       {% endif %}
     </div>
   {% endfor %}
 </div>
 
+
+  {% for i in range(0, list_enable_config|length) %}
+    <div class="enable-container">
+      <label for="enable{{ i }}" > {{ 'enable' }}: <{{i}} {{list_enable_config[i]}} xx></label>
+      {% if list_enable_config[i] == '1' %}
+        <input type="checkbox" id="enable{{ i+1 }}" name="enable"  checked>
+      {% else %}
+        <input type="checkbox" id="enable{{ i+1 }}" name="enable">
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+
+<!-- <h1>Poll Billing</h1>
 <div class="textbox-container">
   {% for i in range(0, lite_str|length, 2) %}
     <div class="textbox-pair">
@@ -101,12 +145,31 @@
       {% if i+1 < lite_str|length %}
         <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
         <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ lite_str[i+1] }}">
+
+        <label for="enable{{ i+1 }}">{{ 'enable' }}:</label>
+        <input type="checkbox" id="enable{{ i+1 }}" name="enable" value="{{ end1_str[i+1] }}">
       {% endif %}
+  {% endfor %}
+</div> -->
+
+<!-- <div class="textbox-container">
+  {% for i in range(0, list_enable_config|length) %}
+    <div class="textbox-pair">
+      <label for="enable{{ i }}">{{ 'enable'}}:</label>
+      <input type="text" id="enable{{ i }}" name="enable{{ i }}" value="{{ list_enable_config[i] }}">  
     </div>
   {% endfor %}
-</div>
+</div> -->
 
-</form>
+<!-- <div class="textbox-container">
+  {% for i in range(0, end1_str|length) %}
+    <div class="textbox-pair">
+      <label for="enable{{ i+1 }}">{{ 'enable' ~ (i + 1 ) }}:</label>
+      <input type="text" id="enable{{ i }}" name="enable{{ i }}" value="{{ end1_str[i] }}"> 
+    </div>
+  {% endfor %}
+</div> -->
+   
  
 <script>
     function submitForm() {
