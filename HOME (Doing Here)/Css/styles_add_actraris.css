@@ -109,7 +109,9 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 1 */
@@ -134,3 +136,4 @@ button {
 .btn-2:hover {
     box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
 }
+
