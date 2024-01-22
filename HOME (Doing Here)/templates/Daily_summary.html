@@ -568,6 +568,32 @@
         margin-bottom: 5%;
         margin-top: 5%;
     }
+
+    .custom-btn {
+        margin: 1%;
+        color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+    }
 </style>
 
 <body>
@@ -668,13 +694,13 @@
         <label for="date_picker">Select Date :</label>
         <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
             class="datepicker-input">
-        <button type="submit">Submit</button>
+        <button class="custom-btn btn-2" type="submit">Submit</button>
 
-        {{ tables[0]|safe }}
-        </div>
+
+
 
     </form>
-
+    </form> {{ tables[0]|safe }} </form>
 
 
 
