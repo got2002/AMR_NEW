@@ -437,34 +437,30 @@
         box-sizing: border-box;
     }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
-        background-color: #4caf50;
+    .custom-btn {
+        margin: 1%;
         color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
         cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
     }
 
-    a {
-        display: block;
-        margin-top: 10px;
-        color: #4caf50;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #45a049;
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
     }
 
 
@@ -591,7 +587,7 @@
                     <option value="inactive">Inactive</option>
                     <option value="active">Active</option>
                 </select><br>
-                <button type="submit">Save Changes</button>
+                <button class="custom-btn btn-2" type="submit">Save Changes</button>
             </form>
 
             <!-- Back to User List link -->
