@@ -54,15 +54,6 @@
         margin-right: 5px;
     }
 
-    button {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 15px;
-    }
 
     #statusMessage {
         margin-top: 15px;
@@ -124,11 +115,13 @@
         /* สีพื้นหลังเมื่อเม้าส์ hover */
     }
 
-    .btnA {
+    .btn {
         margin: 10px;
+        
     }
 
     .custom-btn {
+        border-radius: 5px;
         color: #fff;
         width: 130px;
         height: 40px;
@@ -175,8 +168,8 @@
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
         <h1>Mapping config</h1>
-        <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-1">Elter</button>
-        <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-2">Actraris</button>
+        <button class="custom-btn btn-2" href="{{ url_for('add_mapping_route') }}" >Elter</button>
+        <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-1">Actraris</button>
     </div>
     <div class="textbox-group">
         <form action="/submit_form" method="post">
