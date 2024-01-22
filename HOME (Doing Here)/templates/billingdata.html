@@ -602,22 +602,7 @@
             }
         }
 
-        .ui-datepicker {
-            width: 20%;
-            max-height: 400px;
-            /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
-            overflow-y: auto;
-            /* เพิ่มการเลื่อนในแนวตั้ง (vertical) หากตารางล้นขอบ */
-        }
 
-        .ui-datepicker table {
-            width: 100%;
-        }
-
-        #date_picker {
-            width: 33%;
-            /* ตั้งค่าความกว้างเต็มหน้าจอหรือ container ตามที่ต้องการ */
-        }
 
         .dropdown-menu {
             position: absolute;
@@ -676,10 +661,9 @@
         label[for="tag_dropdown"] {
             display: block;
             /* กำหนดให้ label เป็น block element */
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             /* กำหนดระยะห่างด้านล่าง */
             font-weight: bold;
-            /* กำหนดตัวหนา */
         }
 
         /* กำหนดสไตล์ของ dropdown */
@@ -845,55 +829,50 @@
 </nav>
 
 <body>
-    <div class="form-containerBOx">
-            <form method="get" action="{{ url_for('billing_data') }}">
-                <h1>View Billing Data</h1>
-                <label for="tag_dropdown">Select Region :</label>
-                <select id="region_dropdown" name="region_dropdown">
-                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-                    {% for region in region_options %}
-                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="tag_dropdown">Select Site :</label>
-                <select id="tag_dropdown" name="tag_dropdown">
-                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
-                    {% for tag in tag_options %}
-                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                    {% endfor %}
-                </select>
-                <label for="date_picker">Select Date :</label>
-                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+    <div class="form-containerBox">
+        <form method="get" action="{{ url_for('billing_data') }}">
+            <h1>View Billing Data</h1>
 
-                <form id="loadingOverlay" action="billing_data" method="post">
-                    <!-- ... ปุ่มอื่น ๆ ... -->
-                    <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
-                        onclick="showLoading()">DailyData</button>
-                    <button class="btn-2 custom-btn" type="submit" name="query_type" value="config_data"
-                        onclick="showLoading()">ConfigData</button>
-                    <button class="btn-1 btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
-                        Filters</button>
-                </form>
+            <!-- Region Dropdown -->
+            <label for="region_dropdown">Select Region:</label>
+            <select id="region_dropdown" name="region_dropdown">
+                <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
+                {% endfor %}
+            </select>
 
-            </form>
+            <!-- Site Dropdown -->
+            <label for="tag_dropdown">Select Site:</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+                <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                {% for tag in tag_options %}
+                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                {% endfor %}
+            </select>
 
-            <div>
-                <!-- ตำแหน่งของ LoadingOverlay -->
-                <div id="loadingOverlay" style="display: none;">
-                    <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
-                </div>
-                <div>
-                    <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-                    <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-                    <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-                    <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
-                </div>
+            <!-- Date Picker -->
+            <label for="date_picker">Select Date:</label>
+            <input type="date" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
-
-                <body>
-                    <div class="form-containerBOx">
-                        <div class="form-container">
+            <!-- Buttons for Different Queries -->
+            <div class="button-container">
+                <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data">Daily Data</button>
+                <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data">Config
+                    Data</button>
+                <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                    Filters</button>
+            </div>
+        </form>
+    </div>
+            <body>
+                <div class="form-containerBOx">
+                    <div class="form-container">
+                        <div>
+                            <!-- ตำแหน่งของ LoadingOverlay -->
+                            <div id="loadingOverlay" style="display: none;">
+                                <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
+                            </div>
 
                             <div class="table-container">
                                 {% if tables.get('daily_data_run1') %}
@@ -1062,150 +1041,150 @@
                                 {% endif %}
 
 
-                </body>
+            </body>
 
 
-                <!-- Add this script for the JavaScript functionality -->
-                <script>
-                    function clearFilters() {
-                        // ล้างค่า dropdowns
-                        document.getElementById('region_dropdown').value = '';
-                        document.getElementById('tag_dropdown').value = '';
+            <!-- Add this script for the JavaScript functionality -->
+            <script>
+                function clearFilters() {
+                    // ล้างค่า dropdowns
+                    document.getElementById('region_dropdown').value = '';
+                    document.getElementById('tag_dropdown').value = '';
 
-                        // ล้างค่า input
-                        document.getElementById('date_picker').value = '';
-                        function showLoading() {
-                            // แสดง loading overlay
-                            document.getElementById('loadingOverlay').style.display = 'block';
-                        }
-                    }
-
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Assuming you have JavaScript/jQuery to handle changes and update the display
-                        var selectedRegion = null;
-                        var selectedTag = null;
-                        var selectedDate = null;
-
-                        document.getElementById('region_dropdown').addEventListener('change', function () {
-                            selectedRegion = this.value;
-                        });
-
-                        document.getElementById('tag_dropdown').addEventListener('change', function () {
-                            selectedTag = this.value;
-                        });
-
-                        document.getElementById('date_picker').addEventListener('change', function () {
-                            selectedDate = this.value;
-                        });
-
-                        // Event listener for form submission with 'daily_data' event
-                        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-                        formDailyData.addEventListener('config_data', function (event) {
-                            event.preventDefault(); // Prevent the form from submitting immediately
-
-                            showLoadingOverlay();
-
-                            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-                            setTimeout(function () {
-                                // Update the displayed values after the loading is complete
-                                document.getElementById('selected_region').innerText = selectedRegion;
-                                document.getElementById('selected_tag').innerText = selectedTag;
-                                document.getElementById('selected_date').innerText = selectedDate;
-
-                                // Optionally, update the meter ID
-                                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                                if (selectedMeterIdSpan) {
-                                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                                }
-
-                                // Reset selected values
-                                selectedRegion = null;
-                                selectedTag = null;
-                                selectedDate = null;
-
-                                // Submit the form programmatically
-                                formDailyData.submit();
-                            }, 2000); // Adjust the delay time as needed (in milliseconds)
-                        });
-
-                        // Event listener for form submission with 'config_data' event
-                        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-                        formConfigData.addEventListener('daily_data', function (event) {
-                            event.preventDefault(); // Prevent the form from submitting immediately
-
-                            showLoadingOverlay();
-
-                            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-                            setTimeout(function () {
-                                // Update the displayed values after the loading is complete
-                                document.getElementById('selected_region').innerText = selectedRegion;
-                                document.getElementById('selected_tag').innerText = selectedTag;
-                                document.getElementById('selected_date').innerText = selectedDate;
-
-                                // Optionally, update the meter ID
-                                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                                if (selectedMeterIdSpan) {
-                                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                                }
-
-                                // Reset selected values
-                                selectedRegion = null;
-                                selectedTag = null;
-                                selectedDate = null;
-
-                                // Submit the form programmatically
-                                formConfigData.submit();
-                            }, 2000); // Adjust the delay time as needed (in milliseconds)
-                        });
-                    });
+                    // ล้างค่า input
+                    document.getElementById('date_picker').value = '';
                     function showLoading() {
                         // แสดง loading overlay
                         document.getElementById('loadingOverlay').style.display = 'block';
                     }
+                }
 
-                    // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
-                    function hideLoading() {
-                        // ซ่อน loading overlay
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                    }
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Assuming you have JavaScript/jQuery to handle changes and update the display
+                    var selectedRegion = null;
+                    var selectedTag = null;
+                    var selectedDate = null;
 
-
-                    // Wait for the document to be ready
-                    $(document).ready(function () {
-                        $('#date_picker').datepicker({
-                            format: 'mm/yyyy',
-                            startView: 'months',
-                            minViewMode: 'months',
-                            autoclose: true
-                        });
-
-                        // Event listener for region dropdown change
-                        $('#region_dropdown').change(function () {
-                            var selectedRegion = $(this).val();
-
-                            $.ajax({
-                                type: 'GET',
-                                url: '/get_tags',
-                                data: { 'selected_region': selectedRegion },
-                                success: function (response) {
-                                    // Clear existing options in the tag dropdown
-                                    $('#tag_dropdown').empty();
-                                    // Add the 'All' option
-                                    $('#tag_dropdown').append('<option value="" selected>All</option>');
-                                    // Add new tag options based on the response
-                                    for (var i = 0; i < response.tag_options.length; i++) {
-                                        var tag = response.tag_options[i];
-                                        $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-                                    }
-                                    hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
-                                },
-                                error: function (error) {
-                                    console.log('Error fetching tag options:', error);
-                                    hideLoadingOverlay(); // Hide loading overlay after AJAX request error
-                                }
-                            });
-                        });
+                    document.getElementById('region_dropdown').addEventListener('change', function () {
+                        selectedRegion = this.value;
                     });
 
+                    document.getElementById('tag_dropdown').addEventListener('change', function () {
+                        selectedTag = this.value;
+                    });
 
-                </script>
+                    document.getElementById('date_picker').addEventListener('change', function () {
+                        selectedDate = this.value;
+                    });
+
+                    // Event listener for form submission with 'daily_data' event
+                    var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+                    formDailyData.addEventListener('config_data', function (event) {
+                        event.preventDefault(); // Prevent the form from submitting immediately
+
+                        showLoadingOverlay();
+
+                        // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+                        setTimeout(function () {
+                            // Update the displayed values after the loading is complete
+                            document.getElementById('selected_region').innerText = selectedRegion;
+                            document.getElementById('selected_tag').innerText = selectedTag;
+                            document.getElementById('selected_date').innerText = selectedDate;
+
+                            // Optionally, update the meter ID
+                            var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                            if (selectedMeterIdSpan) {
+                                selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                            }
+
+                            // Reset selected values
+                            selectedRegion = null;
+                            selectedTag = null;
+                            selectedDate = null;
+
+                            // Submit the form programmatically
+                            formDailyData.submit();
+                        }, 2000); // Adjust the delay time as needed (in milliseconds)
+                    });
+
+                    // Event listener for form submission with 'config_data' event
+                    var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+                    formConfigData.addEventListener('daily_data', function (event) {
+                        event.preventDefault(); // Prevent the form from submitting immediately
+
+                        showLoadingOverlay();
+
+                        // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+                        setTimeout(function () {
+                            // Update the displayed values after the loading is complete
+                            document.getElementById('selected_region').innerText = selectedRegion;
+                            document.getElementById('selected_tag').innerText = selectedTag;
+                            document.getElementById('selected_date').innerText = selectedDate;
+
+                            // Optionally, update the meter ID
+                            var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                            if (selectedMeterIdSpan) {
+                                selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                            }
+
+                            // Reset selected values
+                            selectedRegion = null;
+                            selectedTag = null;
+                            selectedDate = null;
+
+                            // Submit the form programmatically
+                            formConfigData.submit();
+                        }, 2000); // Adjust the delay time as needed (in milliseconds)
+                    });
+                });
+                function showLoading() {
+                    // แสดง loading overlay
+                    document.getElementById('loadingOverlay').style.display = 'block';
+                }
+
+                // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
+                function hideLoading() {
+                    // ซ่อน loading overlay
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+
+
+                // Wait for the document to be ready
+                $(document).ready(function () {
+                    $('#date_picker').datepicker({
+                        format: 'mm/yyyy',
+                        startView: 'months',
+                        minViewMode: 'months',
+                        autoclose: true
+                    });
+
+                    // Event listener for region dropdown change
+                    $('#region_dropdown').change(function () {
+                        var selectedRegion = $(this).val();
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/get_tags',
+                            data: { 'selected_region': selectedRegion },
+                            success: function (response) {
+                                // Clear existing options in the tag dropdown
+                                $('#tag_dropdown').empty();
+                                // Add the 'All' option
+                                $('#tag_dropdown').append('<option value="" selected>All</option>');
+                                // Add new tag options based on the response
+                                for (var i = 0; i < response.tag_options.length; i++) {
+                                    var tag = response.tag_options[i];
+                                    $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+                                }
+                                hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
+                            },
+                            error: function (error) {
+                                console.log('Error fetching tag options:', error);
+                                hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+                            }
+                        });
+                    });
+                });
+
+
+            </script>
