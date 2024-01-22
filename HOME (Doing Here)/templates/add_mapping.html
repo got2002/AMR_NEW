@@ -139,7 +139,10 @@
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
-        display: inline-block;
+        margin-bottom: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     /* 1 */
@@ -179,6 +182,7 @@
             <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-1">Actraris</button>
     </div>
     <div class="textbox-group">
+
         <label for="address1">ADDRESS:</label>
         <input type="text" id="address1" name="address1" required>
 
@@ -671,10 +675,9 @@
 
         <label for="data_type20">DATA_TYPE:</label>
         <input type="text" id="data_type20" name="data_type20" required>
-    </div>
 
-    <input type="submit" value="Submit">
-    </form>
+        <input class="custom-btn btn-2" type="submit" value="Submit">
+
 
 
 </body>
