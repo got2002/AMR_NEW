@@ -55,9 +55,9 @@
         }
 
         input {
-            width: 25%;
-            padding: 10px;
-            margin-top: 30px;
+            width: 20%;
+            padding: 5px;
+            margin-top: 0px;
             margin-bottom: 30px;
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -602,7 +602,7 @@
         }
 
         .ui-datepicker {
-            width: 50%;
+            width: 20%;
             max-height: 400px;
             /* กำหนดความสูงสูงสุดของตารางเลือกวันที่ */
             overflow-y: auto;
@@ -758,10 +758,51 @@
                 transform: rotate(360deg);
             }
         }
+
+        .custom-btn {
+            margin: 1%;
+            color: #fff;
+            width: 140px;
+            height: 40px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 1 */
+        .btn-1 {
+            border: none;
+            background-color: #333;
+            box-shadow: 0 0 5px #333;
+        }
+
+        .btn-1:hover {
+            box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+        }
+
+
+        /* 1 */
+        .btn-2 {
+            border: none;
+            background-color: #4CAF50;
+            box-shadow: 0 0 5px #4CAF50;
+        }
+
+        .btn-2:hover {
+            box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+        }
+    </style>
     </style>
 </head>
 <ul class="navbar-container">
-    <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
+    <img class="logo"
+        src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+        alt="logo">
     <li class="navbar-item">Reports Data<span class="navbar-item_label">Reports Data</span>
         <ul class="navbar-container_sub">
             <li class="navbar-item_sub"><a href="{{ url_for('billing_data') }}" class="list-item-link"><a href=""
@@ -826,11 +867,11 @@
 
                 <form id="loadingOverlay" action="billing_data" method="post">
                     <!-- ... ปุ่มอื่น ๆ ... -->
-                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="daily_data"
-                        onclick="showLoading()">Daily Data</button>
-                    <button class="btn btn-primary custom-btn" type="submit" name="query_type" value="config_data"
-                        onclick="showLoading()">Config Data</button>
-                    <button class="btn btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
+                    <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+                        onclick="showLoading()">DailyData</button>
+                    <button class="btn-2 custom-btn" type="submit" name="query_type" value="config_data"
+                        onclick="showLoading()">ConfigData</button>
+                    <button class="btn-1 btn-secondary custom-btn" type="button" onclick="clearFilters()">Clear
                         Filters</button>
                 </form>
 
