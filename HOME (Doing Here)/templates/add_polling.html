@@ -17,16 +17,17 @@
 
     h1 {
         color: #333;
+
     }
 
-    .form-container {
-        width: 60%;
+    .textbox-group {
+        width: 70%;
         background-color: #fff;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: 20px;
-        /* Only use margin: auto to center horizontally */
+        margin: auto;
+        margin-top: 20px;
     }
 
 
@@ -77,14 +78,14 @@
     .logo {
             width: 200px;
             /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-            object-position: 30% 38%;
+            margin: auto;
             background-color: #ffffff;
             display: flex;
         }
 </style>
 
 <body>
-    <div class="form-container">
+    <div class="textbox-group">
         <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
         <h1>Poll Configurator</h1>
 
@@ -92,7 +93,7 @@
             <label for="evc_type">EVC_TYPE:</label>
             <input type="text" id="evc_type" name="evc_type" required>
         </div>
-        <div class="form-container">
+        <div class="textbox-group">
         </form>
         <!-- Address Pair 1 -->
         <div class="address-pair">
