@@ -66,6 +66,7 @@
     }
 
     .textW {
+        margin-left: 2%;
         margin-top: -15px;
         color: #ffffff;
         font-size: 40px;
@@ -394,6 +395,7 @@
         width: 100%;
         margin-top: 10px;
         /* Adjusted margin for more spacing */
+        
     }
 
     /* Add transition for a smooth hover effect */
@@ -437,34 +439,43 @@
         box-sizing: border-box;
     }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
 
-    button[type="submit"] {
-        background-color: #4caf50;
+    .custom-btn {
+        margin: 1%;
         color: #fff;
+        width: 100%;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
         cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
     }
 
-    a {
-        display: block;
-        margin-top: 10px;
-        color: #4caf50;
-        text-decoration: none;
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
     }
 
-    a:hover {
-        color: #45a049;
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
     }
 </style>
 
@@ -529,10 +540,12 @@
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
                                 class="list-item-link">Add
                                 User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_userr_route" class="list-item-link">Edit
+                        <li class="list-item" style="--delay:0.4s"><a href="edit_userr_route"
+                                class="list-item-link">Edit
                                 User</a>
                         </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_userr_route" class="list-item-link">Remove
+                        <li class="list-item" style="--delay:0.6s"><a href="remove_userr_route"
+                                class="list-item-link">Remove
                                 User</a>
                         </li>
                     </ul>
@@ -553,7 +566,7 @@
     </div>
 
 
-    
+
     <form method="post" action="{{ url_for('add_user_route') }}">
         <h1>Add User</h1>
         <label for="description">Description:</label>
@@ -568,8 +581,7 @@
         <label for="user_level">User Level:</label>
         <input type="number" name="user_level" required>
 
-        <input type="submit" value="Add User">
-        <a href="{{ url_for('home') }}">Back to Home</a>
+        <button class="custom-btn btn-2" type="submit">Add User</button>
     </form>
 
     {% with messages = get_flashed_messages() %}
