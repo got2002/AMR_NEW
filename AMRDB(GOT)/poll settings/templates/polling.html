@@ -163,61 +163,57 @@ input[type="text"] {
     </form>
 
     <script>
-        function submitForm() {
-            // Trigger the form submission
-            document.getElementById("pollingForm").submit();
-        }
+        function saveToOracle() {
+        // Collect data from the Poll Configure form
+        var configureData = collectFormData('list_config', 'list_enable_config');
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Add event listener for the Update Values button
-            document.getElementById("updateButton").addEventListener("click", function () {
-                updateValues();
-            });
+        // Collect data from the Poll Billing form
+        var billingData = collectFormData('list_billing', 'list_enable_billing');
+
+        // You can now send the data to your backend or perform any other necessary actions
+        console.log('Configure Data:', configureData);
+        console.log('Billing Data:', billingData);
+
+        // Add your logic to save data to Oracle here
+    }
+
+    function collectFormData(listName, enableListName) {
+        var data = {
+            list: [],
+            enableList: []
+        };
+
+        // Collect data from the form
+        $('input[name^=' + listName + ']').each(function (index, element) {
+            data.list.push($(element).val());
         });
 
-        function updateValues() {
-            // Create an object to store the updated values
-            var updatedValues = {};
+        // Collect enable data from the form
+        $('input[name^=' + enableListName + ']').each(function (index, element) {
+            data.enableList.push($(element).prop('checked') ? '1' : '0');
+        });
 
-            // Loop through address pairs 1 through 15 for config and billing
-            for (var i = 1; i <= 15; i++) {
-                var startKeyConfig = 'start' + i;
-                var endKeyConfig = 'end' + i;
-                var enableKeyConfig = 'enable' + ('0' + i).slice(-2); // Ensure two-digit format
+        return data;
+    }
 
-                var startKeyBilling = 'start' + i;
-                var endKeyBilling = 'end' + i;
-                var enableKeyBilling = 'enable' + ('0' + i).slice(-2); // Ensure two-digit format
+    function submitForm() {
+        // Trigger the form submission
+        document.getElementById("pollingForm").submit();
+    }
 
-                // Get the current values from the input fields for config
-                var startValueConfig = document.getElementById(startKeyConfig).value;
-                var endValueConfig = document.getElementById(endKeyConfig).value;
-                var enableValueConfig = document.getElementById(enableKeyConfig).checked;
+    // Add an event listener to dynamically update the dropdown options
+    document.getElementById("type_dropdown").addEventListener("change", function () {
+        // Get the selected value
+        var selectedtype = this.value;
 
-                // Get the current values from the input fields for billing
-                var startValueBilling = document.getElementById(startKeyBilling).value;
-                var endValueBilling = document.getElementById(endKeyBilling).value;
-                var enableValueBilling = document.getElementById(enableKeyBilling).checked;
-
-                // Store the values in the updatedValues object for config
-                updatedValues[startKeyConfig] = startValueConfig;
-                updatedValues[endKeyConfig] = endValueConfig;
-                updatedValues[enableKeyConfig] = enableValueConfig;
-
-                // Store the values in the updatedValues object for billing
-                updatedValues[startKeyBilling] = startValueBilling;
-                updatedValues[endKeyBilling] = endValueBilling;
-                updatedValues[enableKeyBilling] = enableValueBilling;
-            }
-
-            // Perform any additional actions needed before form submission
-
-            // Assign the updated values to the corresponding hidden input field
-            document.getElementById('updatedValues').value = JSON.stringify(updatedValues);
-
-            // Trigger the form submission for update_values route
-            document.getElementById("configForm").submit();
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
         }
+    });
     </script>
 
 </body>
