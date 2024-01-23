@@ -67,8 +67,7 @@ def billing_data():
     selected_tag = request.args.get('tag')
     selected_month_year = request.args.get('monthYear')
 
-    # Convert the selected_month_year to a datetime object
-    selected_date = datetime.strptime(selected_month_year, "%m/%Y")
+   
 
     # Define your Oracle query to fetch REGION_NAME
     region_query = """
