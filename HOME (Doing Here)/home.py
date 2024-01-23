@@ -780,10 +780,10 @@ def billing_data():
                 tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
             if not df_run5.empty:
                 df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+                tables["config_data_run5"] = df_run5.to_html(**common_table_properties)
             if not df_run6.empty:
                 df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
+                tables["config_data_run6"] = df_run6.to_html(**common_table_properties)
             return render_template(
                 "billingdata.html",
                 
