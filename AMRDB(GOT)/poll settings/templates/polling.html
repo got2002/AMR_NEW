@@ -65,6 +65,26 @@ input[type="text"] {
   border-radius: 3px;
   box-sizing: border-box;
 }
+
+@keyframes oscillate {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(0px); }
+            100% { transform: translateX(0); }
+        }
+
+        .enable-container {
+            margin-bottom: 10px; /* Add some space between containers */
+            animation: alternate-reverse; /* Apply the oscillation animation */
+        }
+
+        /* Additional styling for labels and checkboxes */
+        label {
+            margin-right: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 5px;
+        }
     </style>
 
 </head>
@@ -100,40 +120,27 @@ input[type="text"] {
 <form> 
     <h1>Poll Configure</h1>
 <div class="textbox-container">
-  {% for i in range(0, list_config|length, 2) %}  
+  {% for i in range(0, list_config|length, 2) %}
     <div class="textbox-pair">
-      <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
-      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ list_config[i] }}">
+      <label for="start{{ i//2 + 1 }}">{{ 'Start' ~ (i//2 + 1) }}:</label>
+      <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_config[i] }}">
       
       {% if i+1 < list_config|length %}
-        <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
-        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ list_config[i+1] }}">
+        <label for="end{{ i//2 + 1 }}">{{ 'END' ~ (i//2 + 1) }}:</label>
+        <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
         
-         
-        <label for="enable{{ i }}" > {{ 'enable' }}: <{{i}} {{list_enable_config[i]}} xx></label>
-        {% if list_enable_config[i] == '1' %}
-          <input type="checkbox" id="enable{{ i+1 }}" name="enable"  checked>
-        {% else %}
-          <input type="checkbox" id="enable{{ i+1 }}" name="enable">
+        {% if i//2 < 10 %}
+          <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}: <{{i//2 + 1}} {{list_enable_config[i//2]}} xx></label>
+          {% if list_enable_config[i//2] == '1' %}
+            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable" checked>
+          {% else %}
+            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable">   
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>
   {% endfor %}
 </div>
-
-
-  {% for i in range(0, list_enable_config|length) %}
-    <div class="enable-container">
-      <label for="enable{{ i }}" > {{ 'enable' }}: <{{i}} {{list_enable_config[i]}} xx></label>
-      {% if list_enable_config[i] == '1' %}
-        <input type="checkbox" id="enable{{ i+1 }}" name="enable"  checked>
-      {% else %}
-        <input type="checkbox" id="enable{{ i+1 }}" name="enable">
-      {% endif %}
-    </div>
-  {% endfor %}
-</div>
-
 
 <!-- <h1>Poll Billing</h1>
 <div class="textbox-container">
