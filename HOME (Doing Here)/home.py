@@ -719,24 +719,6 @@ def billing_data():
                 "CONFIG19",
                 "CONFIG20",
             ]
-<<<<<<< HEAD
-=======
-            
-            # ตั้งค่าคอลัมน์ที่ 3 และ 10 สำหรับ df_run3
-            column_3_name_run3 = "AMR_CONFIG3"  # ชื่อคอลัมน์ที่ 3
-            column_10_name_run3 = "AMR_CONFIG10"  # ชื่อคอลัมน์ที่ 10
-
-            # สลับตำแหน่งของคอลัมน์ที่ 3 และ 10 ใน df_run3
-            df_run3[column_3_name_run3], df_run3[column_10_name_run3] = df_run3[column_10_name_run3].copy(), df_run3[column_3_name_run3].copy()
-
-            # ตั้งค่าคอลัมน์ที่ 3 และ 10 สำหรับ df_run4
-            column_3_name_run4 = "AMR_CONFIG3"  # ชื่อคอลัมน์ที่ 3
-            column_10_name_run4 = "AMR_CONFIG10"  # ชื่อคอลัมน์ที่ 10
-
-            # สลับตำแหน่งของคอลัมน์ที่ 3 และ 10 ใน df_run4
-            df_run4[column_3_name_run4], df_run4[column_10_name_run4] = df_run4[column_10_name_run4].copy(), df_run4[column_3_name_run4].copy()
-
->>>>>>> 4acdf66a08ccab5a0cceb904ec61d8fac482ef72
             dropped_columns_data = pd.concat(
                 [
                     pd.DataFrame(columns=df.columns),
