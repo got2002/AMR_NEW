@@ -108,7 +108,8 @@ def billing_data():
         region_results=region_results,
         tag_results=tag_results,
         results=results,
-        selected_region=selected_region
+        selected_region=selected_region,
+        selected_date=selected_date,
     )
 
 
