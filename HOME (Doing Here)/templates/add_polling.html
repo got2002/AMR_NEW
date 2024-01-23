@@ -7,26 +7,34 @@
     <title>Form</title>
 </head>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f4f4f4;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        overflow-x: hidden;
     }
 
     h1 {
         color: #333;
+        padding: 3%;
     }
 
-    .form-container {
-        width: 60%;
+    .textbox-group {
+        width: 70%;
         background-color: #fff;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: 20px;
-        /* Only use margin: auto to center horizontally */
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 5%;
     }
 
 
@@ -74,25 +82,296 @@
         margin-bottom: 5%;
         margin-top: 5%;
     }
+
     .logo {
-            width: 200px;
-            /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-            object-position: 30% 38%;
-            background-color: #ffffff;
-            display: flex;
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        margin: auto;
+        background-color: #ffffff;
+        display: flex;
+    }
+
+
+    .custom-btn {
+        margin: auto;
+        color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
+    }
+
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    }
+
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+    }
+
+    .menu {
+        padding: 5px;
+        width: 100%;
+        margin-top: -3%;
+    }
+
+    .menu .container {
+        padding: 10px;
+        margin-top: 4%;
+    }
+
+    ul li {
+        max-width: 150px;
+        width: 100%;
+    }
+
+    ul {
+        display: flex;
+        justify-content: center;
+        column-gap: 8px;
+        list-style: none;
+        margin: auto;
+
+    }
+
+    ul li a {
+        text-decoration: none;
+        color: white;
+        background-color: #1C3A94;
+        display: block;
+        padding: 10px;
+        text-align: center;
+    }
+
+    ul li:hover ul.dropdown {
+        display: block;
+        animation-name: mainnav;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        animation-timing-function: linear;
+    }
+
+    ul li ul.dropdown {
+        display: none;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    /* Mainnav animation */
+
+    @keyframes mainnav {
+        0% {
+            height: 0px;
+            background-color: #1C2D61;
         }
+
+        100% {
+            height: 100px;
+            background-color: transparent;
+        }
+    }
+
+    ul li ul.dropdown li {
+        margin: 5px 0;
+    }
+
+    .menu ul li ul li:first-child {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(2) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.1s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(3) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.2s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(4) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.3s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(5) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.4s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(6) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.5s;
+        animation-timing-function: linear;
+    }
+
+    .menu {
+        position: relative;
+        background-blend-mode: overlay;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .menu .container>ul:after {
+        height: 39px;
+        max-width: 10%;
+        width: 100%;
+        min-width: 0;
+        content: "";
+        position: relative;
+        display: block;
+        border-radius: 0 100% 0 / 0 100% 0 0;
+    }
+
+    .menu .container>ul:before {
+        height: 39px;
+        max-width: 10%;
+        width: 100%;
+        min-width: 0;
+        content: "";
+        position: relative;
+        display: block;
+        border-radius: 100% 0 0 0/ 100% 0 0 0;
+    }
+
+    /* Navanim animation */
+
+    @keyframes navanime {
+        0% {
+            transform: rotateY(180deg);
+        }
+    }
+
+    ul li a {
+        transition: all 0.2s linear;
+        position: relative;
+        z-index: 1;
+    }
+
+    ul li>a:after {
+        content: "";
+        background-color: #051DB5;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0%;
+        height: 0%;
+        transition: all 0.3s linear;
+        z-index: -1;
+    }
+
+    ul li:hover>a:after {
+        color: #051DB5;
+        content: "";
+        background-color: #FFB000;
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <body>
-    <div class="form-container">
-        <img class="logo" src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&" alt="logo">
+    <nav>
+        <div class="menu">
+            <div class="container">
+                <ul class="inner-menu">
+                    <li><a href="#">Reports Data</a>
+                        <ul class="dropdown">
+                            <li><a href="billing_data">View Billing Data</a></li>
+                            <li><a href="Daily_summary">View EVC Status</a></li>
+                            <li><a href="#">Daily Summary</a></li>
+                            <li><a href="#">Monthly Summery</a></li>
+                            <li><a href="sitedetail_data">Site Detail</a></li>
+                            <li><a href="#">New Site Detail</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Polling Actions</a>
+                        <ul class="dropdown">
+                            <li><a href="Manualpoll_data">Manual poll</a></li>
+                            <li><a href="#">Write Config</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Manage Sites</a>
+                        <ul class="dropdown">
+                            <li><a href="#">Add Site</a></li>
+                            <li><a href="#">Edit Site</a></li>
+                            <li><a href="#">Remove Site</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Manage Users</a>
+                        <ul class="dropdown">
+                            <li><a href="add_user_route">Add User</a></li>
+                            <li><a href="edit_user_route">Edit User</a></li>
+                            <li><a href="remove_user_route">Remove User</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Poll Sitting</a>
+                        <ul class="dropdown">
+                            <li><a href="add_mapping_route">Add Mapping</a></li>
+                            <li><a href="add_polling_route">Add Polling</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="textbox-group">
+
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
         <h1>Poll Configurator</h1>
 
         <div. class="address-pair">
             <label for="evc_type">EVC_TYPE:</label>
             <input type="text" id="evc_type" name="evc_type" required>
-        </div>
-        <div class="form-container">
+    </div>
+    <div class="textbox-group">
         </form>
         <!-- Address Pair 1 -->
         <div class="address-pair">
@@ -248,8 +527,9 @@
         </form>
 
 
-        <button type="button" onclick="saveToOracle()">Save to Oracle</button>
+        <button class="custom-btn btn-2" type="button" onclick="saveToOracle()">Save to Oracle</button>
         <div id="statusMessage"></div>
+
 </body>
 
 <script>

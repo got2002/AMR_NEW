@@ -8,400 +8,69 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
         integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
+
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+    @import url("https://fonts.googleapis.com/css?family=Sen&display=swap");
 
+    body {
+        background: #ffc38a;
+        font-family: "Sen";
+    }
+
+    /* Global styles */
     * {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        text-decoration: none;
-    }
-
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-        background-color: #f4f4f4;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-
     }
 
-    .header {
-        background-image: linear-gradient(to right, #0048a7, #41b6ff);
-        overflow: hidden;
-        color: white;
-        text-align: center;
-        padding: 10px;
+    body,
+    html {
+        background-image: linear-gradient(to right, #5b707e, #abb2b9);
         font-family: 'Noto Sans Thai Looped', sans-serif;
-        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 0;
-        height: 7%;
     }
-
-
-    .header a {
-        float: right;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-
-    }
-
-    .header a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
-    .header a:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
-    .textW {
-        color: #ffffff;
-        font-size: 40px;
-        position: absolute;
-        font-family: 'Noto Sans Thai Looped', sans-serif;
-        text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
-        text-align: center;
-        /* จัดวางตามแนวนอนตรงกลาง */
-        left: 50%;
-        /* ย้ายไปทางซ้ายครึ่งหนึ่งของพื้นที่ที่กำหนด */
-        transform: translateX(-50%);
-        /* ย้ายกลับไปทางขวาครึ่งหนึ่งของตัวข้อความ */
-        padding: -25px 16px;
-    }
-
-
-    .form-container {
-        width: 80%;
-        max-width: 600px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 205%;
-
-    }
-
-    h1 {
-        color: #333;
-        text-align: center;
-    }
-
 
 
     label {
-        width: 120px;
-        margin-right: 10px;
-        font-weight: bold;
-        flex: 0 0 120px;
-        /* Fixed width for labels */
-        padding-bottom: 15px;
-        padding-top: 10px;
-    }
-
-    input[type="text"] {
-        padding: 8px;
-        box-sizing: border-box;
-        width: calc(100% - 138px);
-        /* Adjusted width for text inputs */
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-right: 10px;
-
-    }
-
-    input[type="checkbox"] {
-        margin-left: -65px;
-    }
-
-    button {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        width: 100%;
-        margin-top: 5%;
-
-    }
-
-
-    #statusMessage {
-        margin-top: 15px;
-        color: #dd4646;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .sidebar {
-        position: fixed;
-        left: -250px;
-        width: 250px;
-        height: 100%;
-        background: #ffffff;
-        transition: all .5s ease;
-        transition: left 0.3s ease;
-        transition: transform 300ms, box-shadow 300ms;
-        overflow: hidden;
-        background-image: linear-gradient(to right, #0048a7, #61bff9);
-        z-index: 666;
-    }
-
-    .sidebar header {
-        font-size: 22px;
-        color: #00ffaaed;
-        line-height: 70px;
-        text-align: center;
-        background: #ffffff;
-        user-select: none;
-        position: relative;
-        /* Add position relative for absolute positioning */
-    }
-
-    .sidebar header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 666;
-    }
-
-
-    .sidebar ul a {
         display: block;
-        height: 100%;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
         width: 100%;
-        line-height: 45px;
-        font-size: 20px;
-        color: white;
-        padding-left: 20px;
+        padding: 3px;
+    }
+
+    input {
+        width: 20%;
+        padding: 5px;
+        margin-top: 0px;
+        margin-bottom: 30px;
         box-sizing: border-box;
-        transition: .4s;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #555;
+        /* สีข้อความใน input */
     }
 
-    ul li:hover a {
-        padding-left: 50px;
-    }
-
-    .sidebar ul a i {
-        margin-right: 16px;
-    }
-
-    #check {
-        display: none;
-    }
-
-    label #btn,
-    label #cancel {
-        position: fixed;
-        background: #ffffff;
-        border-radius: 3px;
-        cursor: pointer;
-
-    }
-
-    label #btn {
-        left: 40px;
-        top: 95px;
-        font-size: 21px;
-        color: #1109fffe;
-        box-shadow: #1109ffbf 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) -1px 20px 16px;
-        padding: 20px;
-        transition: all .4s;
-        border-radius: 50%;
-        z-index: 1111;
-    }
-
-    label #cancel {
-        padding: 20px;
-        z-index: 1111;
-        left: -190px;
-        top: 100px;
-        font-size: 19px;
-        color: #ff0000;
-        transition: all .4s ease;
-    }
-
-    #check:checked~.sidebar {
-        left: 0;
-    }
-
-    #check:checked~label #btn {
-        left: 250px;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    #check:checked~label #cancel {
-        top: 85px;
-        left: 255px;
-    }
-
-    #check:checked~section {
-        margin-left: 250px;
-
-    }
-
-    section {
-        background: url(bg.jpeg) no-repeat;
-        background-position: center;
-        background-size: cover;
-        height: 100vh;
-        transition: all .5s;
-    }
-
-    .text-active-blue.active {
-        color: #27a4fb !important;
-    }
-
-    .navigation__menu>li>a.active {
-        color: #dcf3ff;
-        background-color: #1e2a31;
-        border: .00001px solid #0004ff8a;
-        box-shadow: #00000073 0px 25px 20px -20px;
-    }
-
-    .navigation__menu>li>a {
-        border-radius: .25rem;
-        font-size: .95rem;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-    }
-
-    .navigation__menu {
-        padding: 28px 10px 0px;
-    }
-
-
-    .navigation__menu a {
-        color: #7996a9 !important;
-    }
-
-    .text-red {
-        color: #e53935 !important;
-    }
-
-    .text-green {
-        color: #2cc56f !important;
-    }
-
-    .text-amber {
-        color: #ffc021 !important;
-    }
-
-    .text-purple {
-        color: #ac66f5 !important;
-    }
-
-    .text-cyan {
-        color: #00f3e7 !important;
-    }
-
-    .text-pink {
-        color: #e91e63 !important;
-    }
-
-    .closebtn {
-        position: absolute;
-
+    input:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
     }
 
 
 
-    .logo {
-        width: 200px;
-        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-        object-position: 30% 38%;
-        /* ปรับตำแหน่งของรูป (X, Y) */
-        margin-top: 10%;
-        margin-left: 10%;
-    }
-
-    a.logout-link {
+    .textW {
+        margin-left: 2%;
+        margin-top: -10px;
         color: #ffffff;
-        /* สีของลิงก์ */
-        font-size: 16px;
-        /* ขนาดตัวอักษรของลิงก์ */
-        text-decoration: none;
-        /* ลบการเส้นใต้ลิงก์ */
-        padding: 8px 16px;
-        /* ระยะห่างขอบของลิงก์ */
-        transition: background-color 0.3s, color 0.3s;
-        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
-    }
-
-    a.logout-link:hover {
-        color: #595656;
-        /* สีที่แตกต่างเมื่อ hover */
-    }
-
-
-    .textSB {
-        color: #070707;
-        font-size: 20px;
+        font-size: 40px;
+        position: absolute;
+        left: 2%;
         font-family: 'Noto Sans Thai Looped', sans-serif;
         text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
     }
 
 
-    .sidebar::before,
-    .sidebar::after {
-        content: '';
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        border-top-left-radius: 40%;
-        border-top-right-radius: 45%;
-        border-bottom-left-radius: 35%;
-        border-bottom-right-radius: 40%;
-        z-index: -1;
-    }
-
-    .sidebar::before {
-        left: 20%;
-        bottom: -50%;
-        background-color: rgba(8, 0, 255, 0.788);
-        animation: wawes 6s infinite linear;
-    }
-
-    .sidebar::after {
-        left: -188%;
-        bottom: -40%;
-        background-color: rgba(0, 223, 253, 0.2);
-        animation: wawes 7s infinite;
-    }
-
-    @keyframes wawes {
-        from {
-            transform: rotate(0);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
 
     a.list-item-link {
         color: #000000;
@@ -414,23 +83,18 @@
     }
 
     a.list-item-link:hover {
-        color: #000000;
+        color: #ffffff;
         /* สีที่แตกต่างเมื่อ hover */
         /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
     }
 
-    .container {
-        justify-content: center;
-        align-items: flex-start;
-        padding-top: 30px;
-    }
+
 
     .menu {
         display: grid;
         grid-template-rows: 40px max-content;
         gap: 10px;
         margin-top: 10%;
-
     }
 
     .toggle {
@@ -462,7 +126,7 @@
         color: #444;
         list-style: none;
         display: grid;
-        grid-template-rows: repeat(3, 40px);
+        grid-template-rows: repeat(4, 40px);
         border-radius: 5px;
         overflow: hidden;
         height: 0;
@@ -489,208 +153,1057 @@
     }
 
     .toggle:focus~.list {
-        height: 130px;
+        height: 160px;
     }
 
     .toggle:focus~.list .list-item {
         transform: translateX(0);
     }
 
-    /* ///////////////////////////////////////////////////////////// */
-    .toggleR {
-        all: unset;
-        background-color: dodgerblue;
-        color: white;
-        width: 150px;
-        padding: 10px;
-        font-weight: 700;
+
+    .logo {
+        width: 200px;
+        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+        object-position: 30% 38%;
+        background-color: #ffffff;
         display: flex;
-        justify-content: space-between;
+        margin: auto;
+        padding: 5%;
+    }
+
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        table-layout: fixed;
+        margin-top: 0px;
+        padding: 5px;
+    }
+
+
+    td {
+        background-color: rgb(255, 255, 255);
+        border: 1.5px solid #171717;
+        height: 20px;
+        width: 65px;
         align-items: center;
+        text-align: center;
+        font-size: small;
+        padding: 3px;
+    }
+
+    th {
+        background-color: #9d9d9d;
+        border: 2px solid #171717;
+        height: 50px;
+        width: 65px;
+        font-weight: bold;
+        text-align: center;
+        font-size: xx-small;
+        align-items: center;
+        padding: 2px;
+    }
+
+    form {
+        max-width: 650px;
+        margin: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        background-color: #fff;
+        padding: 20px;
         border-radius: 5px;
-        cursor: pointer;
+        text-align: left;
+
     }
 
-    .toggleR::after {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-width: 0 3px 3px 0;
-        border-style: solid;
-        transform: rotate(45deg);
-        transition: 0.4s;
+    .form-container {
+        text-align: center;
+        margin-top: 3%;
+        margin-bottom: 3%;
     }
 
-    .listR {
-        background-color: white;
-        color: #444;
+
+    .form-containerBOx {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        text-align: center;
+        padding: 1px;
+        box-sizing: border-box;
+        width: 95%;
+        overflow: auto;
+        font-family: Arial, sans-serif;
+        margin: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+
+    .scrolling-text {
+        animation: scroll-left 60s linear infinite;
+        white-space: nowrap;
+    }
+
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    a.logout-link {
+        color: #ffffff;
+        /* สีของลิงก์ */
+        font-size: 16px;
+        /* ขนาดตัวอักษรของลิงก์ */
+        text-decoration: none;
+        /* ลบการเส้นใต้ลิงก์ */
+        padding: 8px 16px;
+        /* ระยะห่างขอบของลิงก์ */
+        transition: background-color 0.3s, color 0.3s;
+        /* เพื่อให้มีการเปลี่ยนสีอย่างนุ่มนวลเมื่อ hover */
+    }
+
+    a.logout-link:hover {
+        color: #595656;
+        /* สีที่แตกต่างเมื่อ hover */
+    }
+
+    .main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    :root {
+        --color1: #0b1d5b;
+        --color2: #ffffff;
+        --color3: #102dbb;
+        --color4: #476aec;
+        --color5: #6885ef;
+    }
+
+
+    .navbar {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70rem;
+        margin-top: 10vw;
+        transition: all .5s ease;
+
+    }
+
+    .navbar-container {
         list-style: none;
-        display: grid;
-        grid-template-rows: repeat(6, 40px);
-        border-radius: 5px;
-        overflow: hidden;
-        height: 0;
-        transition: 0.4s;
-    }
-
-    .list-itemR {
         display: flex;
-        align-items: center;
-        padding-left: 15px;
-        transition: 0.6s, transform 0.4s var(--delay);
-        transform: translateX(-100%);
-        user-select: none;
+        justify-content: center;
+        perspective: 50rem;
+        background-color: rgba(66, 64, 64, 0.8);
+        /* Darken color1 with 20% transparency */
+
+        box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+
+    }
+
+    .navbar-container_sub {
+        position: absolute;
+        width: 100%;
+        list-style: none;
+        border-radius: 0 0 5px 5px;
+        top: 100%;
+        left: 0;
+        padding: 0;
+        transform: rotateY(180deg) scaleY(0);
+        transform-origin: top;
+        opacity: 0;
+        visibility: hidden;
+        transition: all .7s ease;
+        box-shadow: 0 0 19px 11px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-item {
+        flex-grow: 1;
+        padding: 1rem;
+        font-size: 2rem;
+        background-color: var(--color3);
+        font-weight: bold;
+        text-align: center;
+        color: whitesmoke;
+        transition: all .7s ease;
+        transform: rotateY(0deg);
+        position: relative;
+        z-index: 1;
         cursor: pointer;
+        font-size: 15px;
+
     }
 
-    .list-itemR:hover {
-        background-color: dodgerblue;
+    .navbar-item:hover {
+        transform: rotateY(180deg);
+    }
+
+    .navbar-item:hover .navbar-container_sub {
+        transform: rotateY(180deg) scaleY(1);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .navbar-item:hover .navbar-item_label {
+        transform: scaley(1) rotateY(180deg);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .navbar-item_sub {
+        padding: 1rem;
+        font-size: 2rem;
+        background-color: transparent;
+        position: relative;
+        overflow: hidden;
+        color: whitesmoke;
+        text-align: end;
+        transition: color .3s ease-in;
+        font-size: 15px;
+        overflow: hidden;
+    }
+
+    .navbar-item_sub:hover {
+        color: var(--color3);
+    }
+
+    .navbar-item_sub:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background-color: var(--color4);
+    }
+
+    .navbar-item_sub:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 120%;
+        width: 120%;
+        height: 100%;
+        z-index: -1;
+        background-color: var(--color2);
+        transform: skewX(-30deg);
+        transform-origin: right;
+        transition: all .3s ease-in;
+    }
+
+    .navbar-item_sub:hover:before {
+        left: -10%;
+    }
+
+    .navbar-item_label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: inherit;
+        font-size: inherit;
+        font-weight: bold;
+        text-align: right;
+        transform: scaleY(0) rotateY(180deg);
+        transform-origin: top;
+        opacity: 0;
+        visibility: hidden;
+        transition: all .4s ease .1s;
+        background-color: var(--color2);
+        color: var(--color3);
+    }
+
+
+
+    /* เรียงลำดับ div ใน plot-container */
+    .plot-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        /* จัดวางให้เรียงตามจำนวน div ที่มี */
+        margin: 20px;
+        margin-bottom: 20px;
+        /* ขอบระหว่าง div */
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: center;
+        /* จัด div ให้อยู่ตรงกลาง */
+    }
+
+    /* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
+    .plot-container>div {
+        width: 45%;
+        /* กำหนดขนาดของแต่ละ div */
+        margin: 10px;
+        /* ขอบระหว่าง div */
+        border: 1px solid #ddd;
+        /* เส้นขอบของ div */
+        border-radius: 8px;
+        /* ทำให้มีมุมโค้ง */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* เงาใต้ div */
+        margin: center;
+        /* จัด div ให้อยู่ตรงกลาง */
+    }
+
+    /* ปรับสีของกราฟ */
+    .plot-container>div .plotly {
+        background-color: #fff;
+        /* สีพื้นหลังของกราฟ */
+        border-radius: 8px;
+        /* ทำให้มีมุมโค้ง */
+
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: x-small;
+        table-layout: fixed;
+        margin-top: -10px;
+
+
+    }
+
+
+    th,
+    td {
+        font-size: x-small;
+        border: 1px solid #000000;
+
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        font-size: x-small;
+        background-color: #e1dede;
+    }
+
+
+    th,
+    td {
+        width: 63px;
+    }
+
+
+
+    .table1 {
+        font-size: xx-small;
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30px;
+        margin: 10px auto;
+    }
+
+    .table1 th,
+    .table1 td {
+        font-size: xx-small;
+        border: 1px solid #000000;
+        text-align: center;
+        /* จัดตำแหน่งตรงกลาง */
+        padding: 8px;
+    }
+
+    .table1 th {
+        font-size: xx-small;
+        border-top: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+    }
+
+
+    .table-container {
+        font-size: xx-small;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .table {
+        font-size: xx-small;
+        width: 100%;
+        /* Adjust the width as needed */
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        padding: 30px;
+        margin: 10px auto;
+        /* Center-align the table */
+    }
+
+    @media (max-width: 768px) {
+        .table {
+            width: 100%;
+        }
+    }
+
+
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 10rem;
+        padding: .5rem 0;
+        margin: .125rem 0 0;
+        font-size: 1rem;
+        color: #212529;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: .25rem;
+        max-width: 200px;
+    }
+
+    #region_dropdown {
+        width: 200px;
+        /* กำหนดความกว้างของ dropdown */
+        padding: 8px;
+        /* กำหนดระยะห่างขอบของ dropdown */
+        border: 1px solid #ccc;
+        /* กำหนดเส้นขอบ */
+        border-radius: 4px;
+        /* กำหนดเส้นขอบมน */
+        background-color: #fff;
+        /* กำหนดพื้นหลัง */
+        color: #333;
+        /* กำหนดสีของตัวอักษร */
+    }
+
+    #region_dropdown:hover {
+        border-color: #666;
+        /* กำหนดสีขอบเมื่อ hover */
+    }
+
+    #region_dropdown option {
+        background-color: #fff;
+        /* กำหนดพื้นหลังของแต่ละ option */
+        color: #333;
+        /* กำหนดสีของตัวอักษรของแต่ละ option */
+    }
+
+    #region_dropdown option:hover {
+        background-color: #f2f2f2;
+        /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+    }
+
+    /* กำหนดสไตล์ของ label */
+    label[for="tag_dropdown"] {
+        display: block;
+        /* กำหนดให้ label เป็น block element */
+        margin-bottom: 5px;
+        /* กำหนดระยะห่างด้านล่าง */
+        font-weight: bold;
+
+    }
+
+    /* กำหนดสไตล์ของ dropdown */
+    #tag_dropdown {
+        width: 200px;
+        /* กำหนดความกว้างของ dropdown */
+        padding: 8px;
+        /* กำหนดระยะห่างขอบของ dropdown */
+        border: 1px solid #ccc;
+        /* กำหนดเส้นขอบ */
+        border-radius: 4px;
+        /* กำหนดเส้นขอบมน */
+        background-color: #fff;
+        /* กำหนดพื้นหลัง */
+        color: #333;
+        /* กำหนดสีของตัวอักษร */
+    }
+
+    #tag_dropdown:hover {
+        border-color: #666;
+        /* กำหนดสีขอบเมื่อ hover */
+    }
+
+    #tag_dropdown option {
+        background-color: #fff;
+        /* กำหนดพื้นหลังของแต่ละ option */
+        color: #333;
+        /* กำหนดสีของตัวอักษรของแต่ละ option */
+    }
+
+    #tag_dropdown option:hover {
+        background-color: #f2f2f2;
+        /* กำหนดพื้นหลังเมื่อ hover ที่ option */
+    }
+
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        padding-top: 20%;
+    }
+
+    .spinner {
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+    #region_dropdown {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: none;
+        width: 200px;
+        /* ปรับขนาดตามความต้องการ */
+        margin-bottom: 2%;
+        margin-top: 1%;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .custom-btn {
+        margin: 1%;
         color: #fff;
+        width: 140px;
+        height: 40px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
     }
 
-    .toggleR:focus::after {
-        transform: rotate(225deg);
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
     }
 
-    .toggleR:focus~.listR {
-        height: 250px;
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
     }
 
 
-    .toggleR:focus~.listR .list-itemR {
-        transform: translateX(0);
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4CAF50;
+        box-shadow: 0 0 5px #4CAF50;
     }
 
-    /* ///////////////////////////////////////////////////////////// */
-    .form-containerSB {
-        background-color: #ffffff19;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.333);
-        /* Increased the shadow */
-        border-radius: 10px;
-        /* Slightly increased border-radius for a softer look */
-        text-align: center;
-        padding: 20px;
-        /* Increased padding for better spacing */
-        box-sizing: border-box;
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+    }
+
+    .menu {
+        padding: 5px;
         width: 100%;
-        margin-top: 10px;
-        /* Adjusted margin for more spacing */
+        max-width: 100%;
+
     }
 
-    /* Add transition for a smooth hover effect */
-    .form-containerSB:hover {
-        transform: translateY(-5px);
-        transition: transform 0.5s ease;
+    .menu .container {
+        padding: 10px;
     }
 
-    .container {
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
+    ul li {
+        max-width: 150px;
         width: 100%;
-        margin-top: 10px;
+    }
+
+    ul {
+        display: flex;
+        justify-content: center;
+        column-gap: 5px;
+        list-style: none;
+        margin: auto;
+    }
+
+    ul li a {
+        text-decoration: none;
+        color: white;
+        background-color: #1C3A94;
+        display: block;
+        padding: 10px;
+        text-align: center;
+    }
+
+    ul li:hover ul.dropdown {
+        display: block;
+        animation-name: mainnav;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        animation-timing-function: linear;
+    }
+
+    ul li ul.dropdown {
+        display: none;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    /* Mainnav animation */
+
+    @keyframes mainnav {
+        0% {
+            height: 0px;
+            background-color: #1C2D61;
+        }
+
+        100% {
+            height: 100px;
+            background-color: transparent;
+        }
+    }
+
+    ul li ul.dropdown li {
+        margin: 5px 0;
+    }
+
+    .menu ul li ul li:first-child {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(2) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.1s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(3) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.2s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(4) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.3s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(5) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.4s;
+        animation-timing-function: linear;
+    }
+
+    .menu ul li ul li:nth-child(6) {
+        animation-name: navanime;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+        animation-delay: 0.5s;
+        animation-timing-function: linear;
+    }
+
+    .menu {
+        position: relative;
+
+        background-blend-mode: overlay;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .menu .container>ul:after {
+        height: 39px;
+        max-width: 10%;
+        width: 100%;
+        min-width: 0;
+        content: "";
+        position: relative;
+        display: block;
+        border-radius: 0 100% 0 / 0 100% 0 0;
+    }
+
+    .menu .container>ul:before {
+        height: 39px;
+        max-width: 10%;
+        width: 100%;
+        min-width: 0;
+        content: "";
+        position: relative;
+        display: block;
+        border-radius: 100% 0 0 0/ 100% 0 0 0;
+    }
+
+    /* Navanim animation */
+
+    @keyframes navanime {
+        0% {
+            transform: rotateY(180deg);
+        }
+    }
+
+    ul li a {
+        transition: all 0.2s linear;
+        position: relative;
+        z-index: 1;
+    }
+
+    ul li>a:after {
+        content: "";
+        background-color: #051DB5;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0%;
+        height: 0%;
+        transition: all 0.3s linear;
+        z-index: -1;
+    }
+
+    ul li:hover>a:after {
+        color: #051DB5;
+        content: "";
+        background-color: #FFB000;
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Dropdown Styles */
+    .form-containerBox select,
+    .form-containerBox input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
     }
 </style>
 
 <body>
-    <!--dust particel-->
-    <div>
-
-        <div class="header">
-            <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+    <nav>
+        <div class="menu">
+            <div class="container">
+                <ul class="inner-menu">
+                    <li><a href="#">Reports Data</a>
+                        <ul class="dropdown">
+                            <li><a href="billing_data">View Billing Data</a></li>
+                            <li><a href="Daily_summary">View EVC Status</a></li>
+                            <li><a href="#">Daily Summary</a></li>
+                            <li><a href="#">Monthly Summery</a></li>
+                            <li><a href="sitedetail_data">Site Detail</a></li>
+                            <li><a href="#">New Site Detail</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Polling Actions</a>
+                        <ul class="dropdown">
+                            <li><a href="Manualpoll_data">Manual poll</a></li>
+                            <li><a href="#">Write Config</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Manage Sites</a>
+                        <ul class="dropdown">
+                            <li><a href="#">Add Site</a></li>
+                            <li><a href="#">Edit Site</a></li>
+                            <li><a href="#">Remove Site</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Manage Users</a>
+                        <ul class="dropdown">
+                            <li><a href="add_user_route">Add User</a></li>
+                            <li><a href="edit_user_route">Edit User</a></li>
+                            <li><a href="remove_user_route">Remove User</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Poll Sitting</a>
+                        <ul class="dropdown">
+                            <li><a href="add_mapping_route">Add Mapping</a></li>
+                            <li><a href="add_polling_route">Add Polling</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+</body>
+
+<body>
+    <div class="form-containerBox">
+
+        <form method="get" action="{{ url_for('billing_data') }}">
+            <div class="form-container">
+                <img class="logo"
+                    src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+                    alt="logo">
+                    
+                <h1>View Billing Data</h1>
+
+                <!-- Region Dropdown -->
+                <label for="region_dropdown">Select Region:</label>
+                <select id="region_dropdown" name="region_dropdown">
+                    <option value="" {% if not selected_region %}selected{% endif %}>All</option>
+                    {% for region in region_options %}
+                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region
+                        }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <!-- Site Dropdown -->
+                <label for="tag_dropdown">Select Site:</label>
+                <select id="tag_dropdown" name="tag_dropdown">
+                    <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
+                    {% for tag in tag_options %}
+                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Date Picker -->
+                <label for="date_picker">Select Date:</label>
+                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
+
+                <div. class="form-container">
+                    <div class="button-container">
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data">Daily
+                            Data</button>
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data">Config
+                            Data</button>
+                        <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                            Filters</button>
+                    </div>
+        </form>
     </div>
 
 
-    </div>
 
 
-    <input type="checkbox" id="check">
-    <label for="check" class="closebtn">
-        <i class="fas fa-bars" id="btn"></i>
-        <i class="fas fa-times" id="cancel"></i>
-    </label>
-    <div class="sidebar d-block">
-        <img class="logo"
-            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-            alt="logo">
-        <div class="container">
-            <div class="form-containerSB">
-                <span class="textSB" alt="logo">Menu</span>
-                <div class="menu">
-                    <button class="toggleR">Reports Data</button>
-                    <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
-                                class="list-item-link">View Billing Data</a></li>
-                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
-                                Status</a></li>
-                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
-                                Summary</a></li>
-                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
-                                Summery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
-                                class="list-item-link">Site
-                                Detail</a></li>
-                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
-                                Detail</a></li>
-                    </ul>
+    <body>
+        <div class="form-containerBOx">
+            <div class="form-container">
+                <div>
+                    <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+                    <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+                    <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+                    <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
                 </div>
-                <div class="menu">
-                    <button class="toggle">Polling Actions</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
-                                class="list-item-link">Manual
-                                poll</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
-                        </li>
-                    </ul>
-                </div>
+                <div>
+                    <!-- ตำแหน่งของ LoadingOverlay -->
+                    <div id="loadingOverlay" style="display: none;">
+                        <img src="{{ url_for('static', filename='Search.gif') }}" alt="Loading...">
+                    </div>
 
-                <div class="menu">
-                    <button class="toggle">Manage Sites</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="table-container">
+                        {% if tables.get('daily_data_run1') %}
+                        <div class="table" id="table1">
+                            <h5>Run 1: {{ selected_tag }}</h5>
+                            {{ tables['daily_data_run1']|safe }}
+                        </div>
+                        <div class="plot-container">
+                            {{ graph_corrected|safe }}
+                        </div>
 
-                <div class="menu">
-                    <button class="toggle">Manage Users</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
-                                class="list-item-link">Add
-                                User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="edit_user_route" class="list-item-link">Edit
-                                User</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="remove_user_route"
-                                class="list-item-link">Remove
-                                User</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="menu">
-                    <button class="toggle">Poll Sitting</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
-                                class="list-item-link">Add
-                                Mapping</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
-                                class="list-item-link">Add Polling</a>
-                        </li>
-                    </ul>
+                        <div class="plot-container">
+                            {{ graph_uncorrected|safe }}
+                        </div>
+
+                        <div class="plot-container">
+                            {{ graph_pressure|safe }}
+                        </div>
+
+                        <div class="plot-container">
+                            {{ graph_temperature|safe }}
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run2') %}
+                        <div class="table" id="table2">
+                            <h5>Run 2: {{ selected_tag }}</h5>
+                            {{ tables['daily_data_run2']|safe }}
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run3') %}
+                        <div class="table" id="table3">
+                            <h5>Run 3: {{ selected_tag }}</h5>
+                            {{ tables['daily_data_run3']|safe }}
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('daily_data_run4') %}
+                        <div class="table" id="table4">
+                            <h5>Run 4: {{ selected_tag }}</h5>
+                            {{ tables['daily_data_run4']|safe }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+
+
+
+                    <div class="table-container1">
+                        {% if tables.get('config_data_run1') %}
+                        <div class="table" id="table1">
+                            <h5>Run 1: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run1']|safe }}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+
+
+
+                        {% if tables.get('config_data_run2') %}
+                        <div class="table" id="table1">
+                            <h5>Run 2: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run2']|safe }}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('config_data_run3') %}
+                        <div class="table" id="table1">
+                            <h5>Run 3: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run3']|safe }}
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        {% endif %}
+
+                        {% if tables.get('config_data_run4') %}
+                        <div class="table" id="table1">
+                            <h5>Run 4: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run4']|safe }}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                        {% if tables.get('config_data_run5') %}
+                        <div class="table" id="table1">
+                            <h5>Run 5: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run5']|safe }}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                        {% if tables.get('config_data_run6') %}
+                        <div class="table" id="table1">
+                            <h5>Run 6: {{ selected_tag }}</h5>
+                            <table class="table1">
+                                <!-- The following line combines thead and tbody into a single block -->
+                                <thead>
+                                    <tr>
+                                        {% for key, value in dropped_columns_data[0].items() %}
+                                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ tables['config_data_run6']|safe }}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-</body>
+    </body>
 
 
 </html>

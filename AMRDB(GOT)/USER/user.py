@@ -58,9 +58,7 @@ def execute_query(query, params=None):
 # Function to connect to Oracle database and fetch data
 def get_data(filter_text=None, sort_column=None):
     try:
-        connection = cx_Oracle.connect(
-            user=username, password=password, dsn=f"{hostname}:{port}/{service_name}"
-        )
+        connection = cx_Oracle.connect(user=username, password=password, dsn=f"{hostname}:{port}/{service_name}")
         cursor = connection.cursor()
 
         # Base query

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
+    <link rel="stylesheet" href="/HOME%20%28Doing%20Here%29/Css/styles_add_actraris.css">
+
 </head>
 <style>
     body {
@@ -53,16 +55,6 @@
         margin-right: 5px;
     }
 
-    button {
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 15px;
-    }
-
     #statusMessage {
         margin-top: 15px;
         color: #4CAF50;
@@ -98,10 +90,12 @@
         object-position: 30% 38%;
         background-color: #ffffff;
         display: flex;
+        margin: auto;
     }
 
     button {
         margin: 10px;
+        border-radius: 5px;
     }
 
     .custom-btn {
@@ -115,7 +109,10 @@
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
-        display: inline-block;
+        margin-bottom: 2%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     /* 1 */
@@ -142,42 +139,41 @@
     }
 </style>
 
-
-
 <body>
     <div class="textbox-group">
-        <form action="/new_form" method="post">
-            <img class="logo"
-                src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="logo">
-            <h1>Mapping config</h1>
-            <button href="{{ url_for('add_mapping_route') }}" class="custom-btn btn-1">Elter</button>
-            <button href="{{ url_for('add_actraris_route') }}" class="custom-btn btn-2">Actraris</button>
+        <img class="logo"
+            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
+            alt="logo">
+        <h1>Mapping config</h1>
+        <button href="add_mapping_route" class="custom-btn btn-1">Elter</button>
+        <button href="add_actraris_route" class="custom-btn btn-2">Actraris</button>
     </div>
 
 
+
     <div class="textbox-group">
-        <label for="address1">ADDRESS:</label>
-        <input type="text" id="address1" name="address1" required>
+        <form action="/new_form" method="post">
+            <label for="address1">ADDRESS:</label>
+            <input type="text" id="address1" name="address1" required>
 
-        <label for="description1">DESCRIPTION:</label>
-        <input type="text" id="description1" name="description1" required>
+            <label for="description1">DESCRIPTION:</label>
+            <input type="text" id="description1" name="description1" required>
 
-        <label for="type_value1">TYPE_VALUE:</label>
-        <select id="type_value1" name="type_value1" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
+            <label for="type_value1">TYPE_VALUE:</label>
+            <select id="type_value1" name="type_value1" required>
+                <option value="ARRAY6">ARRAY6</option>
+                <option value="signed">Short</option>
+                <option value="Float">Long</option>
+            </select>
 
-        <label for="evc_type1">EVC_TYPE:</label>
-        <input type="text" id="evc_type1" name="evc_type1" required>
+            <label for="evc_type1">EVC_TYPE:</label>
+            <input type="text" id="evc_type1" name="evc_type1" required>
 
-        <label for="or_der1">OR_DER:</label>
-        <input type="text" id="or_der1" name="or_der1" required>
+            <label for="or_der1">OR_DER:</label>
+            <input type="text" id="or_der1" name="or_der1" required>
 
-        <label for="data_type1">DATA_TYPE:</label>
-        <input type="text" id="data_type1" name="data_type1" required>
+            <label for="data_type1">DATA_TYPE:</label>
+            <input type="text" id="data_type1" name="data_type1" required>
     </div>
 
     <div class="textbox-group">
@@ -574,16 +570,13 @@
 
         <label for="data_type17">DATA_TYPE:</label>
         <input type="text" id="data_type17" name="data_type17" required>
+        <input class="custom-btn btn-2" type="submit" value="Submit">
     </div>
 
-    <input type="submit" value="Submit">
-    </form>
+    
+        </form>
 
-
-</body>
-
-<body>
-    <a href="{{ url_for('index') }}">Home</a>
+        <script src="add_actraris.js"></script>
 </body>
 
 </html>

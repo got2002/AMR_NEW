@@ -58,7 +58,42 @@ def insert_address_range_to_oracle(
 
         connection.commit()
 
+def update_database(list_config_values, list_billing_values, enable_config_values, enable_billing_values):
+    # Establish a connection to the Oracle database
+    connection = cx_Oracle.connect(username, password, cx_Oracle.makedsn(hostname, port, service_name=service_name))
 
+    try:
+        # Create a cursor to execute SQL statements
+        cursor = connection.cursor()
+
+        # Construct the UPDATE query
+        update_query = """
+        UPDATE AMR_POLL_RANGE
+        SET poll_config = :poll_config,
+            poll_billing = :poll_billing,
+            poll_config_enable = :poll_config_enable,
+            poll_billing_enable = :poll_billing_enable
+        WHERE {type_condition}
+        """
+
+        # Bind the parameters and execute the query for each set of values
+        for config, billing, enable_config, enable_billing in zip(list_config_values, list_billing_values, enable_config_values, enable_billing_values):
+            cursor.execute(update_query, {
+                'poll_config': config,
+                'poll_billing': billing,
+                'poll_config_enable': enable_config,
+                'poll_billing_enable': enable_billing,
+            })
+
+        # Commit the changes
+        connection.commit()
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
+
+        
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -101,7 +136,7 @@ def polling_route():
         # Fetch data using the modified query
         results = fetch_data(query)
         # print(results)
-        # Create a DataFrame from the results
+
         columns = [
             "evc_type",
             "poll_config",
@@ -111,37 +146,30 @@ def polling_route():
         ]
         df = pd.DataFrame(results, columns=columns)
 
+        print(df.get)
         poll_config_list = df.get(["poll_config"]).values.tolist()
-        # print(poll_config_list[0])
-        list_str = str(poll_config_list[0]).strip("[]'").split(",")
-        for i in range(0, len(list_str)):
-            print(list_str[i])
+        list_config = str(poll_config_list[0]).strip("[]'").split(",")
 
         poll_billing_list = df.get(["poll_billing"]).values.tolist()
-        # pint(poll_config_list[0])
-        lite_str = str(poll_billing_list[0]).strip("[]'").split(",")
-        for i in range(0, len(lite_str)):
-            poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-            # pint(poll_config_list[0])
-            end_str = str(poll_billing_list[0]).strip("[]'").split(",")
-            for i in range(0, len(end_str)):
-                poll_billing_enble_list = df.get(
-                    ["poll_billing_enable"]
-                ).values.tolist()
-                # pint(poll_config_list[0])
-                end1_str = str(poll_billing_list[0]).strip("[]'").split(",")
-                for i in range(0, len(end1_str)):
-                    return render_template(
-                        "polling.html",
-                        tables=[df.to_html(classes="data", index=False)],
-                        titles=columns,
-                        selected_type=selected_type,
-                        type_options=type_options,
-                        list_str=list_str,  # Pass the list_str to the template
-                        lite_str=lite_str,
-                        end_str=end_str,
-                        end1_str=end1_str,
-                    )
+        list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
+        
+        poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+        list_enable_config = str(poll_config_enable_list[0]).strip("[]'").split(",")
+     
+        poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
+        list_enable_billing = str(poll_billing_enable_list[0]).strip("[]'").split(",")
+        
+        return render_template(
+            "polling.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=columns,
+            selected_type=selected_type,
+            type_options=type_options,
+            list_config=list_config,
+            list_billing=list_billing,
+            list_enable_config=list_enable_config,
+            list_enable_billing=list_enable_billing,
+        )
 
     # Render the HTML template without the table if no type is selected
     return render_template(
@@ -150,12 +178,30 @@ def polling_route():
         titles=[],
         selected_type=None,
         type_options=type_options,
-        list_str=[],  # Pass an empty list_str to the template
-        lite_str=[],
-        end_str=[],
-        end1_str=[],
+        list_config=[],
+        list_billing=[],
+        list_enable_config=[],
+        list_enable_billing=[],
     )
+    
+@app.route('/update_values', methods=['POST'])
+def update_values():
+    try:
+        selected_type = request.form.get('selected_type')
+        start_config = request.form.get('start_config')
+        end_config = request.form.get('end_config')
+        enable_config = '1' if request.form.get('enable_config') == 'on' else '0'
+        start_billing = request.form.get('start_billing')
+        end_billing = request.form.get('end_billing')
+        enable_billing = '1' if request.form.get('enable_billing') == 'on' else '0'
 
+        # Update values in the database as needed
+        # Use the above variables (selected_type, start_config, end_config, etc.) in your SQL update query
+
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        # print(f"Error updating values: {e}")
+        return render_template("polling.html")
 
 MAX_ADDRESS_LENGTH = 249
 
@@ -211,15 +257,16 @@ def save_to_oracle():
             }
             return jsonify(response)
 
-        insert_address_range_to_oracle(
+        # Add a function to update the existing records in Oracle
+        update_address_range_in_oracle(
             combined_address_config,
             combined_address_billing,
             enable_config,
             enable_billing,
-            evc_type,  # Add 'evc_type' as an argument here
+            evc_type,
         )
 
-        response = {"status": "success", "message": "Data saved successfully"}
+        response = {"status": "success", "message": "Data updated successfully"}
     except ValueError as ve:
         response = {"status": "error", "message": str(ve)}
     except cx_Oracle.DatabaseError as e:
@@ -235,7 +282,7 @@ def save_to_oracle():
         traceback.print_exc()  # Print detailed traceback information
         response = {
             "status": "error",
-            "message": f"An error occurred while saving data: {str(e)}",
+            "message": f"An error occurred while updating data: {str(e)}",
         }
 
     return jsonify(response)
@@ -392,19 +439,20 @@ def submit_form():
 
         cursor.executemany(sql_merge, data_list)
 
+        # Commit the changes to the database
         connection.commit()
 
-        return "บันทึกข้อมูลสำเร็จ"
+        return "Data saved successfully"
     except Exception as e:
-        return f"เกิดข้อผิดพลาด: {str(e)}"
+        return f"Error occurred: {str(e)}"
     finally:
         if cursor is not None:
-            # ปิด cursor
+        # Close the cursor
             cursor.close()
 
-        if connection is not None:
-            # ปิด connection
-            connection.close()
+    if connection is not None:
+        # Close the connection
+        connection.close()
 
 
 @app.route("/add_actraris_route")
@@ -478,17 +526,20 @@ def submit_new_form():
 
         connection.commit()
 
-        return "บันทึกข้อมูลสำเร็จ"
+        # Commit the changes to the database
+        connection.commit()
+
+        return "Data saved successfully"
     except Exception as e:
-        return f"เกิดข้อผิดพลาด: {str(e)}"
+        return f"Error occurred: {str(e)}"
     finally:
         if cursor is not None:
-            # ปิด cursor
+        # Close the cursor
             cursor.close()
 
-        if connection is not None:
-            # ปิด connection
-            connection.close()
+    if connection is not None:
+        # Close the connection
+        connection.close()
 
 
 if __name__ == "__main__":

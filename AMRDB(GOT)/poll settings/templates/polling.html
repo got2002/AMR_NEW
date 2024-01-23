@@ -1,3 +1,4 @@
+User
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,6 +46,46 @@
             display: none;
         
         }
+
+        /* textbox */
+
+    /* General styling for all textboxes */
+.textbox-container {
+  margin-bottom: 10px;
+
+}
+
+.textbox-pair {
+  margin-bottom: 3px;
+}
+
+input[type="text"] {
+  width: 200px; /* Adjust the width as needed */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+@keyframes oscillate {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(0px); }
+            100% { transform: translateX(0); }
+        }
+
+        .enable-container {
+            margin-bottom: 10px; /* Add some space between containers */
+            animation: alternate-reverse; /* Apply the oscillation animation */
+        }
+
+        /* Additional styling for labels and checkboxes */
+        label {
+            margin-right: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 5px;
+        }
     </style>
 
 </head>
@@ -56,14 +97,14 @@
     </header>
 
     <nav>
-    <a href="{{ url_for('index') }}">Home</a>
-</nav>
-<nav>
-    <a href="{{ url_for('add_polling_route') }}">Add polling</a>
-    <a href="{{ url_for('edit_polling_route') }}">Edit polling</a>
-</nav>
+        <a href="{{ url_for('index') }}">Home</a>
+    </nav>
 
-<form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
+    <nav>
+        <a href="{{ url_for('add_polling_route') }}">Add polling</a>
+    </nav>
+
+    <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
         <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             {% for type in type_options %}
@@ -72,43 +113,89 @@
         </select>
 
         <!-- Button to submit the form -->
-        <button type="button" onclick="submitForm()">Submit</button>
+        <button type="button" onclick="submitForm()">Edit</button>
     </form>
 
-       {{ tables[0]|safe }}
+    {{ tables[0]|safe }}
 
-<form>
-<div class="textbox-container">
-  {% for i in range(0, list_str|length, 2) %}
-    <div class="textbox-pair">
-      <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
-      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ list_str[i] }}">
-      
-      {% if i+1 < list_str|length %}
-        <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
-        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ list_str[i+1] }}">
-      {% endif %}
-    </div>
-  {% endfor %}
-</div>
+    <h1>Poll Configure</h1>
+    <form id="configForm" action="/update_values" method="post">
+        <div class="textbox-container">
+            {% for i in range(0, list_config|length, 2) %}
+                <div class="textbox-pair">
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
+                    <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_config[i] }}">
 
-<div class="textbox-container">
-  {% for i in range(0, lite_str|length, 2) %}
-    <div class="textbox-pair">
-      <label for="start{{ i }}">{{ 'Start' ~ (i + 1) }}:</label>
-      <input type="text" id="start{{ i }}" name="start{{ i }}" value="{{ lite_str[i] }}">
-      
-      {% if i+1 < lite_str|length %}
-        <label for="end{{ i+1 }}">{{ 'END' ~ (i + 2) }}:</label>
-        <input type="text" id="end{{ i+1 }}" name="end{{ i+1 }}" value="{{ lite_str[i+1] }}">
-      {% endif %}
-    </div>
-  {% endfor %}
-</div>
+                    {% if i+1 < list_config|length %}
+                        <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
+                        <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
 
-</form>
- 
-<script>
+                        {% if i//2 < 20 %}
+                            <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <h1>Poll billing</h1>
+        <div class="textbox-container">
+            {% for i in range(0, list_billing|length, 2) %}
+                <div class="textbox-pair">
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
+                    <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_billing[i] }}">
+
+                    {% if i+1 < list_billing|length %}
+                        <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
+                        <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
+
+                        {% if i//2 < 20 %}
+                            <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_billing[]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" id="updateButton">Update Values</button>
+    </form>
+
+    <script>
+        function saveToOracle() {
+        // Collect data from the Poll Configure form
+        var configureData = collectFormData('list_config', 'list_enable_config');
+
+        // Collect data from the Poll Billing form
+        var billingData = collectFormData('list_billing', 'list_enable_billing');
+
+        // You can now send the data to your backend or perform any other necessary actions
+        console.log('Configure Data:', configureData);
+        console.log('Billing Data:', billingData);
+
+        // Add your logic to save data to Oracle here
+    }
+
+    function collectFormData(listName, enableListName) {
+        var data = {
+            list: [],
+            enableList: []
+        };
+
+        // Collect data from the form
+        $('input[name^=' + listName + ']').each(function (index, element) {
+            data.list.push($(element).val());
+        });
+
+        // Collect enable data from the form
+        $('input[name^=' + enableListName + ']').each(function (index, element) {
+            data.enableList.push($(element).prop('checked') ? '1' : '0');
+        });
+
+        return data;
+    }
+
     function submitForm() {
         // Trigger the form submission
         document.getElementById("pollingForm").submit();
@@ -127,7 +214,7 @@
             allOption.style.display = "block";
         }
     });
-</script>
+    </script>
 
 </body>
 
