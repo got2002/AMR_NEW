@@ -384,19 +384,20 @@ def submit_form():
 
         cursor.executemany(sql_merge, data_list)
 
+        # Commit the changes to the database
         connection.commit()
 
-        return "บันทึกข้อมูลสำเร็จ"
+        return "Data saved successfully"
     except Exception as e:
-        return f"เกิดข้อผิดพลาด: {str(e)}"
+        return f"Error occurred: {str(e)}"
     finally:
         if cursor is not None:
-            # ปิด cursor
+        # Close the cursor
             cursor.close()
 
-        if connection is not None:
-            # ปิด connection
-            connection.close()
+    if connection is not None:
+        # Close the connection
+        connection.close()
 
 
 @app.route("/add_actraris_route")
@@ -470,17 +471,20 @@ def submit_new_form():
 
         connection.commit()
 
-        return "บันทึกข้อมูลสำเร็จ"
+        # Commit the changes to the database
+        connection.commit()
+
+        return "Data saved successfully"
     except Exception as e:
-        return f"เกิดข้อผิดพลาด: {str(e)}"
+        return f"Error occurred: {str(e)}"
     finally:
         if cursor is not None:
-            # ปิด cursor
+        # Close the cursor
             cursor.close()
 
-        if connection is not None:
-            # ปิด connection
-            connection.close()
+    if connection is not None:
+        # Close the connection
+        connection.close()
 
 
 if __name__ == "__main__":
