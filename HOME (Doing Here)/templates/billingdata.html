@@ -1001,13 +1001,11 @@
 
                 <label for="date_picker">Select Date:</label>
                 <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off" onclick="checkDate()">
-                
+
                 <div. class="form-container">
                     <div class="button-container">
-                        <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data">Daily
-                            Data</button>
-                        <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data">Config
-                            Data</button>
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data" onclick="return checkFormSubmission('daily_data')">Daily Data</button>
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data" onclick="return checkFormSubmission('config_data')">Config Data</button>
                         <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
                             Filters</button>
                     </div>
@@ -1210,7 +1208,29 @@
 
             if (selectedDate === '') {
                 alert('กรุณาเลือกวันที่');
+                return false; // ยกเลิกการส่งฟอร์ม
             }
+
+            return true; // ส่งฟอร์มต่อไป
+        }
+
+        function checkFormSubmission(queryType) {
+            if (!checkDate()) {
+                return false; // ยกเลิกการส่งฟอร์ม
+            }
+
+            // กระทำตามประเภทของคำสั่งที่เลือก
+            if (queryType === 'daily_data') {
+                // กระทำเพื่อ Daily Data
+                alert('Daily Data : กำลังดำเนินการต่อ');
+                // ตัวอย่าง: ส่งคำขอ HTTP หรือประมวลผลข้อมูล
+            } else if (queryType === 'config_data') {
+                // กระทำเพื่อ Config Data
+                alert('Config Data : กำลังดำเนินการต่อ');
+                // ตัวอย่าง: ส่งคำขอ HTTP หรือประมวลผลข้อมูล
+            }
+
+            return true; // ส่งฟอร์มต่อไป
         }
         function clearFilters() {
             // ล้างค่า dropdowns
