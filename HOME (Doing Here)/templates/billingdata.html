@@ -999,10 +999,9 @@
                     {% endfor %}
                 </select>
 
-                <!-- Date Picker -->
                 <label for="date_picker">Select Date:</label>
-                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
-
+                <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off" onclick="checkDate()">
+                
                 <div. class="form-container">
                     <div class="button-container">
                         <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data">Daily
@@ -1206,6 +1205,13 @@
 
     <!-- Add this script for the JavaScript functionality -->
     <script>
+        function checkDate() {
+            var selectedDate = document.getElementById('date_picker').value;
+
+            if (selectedDate === '') {
+                alert('กรุณาเลือกวันที่');
+            }
+        }
         function clearFilters() {
             // ล้างค่า dropdowns
             document.getElementById('region_dropdown').value = '';
