@@ -810,6 +810,20 @@ def billing_data():
             if not df_run6.empty:
                 df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["config_data_run6"] = df_run6.to_html(**common_table_properties)
+<<<<<<< HEAD
+            return render_template(
+                "billingdata.html",
+                
+                tables=tables,
+                titles=df.columns.values,
+                selected_date=selected_date,
+                selected_tag=selected_tag,
+                selected_region=selected_region,
+                region_options=region_options,
+                tag_options=tag_options, dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
+            )
+=======
         return render_template(
             "billingdata.html",
               {
@@ -826,6 +840,7 @@ def billing_data():
         )
 
 
+>>>>>>> 8c496a04c6e7e2ecf7de02a26f40e6af498e7b0f
 
     else:
         # Render the template without executing the query
