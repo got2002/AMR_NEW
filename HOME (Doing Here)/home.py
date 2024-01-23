@@ -67,23 +67,40 @@ hostname = "192.168.102.192"
 port = "1521"
 service_name = "orcl"
 
+pool_min = 1
+pool_max = 5
+pool_inc = 1
+pool_gmd = 0
+connection_pool = cx_Oracle.SessionPool(
+    user=username,
+    password=password,
+    dsn=cx_Oracle.makedsn(hostname, port, service_name),
+    min=pool_min,
+    max=pool_max,
+    increment=pool_inc,
+    getmode=pool_gmd
+)
 
 def fetch_data(query, params=None):
     try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
-        with cx_Oracle.connect(username, password, dsn) as connection:
-            with connection.cursor() as cursor:
-                if params:
-                    cursor.execute(query, params)
-                else:
-                    cursor.execute(query)
-                results = cursor.fetchall()
+        # Acquire a connection from the pool
+        connection = connection_pool.acquire()
+
+        with connection.cursor() as cursor:
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            results = cursor.fetchall()
+
         return results
     except cx_Oracle.Error as e:
         (error,) = e.args
         print("Oracle Error:", error)
         return []
-
+    finally:
+        # Release the connection back to the pool
+        connection_pool.release(connection)
 
 def execute_query(query, params=None):
     try:
@@ -1047,10 +1064,21 @@ def Manualpoll_data():
         tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+    tag_checkboxes = [
+    {"id": tag, "label": tag, "checked": tag == selected_tag}
+    for tag in tag_options
+    ]
+
+    # Checkboxes for regions
+    region_checkboxes = [
+        {"id": region, "label": region, "checked": region == selected_region}
+        for region in region_options
+    ]
 
     query = query.format(tag_condition=tag_condition, region_condition=region_condition)
 
     results = fetch_data(query)
+    
     df = pd.DataFrame(
         results,
         columns=[
@@ -1070,33 +1098,110 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
+    
+    # poll_config_list = df.get(["poll_config"]).values.tolist()
+    # if poll_config_list:
+    #     config_list_str = str(poll_config_list[0]).strip("[]'").split(",")
+    #     print(config_list_str)
+    # else:
+    # # Provide a default value if poll_config_list is empty
+    #     config_list_str = [''] * 10
+    # poll_billing_list = df.get(["poll_billing"]).values.tolist()
+    # if poll_billing_list:
+    #     billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
+    #     print(billing_list_str)
+    # else:
+    # # Provide a default value if poll_config_list is empty
+    #     billing_list_str = [''] * 20
+
+    # tcp_port = df.get(["Port"]).values.tolist()
+    # if tcp_port:
+    #     Port_str = str(tcp_port[0]).strip("[]'").split(",")
+    #     print(Port_str)
+    # else:
+    # # Provide a default value if poll_config_list is empty
+    #     Port_str = [''] 
+
+
+   
 
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
+        # starting_address_1=config_list_str[0],
+        # quantity_1=config_list_str[1],
+        # starting_address_2=config_list_str[2],
+        # quantity_2=config_list_str[3],
+        # starting_address_3=config_list_str[4],
+        # quantity_3=config_list_str[5],
+        # starting_address_4=config_list_str[6],
+        # quantity_4=config_list_str[7],
+        # starting_address_5=config_list_str[8],
+        # quantity_5=config_list_str[9],
+        # tcp_port=Port_str[0],
+        # starting_address_6=billing_list_str[0],
+        # quantity_6=billing_list_str[1],
+        # starting_address_7=billing_list_str[2],
+        # quantity_7=billing_list_str[3],
+        # starting_address_8=billing_list_str[4],
+        # quantity_8=billing_list_str[5],
+        # starting_address_9=billing_list_str[6],
+        # quantity_9=billing_list_str[7],
+        # starting_address_10=billing_list_str[8],
+        # quantity_10=billing_list_str[9],
+        # starting_address_11=billing_list_str[10],
+        # quantity_11=billing_list_str[11],
+        # starting_address_12=billing_list_str[12],
+        # quantity_12=billing_list_str[13],
+        # starting_address_13=billing_list_str[14],
+        # quantity_13=billing_list_str[15],
+        # starting_address_14=billing_list_str[16],
+        # quantity_14=billing_list_str[17],
+        # starting_address_15=billing_list_str[18],
+        # quantity_15=billing_list_str[19],
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options,
-        df=df,
+        tag_options=tag_options,df=df
+    #     ,tag_checkboxes=tag_checkboxes,  # Pass checkboxes to the template
+    # region_checkboxes=region_checkboxes,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
+        # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
 
 
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
     global change_to_32bit_counter  # Use the global variable
-
+    
     slave_id = int(request.form["slave_id"])
     function_code = int(request.form["function_code"])
-    if request.form["starting_address"] == "custom":
-        if "custom_starting_address" in request.form:
-            starting_address = int(request.form["custom_starting_address"])
-        else:
-            starting_address = 0  # หรือใส่ค่าเริ่มต้นที่คุณต้องการ
+    starting_address_1 = int(request.form['starting_address_1'])
+    quantity_1 = int(request.form['quantity_1'])
+    adjusted_quantity_1 = quantity_1 - starting_address_1 + 1
+
+    starting_address_2 = int(request.form['starting_address_2'])
+    quantity_2 = int(request.form['quantity_2'])
+    adjusted_quantity_2 = quantity_2 - starting_address_2 + 1
+
+    starting_address_3 = int(request.form['starting_address_3'])
+    quantity_3 = int(request.form['quantity_3'])
+    adjusted_quantity_3 = quantity_3 - starting_address_3 + 1
+
+    starting_address_4 = int(request.form['starting_address_4'])
+    quantity_4 = int(request.form['quantity_4'])
+    adjusted_quantity_4 = quantity_4- starting_address_4 + 1
+
+    starting_address_5 = int(request.form['starting_address_5'])
+    quantity_5 = int(request.form['quantity_5'])
+    adjusted_quantity_5 = quantity_5- starting_address_5 + 1
+    
+    if 'starting_address_2' in request.form:
+        starting_address_2 = int(request.form['starting_address_2'])
     else:
-        starting_address = int(request.form["starting_address"])
-    quantity = int(request.form["quantity"])
+    # ทำการจัดการกรณีไม่พบ 'starting_address_2'
+        starting_address_2 = None  # หรือให้เป็นค่าที่เหมาะสมตามที่คุณต้องการ
+
     tcp_ip = request.form["tcp_ip"]
     tcp_port = int(request.form["tcp_port"])
 
@@ -1108,57 +1213,179 @@ def read_data():
     else:
         bytes_per_value = 4
         if change_to_32bit_counter > 0:
-            quantity *= 2
+            adjusted_quantity_1 *= 2
+            adjusted_quantity_2 *= 2
+            adjusted_quantity_3 *= 2
+            adjusted_quantity_4 *= 2
+            adjusted_quantity_5 *= 2
             change_to_32bit_counter -= 1
 
     # Build the request message
-    request_message = bytearray(
-        [
-            slave_id,
-            function_code,
-            starting_address >> 8,
-            starting_address & 0xFF,
-            quantity >> 8,
-            quantity & 0xFF,
-        ]
-    )
+    request_message_1 = bytearray(
+    [slave_id, function_code, starting_address_1 >> 8, starting_address_1 & 0xFF, adjusted_quantity_1 >> 8, adjusted_quantity_1 & 0xFF]
+)
+    crc_1 = computeCRC(request_message_1)
+    request_message_1 += crc_1.to_bytes(2, byteorder="big")
 
-    crc = computeCRC(request_message)
-    request_message += crc.to_bytes(2, byteorder="big")
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((tcp_ip, tcp_port))
+    request_message_2 = bytearray(
+    [slave_id, function_code, starting_address_2 >> 8, starting_address_2 & 0xFF, adjusted_quantity_2 >> 8, adjusted_quantity_2 & 0xFF]
+)
+    crc_2 = computeCRC(request_message_2)
+    request_message_2 += crc_2.to_bytes(2, byteorder="big")
 
-    # Store the TX message in communication_traffic
-    communication_traffic.append({"direction": "TX", "data": request_message.hex()})
 
-    sock.send(request_message)
 
-    response = sock.recv(1024)
+    request_message_3 = bytearray(
+    [slave_id, function_code, starting_address_3 >> 8, starting_address_3 & 0xFF, adjusted_quantity_3 >> 8, adjusted_quantity_3 & 0xFF]
+)
+    crc_3 = computeCRC(request_message_3)
+    request_message_3 += crc_3.to_bytes(2, byteorder="big")
 
-    # Store the RX message in communication_traffic
-    communication_traffic.append({"direction": "RX", "data": response.hex()})
+    request_message_4 = bytearray(
+    [slave_id, function_code, starting_address_4 >> 8, starting_address_4 & 0xFF, adjusted_quantity_4 >> 8, adjusted_quantity_4 & 0xFF]
+)
+    crc_4 = computeCRC(request_message_4)
+    request_message_4 += crc_4.to_bytes(2, byteorder="big")
 
-    sock.close()
+    request_message_5 = bytearray(
+    [slave_id, function_code, starting_address_5 >> 8, starting_address_5 & 0xFF, adjusted_quantity_5 >> 8, adjusted_quantity_5 & 0xFF]
+)
+    crc_5 = computeCRC(request_message_5)
+    request_message_5 += crc_5.to_bytes(2, byteorder="big")
+    # print(f"adjusted_quantity_2: {adjusted_quantity_2}")
+    # print(f"request_message_2 before CRC: {request_message_2}")
+    # print(f"crc_2: {crc_2}")
+    # print(f"request_message_2 after CRC: {request_message_2}")
+    sock_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_1.connect((tcp_ip, tcp_port))
+    communication_traffic_1 = []
 
-    data = response[3:]
+    # Store the TX message in communication_traffic_1
+    communication_traffic_1.append({"direction": "TX", "data": request_message_1.hex()})
+    sock_1.send(request_message_1)
+    response_1 = sock_1.recv(1024)
 
-    values = [
-        int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
-        for i in range(0, len(data), bytes_per_value)
+    # Store the RX message in communication_traffic_1
+    communication_traffic_1.append({"direction": "RX", "data": response_1.hex()})
+    sock_1.close()
+
+    data_1 = response_1[3:]
+    
+    values_1 = [
+        int.from_bytes(data_1[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_1), bytes_per_value)
     ]
+    
+    sock_2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_2.connect((tcp_ip, tcp_port))
+    communication_traffic_2 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_2.append({"direction": "TX", "data": request_message_2.hex()})
+    sock_2.send(request_message_2)
+    response_2 = sock_2.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_2.append({"direction": "RX", "data": response_2.hex()})
+    sock_2.close()
+
+    data_2 = response_2[3:]
+    
+    values_2 = [
+        int.from_bytes(data_2[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_2), bytes_per_value)
+    ]
+
+
+    sock_3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_3.connect((tcp_ip, tcp_port))
+    communication_traffic_3 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_3.append({"direction": "TX", "data": request_message_3.hex()})
+    sock_3.send(request_message_3)
+    response_3 = sock_3.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_3.append({"direction": "RX", "data": response_3.hex()})
+    sock_3.close()
+
+    data_3 = response_3[3:]
+    
+    values_3 = [
+        int.from_bytes(data_3[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_3), bytes_per_value)
+    ]
+
+    sock_4 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_4.connect((tcp_ip, tcp_port))
+    communication_traffic_4 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_4.append({"direction": "TX", "data": request_message_4.hex()})
+    sock_4.send(request_message_4)
+    response_4 = sock_4.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_4.append({"direction": "RX", "data": response_4.hex()})
+    sock_4.close()
+
+    data_4 = response_4[3:]
+    
+    values_4 = [
+        int.from_bytes(data_4[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_4), bytes_per_value)
+    ]
+
+    sock_5 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_5.connect((tcp_ip, tcp_port))
+    communication_traffic_5 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_5.append({"direction": "TX", "data": request_message_5.hex()})
+    sock_5.send(request_message_5)
+    response_5 = sock_5.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_5.append({"direction": "RX", "data": response_5.hex()})
+    sock_5.close()
+
+    data_5 = response_5[3:]
+    
+    values_5 = [
+        int.from_bytes(data_5[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_5), bytes_per_value)
+    ]
+
 
     if "32bit" in request.form and request.form["32bit"] == "true":
         is_32bit = True
     else:
         is_32bit = False
 
-    data_list = []
-    address = starting_address
+    data_list_1 = []
+    data_list_2 = []
+    data_list_3 = []
+    data_list_4 = []
+    data_list_5 = []
+    
+    address = starting_address_1
+    address = starting_address_2
+    address = starting_address_3
+    address = starting_address_4
+    address = starting_address_5
     value = 0
+    values_1 = values_1[:-1]
+    values_2 = values_2[:-1]
+    values_3 = values_3[:-1]
+    values_4 = values_4[:-1]
+    values_5 = values_5[:-1]
+    
 
-    for i, value in enumerate(values):
-        address = starting_address + i * 2
+    for i, value in enumerate(values_1):
+        address = starting_address_1 + i * 2
+        
         type_value = get_type_value_from_database(address)
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)
@@ -1197,7 +1424,175 @@ def read_data():
                 # Handle other cases or set a default behavior
                 float_display_value = "Undefined"
                 print(f"Type Value for address {address}: {type_value}")
-        data_list.append(
+        data_list_1.append(
+            {
+                "description": description,
+                "address": address,
+                "value": value,
+                "hex_value": hex_value,
+                "binary_value": binary_value,
+                "float_value": float_display_value,
+                "signed_value": signed_value,
+                "is_16bit": is_16bit_value,
+                "float_signed_value": signed_value,
+            }
+        )
+        
+        value, updated_address = handle_action_configuration(i, value, address)
+        
+    for i, value in enumerate(values_2):
+        
+        address = starting_address_2 + i * 2
+        type_value = get_type_value_from_database(address)
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)
+        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+        description = get_description_from_database(address)
+
+        if description is None:
+            description = f"Address {address}"
+            address += 0
+
+        if is_16bit:
+            signed_value = value - 2**16 if value >= 2**15 else value
+            is_16bit_value = True
+            float_value = value if is_16bit_value else float_value
+            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+        else:
+            signed_value = value - 2**32 if value >= 2**31 else value
+            is_16bit_value = False
+            float_value = (
+                float_value
+                if is_16bit_value
+                else struct.unpack("!f", struct.pack("!I", value))[0]
+            )
+            float_signed_value = (
+                signed_value if is_16bit_value else None
+            )  # Set signed_value to None for 32-bit
+
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
+        data_list_2.append(
+            {
+                "description": description,
+                "address": address,
+                "value": value,
+                "hex_value": hex_value,
+                "binary_value": binary_value,
+                "float_value": float_display_value,
+                "signed_value": signed_value,
+                "is_16bit": is_16bit_value,
+                "float_signed_value": signed_value,
+            }
+        )
+        
+    for i, value in enumerate(values_3):
+        
+        address = starting_address_3 + i * 2
+        type_value = get_type_value_from_database(address)
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)
+        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+        description = get_description_from_database(address)
+
+        if description is None:
+            description = f"Address {address}"
+            address += 0
+
+        if is_16bit:
+            signed_value = value - 2**16 if value >= 2**15 else value
+            is_16bit_value = True
+            float_value = value if is_16bit_value else float_value
+            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+        else:
+            signed_value = value - 2**32 if value >= 2**31 else value
+            is_16bit_value = False
+            float_value = (
+                float_value
+                if is_16bit_value
+                else struct.unpack("!f", struct.pack("!I", value))[0]
+            )
+            float_signed_value = (
+                signed_value if is_16bit_value else None
+            )  # Set signed_value to None for 32-bit
+
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
+        data_list_3.append(
+            {
+                "description": description,
+                "address": address,
+                "value": value,
+                "hex_value": hex_value,
+                "binary_value": binary_value,
+                "float_value": float_display_value,
+                "signed_value": signed_value,
+                "is_16bit": is_16bit_value,
+                "float_signed_value": signed_value,
+            }
+        )
+        
+
+    for i, value in enumerate(values_4):
+        
+        address = starting_address_4 + i * 2
+        type_value = get_type_value_from_database(address)
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)
+        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+        description = get_description_from_database(address)
+
+        if description is None:
+            description = f"Address {address}"
+            address += 0
+
+        if is_16bit:
+            signed_value = value - 2**16 if value >= 2**15 else value
+            is_16bit_value = True
+            float_value = value if is_16bit_value else float_value
+            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+        else:
+            signed_value = value - 2**32 if value >= 2**31 else value
+            is_16bit_value = False
+            float_value = (
+                float_value
+                if is_16bit_value
+                else struct.unpack("!f", struct.pack("!I", value))[0]
+            )
+            float_signed_value = (
+                signed_value if is_16bit_value else None
+            )  # Set signed_value to None for 32-bit
+
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
+        data_list_4.append(
             {
                 "description": description,
                 "address": address,
@@ -1211,31 +1606,91 @@ def read_data():
             }
         )
 
+    for i, value in enumerate(values_5):
+        
+        address = starting_address_5 + i * 2
+        type_value = get_type_value_from_database(address)
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)
+        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+        description = get_description_from_database(address)
+
+        if description is None:
+            description = f"Address {address}"
+            address += 0
+
+        if is_16bit:
+            signed_value = value - 2**16 if value >= 2**15 else value
+            is_16bit_value = True
+            float_value = value if is_16bit_value else float_value
+            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+        else:
+            signed_value = value - 2**32 if value >= 2**31 else value
+            is_16bit_value = False
+            float_value = (
+                float_value
+                if is_16bit_value
+                else struct.unpack("!f", struct.pack("!I", value))[0]
+            )
+            float_signed_value = (
+                signed_value if is_16bit_value else None
+            )  # Set signed_value to None for 32-bit
+
+            # Apply type_value check after determining 16-bit or 32-bit format
+            if type_value == "Float":
+                # Set float_display_value to the float representation
+                float_display_value = float_value
+            elif type_value == "signed":
+                # Set float_display_value to the signed representation
+                float_display_value = signed_value
+            else:
+                # Handle other cases or set a default behavior
+                float_display_value = "Undefined"
+                print(f"Type Value for address {address}: {type_value}")
+        data_list_5.append(
+            {
+                "description": description,
+                "address": address,
+                "value": value,
+                "hex_value": hex_value,
+                "binary_value": binary_value,
+                "float_value": float_display_value,
+                "signed_value": signed_value,
+                "is_16bit": is_16bit_value,
+                "float_signed_value": signed_value,
+            }
+        )
         value, updated_address = handle_action_configuration(i, value, address)
-        # หลังจาก values = [int.from_bytes(data[i:i + bytes_per_value], byteorder='big', signed=False) for i in range(0, len(data), bytes_per_value)]
-    # แทนที่ด้วย:
-
-    values = [
-        int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
-        for i in range(0, len(data), bytes_per_value)
-    ]
-
-    # หากต้องการแปลงเฉพาะแถวแรก สามารถทำได้เช่นนี้:
+        
+    combined_data = {
+        "data_1": data_1,
+        "data_2": data_2,
+        "data_3": data_3,
+        "data_4": data_4,
+        "data_5": data_5,
+        "communication_traffic_1": communication_traffic_1,
+        "communication_traffic_2": communication_traffic_2,
+        "communication_traffic_3": communication_traffic_3,
+        "communication_traffic_4": communication_traffic_4,
+        "communication_traffic_5": communication_traffic_5,
+        
+    }
+    
 
     session["tcp_ip"] = tcp_ip
     session["tcp_port"] = tcp_port
 
-    # ตรวจสอบค่า is_16bit เพื่อเพิ่มข้อมูลลงในตาราง 16-bit
+    
     if not is_16bit:
-        # เพิ่มข้อมูลลงในตาราง 16-bit โดยเพิ่มค่าลงในตารางเดิมและเพิ่มค่าอีก 1
+      
         data_list_16bit = []
-        for data_16bit in data_list:
+        for data_16bit in data_list_1:
             address_16bit = data_16bit["address"]
             value_16bit = (
                 data_16bit["value"] * 2
-            )  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
+            )  
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-
+    
     region_query = """
         SELECT * FROM AMR_REGION 
         """
@@ -1354,20 +1809,25 @@ def read_data():
     return render_template(
         "Manual poll.html",
         df=df,
-        data_list=data_list,
+        data_list_1=data_list_1,data_list_2=data_list_2,data_list_3=data_list_3,data_list_4=data_list_4,data_list_5=data_list_5,
         slave_id=slave_id,
         function_code=function_code,
-        starting_address=starting_address,
-        quantity=quantity,
+        starting_address_1=starting_address_1,
+        quantity_1=quantity_1,starting_address_2=starting_address_2,quantity_2=quantity_2,starting_address_3=starting_address_3,quantity_3=quantity_3,
+        starting_address_4=starting_address_4,quantity_4=quantity_4,starting_address_5=starting_address_5,quantity_5=quantity_5,
         is_16bit=is_16bit,
-        communication_traffic=communication_traffic,
-        data=data,
+        communication_traffic_1=communication_traffic_1,
+        communication_traffic_2=communication_traffic_2,
+        communication_traffic_3=communication_traffic_3,
+        communication_traffic_4=communication_traffic_4,
+        communication_traffic_5=communication_traffic_5,
+        
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options,
+        tag_options=tag_options,combined_data=combined_data
     )
 
 
