@@ -478,27 +478,19 @@
                 <div class="menu">
                     <button class="toggleR">Reports Data</button>
                     <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
-                                class="list-item-link">View Billing Data</a></li>
-                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
-                                Status</a></li>
-                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
-                                Summary</a></li>
-                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
-                                Summery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
-                                class="list-item-link">Site
-                                Detail</a></li>
-                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
-                                Detail</a></li>
+                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVCStatus</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">DailySummary</a></li>
+                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">MonthlySummery</a></li>
+                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"class="list-item-link">SiteDetail</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New SiteDetail</a></li>
                     </ul>
                 </div>
                 <div class="menu">
                     <button class="toggle">Polling Actions</button>
                     <ul class="list">
                         <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
-                                class="list-item-link">Manual
-                                poll</a>
+                                class="list-item-link">Manual poll</a>
                         </li>
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
                         </li>
@@ -519,14 +511,9 @@
                 <div class="menu">
                     <button class="toggle">Manage Users</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
-                                class="list-item-link">Add
-                                User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}" class="list-item-link">Edit
-                                User</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}" class="list-item-link">Remove
-                                User</a>
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"class="list-item-link">AddUser</a></li>
+                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}" class="list-item-link">Edit User</a></li>
+                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}" class="list-item-link">Remove User</a>
                         </li>
                     </ul>
                 </div>
@@ -535,8 +522,7 @@
                     <button class="toggle">Poll Sitting</button>
                     <ul class="list">
                         <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
-                                class="list-item-link">Add
-                                Mapping</a></li>
+                                class="list-item-link">Add Mapping</a></li>
                         <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
                                 class="list-item-link">Add Polling</a>
                         </li>

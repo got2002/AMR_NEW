@@ -98,7 +98,6 @@ button {
 }
 
 .custom-btn {
-    
     color: #fff;
     width: 130px;
     height: 40px;
@@ -109,6 +108,7 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    margin-bottom: 2%;
     display: flex;
     align-items: center;
     justify-content: center;

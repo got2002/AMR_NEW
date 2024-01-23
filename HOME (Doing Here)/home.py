@@ -719,6 +719,14 @@ def billing_data():
                 "CONFIG19",
                 "CONFIG20",
             ]
+            
+                        # ตั้งค่าคอลัมน์ที่ 3 และ 10
+            column_3_name = "AMR_CONFIG3"  # ชื่อคอลัมน์ที่ 3
+            column_10_name = "AMR_CONFIG10"  # ชื่อคอลัมน์ที่ 10
+
+            # สลับตำแหน่งของคอลัมน์ที่ 3 และ 10
+            df[column_3_name], df[column_10_name] = df[column_10_name].copy(), df[column_3_name].copy()
+
             dropped_columns_data = pd.concat(
                 [
                     pd.DataFrame(columns=df.columns),
@@ -727,14 +735,22 @@ def billing_data():
                 axis=1,
             )
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
-            dropped_columns_data[
-                "DATA_DATE"
-            ] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data["DATA_DATE"] = "DATA.DATE"  # Replace actual values with the column name
             dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
             print(df.columns)
+            desired_column_order = [
+                'DATA.DATE', 'Serial No.', 'Date and Time', 'Pressure', 'Temperature', 'Pressure Base',
+                'Temperature base', 'Actual Flowrate Qm', 'Vt (Turbine index)', 'Vm total (Actual vol cumulative)',
+                'Vb total (Actual vol cumulative)', 'AGA-8 Equation', 'Zb', 'Zf', 'Pulse weight', 'Qm max',
+                'Qm min', 'CO2', 'N2', 'SG', 'Low Battery Alarm'
+            ]
+
+            # Reorder columns based on the desired order
+            df = df[desired_column_order]
+            
             # Get the selected Meter ID before removing it from the DataFrame
             selected_meter_id = df["METER_ID"].iloc[0]
 
@@ -742,9 +758,7 @@ def billing_data():
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
             # Remove newline characters
-            df = df.apply(
-                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-            )
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
@@ -761,10 +775,15 @@ def billing_data():
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "daily_data": None,
-                
+                "config_data_run1": None,
+                "config_data_run2": None,
+                "config_data_run3": None,
+                "config_data_run4": None,
+                "config_data_run5": None,
+                "config_data_run6": None,
             }
 
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False, "header": None}
 
             if not df_run1.empty:
                 df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
@@ -780,22 +799,26 @@ def billing_data():
                 tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
             if not df_run5.empty:
                 df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+                tables["config_data_run5"] = df_run5.to_html(**common_table_properties)
             if not df_run6.empty:
                 df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-            return render_template(
-                "billingdata.html",
-                
-                tables=tables,
-                titles=df.columns.values,
-                selected_date=selected_date,
-                selected_tag=selected_tag,
-                selected_region=selected_region,
-                region_options=region_options,
-                tag_options=tag_options, dropped_columns_data=dropped_columns_data,
-                selected_meter_id=selected_meter_id,
-            )
+                tables["config_data_run6"] = df_run6.to_html(**common_table_properties)
+        return render_template(
+            "billingdata.html",
+              {
+                "tables": tables,
+                "titles": df.columns.values,
+                "selected_date": selected_date,
+                "selected_tag": selected_tag,
+                "selected_region": selected_region,
+                "region_options": region_options,
+                "tag_options": tag_options,
+                "dropped_columns_data": dropped_columns_data,
+                "selected_meter_id": selected_meter_id,
+            }
+        )
+
+
 
     else:
         # Render the template without executing the query
