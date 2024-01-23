@@ -41,6 +41,7 @@ hostname = "10.100.56.3"
 port = "1521"
 service_name = "PTTAMR_MST"
 
+
 def fetch_data(query, params=None):
     try:
         connection_string = f"{username}/{password}@{hostname}:{port}/{service_name}"
@@ -57,15 +58,12 @@ def fetch_data(query, params=None):
         print("Oracle Error:", error)
         return []
 
-    
-
-
 
 @app.route("/")
 def billing_data():
-    selected_region = request.args.get('region')
-    selected_tag = request.args.get('tag')
-    selected_month_year = request.args.get('monthYear')
+    selected_region = request.args.get("region")
+    selected_tag = request.args.get("tag")
+    selected_month_year = request.args.get("monthYear")
 
     # Convert the selected_month_year to a datetime object
     selected_date = datetime.strptime(selected_month_year, "%m/%Y")
@@ -87,7 +85,7 @@ def billing_data():
     ORDER BY tag_id
     """
     # Fetch tag_id data using your fetch_data function
-    tag_results = fetch_data(tag_query, {'selected_region': selected_region})
+    tag_results = fetch_data(tag_query, {"selected_region": selected_region})
 
     # Define your Oracle query to fetch data based on selected criteria
     billing_query = """
@@ -99,26 +97,103 @@ def billing_data():
             AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
             ORDER BY VW_AMR_BILLING_DATA.data_date
     """
-    # Fetch data using your fetch_data function
-    results = fetch_data(billing_query, {'selected_region': selected_region, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
+    if query_type == "config_data":
+        query = """
+            SELECT
+                AMR_PL_GROUP.PL_REGION_ID,
+                AMR_FIELD_ID.TAG_ID,
+                amr_field_id.meter_id,
+                AMR_CONFIGURED_DATA.DATA_DATE,
+                amr_configured_data.amr_config1,
+                amr_configured_data.amr_config2,
+                amr_configured_data.amr_config3,
+                amr_configured_data.amr_config4,
+                amr_configured_data.amr_config5,
+                amr_configured_data.amr_config6,
+                amr_configured_data.amr_config7,
+                amr_configured_data.amr_config8,
+                amr_configured_data.amr_config9,
+                amr_configured_data.amr_config10,
+                amr_configured_data.amr_config11,
+                amr_configured_data.amr_config12,
+                amr_configured_data.amr_config13,
+                amr_configured_data.amr_config14,
+                amr_configured_data.amr_config15,
+                amr_configured_data.amr_config16,
+                amr_configured_data.amr_config17,
+                amr_configured_data.amr_config18,
+                amr_configured_data.amr_config19,
+                amr_configured_data.amr_config20,
+                
+                AMR_VC_CONFIGURED_INFO.config1,
+                AMR_VC_CONFIGURED_INFO.config2,
+                AMR_VC_CONFIGURED_INFO.config3,
+                AMR_VC_CONFIGURED_INFO.config4,
+                AMR_VC_CONFIGURED_INFO.config5,
+                AMR_VC_CONFIGURED_INFO.config6,
+                AMR_VC_CONFIGURED_INFO.config7,
+                AMR_VC_CONFIGURED_INFO.config8,
+                AMR_VC_CONFIGURED_INFO.config9,
+                AMR_VC_CONFIGURED_INFO.config10,
+                AMR_VC_CONFIGURED_INFO.config11,
+                AMR_VC_CONFIGURED_INFO.config12,
+                AMR_VC_CONFIGURED_INFO.config13,
+                AMR_VC_CONFIGURED_INFO.config14,
+                AMR_VC_CONFIGURED_INFO.config15,
+                AMR_VC_CONFIGURED_INFO.config16,
+                AMR_VC_CONFIGURED_INFO.config17,
+                AMR_VC_CONFIGURED_INFO.config18,
+                AMR_VC_CONFIGURED_INFO.config19,
+                AMR_VC_CONFIGURED_INFO.config20,
+                AMR_CONFIGURED_DATA.METER_STREAM_NO
+            FROM
+                AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+            JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+            WHERE
+                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+                AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+                AND AMR_CONFIGURED_DATA.METER_STREAM_NO IS NOT NULL
+                {configured_date_condition}
+                {tag_condition}
+                {region_condition}
+            """
+            
+    results = fetch_data(
+        billing_query,
+        {
+            "selected_region": selected_region,
+            "selected_tag": selected_tag,
+            "selected_month_year": selected_month_year,
+        },
+    )
     print(results)
-    # Render the template with the fetched data and selected region
+# Render the template with the fetched data and selected region
     return render_template(
         "billingdata.html",
-        region_results=region_results,
-        tag_results=tag_results,
-        results=results,
-        selected_region=selected_region,
+        tables=tables,
+        titles=df.columns.values,
         selected_date=selected_date,
+        selected_tag=selected_tag,
+        selected_region=selected_region,
+        region_options=region_options,
+        tag_options=tag_options,
+        dropped_columns_data=dropped_columns_data,
+        selected_meter_id=selected_meter_id,
     )
-
-
-
-
-
-@app.route('/get_tags')
+        else:
+            # Render the template without executing the query
+            return render_template(
+                "billingdata.html",
+                selected_date=selected_date,
+                selected_region=selected_region,
+                selected_tag=selected_tag,
+                region_options=region_options,
+                tag_options=tag_options,
+                tables={},
+            )
+@app.route("/get_tags")
 def get_tags():
-    region_name = request.args.get('region')
+    region_name = request.args.get("region")
 
     # Use the selected REGION_NAME to fetch associated tag_id values
     tag_query = """
@@ -127,16 +202,11 @@ def get_tags():
     WHERE REGION_NAME = :region_name
     ORDER BY tag_id
     """
-    tag_results = fetch_data(tag_query, {'region_name': region_name})
+    tag_results = fetch_data(tag_query, {"region_name": region_name})
 
     # Return the tag_id values as JSON
     return jsonify(tag_results)
 
 
-
-    
-          
-
-    
 if __name__ == "__main__":
     app.run(debug=True)
