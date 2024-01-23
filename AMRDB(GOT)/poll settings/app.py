@@ -183,6 +183,25 @@ def polling_route():
         list_enable_config=[],
         list_enable_billing=[],
     )
+    
+@app.route('/update_values', methods=['POST'])
+def update_values():
+    try:
+        selected_type = request.form.get('selected_type')
+        start_config = request.form.get('start_config')
+        end_config = request.form.get('end_config')
+        enable_config = '1' if request.form.get('enable_config') == 'on' else '0'
+        start_billing = request.form.get('start_billing')
+        end_billing = request.form.get('end_billing')
+        enable_billing = '1' if request.form.get('enable_billing') == 'on' else '0'
+
+        # Update values in the database as needed
+        # Use the above variables (selected_type, start_config, end_config, etc.) in your SQL update query
+
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        # print(f"Error updating values: {e}")
+        return render_template("polling.html")
 
 MAX_ADDRESS_LENGTH = 249
 
