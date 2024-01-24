@@ -1,4 +1,3 @@
-User
 <!DOCTYPE html>
 <html lang="en">
 
@@ -119,47 +118,43 @@ input[type="text"] {
     {{ tables[0]|safe }}
 
     <h1>Poll Configure</h1>
-    <form id="configForm" action="/update_values" method="post">
+    <form action="/update_polling_data" method="post">
+        <input type="hidden" name="selected_type" value="{{ selected_type }}">
         <div class="textbox-container">
             {% for i in range(0, list_config|length, 2) %}
                 <div class="textbox-pair">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
-                    <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_config[i] }}">
+                    <input type="text" id="start{{ i//2 + 1 }}" name="start_config{{ i//2 + 1 }}" value="{{ list_config[i] }}">
 
-                    {% if i+1 < list_config|length %}
-                        <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
-                        <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
+                    <input type="text" id="end{{ i//2 + 1 }}" name="end_config{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
 
-                        {% if i//2 < 20 %}
-                            <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
-                            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
-                        {% endif %}
-                    {% endif %}
+                    <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
+                   
+                
                 </div>
             {% endfor %}
         </div>
 
-        <h1>Poll billing</h1>
+        <h2>Poll Billing</h2>
         <div class="textbox-container">
             {% for i in range(0, list_billing|length, 2) %}
                 <div class="textbox-pair">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
                     <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_billing[i] }}">
 
-                    {% if i+1 < list_billing|length %}
-                        <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
-                        <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
+                     <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
 
-                        {% if i//2 < 20 %}
-                            <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
-                            <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_billing[]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
-                        {% endif %}
-                    {% endif %}
+                    <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                     <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable[]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
+                   
                 </div>
             {% endfor %}
         </div>
 
-        <button type="submit" id="updateButton">Update Values</button>
+        <button type="submit">Save Changes</button>
     </form>
 
     <script>
