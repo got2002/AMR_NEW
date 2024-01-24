@@ -67,6 +67,7 @@ def billing_data():
     selected_tag = request.args.get('tag')
     selected_month_year = request.args.get('monthYear')
 
+
     # Define your Oracle query to fetch REGION_NAME
     region_query = """
     SELECT DISTINCT REGION_NAME
