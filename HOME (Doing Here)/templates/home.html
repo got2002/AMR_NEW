@@ -489,9 +489,7 @@
                 <div class="menu">
                     <button class="toggle">Polling Actions</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="Manualpoll_data"
-                                class="list-item-link">Manual poll</a>
-                        </li>
+
                         <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
                         </li>
                     </ul>
@@ -501,17 +499,15 @@
                     <button class="toggle">Manage Sites</button>
                     <ul class="list">
                         <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Add Site</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a>
-                        </li>
+                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Edit Site</a></li>
+                        <li class="list-item" style="--delay:0.6s"><a href="" class="list-item-link">Remove Site</a></li>
                     </ul>
                 </div>
 
                 <div class="menu">
                     <button class="toggle">Manage Users</button>
                     <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"class="list-item-link">AddUser</a></li>
+                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"class="list-item-link">Add User</a></li>
                         <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}" class="list-item-link">Edit User</a></li>
                         <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}" class="list-item-link">Remove User</a>
                         </li>
