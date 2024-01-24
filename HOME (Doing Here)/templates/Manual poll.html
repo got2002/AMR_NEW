@@ -17,6 +17,7 @@
             font-family: Arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
+            text-align: center;
         }
 
         th, td {
@@ -129,6 +130,7 @@
 }
 
 .table.table-bordered {
+    text-align: center;
     width: 100%; /* ปรับความกว้างของตาราง */
 }
 
@@ -152,7 +154,7 @@
         }
         body {
             
-           
+            font-family: Arial, sans-serif;
             padding: 2rem;
             font-family: var(--font-family);
             
@@ -173,6 +175,32 @@
             margin-top: auto;
         }
         
+       
+
+    form {
+        margin: 20px;
+    }
+
+    table {
+        text-align: center;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 5px;
+    }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -203,11 +231,11 @@
     <form method="POST" action="/process_selected_rows">
         
         {% if not df.empty %}
-            <table border="1" class="dataframe data">
+            <table border="1" class="dataframe data"   style="text-align: center;">
                 <thead>
                     <tr style="text-align: right;">
                         
-                        <th>type</th>
+                        <th>checkbox</th>
                         <th>RUN</th>
                         <th>Region</th>
                         <th>Sitename</th>
@@ -216,57 +244,130 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th 
+                        <th style="display: none;"
                         >evc_type</th>
-                        <th 
+                        <th style="display: none;"
                         >vc_name</th>
-                        <th 
+                        <th style="display: none;"
                         >poll_billing</th>
-                        <th 
+                        <th style="display: none;"
                         >poll_config</th>
-                        <th 
+                        <th style="display: none;"
                         >poll_billing_enable</th>
-                        <th 
+                        <th style="display: none;"
                         >poll_config_enable</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: #ffffff;">
                     {% for _, row in df.iterrows() %}
-                        <tr>
+                        <tr >
                             
-                            <td class="checkbox-cell" style="display: flex; height: 34px; align-items: center; padding: 5px; border: 1px solid #f5f5f5a4; background-color: #f5f5f5a4;">
-                                <input type="checkbox" name="selected_rows_daily" data-index="{{ loop.index0 }}" style="width: 16px; height: 16px; border: none; outline: none; background-color: inherit; font-size: 14px;" onclick="changeCellColor(this); updateSelectedRows();" id="checkboxId">
-
-                            </td>
-                            
-                            
-                            <td>{{ row['RUN'] }}</td>
-                            <td>{{ row['Region'] }}</td>
-                            <td>{{ row['Sitename'] }}</td>
-                            <td>{{ row['NoRun'] }}</td>
-                            <td>{{ row['METERID'] }}</td>
-                            <td>{{ row['VCtype'] }}</td>
-                            <td>{{ '127.0.0.1' }}</td>
-                            <!-- <td>{{ row['IPAddress'] }}</td> -->
-                            <td>{{ row['Port'] }}</td>
-                            <td >{{ row['evc_type'] }}</td>
-                            <td >{{ row['vc_name'] }}</td>
-                            <td >{{ row['poll_billing'] }}</td>
-                            <td >{{ row['poll_config'] }}</td>
-                            <td >{{ row['poll_billing_enable'] }}</td>
-                            <td >{{ row['poll_config_enable'] }}</td>
+                            <td ></td>
+                        <td >{{ row['RUN'] }}</td>
+                                <td>{{ row['Region'] }}</td>
+                                <td>{{ row['Sitename'] }}</td>
+                                <td>{{ row['NoRun'] }}</td>
+                                <td>{{ row['METERID'] }}</td>
+                                <td>{{ row['VCtype'] }}</td>
+                                <td>{{ '127.0.0.1' }}</td>
+                                <!-- <td>{{ row['IPAddress'] }}</td> -->
+                                <td>{{ row['Port'] }}</td>
+                                <td style="display: none;">{{ row['evc_type'] }}</td>
+                                <td style="display: none;">{{ row['vc_name'] }}</td>
+                                <td style="display: none;">{{ row['poll_billing'] }}</td>
+                                <td style="display: none;">{{ row['poll_config'] }}</td>
+                                <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
+                                <td style="display: none;">{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
+                
             </table>
+            
         {% else %}
             <p>No data available.</p>
+            
         {% endif %}
 
    
     </form>
     
+ <div class="checkbox" style=" width: 5%; height: 20%;  bottom: 159px; left: 40px; line-height: 35px; position: relative; " >
+        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port in zipped_data  %}
+                          
+                                <td > 
+                                    <input type="checkbox" name="configCheckbox" style="width: 50%;"  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }}" onclick="changeConfigCheckbox(this)"> {{RUN }}
+                                </td>
+                            
+
+                       
+                            {% endfor %}
+
+                        </div>
+
     <script>
+        // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
+        var checkboxes = document.getElementsByName('configCheckbox');
+        
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    var pollConfigListParts = this.value.split(',');
+                    
+                    for (var i = 0; i < pollConfigListParts.length; i += 2) {
+                        var startingAddress = pollConfigListParts[i].replace(/[\[\]']/g, '');
+                        var quantity = pollConfigListParts[i + 1].replace(/[\[\]']/g, '');
+    
+                        document.getElementById(`starting_address_${i / 2 + 1}`).value = startingAddress;
+                        document.getElementById(`quantity_${i / 2 + 1}`).value = quantity;
+                    }
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Split the value by commas and take the third part (tcp_ip)
+                var pollConfigListParts = this.value.split(',');
+                // Access the first element of the array and remove any unwanted characters
+                var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
+                var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
+
+                // Set the value of tcp_ip input field
+                document.getElementById('tcp_ip').value = tcp_ip;
+                document.getElementById('tcp_port').value = tcp_port;
+            }
+        });
+    });
+});
+
+    </script>
+    
+    
+    
+
+
+<script>
+    function changeConfigCheckbox(checkbox) {
+        var checkboxes = document.getElementsByName("configCheckbox");
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== checkbox) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+</script>
+
+
+ 
+
+  
+    
+    <!-- <script>
  document.addEventListener('DOMContentLoaded', function() {
     // หากมีการคลิกที่ checkbox
     document.querySelectorAll('input[name="selected_rows_daily"]').forEach(function(checkbox) {
@@ -328,10 +429,10 @@ function disableField(fieldName) {
     if (field) {
         field.setAttribute('disabled', 'disabled');
     }
-}
+} -->
 
 
-    </script>
+    <!-- </script>
     
     <script>
        document.addEventListener('DOMContentLoaded', function () {
@@ -392,7 +493,7 @@ function disableField(fieldName) {
 
 
         </script>
-        
+         -->
         
     
     <script>
@@ -485,12 +586,12 @@ function disableField(fieldName) {
                         <!-- Input fields for the first data request -->
                         <div class="form-group">
                             <label for="starting_address_1">Starting Address (Data Request 1)</label>
-                            <input type="text" class="form-control" id="starting_address_1" name="starting_address_1" required  style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="{{ starting_address_1 }}">
+                            <input type="text" class="form-control" id="starting_address_1" name="starting_address_1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                         </div>
                         
                         <div class="form-group">
                             <label for="quantity_1">Quantity (Data Request 1)</label>
-                            <input type="text" class="form-control" id="quantity_1" name="quantity_1" required  style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="{{ quantity_1 }}">
+                            <input type="text" class="form-control" id="quantity_1" name="quantity_1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                         </div>
                         
                         
@@ -624,55 +725,7 @@ function disableField(fieldName) {
                             <input type="text" class="form-control" id="quantity_15" name="quantity_15" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;"value="{{ quantity_15 }}">
                         </div>
                     </div>
-                        <!-- Your existing form elements -->
-
-                        <!-- Add or modify any other form elements as needed -->
-
-                                               
-                        <!-- <div class="form-group">
-                            <label for="starting_address_2">Starting Address 2</label>
-                            <input type="text" class="form-control" id="starting_address_2" name="starting_address_2" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity_2">Quantity 2</label>
-                            <input type="text" class="form-control" id="quantity_2" name="quantity_2" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="starting_address_3">Starting Address 3</label>
-                            <input type="text" class="form-control" id="starting_address_3" name="starting_address_3" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity_3">Quantity 3</label>
-                            <input type="text" class="form-control" id="quantity_3" name="quantity_3" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="starting_address_4">Starting Address 4</label>
-                            <input type="text" class="form-control" id="starting_address_4" name="starting_address_4" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity_4">Quantity 4</label>
-                            <input type="text" class="form-control" id="quantity_4" name="quantity_4" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
-                        </div>
-                        <div class="form-group">
-                            <label for="starting_address_5">Starting Address 5</label>
-                            <input type="text" class="form-control" id="starting_address_5" name="starting_address_5" required style="height: 30px;width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="quantity_5">Quantity 5</label>
-                            <input type="text" class="form-control" id="quantity_5" name="quantity_5" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
-                        </div> -->
-
-                        
-                        <!-- <div class="form-group">
-                            <label for="quantity">ผลลัพ</label>
-                            <input type="text" class="form-control" id="quantity" name="quantity" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;">
-                        </div> -->
+                       
                          <div class="form-group">
                              <label for="tcp_ip">TCP IP</label>
                              <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
