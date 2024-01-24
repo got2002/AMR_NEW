@@ -1064,16 +1064,7 @@ def Manualpoll_data():
         tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-    tag_checkboxes = [
-    {"id": tag, "label": tag, "checked": tag == selected_tag}
-    for tag in tag_options
-    ]
-
-    # Checkboxes for regions
-    region_checkboxes = [
-        {"id": region, "label": region, "checked": region == selected_region}
-        for region in region_options
-    ]
+   
 
     query = query.format(tag_condition=tag_condition, region_condition=region_condition)
 
@@ -1099,73 +1090,60 @@ def Manualpoll_data():
         ],
     )
     
-    # poll_config_list = df.get(["poll_config"]).values.tolist()
-    # if poll_config_list:
-    #     config_list_str = str(poll_config_list[0]).strip("[]'").split(",")
-    #     print(config_list_str)
-    # else:
-    # # Provide a default value if poll_config_list is empty
-    #     config_list_str = [''] * 10
-    # poll_billing_list = df.get(["poll_billing"]).values.tolist()
-    # if poll_billing_list:
-    #     billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
-    #     print(billing_list_str)
-    # else:
-    # # Provide a default value if poll_config_list is empty
-    #     billing_list_str = [''] * 20
-
-    # tcp_port = df.get(["Port"]).values.tolist()
-    # if tcp_port:
-    #     Port_str = str(tcp_port[0]).strip("[]'").split(",")
-    #     print(Port_str)
-    # else:
-    # # Provide a default value if poll_config_list is empty
-    #     Port_str = [''] 
+    poll_config_list = df.get(["poll_config"]).values.tolist()
+    print(poll_config_list)
+    
+    if poll_config_list:
+        config_list_str = str(poll_config_list).strip("[]'").split(",")
+        print(config_list_str)
+    else:
+    # Provide a default value if poll_config_list is empty
+        config_list_str = [''] * 10
 
 
-   
+
+    poll_billing_list = df.get(["poll_billing"]).values.tolist()
+    if poll_billing_list:
+        billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
+        print(billing_list_str)
+    else:
+    # Provide a default value if poll_config_list is empty
+        billing_list_str = [''] * 20
+
+
+
+    tcp_ip = df.get(["IPAddress"]).values.tolist()
+
+    if tcp_ip:
+        ip_str = str(tcp_ip[0]).strip("[]'").split(",")
+        
+    else:
+    # Provide a default value if poll_config_list is empty
+        ip_str = [''] 
+    print(ip_str)
+    tcp_port = df.get(["Port"]).values.tolist()
+    if tcp_port:
+        Port_str = str(tcp_port[0]).strip("[]'").split(",")
+        print(Port_str)
+    else:
+    # Provide a default value if poll_config_list is empty
+        Port_str = [''] 
+
+    
+    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port)
 
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
-        # starting_address_1=config_list_str[0],
-        # quantity_1=config_list_str[1],
-        # starting_address_2=config_list_str[2],
-        # quantity_2=config_list_str[3],
-        # starting_address_3=config_list_str[4],
-        # quantity_3=config_list_str[5],
-        # starting_address_4=config_list_str[6],
-        # quantity_4=config_list_str[7],
-        # starting_address_5=config_list_str[8],
-        # quantity_5=config_list_str[9],
-        # tcp_port=Port_str[0],
-        # starting_address_6=billing_list_str[0],
-        # quantity_6=billing_list_str[1],
-        # starting_address_7=billing_list_str[2],
-        # quantity_7=billing_list_str[3],
-        # starting_address_8=billing_list_str[4],
-        # quantity_8=billing_list_str[5],
-        # starting_address_9=billing_list_str[6],
-        # quantity_9=billing_list_str[7],
-        # starting_address_10=billing_list_str[8],
-        # quantity_10=billing_list_str[9],
-        # starting_address_11=billing_list_str[10],
-        # quantity_11=billing_list_str[11],
-        # starting_address_12=billing_list_str[12],
-        # quantity_12=billing_list_str[13],
-        # starting_address_13=billing_list_str[14],
-        # quantity_13=billing_list_str[15],
-        # starting_address_14=billing_list_str[16],
-        # quantity_14=billing_list_str[17],
-        # starting_address_15=billing_list_str[18],
-        # quantity_15=billing_list_str[19],
+        zipped_data=zipped_data,
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
         tag_options=tag_options,df=df
-    #     ,tag_checkboxes=tag_checkboxes,  # Pass checkboxes to the template
-    # region_checkboxes=region_checkboxes,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
+        ,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
+        billing_list_str=billing_list_str,
+        # quantity_1=quantity_1
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
 
@@ -1805,7 +1783,47 @@ def read_data():
             ],
         )
         # ... (other code)
+        poll_config_list = df.get(["poll_config"]).values.tolist()
+        print(poll_config_list)
+        
+        if poll_config_list:
+            config_list_str = str(poll_config_list).strip("[]'").split(",")
+            print(config_list_str)
+        else:
+        # Provide a default value if poll_config_list is empty
+            config_list_str = [''] * 10
 
+
+
+        poll_billing_list = df.get(["poll_billing"]).values.tolist()
+        if poll_billing_list:
+            billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
+            print(billing_list_str)
+        else:
+        # Provide a default value if poll_config_list is empty
+            billing_list_str = [''] * 20
+
+
+
+        tcp_ip = df.get(["IPAddress"]).values.tolist()
+
+        if tcp_ip:
+            ip_str = str(tcp_ip[0]).strip("[]'").split(",")
+            
+        else:
+        # Provide a default value if poll_config_list is empty
+            ip_str = [''] 
+        print(ip_str)
+        tcp_port = df.get(["Port"]).values.tolist()
+        if tcp_port:
+            Port_str = str(tcp_port[0]).strip("[]'").split(",")
+            print(Port_str)
+        else:
+        # Provide a default value if poll_config_list is empty
+            Port_str = [''] 
+
+    
+        zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port)
     return render_template(
         "Manual poll.html",
         df=df,
@@ -1821,6 +1839,9 @@ def read_data():
         communication_traffic_3=communication_traffic_3,
         communication_traffic_4=communication_traffic_4,
         communication_traffic_5=communication_traffic_5,
+        zipped_data=zipped_data,
+        poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
+        billing_list_str=billing_list_str,
         
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
