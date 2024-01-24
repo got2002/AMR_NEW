@@ -60,11 +60,11 @@
     </nav>
 
     <h1>Edit Configurator</h1>
-         <select id="type_dropdown" name="type_dropdown">
-        {% for type in type_options %}
-            <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
-        {% endfor %}
-    </select>
+          <div class="address-pair">
+            <label for="evc_type">EVC_TYPE:</label>
+            <input type="text" id="evc_type" name="evc_type" required>
+        </div>
+        <br>
         <!-- Address Pairs 1-15 -->
         {% for i in range(1, 6) %}
             <div class="address-pair">
