@@ -8,6 +8,10 @@
 </head>
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f4f4f4;
@@ -16,12 +20,14 @@
         box-sizing: border-box;
     }
 
+
     h1 {
         color: #333;
+        padding: 3%;
     }
 
     .textbox-group {
-        width: 70%;
+        width: 50%;
         background-color: #fff;
         padding: 40px;
         border-radius: 10px;
@@ -117,13 +123,13 @@
 
     .btn {
         margin: 10px;
-        
+        border-radius: 5px;
     }
 
     .custom-btn {
-        border-radius: 5px;
+        margin: auto;
         color: #fff;
-        width: 130px;
+        width: 140px;
         height: 40px;
         padding: 10px 25px;
         font-family: 'Lato', sans-serif;
@@ -132,10 +138,11 @@
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
-        margin-bottom: 2%;
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: 20px;
+        border-radius: 5px;
     }
 
     /* 1 */
@@ -172,6 +179,7 @@
         <button class="custom-btn btn-1" href="add_actraris.html" >Actraris</button>
     </div>
     <div class="textbox-group">
+        
         <form action="/submit_form" method="post">
             <label for="address1">ADDRESS:</label>
             <input type="text" id="address1" name="address1" required>
