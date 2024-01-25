@@ -736,6 +736,8 @@ def billing_data():
                 "CONFIG19",
                 "CONFIG20",
             ]
+
+
             dropped_columns_data = pd.concat(
                 [
                     pd.DataFrame(columns=df.columns),
@@ -767,6 +769,7 @@ def billing_data():
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
+
             # Send the DataFrame to the HTML template
             df_run1 = df[df['METER_STREAM_NO'] == '1']
             df_run2 = df[df['METER_STREAM_NO'] == '2']
@@ -775,11 +778,6 @@ def billing_data():
             df_run5 = df[df['METER_STREAM_NO'] == '5']
             df_run6 = df[df['METER_STREAM_NO'] == '6']
 
-            # Check if each DataFrame has data before including in the tables dictionary
-            tables = {
-                "daily_data": None,
-                
-            }
 
             common_table_properties = {"classes": "data", "index": False,"header":None}
 
@@ -801,6 +799,7 @@ def billing_data():
             if not df_run6.empty:
                 df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["config_data_run6"] = df_run6.to_html(**common_table_properties)
+
             return render_template(
                 "billingdata.html",
                 

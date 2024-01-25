@@ -824,8 +824,6 @@ def billing_data():
                     tag_options=tag_options, dropped_columns_data=dropped_columns_data,
                     selected_meter_id=selected_meter_id,
                 )
-
-
         else:
             # Render the template without executing the query
             return render_template(
