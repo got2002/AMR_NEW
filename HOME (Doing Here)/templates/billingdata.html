@@ -1212,10 +1212,10 @@
             var site = document.getElementById("tag_dropdown").value;
             var date = document.getElementById("date_picker").value;
 
-            if (queryType === "daily_data" && (region === "" || site === "" || date === "None")) {
+            if (queryType === "daily_data" && (region === "" || site === "" || date === "")) {
                 alert("Please select Region, Site, and Date before submitting.");
                 return false;
-            } else if (queryType === "config_data" && (region === "" || site === "" || date === "None")) {
+            } else if (queryType === "config_data" && (region === "" || site === "" || date === "")) {
                 alert("Please select Region, Site, and Date before submitting.");
                 return false;
             }
