@@ -11,11 +11,11 @@ from api import process_api_data
 app = Flask(__name__)
 
 # Configure the database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri'
-app.config['SECRET_KEY'] = 'your_secret_key'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'your_database_uri'
+# app.config['SECRET_KEY'] = 'your_secret_key'
 
 # Initialize the database
-init_db(app)
+# init_db(app)
 
 # Replace these values with your actual database credentials
 communication_traffic = []
@@ -40,49 +40,7 @@ def md5_hash(input_string):
     return hashlib.md5(input_string.encode()).hexdigest()
 
 
-############  connect database  #####################
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
-port = "1521"
-service_name = "orcl"
 
-
-def fetch_data(query, params=None):
-    try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
-        with cx_Oracle.connect(username, password, dsn) as connection:
-            with connection.cursor() as cursor:
-                if params:
-                    cursor.execute(query, params)
-                else:
-                    cursor.execute(query)
-                results = cursor.fetchall()
-        return results
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return []
-
-
-def execute_query(query, params=None):
-    try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name)
-        with cx_Oracle.connect(username, password, dsn) as connection:
-            with connection.cursor() as cursor:
-                if params:
-                    cursor.execute(query, params)
-                else:
-                    cursor.execute(query)
-                connection.commit()
-        return True
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return False
-
-
-############  /connect database  #####################
 
 
 ############  Home page  #####################
@@ -1044,7 +1002,7 @@ def Manualpoll_data():
     )
 
     return render_template(
-        "Manual poll.html",
+        "Manual_poll.html",
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
         selected_tag=selected_tag,
@@ -1324,7 +1282,7 @@ def read_data():
         # ... (other code)
 
     return render_template(
-        "Manual poll.html",
+        "Manual_poll.html",
         df=df,
         data_list=data_list,
         slave_id=slave_id,
