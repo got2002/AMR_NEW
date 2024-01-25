@@ -1009,9 +1009,10 @@
                             onclick="return checkFormSubmission('daily_data')">Daily Data</button>
                         <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
                             onclick="return checkFormSubmission('config_data')">Config Data</button>
-                        <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear Filters</button>
+                        <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                            Filters</button>
                     </div>
-            </div>
+                </div>
         </form>
     </div>
 
@@ -1021,7 +1022,7 @@
     <body>
         <div class="form-containerBOx">
             <div class="form-container">
-                <div>
+                <div id="None">
                     <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
                     <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
                     <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
@@ -1235,84 +1236,81 @@
         }
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // Assuming you have JavaScript/jQuery to handle changes and update the display
-            var selectedRegion = null;
-            var selectedTag = null;
-            var selectedDate = null;
+        // JavaScript เพื่อแสดงหรือซ่อน div
+        var myDiv = document.getElementById("myDiv");
 
-            document.getElementById('region_dropdown').addEventListener('change', function () {
-                selectedRegion = this.value;
-            });
+        // เรียกใช้ฟังก์ชันเพื่อแสดงหรือซ่อน div
+        function toggleDiv() {
+            if (myDiv.style.display === "none") {
+                myDiv.style.display = "block";
+            } else {
+                myDiv.style.display = "none";
+            }
+        }
 
-            document.getElementById('tag_dropdown').addEventListener('change', function () {
-                selectedTag = this.value;
-            });
+        // เรียกใช้ toggleDiv() เมื่อต้องการเปลี่ยนแปลงสถานะ
+        toggleDiv();
 
-            document.getElementById('date_picker').addEventListener('change', function () {
-                selectedDate = this.value;
-            });
+        // Event listener for form submission with 'daily_data' event
+        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        formDailyData.addEventListener('config_data', function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
 
-            // Event listener for form submission with 'daily_data' event
-            var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-            formDailyData.addEventListener('config_data', function (event) {
-                event.preventDefault(); // Prevent the form from submitting immediately
+            showLoadingOverlay();
 
-                showLoadingOverlay();
+            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+            setTimeout(function () {
+                // Update the displayed values after the loading is complete
+                document.getElementById('selected_region').innerText = selectedRegion;
+                document.getElementById('selected_tag').innerText = selectedTag;
+                document.getElementById('selected_date').innerText = selectedDate;
 
-                // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-                setTimeout(function () {
-                    // Update the displayed values after the loading is complete
-                    document.getElementById('selected_region').innerText = selectedRegion;
-                    document.getElementById('selected_tag').innerText = selectedTag;
-                    document.getElementById('selected_date').innerText = selectedDate;
+                // Optionally, update the meter ID
+                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                if (selectedMeterIdSpan) {
+                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                }
 
-                    // Optionally, update the meter ID
-                    var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                    if (selectedMeterIdSpan) {
-                        selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                    }
+                // Reset selected values
+                selectedRegion = null;
+                selectedTag = null;
+                selectedDate = null;
 
-                    // Reset selected values
-                    selectedRegion = null;
-                    selectedTag = null;
-                    selectedDate = null;
-
-                    // Submit the form programmatically
-                    formDailyData.submit();
-                }, 2000); // Adjust the delay time as needed (in milliseconds)
-            });
-
-            // Event listener for form submission with 'config_data' event
-            var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
-            formConfigData.addEventListener('daily_data', function (event) {
-                event.preventDefault(); // Prevent the form from submitting immediately
-
-                showLoadingOverlay();
-
-                // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-                setTimeout(function () {
-                    // Update the displayed values after the loading is complete
-                    document.getElementById('selected_region').innerText = selectedRegion;
-                    document.getElementById('selected_tag').innerText = selectedTag;
-                    document.getElementById('selected_date').innerText = selectedDate;
-
-                    // Optionally, update the meter ID
-                    var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-                    if (selectedMeterIdSpan) {
-                        selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-                    }
-
-                    // Reset selected values
-                    selectedRegion = null;
-                    selectedTag = null;
-                    selectedDate = null;
-
-                    // Submit the form programmatically
-                    formConfigData.submit();
-                }, 2000); // Adjust the delay time as needed (in milliseconds)
-            });
+                // Submit the form programmatically
+                formDailyData.submit();
+            }, 2000); // Adjust the delay time as needed (in milliseconds)
         });
+
+        // Event listener for form submission with 'config_data' event
+        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        formConfigData.addEventListener('daily_data', function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            showLoadingOverlay();
+
+            // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+            setTimeout(function () {
+                // Update the displayed values after the loading is complete
+                document.getElementById('selected_region').innerText = selectedRegion;
+                document.getElementById('selected_tag').innerText = selectedTag;
+                document.getElementById('selected_date').innerText = selectedDate;
+
+                // Optionally, update the meter ID
+                var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+                if (selectedMeterIdSpan) {
+                    selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+                }
+
+                // Reset selected values
+                selectedRegion = null;
+                selectedTag = null;
+                selectedDate = null;
+
+                // Submit the form programmatically
+                formConfigData.submit();
+            }, 2000); // Adjust the delay time as needed (in milliseconds)
+        });
+        
         function showLoading() {
             // แสดง loading overlay
             document.getElementById('loadingOverlay').style.display = 'block';
