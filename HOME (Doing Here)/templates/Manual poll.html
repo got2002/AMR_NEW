@@ -232,10 +232,10 @@
         
         {% if not df.empty %}
             <table border="1" class="dataframe data"   style="text-align: center;">
-                <thead>
+                <thead style="position:relative;">
                     <tr style="text-align: right;">
                         
-                        <th>checkbox</th>
+                        <th style="width: 20px;">checkbox</th>
                         <th>RUN</th>
                         <th>Region</th>
                         <th>Sitename</th>
@@ -244,21 +244,21 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th style="display: none;"
+                        <th 
                         >evc_type</th>
-                        <th style="display: none;"
+                        <th 
                         >vc_name</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing_enable</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config_enable</th>
                     </tr>
                 </thead>
-                <tbody style="background-color: #ffffff;">
+                <tbody style="background-color: #ffffff; position: relative;">
                     {% for _, row in df.iterrows() %}
                         <tr >
                             
@@ -272,12 +272,12 @@
                                 <td>{{ '127.0.0.1' }}</td>
                                 <!-- <td>{{ row['IPAddress'] }}</td> -->
                                 <td>{{ row['Port'] }}</td>
-                                <td style="display: none;">{{ row['evc_type'] }}</td>
-                                <td style="display: none;">{{ row['vc_name'] }}</td>
-                                <td style="display: none;">{{ row['poll_billing'] }}</td>
-                                <td style="display: none;">{{ row['poll_config'] }}</td>
-                                <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
-                                <td style="display: none;">{{ row['poll_config_enable'] }}</td>
+                                <td >{{ row['evc_type'] }}</td>
+                                <td >{{ row['vc_name'] }}</td>
+                                <td >{{ row['poll_billing'] }}</td>
+                                <td >{{ row['poll_config'] }}</td>
+                                <td >{{ row['poll_billing_enable'] }}</td>
+                                <td >{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -292,18 +292,13 @@
    
     </form>
     
- <div class="checkbox" style=" width: 5%; height: 20%;  bottom: 159px; left: 40px; line-height: 35px; position: relative; " >
-        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port in zipped_data  %}
-                          
+ <div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px; " >
+        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port,poll_config_enable_list,poll_billing_enable_list in zipped_data  %}
                                 <td > 
-                                    <input type="checkbox" name="configCheckbox" style="width: 50%;"  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }}" onclick="changeConfigCheckbox(this)"> {{RUN }}
+                                    <input type="checkbox" name="configCheckbox" style="width: 50%;"  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}}" onclick="changeConfigCheckbox(this)"> {{poll_config_enable_list}} 
                                 </td>
-                            
-
-                       
                             {% endfor %}
-
-                        </div>
+</div>
 
     <script>
         // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
