@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+h1 {
+    color: #333;
+    padding: 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    color: #333;
+    padding: 3%;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+
+.textbox-group {
+    width: 40%;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select {
+    padding: 8px;
+    box-sizing: border-box;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+
+#statusMessage {
+    margin-top: 15px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.link-button {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+}
+
+/* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
+#region_dropdown {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: none;
+    width: 200px;
+    /* ปรับขนาดตามความต้องการ */
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+
+.logo {
+    width: 200px;
+    /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
+    object-position: 30% 38%;
+    background-color: #ffffff;
+    display: flex;
+    margin: auto;
+}
+
+.custom-link {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    /* ไม่ให้มี underline ใต้ข้อความลิงก์ */
+    padding: 8px 12px;
+    /* ปรับขนาดของพื้นที่คลิกได้ */
+    border: 1px solid #ccc;
+    /* เส้นขอบในกรณีที่ต้องการ */
+    border-radius: 4px;
+    /* ให้มีขอบมนเว้าเป็นวงกลม */
+    background-color: #f0f0f0;
+    /* สีพื้นหลัง */
+    color: #333;
+    /* สีข้อความ */
+}
+
+.custom-link:hover {
+    background-color: #ddd;
+    /* สีพื้นหลังเมื่อเม้าส์ hover */
+}
+
+.btn {
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.custom-btn {
+    margin: auto;
+    color: #fff;
+    width: 140px;
+    height: 40px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+/* 1 */
+.btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+}
+
+.btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+}
+
+
+/* 1 */
+.btn-2 {
+    border: none;
+    background-color: #4CAF50;
+    box-shadow: 0 0 5px #4CAF50;
+}
+
+.btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+}
