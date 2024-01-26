@@ -232,10 +232,10 @@
         
         {% if not df.empty %}
             <table border="1" class="dataframe data"   style="text-align: center;">
-                <thead>
+                <thead style="position:relative;">
                     <tr style="text-align: right;">
                         
-                        <th>checkbox</th>
+                        <th style="width: 20px;">checkbox</th>
                         <th>RUN</th>
                         <th>Region</th>
                         <th>Sitename</th>
@@ -258,7 +258,7 @@
                         >poll_config_enable</th>
                     </tr>
                 </thead>
-                <tbody style="background-color: #ffffff;">
+                <tbody style="background-color: #ffffff; position: relative;">
                     {% for _, row in df.iterrows() %}
                         <tr >
                             
@@ -292,7 +292,7 @@
    
     </form>
     
- <div class="checkbox" style=" width: 5%; height: 20%;  bottom: 159px; left: 40px; line-height: 35px; position: relative; " >
+ <div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; " >
         {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port in zipped_data  %}
                           
                                 <td > 
