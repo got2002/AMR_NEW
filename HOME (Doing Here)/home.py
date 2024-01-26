@@ -1090,42 +1090,47 @@ def Manualpoll_data():
     )
     
     poll_config_list = df.get(["poll_config"]).values.tolist()
-    print(poll_config_list)
-    
     if poll_config_list:
         config_list_str = str(poll_config_list).strip("[]'").split(",")
-        print(config_list_str)
     else:
-    # Provide a default value if poll_config_list is empty
         config_list_str = [''] * 10
 
 
 
     poll_billing_list = df.get(["poll_billing"]).values.tolist()
     if poll_billing_list:
-        billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
-        print(billing_list_str)
+        billing_list_str = str(poll_billing_list).strip("[]'").split(",")
     else:
-    # Provide a default value if poll_config_list is empty
         billing_list_str = [''] * 20
+
+
+    poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+    if poll_config_enable_list:
+        poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
+    else:
+        poll_config_enable_str = [''] * 20
+        
+
+    poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
+    if poll_billing_enable_list:
+        poll_billing_enable_str = str(poll_billing_enable_list).strip("[]'").split(",")
+    else:
+        poll_billing_enable_str = [''] * 20
 
 
 
     tcp_ip = df.get(["IPAddress"]).values.tolist()
-
     if tcp_ip:
-        ip_str = str(tcp_ip[0]).strip("[]'").split(",")
-        
+        ip_str = str(tcp_ip).strip("[]'").split(",")
     else:
-    # Provide a default value if poll_config_list is empty
         ip_str = [''] 
-    print(ip_str)
+    
+
+
     tcp_port = df.get(["Port"]).values.tolist()
     if tcp_port:
-        Port_str = str(tcp_port[0]).strip("[]'").split(",")
-        print(Port_str)
+        Port_str = str(tcp_port).strip("[]'").split(",")
     else:
-    # Provide a default value if poll_config_list is empty
         Port_str = [''] 
 
     
@@ -1141,7 +1146,8 @@ def Manualpoll_data():
         region_options=region_options,
         tag_options=tag_options,df=df
         ,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
-        billing_list_str=billing_list_str,
+        billing_list_str=billing_list_str,poll_billing_enable_list=poll_billing_enable_list,ip_str=ip_str,Port_str=Port_str,config_list_str=config_list_str,poll_billing_enable_str=poll_billing_enable_str,
+        poll_config_enable_str=poll_config_enable_str
         # quantity_1=quantity_1
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
