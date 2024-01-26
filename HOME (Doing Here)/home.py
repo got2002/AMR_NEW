@@ -1105,6 +1105,7 @@ def Manualpoll_data():
 
 
     poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+    print(poll_config_enable_list)
     if poll_config_enable_list:
         poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
     else:
@@ -1134,7 +1135,7 @@ def Manualpoll_data():
         Port_str = [''] 
 
     
-    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port)
+    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list)
 
     return render_template(
         "Manual poll.html",
