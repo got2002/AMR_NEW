@@ -288,18 +288,15 @@
             <p>No data available.</p>
             
         {% endif %}
-
-   
     </form>
     
- <div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px; " >
+<div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px; " >
         {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port,poll_config_enable_list,poll_billing_enable_list in zipped_data  %}
                                 <td > 
                                     <input type="checkbox" name="configCheckbox" style="width: 50%;"  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}}" onclick="changeConfigCheckbox(this)"> {{poll_config_enable_list}} 
                                 </td>
                             {% endfor %}
 </div>
-
     <script>
         // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
         var checkboxes = document.getElementsByName('configCheckbox');
