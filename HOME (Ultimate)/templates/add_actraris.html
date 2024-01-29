@@ -3,181 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form</title>
+    <title>Add Actraris</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="Css/sitedetail.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker Stylesheet and Script -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-
-    h1 {
-        color: #333;
-        padding: 3%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    h2 {
-        color: #333;
-        padding: 3%;
-        display: flex;
-        align-items: left;
-        justify-content: left;
-    }
-
-    .textbox-group {
-        width: 40%;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    select {
-        padding: 8px;
-        box-sizing: border-box;
-        width: 60%;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    input[type="checkbox"] {
-        margin-right: 5px;
-    }
-
-
-    #statusMessage {
-        margin-top: 15px;
-        color: #4CAF50;
-        font-weight: bold;
-    }
-
-    .link-button {
-        display: inline-block;
-        margin-top: 15px;
-        text-decoration: none;
-        padding: 10px;
-        background-color: #333;
-        color: white;
-        border-radius: 5px;
-    }
-
-    /* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
-    #region_dropdown {
-        padding: 8px;
-        font-size: 14px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: none;
-        width: 200px;
-        /* ปรับขนาดตามความต้องการ */
-        margin-bottom: 5%;
-        margin-top: 5%;
-    }
-
-    .logo {
-        width: 200px;
-        /* ปรับขนาดรูปภาพให้พอดีกับขนาดที่กำหนดไว้ */
-        object-position: 30% 38%;
-        background-color: #ffffff;
-        display: flex;
-        margin: auto;
-    }
-
-    .custom-link {
-        display: inline-block;
-        margin: 10px;
-        text-decoration: none;
-        /* ไม่ให้มี underline ใต้ข้อความลิงก์ */
-        padding: 8px 12px;
-        /* ปรับขนาดของพื้นที่คลิกได้ */
-        border: 1px solid #ccc;
-        /* เส้นขอบในกรณีที่ต้องการ */
-        border-radius: 4px;
-        /* ให้มีขอบมนเว้าเป็นวงกลม */
-        background-color: #f0f0f0;
-        /* สีพื้นหลัง */
-        color: #333;
-        /* สีข้อความ */
-    }
-
-    .custom-link:hover {
-        background-color: #ddd;
-        /* สีพื้นหลังเมื่อเม้าส์ hover */
-    }
-
-    .btn {
-        margin: 10px;
-        border-radius: 5px;
-    }
-
-    .custom-btn {
-        margin: auto;
-        color: #fff;
-        width: 140px;
-        height: 40px;
-        padding: 10px 25px;
-        font-family: 'Lato', sans-serif;
-        font-weight: 500;
-        background: transparent;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        border-radius: 5px;
-    }
-
-    /* 1 */
-    .btn-1 {
-        border: none;
-        background-color: #333;
-        box-shadow: 0 0 5px #333;
-    }
-
-    .btn-1:hover {
-        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-    }
-
-
-    /* 1 */
-    .btn-2 {
-        border: none;
-        background-color: #4CAF50;
-        box-shadow: 0 0 5px #4CAF50;
-    }
-
-    .btn-2:hover {
-        box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
-    }
-</style>
 
 <body>
     <div class="textbox-group">
@@ -185,13 +32,13 @@
             src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
             alt="logo">
         <h1>Mapping config</h1>
-        <button class="custom-btn btn-2" href="add_mapping.html">Elter</button>
-        <button class="custom-btn btn-1" href="add_actraris.html">Actraris</button>
+        <button href="add_mapping_route" class="custom-btn btn-1">Elter</button>
+        <button href="add_actraris_route" class="custom-btn btn-2">Actraris</button>
     </div>
-    <div class="textbox-group" style="text-align: center;">
 
-        <form action="/submit_form" method="post">
-            <h2>1.</h2>
+    <div class="textbox-group" style="text-align: center;">
+        <h2>1.</h2>
+        <form action="/new_form" method="post">
             <label for="address1">ADDRESS:</label>
             <input type="text" id="address1" name="address1" required>
 
@@ -213,7 +60,6 @@
 
             <label for="data_type1">DATA_TYPE:</label>
             <input type="text" id="data_type1" name="data_type1" required>
-
     </div>
 
     <div class="textbox-group" style="text-align: center;">
@@ -239,7 +85,6 @@
 
         <label for="data_type2">DATA_TYPE:</label>
         <input type="text" id="data_type2" name="data_type2" required>
-
     </div>
 
     <div class="textbox-group" style="text-align: center;">
@@ -317,7 +162,7 @@
         <input type="text" id="data_type5" name="data_type5" required>
     </div>
 
-    <!-- Sixth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>6.</h2>
         <label for="address6">ADDRESS:</label>
@@ -343,7 +188,7 @@
         <input type="text" id="data_type6" name="data_type6" required>
     </div>
 
-    <!-- Seventh set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>7.</h2>
         <label for="address7">ADDRESS:</label>
@@ -369,7 +214,7 @@
         <input type="text" id="data_type7" name="data_type7" required>
     </div>
 
-    <!-- Eighth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>8.</h2>
         <label for="address8">ADDRESS:</label>
@@ -395,7 +240,7 @@
         <input type="text" id="data_type8" name="data_type8" required>
     </div>
 
-    <!-- Ninth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>9.</h2>
         <label for="address9">ADDRESS:</label>
@@ -421,7 +266,7 @@
         <input type="text" id="data_type9" name="data_type9" required>
     </div>
 
-    <!-- Tenth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>10.</h2>
         <label for="address10">ADDRESS:</label>
@@ -525,7 +370,7 @@
         <input type="text" id="data_type13" name="data_type13" required>
     </div>
 
-    <!-- Fourteenth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>14.</h2>
         <label for="address14">ADDRESS:</label>
@@ -551,7 +396,7 @@
         <input type="text" id="data_type14" name="data_type14" required>
     </div>
 
-    <!-- Fifteenth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>15.</h2>
         <label for="address15">ADDRESS:</label>
@@ -577,7 +422,7 @@
         <input type="text" id="data_type15" name="data_type15" required>
     </div>
 
-    <!-- Sixteenth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>16.</h2>
         <label for="address16">ADDRESS:</label>
@@ -603,7 +448,7 @@
         <input type="text" id="data_type16" name="data_type16" required>
     </div>
 
-    <!-- Seventeenth set of textboxes -->
+
     <div class="textbox-group" style="text-align: center;">
         <h2>17.</h2>
         <label for="address17">ADDRESS:</label>
@@ -627,86 +472,11 @@
 
         <label for="data_type17">DATA_TYPE:</label>
         <input type="text" id="data_type17" name="data_type17" required>
-    </div>
-
-    <!-- Eighteenth set of textboxes -->
-    <div class="textbox-group" style="text-align: center;">
-        <h2>18.</h2>
-        <label for="address18">ADDRESS:</label>
-        <input type="text" id="address18" name="address18" required>
-
-        <label for="description18">DESCRIPTION:</label>
-        <input type="text" id="description18" name="description18" required>
-
-        <label for="type_value18">TYPE_VALUE:</label>
-        <select id="type_value18" name="type_value18" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
-
-        <label for="evc_type18">EVC_TYPE:</label>
-        <input type="text" id="evc_type18" name="evc_type18" required>
-
-        <label for="or_der18">OR_DER:</label>
-        <input type="text" id="or_der18" name="or_der18" required>
-
-        <label for="data_type18">DATA_TYPE:</label>
-        <input type="text" id="data_type18" name="data_type18" required>
-    </div>
-
-    <!-- Nineteenth set of textboxes -->
-    <div class="textbox-group" style="text-align: center;">
-        <h2>19.</h2>
-        <label for="address19">ADDRESS:</label>
-        <input type="text" id="address19" name="address19" required>
-
-        <label for="description19">DESCRIPTION:</label>
-        <input type="text" id="description19" name="description19" required>
-
-        <label for="type_value19">TYPE_VALUE:</label>
-        <select id="type_value19" name="type_value19" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
-
-        <label for="evc_type19">EVC_TYPE:</label>
-        <input type="text" id="evc_type19" name="evc_type19" required>
-
-        <label for="or_der19">OR_DER:</label>
-        <input type="text" id="or_der19" name="or_der19" required>
-
-        <label for="data_type19">DATA_TYPE:</label>
-        <input type="text" id="data_type19" name="data_type19" required>
-    </div>
-
-    <!-- Twentieth set of textboxes -->
-    <div class="textbox-group" style="text-align: center;">
-        <h2>20.</h2>
-        <label for="address20">ADDRESS:</label>
-        <input type="text" id="address20" name="address20" required>
-
-        <label for="description20">DESCRIPTION:</label>
-        <input type="text" id="description20" name="description20" required>
-
-        <label for="type_value20">TYPE_VALUE:</label>
-        <select id="type_value20" name="type_value20" required>
-            <option value="ARRAY6">ARRAY6</option>
-            <option value="signed">Short</option>
-            <option value="Float">Long</option>
-        </select>
-
-        <label for="evc_type20">EVC_TYPE:</label>
-        <input type="text" id="evc_type20" name="evc_type20" required>
-
-        <label for="or_der20">OR_DER:</label>
-        <input type="text" id="or_der20" name="or_der20" required>
-
-        <label for="data_type20">DATA_TYPE:</label>
-        <input type="text" id="data_type20" name="data_type20" required>
-
         <input class="custom-btn btn-2" type="submit" value="Submit">
+    </div>
+    </form>
+
+    <script src="add_actraris.js"></script>
 </body>
 
 </html>
