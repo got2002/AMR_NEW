@@ -112,27 +112,26 @@ input[type="text"] {
         </select>
 
         <!-- Button to submit the form -->
-        <button type="button" onclick="submitForm()">Edit</button>
+        <button type="button" onclick="submitForm()">View Information</button>
     </form>
 
     {{ tables[0]|safe }}
 
-    <h1>Poll Configure</h1>
+        <h2>Poll Configure</h2>
     <form action="/update_polling_data" method="post">
         <input type="hidden" name="selected_type" value="{{ selected_type }}">
         <div class="textbox-container">
             {% for i in range(0, list_config|length, 2) %}
                 <div class="textbox-pair">
-                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
                     <input type="text" id="start{{ i//2 + 1 }}" name="start_config{{ i//2 + 1 }}" value="{{ list_config[i] }}">
 
-                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
                     <input type="text" id="end{{ i//2 + 1 }}" name="end_config{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
 
                     <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
-                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
+                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[{{ i//2 }}]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
                    
-                
                 </div>
             {% endfor %}
         </div>
@@ -141,55 +140,58 @@ input[type="text"] {
         <div class="textbox-container">
             {% for i in range(0, list_billing|length, 2) %}
                 <div class="textbox-pair">
-                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}:</label>
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
                     <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_billing[i] }}">
 
-                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}:</label>
-                     <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
+                    <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
 
                     <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
-                     <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable[]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
+                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable[{{ i//2 }}]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
                    
                 </div>
             {% endfor %}
         </div>
 
-        <button type="submit">Save Changes</button>
+        <button type="submit">Save Edit Data</button>
     </form>
 
     <script>
         function saveToOracle() {
-        // Collect data from the Poll Configure form
-        var configureData = collectFormData('list_config', 'list_enable_config');
+    // Collect data from the Poll Configure form
+    var configureData = collectFormData('start_config', 'end_config', 'enable_config');
 
-        // Collect data from the Poll Billing form
-        var billingData = collectFormData('list_billing', 'list_enable_billing');
+    // Collect data from the Poll Billing form
+    var billingData = collectFormData('billing_start', 'billing_end', 'enable_billing');
 
-        // You can now send the data to your backend or perform any other necessary actions
-        console.log('Configure Data:', configureData);
-        console.log('Billing Data:', billingData);
+    // You can now send the data to your backend or perform any other necessary actions
+    console.log('Configure Data:', configureData);
+    console.log('Billing Data:', billingData);
 
-        // Add your logic to save data to Oracle here
-    }
+    // Add your logic to save data to Oracle here
+        }
 
-    function collectFormData(listName, enableListName) {
-        var data = {
-            list: [],
-            enableList: []
-        };
+        function collectFormData(startName, endName, enableName) {
+            var data = {
+                list: [],
+                enableList: []
+            };
 
-        // Collect data from the form
-        $('input[name^=' + listName + ']').each(function (index, element) {
-            data.list.push($(element).val());
-        });
+            // Collect data from the form
+            $('input[name^=' + startName + ']').each(function (index, element) {
+                var startValue = $(element).val();
+                var endValue = $('input[name=' + endName + ']').eq(index).val();
+                data.list.push({ start: startValue, end: endValue });
+            });
 
-        // Collect enable data from the form
-        $('input[name^=' + enableListName + ']').each(function (index, element) {
-            data.enableList.push($(element).prop('checked') ? '1' : '0');
-        });
+            // Collect enable data from the form
+            $('input[name^=' + enableName + ']').each(function (index, element) {
+                data.enableList.push($(element).prop('checked') ? '1' : '0');
+            });
 
-        return data;
-    }
+            return data;
+        }
+
 
     function submitForm() {
         // Trigger the form submission
