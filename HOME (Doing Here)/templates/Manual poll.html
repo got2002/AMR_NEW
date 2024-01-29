@@ -855,6 +855,7 @@
 
 
 
+
  <div id="colSm9Container_1" class="col-sm-9_1" style="margin-bottom: -22px; ">
     <div class="table-responsive" >
 
@@ -1085,86 +1086,315 @@
     {% endif %} 
     </div>
 </div>
+<div id="colSm9Container_7" class="col-sm-9_7">
+    <div class="table-responsive">
 
+        {% if data_list_7 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_7 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
+<div id="colSm9Container_8" class="col-sm-9_8">
+    <div class="table-responsive">
 
+        {% if data_list_8 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_8 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
+<div id="colSm9Container_9" class="col-sm-9_9">
+    <div class="table-responsive">
 
+        {% if data_list_9 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_9 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
+<div id="colSm9Container_10" class="col-sm-9_10">
+    <div class="table-responsive">
 
+        {% if data_list_10 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_10 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
+<div id="colSm9Container_11" class="col-sm-9_11">
+    <div class="table-responsive">
 
+        {% if data_list_11 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_11 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
+<div id="colSm9Container_12" class="col-sm-9_12">
+    <div class="table-responsive">
 
+        {% if data_list_12 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_12 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
 
+<div id="colSm9Container_13" class="col-sm-9_13">
+    <div class="table-responsive">
 
+        {% if data_list_13 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_13 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
 
+<div id="colSm9Container_14" class="col-sm-9_14">
+    <div class="table-responsive">
 
- <!-- <script>
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
-        const tcpIpInput = document.getElementById('tcp_ip');
+        {% if data_list_14 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_14 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
 
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                checkboxes.forEach(otherCheckbox => {
-                    if (otherCheckbox !== checkbox) {
-                        otherCheckbox.checked = false;
-                    }
-                });
+<div id="colSm9Container_15" class="col-sm-9_15">
+    <div class="table-responsive">
 
-                if (checkbox.checked) {
-                    // Read the IPAddress value from the corresponding row
-                    const rowIndex = checkbox.value;
-                    const ipAddress = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(9)`).textContent;
-
-                    // Update the TCP IP input field with the IPAddress value
-                    tcpIpInput.value = ipAddress;
-                } else {
-                    // If no checkbox is selected, clear the TCP IP input field
-                    tcpIpInput.value = "";
-                }
-            });
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('input[name="selected_rows"]');
-        const tcpPortInput = document.getElementById('tcp_port');
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                checkboxes.forEach(otherCheckbox => {
-                    if (otherCheckbox !== checkbox) {
-                        otherCheckbox.checked = false;
-                    }
-                });
-
-                if (checkbox.checked) {
-                    // Read the Port value from the corresponding row
-                    const rowIndex = checkbox.value;
-                    const port = document.querySelector(`tbody tr:nth-child(${parseInt(rowIndex) + 1}) td:nth-child(10)`).textContent;
-
-                    // Update the TCP Port input element with the Port value
-                    updateTcpPortInput(port);
-                } else {
-                    // If no checkbox is selected, reset the TCP Port input element
-                    resetTcpPortInput();
-                }
-            });
-        });
-
-        function updateTcpPortInput(port) {
-            // Set the value of the input element to the Port value
-            tcpPortInput.value = port;
-        }
-
-        function resetTcpPortInput() {
-            // Reset the value of the input element
-            tcpPortInput.value = "";
-        }
-    });
-</script>
- -->
-
-
+        {% if data_list_15 %}
+        
+        <table class="table table-hover">
+            <tbody style="background-color: #ffffff;">
+                {% for data in data_list_15 %}
+                {% if data['description'] and "Address" not in data['description'] %}
+                    <tr>
+                        <td>{{ data['description'] }}</td>
+                        <td>{{ data['value'] }}</td>
+                        <td>{{ data['address'] }}</td>
+                        <td>{{ data['hex_value'] }}</td>
+                        <td>{{ data['binary_value'] }}</td>
+                        <td>
+                            {% if data['is_16bit'] 
+                            %} 
+                                {{ data['signed_value'] }}
+                                <!-- Display signed_value for signed or Ulong -->
+                            {% else %} 
+                                {{ data['float_value'] }}
+                                <!-- Display float_value for float and others -->
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% endif %}
+    </div>
+</div>
 
 
 </body>
