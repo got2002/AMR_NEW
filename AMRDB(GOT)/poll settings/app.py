@@ -59,6 +59,8 @@ def insert_address_range_to_oracle(
 
         connection.commit()
 
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -114,7 +116,7 @@ def polling_route():
         #print(df.get)
         poll_config_list = df.get(["poll_config"]).values.tolist()
         list_config = str(poll_config_list[0]).strip("[]'").split(",")
-
+        
         poll_billing_list = df.get(["poll_billing"]).values.tolist()
         list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
         
@@ -149,13 +151,15 @@ def polling_route():
         list_enable_billing=[],
     )
     
+MAX_ADDRESS_LENGTH = 249
+
 @app.route("/update_polling_data", methods=["POST"])
 def update_polling_data():
     # Get the selected type and updated data from the form
     selected_type = request.form.get("selected_type")
-    # print(request.form.get)
     # Update configuration data
     poll_config_all = ""
+    enable_config = ""
     for i in range(0, 5):
         start_key = f"start_config{i + 1}"
         end_key = f"end_config{i + 1}"
@@ -165,39 +169,55 @@ def update_polling_data():
         end_value = request.form.get(end_key)
         enable_value = 1 if request.form.get(enable_key) == "on" else 0
 
-        if (i == 0):
-            poll_config_all = start_value + "," + end_value
+        address_range = f"{start_value},{end_value}"
+        if len(poll_config_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_config_all += ","
+            poll_config_all += address_range
+
+        if i == 0:
+            enable_config = str(enable_value)
+        else:
+            enable_config +=  "," + str(enable_value)
             
-        else: 
-            poll_config_all = poll_config_all + "," + start_value + "," + end_value
-            
-    print(poll_config_all)
-    # print(end_value)
+    print("poll_config:", poll_config_all)
+    print("poll_config_enable:", enable_config)
     
-    #Update billing data
+    # Update billing data
     poll_billing_all = ""
+    enable_billing = ""
     for i in range(0, 10):
         start_key = f"start{i + 1}"
         end_key = f"end{i + 1}"
-        enable_key = f"enable_config[{i}]"
+        enable_key = f"enable[{i}]"
         
         start_value = request.form.get(start_key)
         end_value = request.form.get(end_key)
         enable_value = 1 if request.form.get(enable_key) == "on" else 0
 
-        #print(start_value)
-        if (i == 0):
-            poll_billing_all = start_value + "," + end_value
-        else: 
-            poll_billing_all = poll_billing_all + "," + start_value + "," + end_value
-    print(poll_billing_all)
+        address_range = f"{start_value},{end_value}"
+        if len(poll_billing_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_billing_all += ","
+            poll_billing_all += address_range
 
+        if i == 0:
+            enable_billing = str(enable_value)
+        else:
+            enable_billing += "," + str(enable_value)
+    
+    print("poll_billing:", poll_billing_all)
+    print("poll_config_enable:", enable_billing)
 
-    # update_query = f"""
-    # UPDATE amr_poll_range
-    # SET poll_config = {poll_config_all }, poll_billing = {poll_billing_all}, poll_config_enable = {enable_config_value}, poll_billing_enable = {enable_billing_value}
-    # WHERE evc_type = (SELECT id FROM amr_vc_type WHERE VC_NAME = '{selected_type}');
-    # """
+    update_query = """
+    UPDATE amr_poll_range
+    SET poll_config = '{poll_config_all}', 
+        poll_billing = '{poll_billing_all}', 
+        poll_config_enable = '{enable_config}', 
+        poll_billing_enable = '{enable_billing}'  
+    WHERE id = (SELECT id FROM amr_vc_type WHERE VC_NAME = '{selected_type}');
+    """
+    
     # After updating the data, you may redirect to the polling route or perform any other necessary actions
     return redirect("/polling_route")
 
