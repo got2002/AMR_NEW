@@ -266,17 +266,17 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th style="display: none;"
+                        <th 
                         >evc_type</th>
-                        <th style="display: none;"
+                        <th 
                         >vc_name</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_billing_enable</th>
-                        <th style="display: none;"
+                        <th 
                         >poll_config_enable</th>
                     </tr>
                 </thead>
@@ -294,12 +294,12 @@
                                 <!-- <td>{{ '127.0.0.1' }}</td> -->
                                 <td>{{ row['IPAddress'] }}</td>
                                 <td>{{ row['Port'] }}</td>
-                                <td style="display: none;">{{ row['evc_type'] }}</td>
-                                <td style="display: none;">{{ row['vc_name'] }}</td>
-                                <td style="display: none;">{{ row['poll_billing'] }}</td>
-                                <td style="display: none;">{{ row['poll_config'] }}</td>
-                                <td style="display: none;">{{ row['poll_billing_enable'] }}</td>
-                                <td style="display: none;">{{ row['poll_config_enable'] }}</td>
+                                <td >{{ row['evc_type'] }}</td>
+                                <td >{{ row['vc_name'] }}</td>
+                                <td >{{ row['poll_billing'] }}</td>
+                                <td >{{ row['poll_config'] }}</td>
+                                <td >{{ row['poll_billing_enable'] }}</td>
+                                <td >{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -514,12 +514,12 @@
                         
                         
                          {% for i in range(1, 16) %}
-                         <div class="form-group" style="display: none;" >
+                         <div class="form-group"  >
                              <label  for="starting_address_{{ i }}">Starting Address ({{ i }})</label>
                              <input type="text" class="form-control" id="starting_address_{{ i }}" name="starting_address_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                          </div>
                      
-                         <div class="form-group" style="display: none;">
+                         <div class="form-group" >
                              <label for="quantity_{{ i }}">Quantity ({{ i }})</label>
                              <input type="text" class="form-control" id="quantity_{{ i }}" name="quantity_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                          </div>
@@ -706,10 +706,150 @@
      </table>
  </div>
 {% endif %}
-
-
-
-
+{% if communication_traffic_7 %}
+ <div id="communicationTrafficContainer_7" class="communication-traffic_7" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_7[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_8 %}
+ <div id="communicationTrafficContainer_8" class="communication-traffic_8" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_8[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_9 %}
+ <div id="communicationTrafficContainer_9" class="communication-traffic_9" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_9[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_10 %}
+ <div id="communicationTrafficContainer_10" class="communication-traffic_10" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_10[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_11 %}
+ <div id="communicationTrafficContainer_11" class="communication-traffic_11" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_11[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_12 %}
+ <div id="communicationTrafficContainer_12" class="communication-traffic_12" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_12[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_13 %}
+ <div id="communicationTrafficContainer_13" class="communication-traffic_13" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_13[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_14 %}
+ <div id="communicationTrafficContainer_14" class="communication-traffic_14" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_14[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
+{% if communication_traffic_15 %}
+ <div id="communicationTrafficContainer_15" class="communication-traffic_15" >
+    
+     <table class="table table-bordered">
+        
+         <tbody style="background-color: #ffffff;">
+             {% for data in communication_traffic_15[-2:] %}
+                 <tr>
+                     <td>{{ data['direction'] }}</td>
+                     <td>{{ data['data'] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+ </div>
+{% endif %}
 
 
 

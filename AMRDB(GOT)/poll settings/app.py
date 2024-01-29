@@ -154,9 +154,11 @@ def polling_route():
 MAX_ADDRESS_LENGTH = 249
 
 @app.route("/update_polling_data", methods=["POST"])
-def update_polling_data():
-    # Get the selected type and updated data from the form
+def update_polling_data(): 
     selected_type = request.form.get("selected_type")
+
+    print("TYPE:", selected_type)
+    
     # Update configuration data
     poll_config_all = ""
     enable_config = ""
@@ -209,15 +211,17 @@ def update_polling_data():
     print("poll_billing:", poll_billing_all)
     print("poll_config_enable:", enable_billing)
 
-    update_query = """
+    update_query = f"""
     UPDATE amr_poll_range
-    SET poll_config = '{poll_config_all}', 
-        poll_billing = '{poll_billing_all}', 
-        poll_config_enable = '{enable_config}', 
-        poll_billing_enable = '{enable_billing}'  
-    WHERE id = (SELECT id FROM amr_vc_type WHERE VC_NAME = '{selected_type}');
+    SET evc_type = {selected_type}
+        poll_config = {poll_config_all}
+        poll_billing = {poll_billing_all}
+        poll_config_enable = {enable_config}
+        poll_billing_enable = {enable_billing}
+    WHERE evc_type = {selected_type}
     """
-    
+
+    print("Update Query:", update_query)
     # After updating the data, you may redirect to the polling route or perform any other necessary actions
     return redirect("/polling_route")
 

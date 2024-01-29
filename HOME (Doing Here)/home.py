@@ -1157,7 +1157,6 @@ def Manualpoll_data():
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
     global change_to_32bit_counter  # Use the global variable
-    
     slave_id = int(request.form["slave_id"])
     function_code = int(request.form["function_code"])
     starting_address_1 = int(request.form['starting_address_1'])
@@ -1183,6 +1182,42 @@ def read_data():
     starting_address_6 = int(request.form['starting_address_6'])
     quantity_6 = int(request.form['quantity_6'])
     adjusted_quantity_6 = quantity_6 - starting_address_6 + 1
+
+    starting_address_7 = int(request.form['starting_address_7'])
+    quantity_7 = int(request.form['quantity_7'])
+    adjusted_quantity_7 = quantity_7 - starting_address_7 + 1
+
+    starting_address_8 = int(request.form['starting_address_8'])
+    quantity_8 = int(request.form['quantity_8'])
+    adjusted_quantity_8 = quantity_8 - starting_address_8 + 1
+
+    starting_address_9 = int(request.form['starting_address_9'])
+    quantity_9 = int(request.form['quantity_9'])
+    adjusted_quantity_9 = quantity_9 - starting_address_9 + 1
+
+    starting_address_10 = int(request.form['starting_address_10'])
+    quantity_10 = int(request.form['quantity_10'])
+    adjusted_quantity_10 = quantity_10 - starting_address_10 + 1
+
+    starting_address_11 = int(request.form['starting_address_11'])
+    quantity_11 = int(request.form['quantity_11'])
+    adjusted_quantity_11 = quantity_11 - starting_address_11 + 1
+
+    starting_address_12 = int(request.form['starting_address_12'])
+    quantity_12 = int(request.form['quantity_12'])
+    adjusted_quantity_12 = quantity_12 - starting_address_12 + 1
+
+    starting_address_13 = int(request.form['starting_address_13'])
+    quantity_13 = int(request.form['quantity_13'])
+    adjusted_quantity_13 = quantity_13 - starting_address_13 + 1
+
+    starting_address_14 = int(request.form['starting_address_14'])
+    quantity_14 = int(request.form['quantity_14'])
+    adjusted_quantity_14 = quantity_14 - starting_address_14 + 1
+
+    starting_address_15 = int(request.form['starting_address_15'])
+    quantity_15 = int(request.form['quantity_15'])
+    adjusted_quantity_15 = quantity_15 - starting_address_15 + 1
    
 
     tcp_ip = request.form["tcp_ip"]
@@ -1202,9 +1237,18 @@ def read_data():
             adjusted_quantity_4 *= 2
             adjusted_quantity_5 *= 2
             adjusted_quantity_6 *= 2
+            adjusted_quantity_7 *= 2
+            adjusted_quantity_8 *= 2
+            adjusted_quantity_9 *= 2
+            adjusted_quantity_10 *= 2
+            adjusted_quantity_11*= 2
+            adjusted_quantity_12*= 2
+            adjusted_quantity_13*= 2
+            adjusted_quantity_14*= 2
+            adjusted_quantity_15*= 2
             change_to_32bit_counter -= 1
 
-    # Build the request message
+     # Build the request message
     request_message_1 = bytearray(
     [slave_id, function_code, starting_address_1 >> 8, starting_address_1 & 0xFF, adjusted_quantity_1 >> 8, adjusted_quantity_1 & 0xFF]
 )
@@ -1244,6 +1288,65 @@ def read_data():
     crc_6 = computeCRC(request_message_6)
     request_message_6 += crc_6.to_bytes(2, byteorder="big")
     
+    request_message_7 = bytearray(
+    [slave_id, function_code, starting_address_7 >> 8, starting_address_7 & 0xFF, adjusted_quantity_7 >> 8, adjusted_quantity_7 & 0xFF]
+)
+    crc_7 = computeCRC(request_message_7)
+    request_message_7 += crc_7.to_bytes(2, byteorder="big")
+
+    request_message_8 = bytearray(
+    [slave_id, function_code, starting_address_8 >> 8, starting_address_8 & 0xFF, adjusted_quantity_8 >> 8, adjusted_quantity_8 & 0xFF]
+)
+    crc_8 = computeCRC(request_message_8)
+    request_message_8 += crc_8.to_bytes(2, byteorder="big")
+
+    request_message_9 = bytearray(
+    [slave_id, function_code, starting_address_9 >> 8, starting_address_9 & 0xFF, adjusted_quantity_9 >> 8, adjusted_quantity_9 & 0xFF]
+)
+    crc_9 = computeCRC(request_message_9)
+    request_message_9 += crc_9.to_bytes(2, byteorder="big")
+
+    request_message_10 = bytearray(
+    [slave_id, function_code, starting_address_10 >> 8, starting_address_10 & 0xFF, adjusted_quantity_10 >> 8, adjusted_quantity_10 & 0xFF]
+)
+    crc_10 = computeCRC(request_message_10)
+    request_message_10 += crc_10.to_bytes(2, byteorder="big")
+
+    request_message_11 = bytearray(
+    [slave_id, function_code, starting_address_11 >> 8, starting_address_11 & 0xFF, adjusted_quantity_11 >> 8, adjusted_quantity_11 & 0xFF]
+)
+    crc_11 = computeCRC(request_message_11)
+    request_message_11 += crc_11.to_bytes(2, byteorder="big")
+
+
+    request_message_12 = bytearray(
+    [slave_id, function_code, starting_address_12 >> 8, starting_address_12 & 0xFF, adjusted_quantity_12 >> 8, adjusted_quantity_12 & 0xFF]
+)
+    crc_12 = computeCRC(request_message_12)
+    request_message_12 += crc_12.to_bytes(2, byteorder="big")
+
+    request_message_13 = bytearray(
+    [slave_id, function_code, starting_address_13 >> 8, starting_address_13 & 0xFF, adjusted_quantity_13 >> 8, adjusted_quantity_13 & 0xFF]
+)
+    crc_13 = computeCRC(request_message_13)
+    request_message_13 += crc_13.to_bytes(2, byteorder="big")
+
+    request_message_14 = bytearray(
+    [slave_id, function_code, starting_address_14 >> 8, starting_address_14 & 0xFF, adjusted_quantity_14 >> 8, adjusted_quantity_14 & 0xFF]
+)
+    crc_14 = computeCRC(request_message_14)
+    request_message_14 += crc_14.to_bytes(2, byteorder="big")
+
+    request_message_15 = bytearray(
+    [slave_id, function_code, starting_address_15 >> 8, starting_address_15 & 0xFF, adjusted_quantity_15 >> 8, adjusted_quantity_15 & 0xFF]
+)
+    crc_15 = computeCRC(request_message_15)
+    request_message_15 += crc_15.to_bytes(2, byteorder="big")
+
+
+
+
+
     sock_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock_1.connect((tcp_ip, tcp_port))
     communication_traffic_1 = []
@@ -1364,6 +1467,193 @@ def read_data():
         int.from_bytes(data_6[i: i + bytes_per_value], byteorder="big", signed=False)
         for i in range(0, len(data_6), bytes_per_value)
     ]
+
+    sock_7 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_7.connect((tcp_ip, tcp_port))
+    communication_traffic_7 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_7.append({"direction": "TX", "data": request_message_7.hex()})
+    sock_7.send(request_message_7)
+    response_7 = sock_7.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_7.append({"direction": "RX", "data": response_7.hex()})
+    sock_7.close()
+
+    data_7 = response_7[3:]
+    
+    values_7 = [
+        int.from_bytes(data_7[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_7), bytes_per_value)
+    ]
+
+    sock_8 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_8.connect((tcp_ip, tcp_port))
+    communication_traffic_8 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_8.append({"direction": "TX", "data": request_message_8.hex()})
+    sock_8.send(request_message_8)
+    response_8 = sock_8.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_8.append({"direction": "RX", "data": response_8.hex()})
+    sock_8.close()
+
+    data_8 = response_8[3:]
+    
+    values_8 = [
+        int.from_bytes(data_8[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_8), bytes_per_value)
+    ]
+
+    sock_9 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_9.connect((tcp_ip, tcp_port))
+    communication_traffic_9 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_9.append({"direction": "TX", "data": request_message_9.hex()})
+    sock_9.send(request_message_9)
+    response_9 = sock_9.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_9.append({"direction": "RX", "data": response_9.hex()})
+    sock_9.close()
+
+    data_9 = response_9[3:]
+    
+    values_9 = [
+        int.from_bytes(data_9[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_9), bytes_per_value)
+    ]
+
+    sock_10 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_10.connect((tcp_ip, tcp_port))
+    communication_traffic_10 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_10.append({"direction": "TX", "data": request_message_10.hex()})
+    sock_10.send(request_message_10)
+    response_10 = sock_10.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_10.append({"direction": "RX", "data": response_10.hex()})
+    sock_10.close()
+
+    data_10 = response_10[3:]
+    
+    values_10 = [
+        int.from_bytes(data_10[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_10), bytes_per_value)
+    ]
+
+    sock_11 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_11.connect((tcp_ip, tcp_port))
+    communication_traffic_11 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_11.append({"direction": "TX", "data": request_message_11.hex()})
+    sock_11.send(request_message_11)
+    response_11 = sock_11.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_11.append({"direction": "RX", "data": response_11.hex()})
+    sock_11.close()
+
+    data_11 = response_11[3:]
+    
+    values_11 = [
+        int.from_bytes(data_11[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_11), bytes_per_value)
+    ]
+
+
+    sock_12 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_12.connect((tcp_ip, tcp_port))
+    communication_traffic_12 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_12.append({"direction": "TX", "data": request_message_12.hex()})
+    sock_12.send(request_message_12)
+    response_12 = sock_12.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_12.append({"direction": "RX", "data": response_12.hex()})
+    sock_12.close()
+
+    data_12 = response_12[3:]
+    
+    values_12 = [
+        int.from_bytes(data_12[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_12), bytes_per_value)
+    ]
+
+    sock_13 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_13.connect((tcp_ip, tcp_port))
+    communication_traffic_13 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_13.append({"direction": "TX", "data": request_message_13.hex()})
+    sock_13.send(request_message_13)
+    response_13 = sock_13.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_13.append({"direction": "RX", "data": response_13.hex()})
+    sock_13.close()
+
+    data_13 = response_13[3:]
+    
+    values_13 = [
+        int.from_bytes(data_13[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_13), bytes_per_value)
+    ]
+
+
+    sock_14 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_14.connect((tcp_ip, tcp_port))
+    communication_traffic_14 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_14.append({"direction": "TX", "data": request_message_14.hex()})
+    sock_14.send(request_message_14)
+    response_14 = sock_14.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_14.append({"direction": "RX", "data": response_14.hex()})
+    sock_14.close()
+
+    data_14 = response_14[3:]
+    
+    values_14 = [
+        int.from_bytes(data_14[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_14), bytes_per_value)
+    ]
+
+
+    sock_15 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_15.connect((tcp_ip, tcp_port))
+    communication_traffic_15 = []
+    
+    # Store the TX message in communicat    ion_traffic_1
+    communication_traffic_15.append({"direction": "TX", "data": request_message_15.hex()})
+    sock_15.send(request_message_15)
+    response_15 = sock_15.recv(1024)
+
+    # Store the RX message in communication_traffic_1
+    communication_traffic_15.append({"direction": "RX", "data": response_15.hex()})
+    sock_15.close()
+
+    data_15 = response_15[3:]
+    
+    values_15 = [
+        int.from_bytes(data_15[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data_15), bytes_per_value)
+    ]
+
+
+
+
     if "32bit" in request.form and request.form["32bit"] == "true":
         is_32bit = True
     else:
@@ -1375,6 +1665,16 @@ def read_data():
     data_list_4 = []
     data_list_5 = []
     data_list_6 = []
+    data_list_7 = []
+    data_list_8 = []
+    data_list_9 = []
+    data_list_10 = []
+    data_list_11 = []
+    data_list_12 = []
+    data_list_13 = []
+    data_list_14 = []
+    data_list_15 = []
+    
     
     address = starting_address_1
     address = starting_address_2
@@ -1382,6 +1682,16 @@ def read_data():
     address = starting_address_4
     address = starting_address_5
     address = starting_address_6
+    address = starting_address_7
+    address = starting_address_8
+    address = starting_address_9
+    address = starting_address_10
+    address = starting_address_11
+    address = starting_address_12
+    address = starting_address_13
+    address = starting_address_14
+    address = starting_address_15
+    
     value = 0
     values_1 = values_1[:-1]
     values_2 = values_2[:-1]
@@ -1389,7 +1699,19 @@ def read_data():
     values_4 = values_4[:-1]
     values_5 = values_5[:-1]
     values_6 = values_6[:-1]
-    
+    values_7 = values_7[:-1]
+    values_8 = values_8[:-1]
+    values_9 = values_9[:-1]
+    values_10 = values_10[:-1]
+    values_11 = values_11[:-1]
+    values_12 = values_12[:-1]
+    values_13 = values_13[:-1]
+    values_14 = values_14[:-1]
+    values_15 = values_15[:-1]
+
+
+
+
 
     for i, value in enumerate(values_1):
         address = starting_address_1 + i * 2
@@ -1726,6 +2048,503 @@ def read_data():
                 }
             )
             
+
+    for i, value in enumerate(values_7):
+        
+            address = starting_address_7 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_7.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+    for i, value in enumerate(values_8):
+        
+            address = starting_address_8 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_8.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+    
+
+    for i, value in enumerate(values_9):
+        
+            address = starting_address_9 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_9.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+
+    for i, value in enumerate(values_10):
+        
+            address = starting_address_10 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_10.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+    for i, value in enumerate(values_11):
+        
+            address = starting_address_11 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_11.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+        
+    for i, value in enumerate(values_12):
+        
+            address = starting_address_12 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_12.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+    for i, value in enumerate(values_13):
+        
+            address = starting_address_13 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_13.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+    for i, value in enumerate(values_14):
+        
+            address = starting_address_14 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_14.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+
+    for i, value in enumerate(values_15):
+        
+            address = starting_address_15 + i * 2
+            type_value = get_type_value_from_database(address)
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_15.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
     value, updated_address = handle_action_configuration(i, value, address)
         
     combined_data = {
@@ -1735,12 +2554,32 @@ def read_data():
         "data_4": data_4,
         "data_5": data_5,
         "data_6": data_6,
+        "data_7": data_7,
+        "data_8": data_8,
+        "data_9": data_9,
+        "data_10": data_10,
+        "data_11": data_11,
+        "data_12": data_12,
+        "data_13": data_13,
+        "data_14": data_14,
+        "data_15": data_15,
+       
         "communication_traffic_1": communication_traffic_1,
         "communication_traffic_2": communication_traffic_2,
         "communication_traffic_3": communication_traffic_3,
         "communication_traffic_4": communication_traffic_4,
         "communication_traffic_5": communication_traffic_5,
         "communication_traffic_6": communication_traffic_6,
+        "communication_traffic_7": communication_traffic_7,
+        "communication_traffic_8": communication_traffic_8,
+        "communication_traffic_9": communication_traffic_9,
+        "communication_traffic_10": communication_traffic_10,
+        "communication_traffic_11": communication_traffic_11,
+        "communication_traffic_12": communication_traffic_12,
+        "communication_traffic_13": communication_traffic_13,
+        "communication_traffic_14": communication_traffic_14,
+        "communication_traffic_15": communication_traffic_15,
+       
         
     }
     
@@ -1929,12 +2768,17 @@ def read_data():
     return render_template(
         "Manual poll.html",
         df=df,
-        data_list_1=data_list_1,data_list_2=data_list_2,data_list_3=data_list_3,data_list_4=data_list_4,data_list_5=data_list_5,data_list_6=data_list_6,
+        data_list_1=data_list_1,data_list_2=data_list_2,data_list_3=data_list_3,data_list_4=data_list_4,data_list_5=data_list_5,data_list_6=data_list_6,data_list_7=data_list_7,data_list_8=data_list_8,
+        data_list_9=data_list_9,data_list_10=data_list_10,data_list_11=data_list_11,data_list_12=data_list_12,data_list_13=data_list_13,data_list_14=data_list_14,data_list_15=data_list_15,
         slave_id=slave_id,
         function_code=function_code,
         starting_address_1=starting_address_1,
         quantity_1=quantity_1,starting_address_2=starting_address_2,quantity_2=quantity_2,starting_address_3=starting_address_3,quantity_3=quantity_3,
         starting_address_4=starting_address_4,quantity_4=quantity_4,starting_address_5=starting_address_5,quantity_5=quantity_5,starting_address_6=starting_address_6,quantity_6=quantity_6,
+        starting_address_7=starting_address_7,quantity_7=quantity_7,starting_address_8=starting_address_8,quantity_8=quantity_8,starting_address_9=starting_address_9,quantity_9=quantity_9,
+        starting_address_10=starting_address_10,quantity_10=quantity_10,starting_address_11=starting_address_11,quantity_11=quantity_11,
+        starting_address_12=starting_address_12,quantity_12=quantity_12,starting_address_13=starting_address_13,quantity_13=quantity_13,starting_address_14=starting_address_14,quantity_14=quantity_14,
+        starting_address_15=starting_address_15,quantity_15=quantity_15,
         is_16bit=is_16bit,
         communication_traffic_1=communication_traffic_1,
         communication_traffic_2=communication_traffic_2,
@@ -1942,6 +2786,15 @@ def read_data():
         communication_traffic_4=communication_traffic_4,
         communication_traffic_5=communication_traffic_5,
         communication_traffic_6=communication_traffic_6,
+        communication_traffic_7=communication_traffic_7,
+        communication_traffic_8=communication_traffic_8,
+        communication_traffic_9=communication_traffic_9,
+        communication_traffic_10=communication_traffic_10,
+        communication_traffic_11=communication_traffic_11,
+        communication_traffic_12=communication_traffic_12,
+        communication_traffic_13=communication_traffic_13,
+        communication_traffic_14=communication_traffic_14,
+        communication_traffic_15=communication_traffic_15,
         zipped_data=zipped_data,
         poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
         billing_list_str=billing_list_str,poll_config_enable_list=poll_config_enable_list,poll_billing_enable_list=poll_billing_enable_list,
