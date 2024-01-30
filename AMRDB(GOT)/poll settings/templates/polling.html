@@ -104,18 +104,20 @@ input[type="text"] {
     </nav>
 
     <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
-        <label for="type_dropdown">Select Type:</label>
+       <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
+            <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
             {% for type in type_options %}
                 <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
 
+
         <!-- Button to submit the form -->
         <button type="button" onclick="submitForm()">View Information</button>
     </form>
 
-    {{ tables[0]|safe }}
+    <!-- {{ tables[0]|safe }} -->
 
         <h2>Poll Configure</h2>
     <form action="/update_polling_data" method="post">
