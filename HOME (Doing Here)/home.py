@@ -565,35 +565,35 @@ def billing_data():
                 line=dict(color="green", width=2),
             )
 
-            # เพิ่ม traces ลงใน subplot
+           
             fig_corrected.add_trace(trace_corrected)
             fig_uncorrected.add_trace(trace_uncorrected)
             fig_pressure.add_trace(trace_pressure)
             fig_temperature.add_trace(trace_temperature)
 
-            # ปรับปรุงลักษณะและรายละเอียดของกราฟ
+            
             for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
                 fig.update_traces(
                     line_shape="linear", 
                     marker=dict(symbol="circle", size=6),
-                    hoverinfo="text+x+y",  # แสดงข้อมูล tooltip
-                    hovertext=df["DATA_DATE"],  # ข้อมูลที่แสดงใน tooltip
+                    hoverinfo="text+x+y",  
+                    hovertext=df["DATA_DATE"],  
                 )
                 fig.update_layout(
                     legend=dict(x=0.6, y=1.25, orientation="h"),
                     yaxis_title="Values",
                     xaxis_title="Date",
                     hovermode="x unified",
-                     # ใช้ template dark
+                     
                     yaxis=dict(type="linear", title="Values"),
                 )
             fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
 
 
-            # เพิ่มเติม: ปรับสีของแต่ละ trace
+            
             for trace in fig.data:
                 trace.marker.line.color = 'rgba(255,255,255,0)'
-            # แสดงกราฟ
+           
             graph_corrected = fig_corrected.to_html(full_html=False)
             graph_uncorrected = fig_uncorrected.to_html(full_html=False)
             graph_pressure = fig_pressure.to_html(full_html=False)
@@ -642,9 +642,9 @@ def billing_data():
                 df_run4 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
 
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
+            
             df = df.sort_values(by="DATA_DATE", ascending=True)
-            # ส่ง graph_html ไปยัง HTML template ของ Flask
+            
             return render_template(
                 "billingdata.html",
                 tables=tables,
@@ -999,6 +999,7 @@ def Manualpoll_data():
         FROM AMR_FIELD_ID
         JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
         WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        AND TAG_ID NOT LIKE '%remove%
         """
 
     region_results = fetch_data(region_query)
@@ -1014,7 +1015,7 @@ def Manualpoll_data():
             AMR_VC_TYPE.VC_NAME as VCtype,
             AMR_FIELD_ID.SIM_IP as IPAddress,
             
-             AMR_PORT_INFO.PORT_NO as port,
+            AMR_PORT_INFO.PORT_NO as port,
             amr_poll_range.evc_type as evc_type,
     
    amr_vc_type.vc_name as vc_name ,
