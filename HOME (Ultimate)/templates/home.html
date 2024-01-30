@@ -9,7 +9,7 @@
     <title>Home Page</title>
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="Css/sitedetail.css">
+    <link rel="stylesheet" href="Css/home.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
@@ -29,7 +29,7 @@
 <body>
     <div class="header">
         <a href="login.html" class="logout-link">Log Out</a>
-        <span class="textW" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+        <span class="texttop" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
     </div>
     </div>
     <div class="sidebar">
@@ -38,23 +38,23 @@
             alt="logo">
         <div class="container">
             <div class="form-containerSB">
-                <span class="textSB" alt="logo">Menu</span>
+                <span class="textSB" alt="Menu">Menu</span>
                 <div class="menu">
                     <button class="toggleR">Reports Data</button>
                     <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"class="list-item-link">View Billing Data</a></li>
-                        <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVCStatus</a></li>
-                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">DailySummary</a></li>
-                        <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">MonthlySummery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"class="list-item-link">SiteDetail</a></li>
-                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New SiteDetail</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="{{ url_for('billing_data') }}"class="list-item-link">View Billing Data</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">View EVCStatus</a></li>
+                        <li class="list-itemR" style="--delay:0.8s"><a href="Daily_summary" class="list-item-link">DailySummary</a></li>
+                        <li class="list-itemR" style="--delay:0.9s"><a href="" class="list-item-link">MonthlySummery</a></li>
+                        <li class="list-itemR" style="--delay:0.6s"><a href="sitedetail_data"class="list-item-link">SiteDetail</a></li>
+                        <li class="list-itemR" style="--delay:0.3s"><a href="" class="list-item-link">New SiteDetail</a></li>
                     </ul>
                 </div>
                 <div class="menu">
                     <button class="toggle">Polling Actions</button>
                     <ul class="list">
 
-                        <li class="list-item" style="--delay:0.4s"><a href="" class="list-item-link">Write Config</a>
+                        <li class="list-item" style="--delay:0.2s"><a href="" class="list-item-link">Write Config</a>
                         </li>
                     </ul>
                 </div>
@@ -88,11 +88,9 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
-
     <div class="footer">
         <span>POWERED BY ATOS.ASGS</span>
     </div>
