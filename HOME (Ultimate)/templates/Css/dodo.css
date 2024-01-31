@@ -632,6 +632,7 @@ body {
     font-size: 14px;
   }
 }
+
 footer {
   background-color: #2e6ff2;
   color: white;
@@ -646,7 +647,7 @@ footer {
   -webkit-box-shadow: 0 0 5px #ddd;
 }
 
-.topbar {
+.top-bar {
   background-color: #2e6ff2;
   color: #fff;
   padding: 10px 10px;
@@ -660,7 +661,7 @@ footer {
   -webkit-box-shadow: 0 0 5px #ddd;
 }
 
-.containerTop {
+.container-Top {
   max-width: 1880px;
   width: 100%;
   margin: 0 auto;
@@ -677,6 +678,7 @@ footer {
   margin-top: -25px;
   
 }
+
 .Automatic {
   font-size: 35px;
   font-weight: bold;
@@ -684,6 +686,7 @@ footer {
   padding: 0px;
   margin-top: -25px;
 }
+
 .navbar ul {
   list-style: none;
   margin: 0;
