@@ -601,28 +601,31 @@
 
 
 
- {% if communication_traffic_1 %}
- <div id="communicationTrafficContainer_1" class="communication-traffic_1">
-     <h4>Communication Traffic 1</h4>
-     <table class="table table-bordered">
-         <thead>
-             <tr>
-                 <th>Direction</th>
-                 <th>Data</th>
-             </tr>
-         </thead>
-         <tbody style="background-color: #ffffff;">
-             {% for data in communication_traffic_1[-2:] %}
-                 <tr>
-                     <td>{{ data['direction'] }}</td>
-                     <td>{{ data['data'] }}</td>
-                 </tr>
-             {% endfor %}
-         </tbody>
-     </table>
- </div>
+ {% if starting_address_1 != 0 %}
+  {% if communication_traffic_1 %}
+    <div id="communicationTrafficContainer_1" class="communication-traffic_1">
+      <h4>Communication Traffic 1</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Direction</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #ffffff;">
+          {% for data in communication_traffic_1[-2:] %}
+            <tr>
+              <td>{{ data['direction'] }}</td>
+              <td>{{ data['data'] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
 {% endif %}
 
+{% if starting_address_2 != 0 %}
 {% if communication_traffic_2 %}
  <div id="communicationTrafficContainer_2" class="communication-traffic_2" >
     
@@ -639,7 +642,10 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
 
+
+{% if starting_address_3 != 0 %}
 {% if communication_traffic_3 %}
  <div id="communicationTrafficContainer_3" class="communication-traffic_3" >
     
@@ -657,7 +663,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
 
+{% if starting_address_4 != 0 %}
 {% if communication_traffic_4 %}
  <div id="communicationTrafficContainer_4" class="communication-traffic_4" >
      
@@ -674,6 +682,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_5 != 0 %}
 {% if communication_traffic_5 %}
  <div id="communicationTrafficContainer_5" class="communication-traffic_5" >
     
@@ -690,6 +701,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_6 != 0 %}
 {% if communication_traffic_6 %}
  <div id="communicationTrafficContainer_6" class="communication-traffic_6" >
     
@@ -706,6 +720,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_7 != 0 %}
 {% if communication_traffic_7 %}
  <div id="communicationTrafficContainer_7" class="communication-traffic_7" >
     
@@ -722,6 +739,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_8 != 0 %}
 {% if communication_traffic_8 %}
  <div id="communicationTrafficContainer_8" class="communication-traffic_8" >
     
@@ -738,6 +758,10 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+
+{% if starting_address_9 != 0 %}
 {% if communication_traffic_9 %}
  <div id="communicationTrafficContainer_9" class="communication-traffic_9" >
     
@@ -754,6 +778,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_10 != 0 %}
 {% if communication_traffic_10 %}
  <div id="communicationTrafficContainer_10" class="communication-traffic_10" >
     
@@ -770,6 +797,10 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+
+{% if starting_address_11 != 0 %}
 {% if communication_traffic_11 %}
  <div id="communicationTrafficContainer_11" class="communication-traffic_11" >
     
@@ -786,6 +817,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_12 != 0 %}
 {% if communication_traffic_12 %}
  <div id="communicationTrafficContainer_12" class="communication-traffic_12" >
     
@@ -802,6 +836,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_13 != 0 %}
 {% if communication_traffic_13 %}
  <div id="communicationTrafficContainer_13" class="communication-traffic_13" >
     
@@ -818,6 +855,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_14 != 0 %}
 {% if communication_traffic_14 %}
  <div id="communicationTrafficContainer_14" class="communication-traffic_14" >
     
@@ -834,6 +874,9 @@
      </table>
  </div>
 {% endif %}
+{% endif %}
+
+{% if starting_address_15 != 0 %}
 {% if communication_traffic_15 %}
  <div id="communicationTrafficContainer_15" class="communication-traffic_15" >
     
@@ -850,7 +893,7 @@
      </table>
  </div>
 {% endif %}
-
+{% endif %}
 
 
 
