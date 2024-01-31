@@ -2818,7 +2818,7 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
+    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
@@ -2831,7 +2831,7 @@ def process_selected_rows():
 
 
 def get_type_value_from_database(address):
-    query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
+    query = "SELECT TYPE_VALUE FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
     result = fetch_data(query, params={"address": address})
     if result:
         return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
