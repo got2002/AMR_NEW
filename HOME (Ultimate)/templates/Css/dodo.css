@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped&family=Noto+Sans:wght@300&display=swap");
-
+@font-face {
+  font-family: 'MyOTFFont';
+  src: url('myotffont.otf') format('opentype');
+}
 body {
   background-image: linear-gradient(to right, #5b707e, #abb2b9);
   font-family: "IBM Plex Sans Thai Looped", sans-serif;
