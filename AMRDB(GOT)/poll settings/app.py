@@ -52,6 +52,12 @@ def update_sql(sql_statement):
 
         cursor.execute(sql_statement)
     connection.commit()
+    
+def execute_query(query):
+    with connection.cursor() as cursor:
+
+        cursor.execute(query)
+    connection.commit()
 
 def insert_address_range_to_oracle(
     poll_config, poll_billing, enable_config, enable_billing, evc_type
@@ -89,17 +95,9 @@ def polling_route():
     type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
     type_results = fetch_data(type_query)
     type_options = [str(type[0]) for type in type_results]
+    # print(type_results)
 
-    # type_query = "SELECT ID,VC_NAME FROM AMR_VC_TYPE"
-    # results = fetch_data(type_query)
-    
-    # columns = [
-    #     "ID",
-    #     "VC_NAME"
-    # ]
-    # df_EVC = pd.DataFrame(results, columns=columns)
-    # type_options = df_EVC['VC_NAME'].to_numpy()
-
+    # Define the base query for fetching polling data
     base_query = """
     SELECT
         apr.evc_type,
@@ -114,53 +112,48 @@ def polling_route():
     {type_condition}
     """
 
-     # Get selected ID and VC_NAME from the dropdown
-    selected_type = str(request.args.get("type_dropdown"))
-    # #selected_type = "Actaris(G1)"
-    # selected_type_rows = df_EVC[df_EVC['VC_NAME'] == selected_type]
-    # selected_type_id = selected_type_rows['ID'].iloc[0] if not selected_type_rows.empty else None
+    # Get selected type from the dropdown
+    selected_type = request.args.get("type_dropdown")
 
-    # selected_type_id = df_EVC.loc[df_EVC['VC_NAME'] == selected_type, 'ID'].iloc[0]
-    # print(selected_type_id)
-     
+    # Define type condition based on the selected type
     type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
 
-    # Modify the base query with the selected conditions
-    query = base_query.format(type_condition=type_condition)
-
-    # Check if either ID or VC_NAME is selected before executing the query
+    # Check if a type is selected before executing the query
     if selected_type:
+        # Modify the base query with the selected conditions
+        query = base_query.format(type_condition=type_condition)
+
         # Fetch data using the modified query
         results = fetch_data(query)
+        # print(results)
 
         columns = [
             "evc_type",
             "poll_config",
             "poll_billing",
             "poll_config_enable",
-            "poll_billing_enable"
+            "poll_billing_enable",
         ]
         df = pd.DataFrame(results, columns=columns)
 
-        # Extract data for rendering
+        print(results)
         poll_config_list = df.get(["poll_config"]).values.tolist()
-        list_config = str(poll_config_list).strip("[]'").split(",")
-
+        list_config = str(poll_config_list[0]).strip("[]'").split(",")
+        
         poll_billing_list = df.get(["poll_billing"]).values.tolist()
-        list_billing = str(poll_billing_list).strip("[]'").split(",")
-
+        list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
+        
         poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-        list_enable_config = str(poll_config_enable_list).strip("[]'").split(",")
-
+        list_enable_config = str(poll_config_enable_list[0]).strip("[]'").split(",")
+     
         poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
-        list_enable_billing = str(poll_billing_enable_list).strip("[]'").split(",")
-
+        list_enable_billing = str(poll_billing_enable_list[0]).strip("[]'").split(",")
+        
         return render_template(
             "polling.html",
             tables=[df.to_html(classes="data", index=False)],
             titles=columns,
             selected_type=selected_type,
-            selected_evc=selected_type,
             type_options=type_options,
             list_config=list_config,
             list_billing=list_billing,
@@ -168,19 +161,18 @@ def polling_route():
             list_enable_billing=list_enable_billing,
         )
     else:
-    # Render the HTML template without the table if neither ID nor VC_NAME is selected
+    # Render the HTML template without the table if no type is selected
         return render_template(
-        "polling.html",
-        tables=[],
-        titles=[],
-        selected_type=None,
-        selected_evc=None,
-        type_options=type_options,
-        list_config=[],
-        list_billing=[],
-        list_enable_config=[],
-        list_enable_billing=[],
-    )
+            "polling.html",
+            tables=[],
+            titles=[],
+            selected_type=None,
+            type_options=type_options,
+            list_config=[],
+            list_billing=[],
+            list_enable_config=[],
+            list_enable_billing=[],
+        )
     
 MAX_ADDRESS_LENGTH = 249
 
@@ -260,6 +252,7 @@ def update_polling_data():
     # After updating the data, you may redirect to the polling route or perform any other necessary actions
     
     return redirect("/polling_route")
+
 
 @app.route("/add_polling_route")
 def add_polling_route():
@@ -342,6 +335,159 @@ def save_to_oracle():
         }
 
     return jsonify(response)
+
+@app.route('/mapping_config')  
+def mapping_config_route():
+    # SQL query to fetch options for the dropdown
+    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
+    type_results = fetch_data(type_query)
+    type_options = [str(type[0]) for type in type_results]
+
+    # SQL query to fetch data based on selected type
+    base_query = """
+     SELECT
+        address,
+        description,
+        type_value,
+        evc_type,
+        or_der,
+        data_type
+    FROM
+        amr_mapping_config,amr_vc_type
+    WHERE
+    amr_mapping_config.evc_type = amr_vc_type.id
+      AND  amr_vc_type.VC_NAME like '{selected_type}'
+    """
+
+    selected_type = request.args.get("type_dropdown")
+    selected_type = f"{selected_type}" if selected_type else ""
+
+    if selected_type:
+        query = base_query.format(selected_type=selected_type)
+        results = fetch_data(query)
+
+        columns = [
+            "address",
+            "description",
+            "type_value",
+            "evc_type",
+            "or_der",
+            "data_type",
+        ]
+        df = pd.DataFrame(results, columns=columns)
+
+        address_list = df.get(["address"]).values.tolist()
+        list_address = str(address_list[0]).strip("[]'").split(",")
+        print("map:", df)
+               
+        description_list = df.get(["description"]).values.tolist()
+        list_description = str(description_list[0]).strip("[]'").split(",")
+               
+        type_value_list = df.get(["type_value"]).values.tolist()
+        list_type_value = str(type_value_list[0]).strip("[]'").split(",")        
+        
+        evc_type_list = df.get(["evc_type"]).values.tolist()
+        list_evc_type = str(evc_type_list[0]).strip("[]'").split(",")
+        
+        or_der_list = df.get(["or_der"]).values.tolist()
+        list_or_der = str(or_der_list[0]).strip("[]'").split(",")
+               
+        data_type_list = df.get(["data_type"]).values.tolist()
+        list_data_type = str(data_type_list[0]).strip("[]'").split(",")
+
+        return render_template(
+            'mapping_config.html', 
+            type_options=type_options, 
+            selected_type=selected_type, 
+            table=df.to_html(index=False),
+            list_address=df["address"].tolist(),
+            list_description=df["description"].tolist(),
+            list_type_value=df["type_value"].tolist(),
+            list_evc_type=df["evc_type"].tolist(),
+            list_or_der=df["or_der"].tolist(),
+            list_data_type=df["data_type"].tolist()
+        )
+    else:
+        return render_template('mapping_config.html', type_options=type_options)
+    
+@app.route('/update_mapping_config_route', methods=['POST'])
+def update_mapping_config():
+    selected_type = request.form.get('selected_type')
+
+    # Fetch type_id from the database
+    type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
+    results = fetch_data(type_id_query)
+    type_id = str(results[0]).strip("',()")
+    print("type:", type_id)
+
+    address = ""
+    description = ""
+    type_value = ""
+    evc_type = ""
+    or_der = ""
+    data_type = ""
+
+    for i in range(1, 21):  # Start from 1 and end at 20
+        address_key = f"list_address{i}"
+        description_key = f"list_description{i}"
+        type_value_key = f"list_type_value{i}"
+        evc_type_key = f"list_evc_type{i}"
+        or_der_key = f"list_or_der{i}"
+        data_type_key = f"list_data_type{i}"
+
+        address_value = request.form.get(address_key)
+        description_value = request.form.get(description_key)
+        type_value_value = request.form.get(type_value_key)
+        evc_type_value = request.form.get(evc_type_key)
+        or_der_value = request.form.get(or_der_key)
+        data_type_value = request.form.get(data_type_key)
+
+        # Concatenate values with ","
+        if address_value is not None:
+            address += f"{address_value},"
+        if description_value is not None:
+            description += f"{description_value},"
+        if type_value_value is not None:
+            type_value += f"{type_value_value},"
+        if evc_type_value is not None:
+            evc_type += f"{evc_type_value},"
+        if or_der_value is not None:
+            or_der += f"{or_der_value},"
+        if data_type_value is not None:
+            data_type += f"{data_type_value},"
+
+    # Remove the trailing comma from each string
+    address = address.rstrip(',')
+    description = description.rstrip(',')
+    type_value = type_value.rstrip(',')
+    evc_type = evc_type.rstrip(',')
+    or_der = or_der.rstrip(',')
+    data_type = data_type.rstrip(',')
+
+    print("Address Data:", address)
+    print("Description Data:", description)
+    print("Type Value Data:", type_value)
+    print("EVC Type Data:", evc_type)
+    print("OR DER Data:", or_der)
+    print("Data Type Data:", data_type)
+
+    # Update SQL query based on your table structure
+    update_query = f"""
+        UPDATE AMR_MAPPING_CONFIG
+        SET
+            ADDRESS = '{address}',
+            DESCRIPTION = '{description}',
+            OR_DER = '{or_der}',
+            DATA_TYPE = '{data_type}'
+        WHERE evc_type = {type_id};
+    """
+
+    # Execute the update query using your database connection
+    execute_query(update_query)
+    print(update_query)
+
+    return redirect("/mapping_config")
+
 
 @app.route("/add_mapping_route")
 def add_mapping_route():
