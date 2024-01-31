@@ -1783,9 +1783,9 @@ def billing_data_asgs():
         """
         # Fetch tag_id data using your fetch_data function
         tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region1': selected_region1})
-        if query_type == "daily_data":
+        
             # Define your Oracle query to fetch data based on selected criteria
-            billing_query = """
+        billing_query = """
                 SELECT *
                 FROM VW_AMR_BILLING_DATA
                 WHERE 
@@ -1795,17 +1795,6 @@ def billing_data_asgs():
                     ORDER BY VW_AMR_BILLING_DATA.data_date
             """
         # Fetch data using your fetch_data function
-        elif query_type == "config_data":
-            config_query = """
-                SELECT *
-                FROM VW_AMR_CONFIGURATION_DATA
-                WHERE 
-                    VW_AMR_CONFIGURATION_DATA.region_name like 'pt001'
-                    AND VW_AMR_CONFIGURATION_DATA.tag_id like 'AAC'
-                    AND TO_CHAR(VW_AMR_CONFIGURATION_DATA.data_date, 'MM/YYYY') like '01/2024'
-                    ORDER BY VW_AMR_CONFIGURATION_DATA.data_date
-            """
-
         results = fetch_data(ptt_pivot_connection, billing_query, {'selected_region1': selected_region1, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
         
     # Render the template with the fetched data and selected region
