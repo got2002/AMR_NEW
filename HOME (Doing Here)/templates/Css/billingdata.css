@@ -202,21 +202,15 @@ form {
     margin-top: 3%;
     margin-bottom: 3%;
 }
-
-.form-containerBOx {
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    text-align: center;
-    padding: 1px;
-    box-sizing: border-box;
-    width: 95%;
-    overflow: auto;
-    font-family: Arial, sans-serif;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    position: absolute; top: 100%; left: 23%;
+.text-box-group {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 5;
+  margin-left: 50%;
 }
 
 .form-container-BOx {
@@ -251,52 +245,37 @@ form {
     }
 }
 
-
-/* เรียงลำดับ div ใน plot-container */
 .plot-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    /* จัดวางให้เรียงตามจำนวน div ที่มี */
     margin: 20px;
     margin-bottom: 20px;
-    /* ขอบระหว่าง div */
     width: 100%;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: center;
-    /* จัด div ให้อยู่ตรงกลาง */
 }
 
-/* สไตล์ของแต่ละ div ที่มี class เป็น plot-container */
 .plot-container>div {
     width: 45%;
-    /* กำหนดขนาดของแต่ละ div */
     margin: 10px;
-    /* ขอบระหว่าง div */
     border: 1px solid #ddd;
-    /* เส้นขอบของ div */
     border-radius: 8px;
-    /* ทำให้มีมุมโค้ง */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* เงาใต้ div */
     margin: center;
-    /* จัด div ให้อยู่ตรงกลาง */
 }
 
-/* ปรับสีของกราฟ */
 .plot-container>div .plotly {
     background-color: #fff;
-    /* สีพื้นหลังของกราฟ */
     border-radius: 8px;
-    /* ทำให้มีมุมโค้ง */
 
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-    font-size: x-small;
+    font-size: large;
     table-layout: fixed;
     margin-top: -10px;
 
@@ -306,15 +285,14 @@ table {
 
 th,
 td {
-    font-size: x-small;
+    font-size: large;
     border: 1px solid #000000;
-
     text-align: left;
     padding: 8px;
 }
 
 th {
-    font-size: x-small;
+    font-size: large;
     background-color: #e1dede;
 }
 
@@ -327,7 +305,7 @@ td {
 
 
 .table1 {
-    font-size: xx-small;
+    font-size: large;
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
@@ -338,7 +316,7 @@ td {
 
 .table1 th,
 .table1 td {
-    font-size: xx-small;
+    font-size: large;
     border: 1px solid #000000;
     text-align: center;
     /* จัดตำแหน่งตรงกลาง */
@@ -346,21 +324,21 @@ td {
 }
 
 .table1 th {
-    font-size: xx-small;
+    font-size: large;
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 }
 
 
 .table-container {
-    font-size: xx-small;
+    font-size: large;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
 .table {
-    font-size: xx-small;
+    font-size: large;
     width: 100%;
     /* Adjust the width as needed */
     box-sizing: border-box;
@@ -401,77 +379,53 @@ td {
 
 #region_dropdown {
     width: 200px;
-    /* กำหนดความกว้างของ dropdown */
     padding: 8px;
-    /* กำหนดระยะห่างขอบของ dropdown */
     border: 1px solid #ccc;
-    /* กำหนดเส้นขอบ */
     border-radius: 4px;
-    /* กำหนดเส้นขอบมน */
     background-color: #fff;
-    /* กำหนดพื้นหลัง */
     color: #333;
-    /* กำหนดสีของตัวอักษร */
 }
 
 #region_dropdown:hover {
     border-color: #666;
-    /* กำหนดสีขอบเมื่อ hover */
 }
 
 #region_dropdown option {
     background-color: #fff;
-    /* กำหนดพื้นหลังของแต่ละ option */
     color: #333;
-    /* กำหนดสีของตัวอักษรของแต่ละ option */
 }
 
 #region_dropdown option:hover {
     background-color: #f2f2f2;
-    /* กำหนดพื้นหลังเมื่อ hover ที่ option */
 }
 
-/* กำหนดสไตล์ของ label */
 label[for="tag_dropdown"] {
     display: block;
-    /* กำหนดให้ label เป็น block element */
     margin-bottom: 5px;
-    /* กำหนดระยะห่างด้านล่าง */
     font-weight: bold;
 
 }
 
-/* กำหนดสไตล์ของ dropdown */
 #tag_dropdown {
     width: 200px;
-    /* กำหนดความกว้างของ dropdown */
     padding: 8px;
-    /* กำหนดระยะห่างขอบของ dropdown */
     border: 1px solid #ccc;
-    /* กำหนดเส้นขอบ */
     border-radius: 4px;
-    /* กำหนดเส้นขอบมน */
     background-color: #fff;
-    /* กำหนดพื้นหลัง */
     color: #333;
-    /* กำหนดสีของตัวอักษร */
 }
 
 #tag_dropdown:hover {
     border-color: #666;
-    /* กำหนดสีขอบเมื่อ hover */
 }
 
 #tag_dropdown option {
     background-color: #fff;
-    /* กำหนดพื้นหลังของแต่ละ option */
     color: #333;
-    /* กำหนดสีของตัวอักษรของแต่ละ option */
 }
 
 #tag_dropdown option:hover {
     background-color: #f2f2f2;
-    /* กำหนดพื้นหลังเมื่อ hover ที่ option */
 }
 
 .loading-overlay {
@@ -496,7 +450,6 @@ label[for="tag_dropdown"] {
     margin: 0 auto;
 }
 
-/* เพิ่มสไตล์ CSS สำหรับปรับแต่ง <select> */
 #region_dropdown {
     padding: 8px;
     font-size: 14px;
@@ -504,7 +457,6 @@ label[for="tag_dropdown"] {
     border-radius: 4px;
     box-shadow: none;
     width: 200px;
-    /* ปรับขนาดตามความต้องการ */
     margin-bottom: 2%;
     margin-top: 1%;
 }
@@ -566,20 +518,7 @@ label[for="tag_dropdown"] {
     margin-bottom: 16px;
 }
 
-@font-face {
-    font-family: "PTT45Pride-Bold";
-    src: url("PTT45Pride-Bold.otf") format("sans-serif");
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  body {
-    background-image: linear-gradient(to right, #5b707e, #abb2b9);
-    font-family: "PTT45Pride-Bold", sans-serif;
-    font-size: large;
-    font-weight: 600;
-    max-width: 100vw;
-  }
+
   
   h1 {
     color: #333;
@@ -593,12 +532,12 @@ label[for="tag_dropdown"] {
   .text-box-group {
     width: 40%;
     background-color: #fff;
-    padding: 40px;
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 5%;
     z-index: 5;
     margin-left: 50%;
   }
