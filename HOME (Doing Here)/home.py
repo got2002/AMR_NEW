@@ -632,6 +632,7 @@ def billing_data():
                 "CONFIG18",
                 "CONFIG19",
                 "CONFIG20",
+                
             ]
 
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
