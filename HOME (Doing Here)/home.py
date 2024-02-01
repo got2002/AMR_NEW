@@ -4,7 +4,6 @@ import cx_Oracle
 from flask import flash
 from datetime import datetime
 import pandas as pd
-import numpy as np
 import sqlite3
 import plotly.express as px
 from flask import (
@@ -29,6 +28,10 @@ from flask import Flask, send_from_directory
 from flask_migrate import Migrate
 import hashlib
 import os
+import cx_Oracle
+import plotly.subplots as sp
+import plotly.graph_objs as go
+import matplotlib as mpt
 
 
 
@@ -491,6 +494,8 @@ def billing_data():
                 ],
             )
             
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
             
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
             df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
@@ -506,59 +511,158 @@ def billing_data():
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
 
-            # เพิ่มเนื้อหา HTML สำหรับกราฟ
-            df = df.sort_values(by="DATA_DATE", ascending=True)
+            # Continue with the rest of your DataFrame processing
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
            
 
             # ส่ง graph_html ไปยัง HTML template ของ Flask
             
-
-
-
-
-            # Assuming 'df' is the DataFrame created from the query results
-            df_run1 = df[df["METER_STREAM_NO"] == "1"]
-            df_run2 = df[df["METER_STREAM_NO"] == "2"]
-            df_run3 = df[df["METER_STREAM_NO"] == "3"]
-            df_run4 = df[df["METER_STREAM_NO"] == "4"]
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
                 "config_data": None,
             }
-
+            graphs = {
+                "corrected": None,
+                "uncorrected": None,
+                "pressure": None,
+                "temperature": None
+            }
             if not df_run1.empty:
-                df_run1 = df_run1.drop("METER_STREAM_NO", axis=1, errors="ignore")
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
 
             if not df_run2.empty:
-                df_run2 = df_run2.drop("METER_STREAM_NO", axis=1, errors="ignore")
-                tables["daily_data_ran2"] = df_run2.to_html(classes="data", index=False)
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
 
             if not df_run3.empty:
-                df_run3 = df_run3.drop("METER_STREAM_NO", axis=1, errors="ignore")
-                tables["daily_data_ran3"] = df_run3.to_html(classes="data", index=False)
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
 
             if not df_run4.empty:
-                df_run4 = df_run4.drop("METER_STREAM_NO", axis=1, errors="ignore")
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
                 tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
 
             # เพิ่มเนื้อหา HTML สำหรับกราฟ
             df = df.sort_values(by="DATA_DATE", ascending=True)
 
-            # ส่ง graph_html ไปยัง HTML template ของ Flask
-            return render_template(
-                "billingdata.html",
-                tables=tables,
+            # Create graphs for each METER_STREAM_NO
+            for i in range(1, 7):
+                df_run = df[df['METER_STREAM_NO'] == str(i)]
 
-                titles=df.columns.values,
-                selected_date=selected_date,
-                selected_tag=selected_tag,
-                selected_region=selected_region,
-                region_options=region_options,
-                tag_options=tag_options,
-            )
+                # Create traces for each graph
+                trace_corrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["CORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Corrected",
+                    line=dict(color="blue", width=2),
+                )
+
+                trace_uncorrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["UNCORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Uncorrected",
+                    line=dict(color="red", width=2),
+                )
+
+                trace_pressure = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Pressure"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Pressure",
+                    line=dict(color="orange", width=2),
+                )
+
+                trace_temperature = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Temperature"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Temperature",
+                    line=dict(color="green", width=2),
+                )
+
+                # Create subplot for each graph
+                fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
+                fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
+                fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
+                fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
+
+                # Add traces to subplots
+                fig_corrected.add_trace(trace_corrected)
+                fig_uncorrected.add_trace(trace_uncorrected)
+                fig_pressure.add_trace(trace_pressure)
+                fig_temperature.add_trace(trace_temperature)
+
+                # Update subplot and layout properties
+                for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                    fig.update_traces(
+                        line_shape="linear",
+                        marker=dict(symbol="circle", size=6),
+                        hoverinfo="text+x+y",
+                        hovertext=df_run["DATA_DATE"],
+                    )
+                    fig.update_layout(
+                        legend=dict(x=0.6, y=1.25, orientation="h"),
+                        yaxis_title="Values",
+                        xaxis_title="Date",
+                        hovermode="x unified",
+                        yaxis=dict(type="linear", title="Values"),
+                    )
+                    fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+
+                # Get HTML for each graph
+                graph_corrected = fig_corrected.to_html(full_html=False)
+                graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+                graph_pressure = fig_pressure.to_html(full_html=False)
+                graph_temperature = fig_temperature.to_html(full_html=False)
+
+                # Store HTML in the graphs dictionary
+                graphs[f"corrected_run{i}"] = graph_corrected
+                graphs[f"uncorrected_run{i}"] = graph_uncorrected
+                graphs[f"pressure_run{i}"] = graph_pressure
+                graphs[f"temperature_run{i}"] = graph_temperature
+
+
+                # เพิ่มเนื้อหา HTML สำหรับกราฟ
+                df = df.sort_values(by="DATA_DATE", ascending=True)
+                # ส่ง graph_html ไปยัง HTML template ของ Flask
+                return render_template(
+                    "billingdata.html",
+                    tables=tables,
+                    titles=df.columns.values,
+                    selected_date=selected_date,
+                    selected_tag=selected_tag,
+                    selected_region=selected_region,
+                    region_options=region_options,
+                    tag_options=tag_options,
+                    selected_meter_id=selected_meter_id,
+                    graph_corrected=graph_corrected,
+                    graph_uncorrected=graph_uncorrected,
+                    graph_pressure=graph_pressure,
+                    graph_temperature=graph_temperature,
+
+                )
         elif query_type == "config_data":
             # Use pandas to create a DataFrame for config_data
             df = pd.DataFrame(
