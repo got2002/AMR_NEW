@@ -33,12 +33,13 @@
     font-style: normal;
   }
 
-  body {
-    background-image: linear-gradient(to right, #5b707e, #abb2b9);
-    font-family: "PTT45Pride-Bold", sans-serif;
-    font-size: large;
-    font-weight: 600;
-    max-width: 100vw;
+  @media only screen and (min-width: 1024px) {
+    body {
+      background-image: linear-gradient(to right, #5b707e, #abb2b9);
+      font-family: "PTT45Pride-Bold", sans-serif;
+      font-weight: bold;
+      max-width: 100vw;
+    }
   }
 
   label {
@@ -190,24 +191,26 @@
     padding: 20px;
     border-radius: 5px;
     text-align: left;
-
   }
 
   .form-container {
     text-align: center;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-bottom: 30px;
+    margin-top: 5%;
   }
 
   .text-box-group {
+    width: 40%;
     background-color: #fff;
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: -35%;
+    margin-bottom: 5%;
     z-index: 5;
-    margin-left: 50%;
+    margin-left: 30%;
+
   }
 
   .form-container-BOx {
@@ -215,16 +218,14 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     text-align: center;
-    padding: 1px;
     box-sizing: border-box;
-    width: 120%;
-
+    width: 141%;
     margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 5%;
+    margin-bottom: 60%;
     position: absolute;
     top: 100%;
-    left: 23%;
+    left: 1%;
   }
 
 
@@ -253,6 +254,7 @@
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: center;
+
   }
 
   .plot-container>div {
@@ -276,7 +278,7 @@
     background-color: rgb(255, 255, 255);
     border: 1.5px solid #171717;
     height: 20px;
-    width: 65px;
+    width: 55px;
     align-items: center;
     text-align: center;
     font-size: small;
@@ -284,15 +286,14 @@
   }
 
   th {
-    background-color: #9d9d9d;
+    background-color: #bcb9b9;
     border: 2px solid #171717;
-    height: 50px;
-    width: 65px;
-    font-weight: bold;
+    height: 40px;
+    width: 55px;
     text-align: center;
-    font-size: xx-small;
     align-items: center;
     padding: 2px;
+    font-size: xx-small;
   }
 
   table {
@@ -306,64 +307,52 @@
 
   th,
   td {
-    font-size: small;
+    font-size: 10px;
     border: 1px solid #000000;
     text-align: center;
-    padding: 8px;
-    width: 63px;
-
+    width: 57px;
+    padding: 3px;
   }
-
-  th {
-    font-size: large;
-    background-color: #e1dede;
-  }
-
 
   .table1 {
-    font-size: large;
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
     margin: 10px auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
   }
 
   .table1 th,
   .table1 td {
-    font-size: large;
-    border: 1px solid #000000;
+    font-size: small;
     text-align: center;
-    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
-  .table1 th {
-    font-size: large;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-  }
-
 
   .table-container {
-    font-size: large;
+    font-size: x-large;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 0%;
+    margin-bottom: 1%;
   }
 
   .table {
-    font-size: large;
-    width: 100%;
-    /* Adjust the width as needed */
+    width: 150%;
     box-sizing: border-box;
-    border: 1px solid #ccc;
     padding: 30px;
     margin: 10px auto;
-    /* Center-align the table */
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 645px) {
     .table {
       width: 100%;
     }
@@ -443,7 +432,7 @@
     background-color: #f2f2f2;
   }
 
-  .loading-overlay {
+  .loadingoverlay {
     display: none;
     position: fixed;
     top: 0;
@@ -455,15 +444,6 @@
     padding-top: 20%;
   }
 
-  .spinner {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #3498db;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-  }
 
   #region_dropdown {
     padding: 8px;
@@ -541,20 +521,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -35px;
+    margin-top: -40px;
   }
 
-  .text-box-group {
-    width: 40%;
-    background-color: #fff;
-    padding: 5px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: auto;
-    margin-top: 5px;
-    margin-bottom: 5%;
-    z-index: 5;
-    margin-left: 50%;
+  h2 {
+    color: #333;
+    padding: 3%;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    margin-top: -20px;
   }
 
   label {
@@ -568,7 +544,7 @@
     padding: 8px;
     box-sizing: border-box;
     width: 60%;
-    border: 1px solid #ccc;
+    border: 1px solid #050505;
     border-radius: 5px;
     margin-bottom: 10px;
   }
@@ -577,14 +553,6 @@
     margin-right: 5px;
   }
 
-  h2 {
-    color: #333;
-    padding: 3%;
-    display: flex;
-    align-items: left;
-    justify-content: left;
-    margin-top: -20px;
-  }
 
   #statusMessage {
     margin-top: 15px;
@@ -622,7 +590,7 @@
   .custom-btn {
     margin: auto;
     color: #fff;
-    width: 140px;
+    width: 120px;
     height: 40px;
     padding: 10px 25px;
     font-weight: 500;
@@ -633,8 +601,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 35px;
     border-radius: 5px;
+    margin-bottom: -25px;
   }
 
   /* 1 */
@@ -681,9 +650,15 @@
     margin-top: 150px;
   }
 
-  @media only screen and (min-width: 1200px) {
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+
+  @media only screen and (min-width: 1024px) {
     .container {
-      width: 1210px;
+      width: 1024px;
     }
   }
 
@@ -726,7 +701,7 @@
     width: 250px;
     /* == */
     max-width: 1880px;
-    position: fixed;
+
   }
 
   .mcd-menu li {
@@ -1432,7 +1407,7 @@
     margin-bottom: 10px;
   }
 
-  .loading-overlay {
+  .loadingoverlay {
     display: none;
     position: fixed;
     top: 0;
@@ -1453,6 +1428,46 @@
       transform: rotate(360deg);
     }
   }
+
+  .selected {
+    margin-top: 15%;
+    margin: auto;
+    padding-left: 5%;
+  }
+      /* Styling for the loading overlay */
+      #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Ensure it appears on top of other elements */
+    }
+
+    #loadingOverlay img {
+        width: 100px; /* Adjust the width as needed */
+        height: 100px; /* Adjust the height as needed */
+    }
+
+    /* Styling for the selected information */
+    .selected {
+        margin-top: 20%;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
 </style>
 
 <body>
@@ -1472,7 +1487,7 @@
     <nav>
       <ul class="mcd-menu">
         <li>
-          <a>
+          <a href="home">
             <i class="fa fa-home"></i>
             <strong>Home</strong>
             <small>Home Page</small>
@@ -1546,7 +1561,6 @@
       <form method="get" action="{{ url_for('billing_data') }}">
         <h1 class="form-container"> View Billing Data</h1>
         <div class="form-container">
-          <!-- Region Dropdown -->
           <label for="region_dropdown">Select Region:</label>
           <select id="region_dropdown" name="region_dropdown">
             <option value="" {% if not selected_region %}selected{% endif %}>All</option>
@@ -1562,203 +1576,201 @@
             <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
             {% endfor %}
           </select>
-          <div id="loadingOverlay" style="display: none;">
-            <img src="Search.gif" alt="Loading...">
-          </div>
+
           <label for="date_picker">Select Date:</label>
           <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
             onchange="checkDate()">
-          <div class="form-container">
-            <div class="button-container">
-              <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data">Daily Data</button>
-              <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data">Config Data</button>
-              
-              <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
-                Filters</button>
-            </div>
-          </div>
 
+          <div class="button-container">
+            <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data" onclick="showLoading()">Daily Data</button>
+            <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data" onclick="showLoading()">Config Data</button>   
+            <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+              Filters</button>
+          </div>
+        </div>
       </form>
+      <div id="loadingOverlay" style="display: none;">
+        <img src="static/Search.gif" alt="Loading...">
+    </div>
+      <p class="selected" style="margin-top: 20%;"></p>
+      <h1>Selected</h1>
+      <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+      <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+      <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+      <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
+      </p>
     </div>
 
     <body>
-
       <div class="form-container-BOx">
-        <div class="form-container">
+        <div>
 
-          <div id="None">
-            <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-            <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-            <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-            <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id }}</span></p>
+          <div class="table-container">
+            {% if tables.get('daily_data_run1') %}
+            <div class="table" id="table1">
+              <h1>Run 1: {{ selected_tag }}</h1>
+              {{ tables['daily_data_run1']|safe }}
+            </div>
+            {% endif %}
+
+            {% if tables.get('daily_data_run2') %}
+            <div class="table" id="table2">
+              <h1>Run 2: {{ selected_tag }}</h1>
+              {{ tables['daily_data_run2']|safe }}
+            </div>
+            {% endif %}
+
+            {% if tables.get('daily_data_run3') %}
+            <div class="table" id="table3">
+              <h1>Run 3: {{ selected_tag }}</h1>
+              {{ tables['daily_data_run3']|safe }}
+            </div>
+            {% endif %}
+
+            {% if tables.get('daily_data_run4') %}
+            <div class="table" id="table4">
+              <h1>Run 4: {{ selected_tag }}</h1>
+              {{ tables['daily_data_run4']|safe }}
+            </div>
+            {% endif %}
+
+
+
           </div>
-          <div>
+          <div class="table-container">
+            {% if tables.get('config_data_run1') %}
+            <div class="table" id="table1">
+              <h1>Run 1: {{ selected_tag }}</h1>
+              <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run1']|safe }}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
 
+            {% if tables.get('config_data_run2') %}
+            <div class="table" id="table1">
+              <h1>Run 2: {{ selected_tag }}</h1>
+              <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run2']|safe }}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
 
-            <div class="table-container">
-              {% if tables.get('daily_data_run1') %}
-              <div class="table" id="table1">
-                <h5>Run 1: {{ selected_tag }}</h5>
-                {{ tables['daily_data_run1']|safe }}
-              </div>
-              <div class="plot-container">
-                {{ graph_corrected|safe }}
-              </div>
+            {% if tables.get('config_data_run3') %}
+            <div class="table" id="table1">
+              <h1>Run 3: {{ selected_tag }}</h1>
+              <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run3']|safe }}
+                </tbody>
+              </table>
 
-              <div class="plot-container">
-                {{ graph_uncorrected|safe }}
-              </div>
+            </div>
+            {% endif %}
 
-              <div class="plot-container">
-                {{ graph_pressure|safe }}
-              </div>
-
-              <div class="plot-container">
-                {{ graph_temperature|safe }}
-              </div>
-              {% endif %}
-
-              {% if tables.get('daily_data_run2') %}
-              <div class="table" id="table2">
-                <h5>Run 2: {{ selected_tag }}</h5>
-                {{ tables['daily_data_run2']|safe }}
-              </div>
-              {% endif %}
-
-              {% if tables.get('daily_data_run3') %}
-              <div class="table" id="table3">
-                <h5>Run 3: {{ selected_tag }}</h5>
-                {{ tables['daily_data_run3']|safe }}
-              </div>
-              {% endif %}
-
-              {% if tables.get('daily_data_run4') %}
-              <div class="table" id="table4">
-                <h5>Run 4: {{ selected_tag }}</h5>
-                {{ tables['daily_data_run4']|safe }}
-              </div>
-              {% endif %}
+            {% if tables.get('config_data_run4') %}
+            <div class="table" id="table1">
+              <h1>Run 4: {{ selected_tag }}</h1>
+              <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run4']|safe }}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run5') %}
+            <div class="table" id="table1">
+              <h1>Run 5: {{ selected_tag }}</h1>
+              <table class="table1">
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run5']|safe }}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run6') %}
+            <div class="table" id="table1">
+              <h1>Run 6: {{ selected_tag }}</h1>
+              <table class="table1">
+                <thead>
+                  <tr>
+                    {% for key, value in dropped_columns_data[0].items() %}
+                    <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ tables['config_data_run6']|safe }}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+            <div class="plot-container">
+              {{ graph_corrected|safe }}
             </div>
 
-            <div class="table-container">
-              {% if tables.get('config_data_run1') %}
-              <div class="table" id="table1">
-                <h5>Run 1: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <!-- The following line combines thead and tbody into a single block -->
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run1']|safe }}
-                  </tbody>
-                </table>
-              </div>
-              {% endif %}
-
-              {% if tables.get('config_data_run2') %}
-              <div class="table" id="table1">
-                <h5>Run 2: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <!-- The following line combines thead and tbody into a single block -->
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run2']|safe }}
-                  </tbody>
-                </table>
-              </div>
-              {% endif %}
-
-              {% if tables.get('config_data_run3') %}
-              <div class="table" id="table1">
-                <h5>Run 3: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <!-- The following line combines thead and tbody into a single block -->
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run3']|safe }}
-                  </tbody>
-                </table>
-
-              </div>
-              {% endif %}
-
-              {% if tables.get('config_data_run4') %}
-              <div class="table" id="table1">
-                <h5>Run 4: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <!-- The following line combines thead and tbody into a single block -->
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run4']|safe }}
-                  </tbody>
-                </table>
-              </div>
-              {% endif %}
-              {% if tables.get('config_data_run5') %}
-              <div class="table" id="table1">
-                <h5>Run 5: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run5']|safe }}
-                  </tbody>
-                </table>
-              </div>
-              {% endif %}
-              {% if tables.get('config_data_run6') %}
-              <div class="table" id="table1">
-                <h5>Run 6: {{ selected_tag }}</h5>
-                <table class="table1">
-                  <thead>
-                    <tr>
-                      {% for key, value in dropped_columns_data[0].items() %}
-                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                      {% endfor %}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{ tables['config_data_run6']|safe }}
-                  </tbody>
-                </table>
-              </div>
-              {% endif %}
-              <footer class="footer">POWERED BY ATOS - ASGS</footer>
-              <!-- <script src="main.js"></script> -->
-              <div>
-              </div>
+            <div class="plot-container">
+              {{ graph_uncorrected|safe }}
             </div>
+
+            <div class="plot-container">
+              {{ graph_pressure|safe }}
+            </div>
+
+            <div class="plot-container">
+              {{ graph_temperature|safe }}
+            </div>
+            <footer class="footer">POWERED BY ATOS - ASGS</footer>
+            <!-- <script src="main.js"></script> -->
+            <div>
+            </div>
+          </div>
     </body>
   </div>
-  </div>
+
 
 </html>
 
@@ -1767,7 +1779,8 @@
 
 <!-- Add this script for the JavaScript functionality -->
 <script>
-        function clearFilters() {
+
+function clearFilters() {
             // ล้างค่า dropdowns
             document.getElementById('region_dropdown').value = '';
             document.getElementById('tag_dropdown').value = '';
@@ -1906,5 +1919,6 @@
                 });
             });
         });
+
 
 </script>

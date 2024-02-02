@@ -998,19 +998,17 @@
 
                 <div. class="form-container">
                     <div class="button-container">
-                        <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data" onclick="showLoading()">Daily Data</button>
-                        <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data" onclick="showLoading()">Config Data</button>                        
-                        <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear Filters</button>
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+                            onclick="showLoading()">Daily Data</button>
+                        <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                            onclick="showLoading()">Config Data</button>
+                        <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                            Filters</button>
                     </div>
             </div>
 
         </form>
     </div>
-
-
-
-
-    <body>
         <div class="form-containerBOx">
             <div class="form-container">
                 <div id="loadingOverlay" style="display: none;">
@@ -1190,9 +1188,12 @@
                             </table>
                         </div>
                         {% endif %}
-
-
-    </body>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 
     <!-- Add this script for the JavaScript functionality -->
@@ -1204,11 +1205,11 @@
 
             // ล้างค่า input
             document.getElementById('date_picker').value = '';
-            function showLoading() {
-                // แสดง loading overlay
-                document.getElementById('loadingOverlay').style.display = 'block';
-            }
+
+            // แสดง loading overlay
+            showLoadingOverlay();
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             // Assuming you have JavaScript/jQuery to handle changes and update the display
@@ -1288,15 +1289,10 @@
                 }, 2000); // Adjust the delay time as needed (in milliseconds)
             });
         });
+
         function showLoading() {
             // แสดง loading overlay
-            document.getElementById('loadingOverlay').style.display = 'block';
-        }
-
-        // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
-        function hideLoading() {
-            // ซ่อน loading overlay
-            document.getElementById('loadingOverlay').style.display = 'none';
+            showLoadingOverlay();
         }
 
 
@@ -1327,14 +1323,16 @@
                             var tag = response.tag_options[i];
                             $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
                         }
-                        hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
                     },
                     error: function (error) {
                         console.log('Error fetching tag options:', error);
-                        hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+                    },
+                    complete: function () {
+                        hideLoadingOverlay(); // Hide loading overlay after AJAX request (success or error)
                     }
                 });
             });
+
         });
 
 
