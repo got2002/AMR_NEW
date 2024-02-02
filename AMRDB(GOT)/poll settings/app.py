@@ -52,11 +52,11 @@ def update_sql(sql_statement):
 
         cursor.execute(sql_statement)
     connection.commit()
-    
-def execute_query(query):
+  
+def execute_sql(sql_update):
     with connection.cursor() as cursor:
 
-        cursor.execute(query)
+        cursor.execute(sql_update)
     connection.commit()
 
 def insert_address_range_to_oracle(
@@ -222,7 +222,7 @@ def update_polling_data():
         start_value = request.form.get(start_key)
         end_value = request.form.get(end_key)
         enable_value = 1 if request.form.get(enable_key) == "on" else 0
-
+        
         address_range = f"{start_value},{end_value}"
         if len(poll_billing_all + address_range) <= MAX_ADDRESS_LENGTH:
             if i > 0:
@@ -353,10 +353,10 @@ def mapping_config_route():
         or_der,
         data_type
     FROM
-        amr_mapping_config,amr_vc_type
+        amr_mapping_config2, amr_vc_type
     WHERE
-    amr_mapping_config.evc_type = amr_vc_type.id
-      AND  amr_vc_type.VC_NAME like '{selected_type}'
+        amr_mapping_config2.evc_type = amr_vc_type.id
+        AND amr_vc_type.VC_NAME LIKE '{selected_type}'
     """
 
     selected_type = request.args.get("type_dropdown")
@@ -420,73 +420,42 @@ def update_mapping_config():
     type_id = str(results[0]).strip("',()")
     print("type:", type_id)
 
-    address = ""
-    description = ""
-    type_value = ""
-    evc_type = ""
-    or_der = ""
-    data_type = ""
-
-    for i in range(1, 21):  # Start from 1 and end at 20
+    for i in range(0, 20):  # Start from 1 and end at 20
+        i = f"{i:02d}"
         address_key = f"list_address{i}"
         description_key = f"list_description{i}"
         type_value_key = f"list_type_value{i}"
         evc_type_key = f"list_evc_type{i}"
         or_der_key = f"list_or_der{i}"
         data_type_key = f"list_data_type{i}"
+        
+        address_value = request.form.get(address_key.strip("',()"))
+        description_value = request.form.get(description_key.strip("',()"))
+        type_value_value = request.form.get(type_value_key.strip("',()"))
+        evc_type_value = request.form.get(evc_type_key.strip("',()"))
+        or_der_value = request.form.get(or_der_key.strip("',()"))
+        data_type_value = request.form.get(data_type_key.strip("',()"))
+        print(address_value)
 
-        address_value = request.form.get(address_key)
-        description_value = request.form.get(description_key)
-        type_value_value = request.form.get(type_value_key)
-        evc_type_value = request.form.get(evc_type_key)
-        or_der_value = request.form.get(or_der_key)
-        data_type_value = request.form.get(data_type_key)
 
-        # Concatenate values with ","
-        if address_value is not None:
-            address += f"{address_value},"
-        if description_value is not None:
-            description += f"{description_value},"
-        if type_value_value is not None:
-            type_value += f"{type_value_value},"
-        if evc_type_value is not None:
-            evc_type += f"{evc_type_value},"
-        if or_der_value is not None:
-            or_der += f"{or_der_value},"
-        if data_type_value is not None:
-            data_type += f"{data_type_value},"
 
-    # Remove the trailing comma from each string
-    address = address.rstrip(',')
-    description = description.rstrip(',')
-    type_value = type_value.rstrip(',')
-    evc_type = evc_type.rstrip(',')
-    or_der = or_der.rstrip(',')
-    data_type = data_type.rstrip(',')
+        # Update SQL query based on your table structure
+        update_query = f"""
+            UPDATE AMR_MAPPING_CONFIG2
+            SET
+                ADDRESS = CONCAT(ADDRESS, '{address_value}'),
+                DESCRIPTION = CONCAT(DESCRIPTION, '{description_value}'),
+                TYPE_VALUE = CONCAT(TYPE_VALUE, '{type_value_value}'),
+                OR_DER = CONCAT(OR_DER, '{or_der_value}'),
+                DATA_TYPE = CONCAT(DATA_TYPE, '{data_type_value}')
+            WHERE evc_type = '{evc_type_value}'
+        """
 
-    print("Address Data:", address)
-    print("Description Data:", description)
-    print("Type Value Data:", type_value)
-    print("EVC Type Data:", evc_type)
-    print("OR DER Data:", or_der)
-    print("Data Type Data:", data_type)
-
-    # Update SQL query based on your table structure
-    update_query = f"""
-        UPDATE AMR_MAPPING_CONFIG
-        SET
-            ADDRESS = '{address}',
-            DESCRIPTION = '{description}',
-            OR_DER = '{or_der}',
-            DATA_TYPE = '{data_type}'
-        WHERE evc_type = {type_id};
-    """
-
-    # Execute the update query using your database connection
-    execute_query(update_query)
-    print(update_query)
+        execute_sql(update_query)
+        print(update_query)
 
     return redirect("/mapping_config")
+
 
 
 @app.route("/add_mapping_route")
