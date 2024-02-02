@@ -194,6 +194,8 @@ def Manualpoll_data():
                 "Port",
             ],
         )
+    tcp_ip_values = df["IPAddress"].tolist()
+    port_ip_values = df["Port"].tolist()
     
     return render_template(
         "evc.html",
@@ -205,7 +207,7 @@ def Manualpoll_data():
         region_options=region_options,
         tag_options=tag_options,
         run_options=run_options,
-        df=df
+        df=df,tcp_ip_values=tcp_ip_values,port_ip_values=port_ip_values
     )
 
 
@@ -360,7 +362,10 @@ def read_data():
                 "Port",
             ],
         )
+    tcp_ip_values = df["IPAddress"].tolist()
+    port_ip_values = df["Port"].tolist()
     
+
     return render_template('evc.html',   df=df,
 
         slave_id=slave_id,
@@ -375,7 +380,7 @@ def read_data():
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options,)
+        tag_options=tag_options,ttcp_ip_values=tcp_ip_values,port_ip_values=port_ip_values)
     
 
 
