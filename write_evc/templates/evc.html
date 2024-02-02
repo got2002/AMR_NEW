@@ -78,6 +78,49 @@
     .table th, .table td {
         text-align: center;
     }
+    .container-fluid {
+    margin-top: 100px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="number"],
+  select,
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  select {
+    height: 38px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .col-sm-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .t {
+    text-align: center;
+  }
+
+  .pt-4 {
+    padding-top: 1.5rem !important;
+  }
 </style>
 <body>
     <div class="form-container">
@@ -161,16 +204,17 @@
             <div class="col-sm-3 t pt-4" >
               
               <form method="POST" >
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                   <label for="slave_id">Slave ID</label>
                   <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
                 </div>
         
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                   <label for="function_code">Function Code</label>
                   <input type="number" class="form-control" id="function_code" name="function_code" value="16"
                     required>
                 </div>
+                
                 <div class="form-group">
                   <label for="starting_address">Starting Address</label>
                   <input type="number" class="form-control" id="starting_address" name="starting_address"
@@ -188,34 +232,33 @@
                   
                   </select>
                 </div>
-        <div class="form-group">
-          <label for="tcp_ip">TCP IP</label>
-                        <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{session['tcp_ip']}}" required>
-        </div>
+                <div class="form-group">
+                  <label for="tcp_ip">TCP IP</label>
+                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ tcp_ip_values }}" required>
+              </div>
+              
+                <div class="form-group">
+                  <label for="tcp_port">TCP Port</label>
+                                <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="{{ port_ip_values }}" required>
+                </div>
+        
         
         <div class="form-group">
-          <label for="tcp_port">TCP Port</label>
-                        <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="{{session['tcp_port']}}" required>
-        </div>
-        
-        <input type="hidden" name="tcp_ip_filled" value="{{ tcp_ip_filled }}">
-        <input type="hidden" name="tcp_port_filled" value="{{ tcp_port_filled }}">
-        <div class="form-group">
-          <label for="data_0">Data for Register 0</label>
+          <label for="data_0">Data 1</label>
           <input type="number" class="form-control" id="data_0" name="data_0" required>
         </div>
         
         <div class="form-group">
-          <label for="data_1">Data for Register 1</label>
+          <label for="data_1">Data 2</label>
           <input type="number" class="form-control" id="data_1" name="data_1" required>
         </div>
         
         <div class="form-group">
-          <label for="data_2">Data for Register 2</label>
+          <label for="data_2">Data 3</label>
           <input type="number" class="form-control" id="data_2" name="data_2" required>
         </div>
         <div class="form-group">
-          <label for="data_3">Data for Register 3</label>
+          <label for="data_3">Data 4</label>
           <input type="number" class="form-control" id="data_3" name="data_3" required>
         </div>
                 <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
