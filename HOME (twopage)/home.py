@@ -58,7 +58,6 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 
 
 def md5_hash(input_string):
-    # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
 
 
