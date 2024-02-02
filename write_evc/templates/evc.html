@@ -154,34 +154,168 @@
                 </table>
             {% endif %}
         </form>
-        <div class="form-group" >
-            <label for="function_code" >ID</label>
-            <input type="number" class="form-control" id="function_code" name="function_code" value="01" required style="height: 30px; width: 30%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px; background-color: aliceblue;">
-        </div>
-        <div class="form-group" >
-            <label for="function_code" >ADDRESS</label>
-            <input type="number" class="form-control1" id="function_code" name="function_code" value="" required style="height: 30px; width: 30%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px; background-color: aliceblue;">
-        </div>
-        <div class="form-group" >
-            <label for="function_code" >LANGTN</label>
-            <select class="form-control" id="starting_address" name="starting_address" required style="height: 30px;width: 30%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;background-color: aliceblue;">
-                <option value="">Select an option...</option> 
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <!-- Option for custom input -->
-            </select>
-        </div>
+    
+        
+
+  
 
 
 
-
-
-
-
-
-
+        
+                
+                <form method="POST" action="{{ url_for('read_data') }}">
+                  <div class="form-group">
+                    <label for="slave_id">Slave ID</label>
+                    <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
+                  </div>
+          
+                  <div class="form-group">
+                    <label for="function_code">Function Code</label>
+                    <input type="number" class="form-control" id="function_code" name="function_code" value="16"
+                      required>
+                  </div>
+                  <div class="form-group">
+                    <label for="starting_address">Starting Address</label>
+                    <input type="number" class="form-control" id="starting_address" name="starting_address"
+                      value="{{starting_address}}" required>
+                  </div>
+                 <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <select type="number" class="form-control" id="quantity" name="quantity"  required>
+                    <option value="">Select an option...</option> 
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    
+                    </select>
+                  </div>
+          <div class="form-group">
+            <label for="tcp_ip">TCP IP</label>
+                          <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{session['tcp_ip']}}" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="tcp_port">TCP Port</label>
+                          <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="{{session['tcp_port']}}" required>
+          </div>
+          
+          <input type="hidden" name="tcp_ip_filled" value="{{ tcp_ip_filled }}">
+          <input type="hidden" name="tcp_port_filled" value="{{ tcp_port_filled }}">
+          <div class="form-group">
+            <label for="data_0">Data for Register 0</label>
+            <input type="number" class="form-control" id="data_0" name="data_0" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="data_1">Data for Register 1</label>
+            <input type="number" class="form-control" id="data_1" name="data_1" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="data_2">Data for Register 2</label>
+            <input type="number" class="form-control" id="data_2" name="data_2" required>
+          </div>
+          <div class="form-group">
+            <label for="data_3">Data for Register 3</label>
+            <input type="number" class="form-control" id="data_3" name="data_3" required>
+          </div>
+                  
+                  <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Change to 16-bit</button>
+          
+                  
+                  <button type="submit" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
+                  <input type="hidden" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
+          
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-success">Read Data</button>
+                    <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+                  </div>
+                </form>
+              
+               
+            <div class="communication-traffic">
+            <h3>Communication Traffic</h3>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Direction</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for data in communication_traffic %}
+                <tr>
+                  <td>{{ data['direction'] }}</td>
+                  <td>{{ data['data'] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          
+          </div>
+          
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           <script>
+          
+              function clearForm() {
+                document.getElementById("slave_id").value = "";
+                document.getElementById("function_code").value = "";
+                document.getElementById("starting_address").value = "";
+                document.getElementById("quantity").value = "";
+          
+          
+          var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
+              communicationTrafficTable.innerHTML = "";
+          
+              // Clear the response data
+              var responseDataTable = document.querySelector(".table.table-hover tbody");
+              responseDataTable.innerHTML = "";
+              }
+          
+              // เพิ่มฟังก์ชันสำหรับเปลี่ยนเป็น 16-bit
+              function changeTo16Bit() {
+                  document.getElementById("is_16bit").value = "true";
+                const startingAddressInput = document.getElementById("starting_address");
+                const quantityInput = document.getElementById("quantity");
+          
+                startingAddressInput.max = 65535;
+                quantityInput.max = 65535;
+          
+              }
+          
+              function changeTo32Bit() {
+              document.getElementById("is_16bit").value = "false";
+              const startingAddressInput = document.getElementById("starting_address");
+              const quantityInput = document.getElementById("quantity");
+          
+              startingAddressInput.max = 4294967295;
+              quantityInput.max = 4294967295;
+          
+            }
+          
+          
+            </script>
+            <!-- ส่วนของการเรียกใช้ Bootstrap 4 JavaScript -->
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+              integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+              crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+              integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+              crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+              integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+              crossorigin="anonymous"></script>
 
 
 
