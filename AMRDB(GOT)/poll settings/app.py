@@ -353,9 +353,9 @@ def mapping_config_route():
         or_der,
         data_type
     FROM
-        amr_mapping_config2, amr_vc_type
+        amr_mapping_config, amr_vc_type
     WHERE
-        amr_mapping_config2.evc_type = amr_vc_type.id
+        amr_mapping_config.evc_type = amr_vc_type.id
         AND amr_vc_type.VC_NAME LIKE '{selected_type}'
     """
 
@@ -435,21 +435,21 @@ def update_mapping_config():
         evc_type_value = request.form.get(evc_type_key.strip("',()"))
         or_der_value = request.form.get(or_der_key.strip("',()"))
         data_type_value = request.form.get(data_type_key.strip("',()"))
-        print(address_value)
+        print("address:", address_value)
 
 
 
         # Update SQL query based on your table structure
         update_query = f"""
-            UPDATE AMR_MAPPING_CONFIG2
-            SET
-                ADDRESS = CONCAT(ADDRESS, '{address_value}'),
-                DESCRIPTION = CONCAT(DESCRIPTION, '{description_value}'),
-                TYPE_VALUE = CONCAT(TYPE_VALUE, '{type_value_value}'),
-                OR_DER = CONCAT(OR_DER, '{or_der_value}'),
-                DATA_TYPE = CONCAT(DATA_TYPE, '{data_type_value}')
-            WHERE evc_type = '{evc_type_value}'
-        """
+        UPDATE AMR_MAPPING_CONFIG
+        SET
+            ADDRESS = '{address_value}',
+            DESCRIPTION = '{description_value}',
+            TYPE_VALUE = '{type_value_value}',
+            OR_DER = '{or_der_value}',
+            DATA_TYPE = '{data_type_value}'
+        WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
+    """
 
         execute_sql(update_query)
         print(update_query)
