@@ -56,7 +56,6 @@
 
     <nav>
         <a href="{{ url_for('add_mapping_route') }}">Add mapping</a>
-        <a href="{{ url_for('add_mapping_route') }}">Edit mapping</a>
     </nav>
 
 <body>
@@ -82,6 +81,7 @@
             <label for="type_value1">TYPE_VALUE:</label>
             <select id="type_value1" name="type_value1" required>
         <option value="ARRAY6">ARRAY6</option>
+        <option value="ULONG">ULONG</option>
         <option value="signed">signed</option>
         <option value="Float">Float</option>
     </select>
@@ -496,10 +496,6 @@
     </form>
 
 
-</body>
-
-<body>
-    <a href="{{ url_for('index') }}">Home</a>
 </body>
 
 </html>
