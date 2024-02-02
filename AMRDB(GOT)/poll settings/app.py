@@ -13,7 +13,6 @@ port = "1521"
 service_name = "orcl"
 
 dsn = cx_Oracle.makedsn(hostname, port, service_name)
- 
 
 try:
     connection_info = {
@@ -435,9 +434,7 @@ def update_mapping_config():
         evc_type_value = request.form.get(evc_type_key.strip("',()"))
         or_der_value = request.form.get(or_der_key.strip("',()"))
         data_type_value = request.form.get(data_type_key.strip("',()"))
-        print("address:", address_value)
-
-
+        # print("address:", address_value)
 
         # Update SQL query based on your table structure
         update_query = f"""
@@ -488,7 +485,7 @@ def submit_form():
         cursor = connection.cursor()
 
         sql_merge = """
-            MERGE INTO AMR_ADDRESS_MAPPING1 dst
+            MERGE INTO AMR_MAPPING_CONFIG dst
             USING (
                 SELECT
                     :address as address,
@@ -628,7 +625,6 @@ def submit_new_form():
     if connection is not None:
         # Close the connection
         connection.close()
-
 
 if __name__ == "__main__":
     app.run(debug=True)
