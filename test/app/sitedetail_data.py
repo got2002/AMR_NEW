@@ -37,8 +37,8 @@ import matplotlib as mpt
 
 from flask import Blueprint
 from flask import Flask, render_template
-from connect_db import  fetch_data
 
+from .connect_db import fetch_data
 sitedetail_data = Blueprint('sitedetail', __name__)
 
 
@@ -46,8 +46,9 @@ sitedetail_data = Blueprint('sitedetail', __name__)
 
 
 
+
 @sitedetail_data.route("/sitedetail_data")
-def sitedetail_data():
+def sitedetail():
     # SQL query to fetch unique PL_REGION_ID values
     region_query = """
     SELECT * FROM AMR_REGION 
