@@ -205,9 +205,9 @@
   }
 
   .text-box-group {
-    width: 40%;
+    width: 80%;
     background-color: #fff;
-    padding: 5px;
+    padding: 1px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
@@ -215,7 +215,6 @@
     margin-bottom: 5%;
     z-index: 5;
     margin-left: 30%;
-
   }
 
   .form-container-BOx {
@@ -548,7 +547,7 @@
   select {
     padding: 8px;
     box-sizing: border-box;
-    width: 60%;
+    width: 30%;
     border: 1px solid #050505;
     border-radius: 5px;
     margin-bottom: 10px;
@@ -658,7 +657,7 @@
   .button-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    gap: 7px;
   }
 
   @media only screen and (min-width: 1024px) {
@@ -1459,7 +1458,6 @@
 
   h1 {
     font-size: 24px;
-    margin-bottom: 10px;
   }
 
   p {
@@ -1572,7 +1570,7 @@
 
       <div class="text-box-group">
         <form method="get" action="{{ url_for('billing_data') }}">
-          <h1 class="form-container"> View Billing Data</h1>
+          <h1> View Billing Data</h1>
           <div class="form-container">
             <label for="region_dropdown">Select Region:</label>
             <select id="region_dropdown" name="region_dropdown">
