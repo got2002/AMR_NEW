@@ -1,3 +1,7 @@
+@import "compass/css3";
+
+
+
 @font-face {
     font-family: "PTT45Pride-Bold";
     src: url("PTT45Pride-Bold.otf") format("sans-serif");
@@ -54,6 +58,12 @@ select {
 input[type="checkbox"] {
     margin-right: 5px;
 }
+
+
+
+
+
+
 
 h2 {
     color: #333;
@@ -132,11 +142,13 @@ button {
     background-color: #4caf50;
     box-shadow: 0 0 5px #4caf50;
 }
+
 .custom-btn.btn-2 {
-    margin-right: 20%; 
+    margin-right: 20%;
     margin-bottom: 10%;
     margin-top: 1%;
 }
+
 .btn-2:hover {
     box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
 }
@@ -936,7 +948,7 @@ h1 {
     margin-bottom: 20px;
     z-index: 5;
     margin-left: 50%;
-  }
+}
 
 .address-pair {
     width: 70%;
@@ -953,7 +965,7 @@ h1 {
     justify-content: center;
     z-index: 5;
     margin-left: 35%;
-    
+
 }
 
 input[type="text"],
