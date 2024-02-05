@@ -234,12 +234,12 @@
                 </div>
                 <div class="form-group">
                   <label for="tcp_ip">TCP IP</label>
-                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ tcp_ip_values }}" required>
+                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
               </div>
               
                 <div class="form-group">
                   <label for="tcp_port">TCP Port</label>
-                                <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="{{ port_ip_values }}" required>
+                  <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
                 </div>
         
         
@@ -263,13 +263,13 @@
         </div>
                 <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
                 
-                <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Change to 16-bit</button>
+                <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Read Data</button>
         
                 <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
-                <button type="submit" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
-                <input type="hidden" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
+                <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
+                <input type="hidden" style="display: none;" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
         
-                <div class="text-center">
+                <div class="text-center" style="display: none;">
                   <button type="submit" class="btn btn-success">Read Data</button>
                   <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
                 </div>
@@ -278,28 +278,32 @@
           </div>
         </div>
              
-          <div class="communication-traffic">
-          <h3>Communication Traffic</h3>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
+        {% if communication_traffic %}
+<div class="communication-traffic">
+    <h3>Communication Traffic</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
                 <th>Direction</th>
                 <th>Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for data in communication_traffic %}
-              <tr>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in communication_traffic %}
+            <tr>
                 <td>{{ data['direction'] }}</td>
                 <td>{{ data['data'] }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        
-        </div>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>Communication Traffic is not available</p>
+{% endif %}
+
   
-        
+      
   <script>
 
     function clearForm() {
