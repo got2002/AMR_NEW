@@ -65,7 +65,6 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     color: #555;
-    /* สีข้อความใน input */
   }
 
   input:focus {
@@ -85,24 +84,6 @@
     left: 2%;
     font-family: 'Noto Sans Thai Looped', sans-serif;
     text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
-  }
-
-
-
-  a.list-item-link {
-    color: #000000;
-    /* สีของลิงก์ */
-    font-size: 16px;
-    /* ขนาดตัวอักษรของลิงก์ */
-    text-decoration: none;
-    /* ลบการเส้นใต้ลิงก์ */
-    /* คุณสามารถปรับแต่งลิงก์ตามความต้องการเพิ่มเติม */
-  }
-
-  a.list-item-link:hover {
-    color: #ffffff;
-    /* สีที่แตกต่างเมื่อ hover */
-    /* คุณสามารถปรับแต่งลิงก์เมื่อ hover ตามความต้องการเพิ่มเติม */
   }
 
 
@@ -188,14 +169,13 @@
 
 
   form {
-    max-width: 650px;
     margin: auto;
     margin-top: 50px;
     margin-bottom: 50px;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-    text-align: left;
+    text-align: center;
   }
 
   .form-container {
@@ -205,7 +185,7 @@
   }
 
   .text-box-group {
-    width: 80%;
+    width: 60%;
     background-color: #fff;
     padding: 1px;
     border-radius: 10px;
@@ -214,7 +194,7 @@
     margin-top: -35%;
     margin-bottom: 5%;
     z-index: 5;
-    margin-left: 30%;
+    margin-left: 50%;
   }
 
   .form-container-BOx {
@@ -223,13 +203,14 @@
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box;
-    width: 141%;
+    width: 140%;
     margin: auto;
     margin-top: 5%;
     margin-bottom: 60%;
     position: absolute;
     top: 100%;
     left: 1%;
+    padding: 30px;
   }
 
 
@@ -530,28 +511,40 @@
 
   h2 {
     color: #333;
-    padding: 3%;
     display: flex;
-    align-items: left;
-    justify-content: left;
+    align-items: center;
+    justify-content: center;
     margin-top: -20px;
+    font-size: xx-large;
   }
 
   label {
     display: block;
-    margin-bottom: 5px;
     font-weight: bold;
   }
 
-  input[type="text"],
-  select {
+  input[type="text"]{
     padding: 8px;
     box-sizing: border-box;
     width: 30%;
     border: 1px solid #050505;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    max-width: 1000px;
   }
+
+  select {
+    padding: 8px;
+    box-sizing: border-box;
+    width: 40%;
+    border: 1px solid #050505;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 1000px;
+  }
+
 
   input[type="checkbox"] {
     margin-right: 5px;
@@ -575,20 +568,16 @@
   }
 
   #region_dropdown {
-    padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: none;
     width: 200px;
-    margin-bottom: 5%;
-    margin-top: 5%;
   }
 
   button {
     margin: 10px;
     border-radius: 5px;
-
   }
 
   .custom-btn {
@@ -656,9 +645,11 @@
 
   .button-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-  }
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 10px; 
+    margin-bottom: 40px;
+}
 
   @media only screen and (min-width: 1024px) {
     .container {
@@ -1324,7 +1315,7 @@
     background-color: #2e6ff2;
     color: white;
     text-align: left;
-    padding: 10px;
+    padding: 8px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -1332,6 +1323,7 @@
     box-shadow: 0 0 5px #ddd;
     -moz-box-shadow: 0 0 5px #ddd;
     -webkit-box-shadow: 0 0 5px #ddd;
+    font-size: small;
   }
 
   .top-bar {
@@ -1475,8 +1467,7 @@
             src="https://www.pttplc.com/uploads/About/about-logo.png"
             alt="PTT Public Company Limited Logo">
           <span class="Automatic" style="margin-left: 10px;"
-            alt="logo">Automatic Meter Reading (AMR -
-            ASGS)</span>
+            alt="logo">Automatic Meter Reading (AMR)</span>
         </div>
         <a href class="fas fa-sign-out-alt"
           style="margin-right:20px; margin-top: -95px; font-size: 15px;"
@@ -1570,7 +1561,7 @@
 
       <div class="text-box-group">
         <form method="get" action="{{ url_for('billing_data') }}">
-          <h1> View Billing Data</h1>
+          <h2> View Billing Data (AMR)</h2>
           <div class="form-container">
             <label for="region_dropdown">Select Region:</label>
             <select id="region_dropdown" name="region_dropdown">
@@ -1596,7 +1587,13 @@
             <input type="text" id="date_picker" name="date_dropdown"
               value="{{ selected_date }}" autocomplete="off"
               onchange="checkDate()">
-
+              <p class="selected" style="margin-top: 20%;"></p>
+              <h1>Selected</h1>
+              <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+              <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+              <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+              <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+            </p>
             <div class="button-container">
               <button class="custom-btn btn-2" type="submit" name="query_type"
                 value="daily_data"
@@ -1614,17 +1611,14 @@
         <div id="loadingOverlay" style="display: none;" >
           <img src="static/Search.gif" alt="Loading...">
         </div>
-        <p class="selected" style="margin-top: 20%;"></p>
-        <h1>Selected</h1>
-        <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-        <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-        <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-        <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-      </p>
+
     </div>
 
-    <body>
       <div class="form-container-BOx">
+        <span style="margin-right: 90%;">Search Table</span>
+        <div class="table-container">
+        <input type="text"   id="searchInput" onkeyup="searchTable()" placeholder="Search for data..">
+
         <div>
 
           <div class="table-container">
@@ -1803,14 +1797,10 @@
     <script>
 
   function clearFilters() {
-    // ล้างค่า dropdowns
     document.getElementById('region_dropdown').value = '';
     document.getElementById('tag_dropdown').value = '';
-
-    // ล้างค่า input
     document.getElementById('date_picker').value = '';
     function showLoading() {
-      // แสดง loading overlay
       document.getElementById('loadingOverlay').style.display = 'block';
     }
   }
