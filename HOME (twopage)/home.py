@@ -809,7 +809,6 @@ def billing_data():
                 
                 return render_template(
                     "billingdata.html",
-                    
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
