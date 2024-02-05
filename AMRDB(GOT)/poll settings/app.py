@@ -347,10 +347,10 @@ def mapping_config_route():
      SELECT
         address,
         description,
-        type_value,
+        data_type,
         evc_type,
-        or_der,
-        data_type
+        or_der
+        
     FROM
         amr_mapping_config, amr_vc_type
     WHERE
@@ -368,10 +368,10 @@ def mapping_config_route():
         columns = [
             "address",
             "description",
-            "type_value",
+            "data_type",
             "evc_type",
             "or_der",
-            "data_type",
+            
         ]
         df = pd.DataFrame(results, columns=columns)
 
@@ -382,8 +382,8 @@ def mapping_config_route():
         description_list = df.get(["description"]).values.tolist()
         list_description = str(description_list[0]).strip("[]'").split(",")
                
-        type_value_list = df.get(["type_value"]).values.tolist()
-        list_type_value = str(type_value_list[0]).strip("[]'").split(",")        
+        data_type_list = df.get(["data_type"]).values.tolist()
+        list_data_type = str(data_type_list[0]).strip("[]'").split(",")       
         
         evc_type_list = df.get(["evc_type"]).values.tolist()
         list_evc_type = str(evc_type_list[0]).strip("[]'").split(",")
@@ -391,8 +391,7 @@ def mapping_config_route():
         or_der_list = df.get(["or_der"]).values.tolist()
         list_or_der = str(or_der_list[0]).strip("[]'").split(",")
                
-        data_type_list = df.get(["data_type"]).values.tolist()
-        list_data_type = str(data_type_list[0]).strip("[]'").split(",")
+        
 
         return render_template(
             'mapping_config.html', 
@@ -401,10 +400,10 @@ def mapping_config_route():
             table=df.to_html(index=False),
             list_address=df["address"].tolist(),
             list_description=df["description"].tolist(),
-            list_type_value=df["type_value"].tolist(),
+            list_data_type=df["data_type"].tolist(),
             list_evc_type=df["evc_type"].tolist(),
-            list_or_der=df["or_der"].tolist(),
-            list_data_type=df["data_type"].tolist()
+            list_or_der=df["or_der"].tolist()
+            
         )
     else:
         return render_template('mapping_config.html', type_options=type_options)
@@ -423,17 +422,17 @@ def update_mapping_config():
         i = f"{i:02d}"
         address_key = f"list_address{i}"
         description_key = f"list_description{i}"
-        type_value_key = f"list_type_value{i}"
+        data_type_key = f"list_data_type{i}"
         evc_type_key = f"list_evc_type{i}"
         or_der_key = f"list_or_der{i}"
-        data_type_key = f"list_data_type{i}"
+        
         
         address_value = request.form.get(address_key.strip("',()"))
         description_value = request.form.get(description_key.strip("',()"))
-        type_value_value = request.form.get(type_value_key.strip("',()"))
+        data_type_value = request.form.get(data_type_key.strip("',()"))
         evc_type_value = request.form.get(evc_type_key.strip("',()"))
         or_der_value = request.form.get(or_der_key.strip("',()"))
-        data_type_value = request.form.get(data_type_key.strip("',()"))
+        
         # print("address:", address_value)
 
         # Update SQL query based on your table structure
@@ -442,9 +441,8 @@ def update_mapping_config():
         SET
             ADDRESS = '{address_value}',
             DESCRIPTION = '{description_value}',
-            TYPE_VALUE = '{type_value_value}',
-            OR_DER = '{or_der_value}',
-            DATA_TYPE = '{data_type_value}'
+            DATA_TYPE = '{data_type_value}',
+            OR_DER = '{or_der_value}'        
         WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
     """
 

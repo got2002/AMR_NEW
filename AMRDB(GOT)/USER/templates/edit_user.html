@@ -12,9 +12,8 @@
 
     <h1>Edit User & Password</h1>
 
-    <!-- Dropdown for selecting users -->
-    <select id="myDropdown">
-</select>
+<label>Select Name:</label><select id="myDropdown"></select>
+
 
     <!-- Form for editing user details -->
     <div id="details">
@@ -69,7 +68,7 @@
             function displayDetails(selectedData) {
                 $('#details #description').val(selectedData.description);
                 $('#details #user_name').val(selectedData.user_name);
-                $('#details #password').val(""); // Clear password field for security
+                $('#details #password').val(""); // selectedData.password
                 $('#details #user_level').val(selectedData.user_level);
             }
         });
