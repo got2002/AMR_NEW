@@ -2464,6 +2464,8 @@ def get_description_from_database(address):
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
+
+    
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
@@ -2509,6 +2511,7 @@ def insert_address_range_to_oracle(
             )
             cursor.execute(sql_insert, data_to_insert)
         connection.commit()
+
 @app.route("/add_polling_route")
 def add_polling_route():
     return render_template("add_polling.html")
