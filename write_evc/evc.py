@@ -93,7 +93,7 @@ def fetch_data(connection, query, params=None):
 
 
 
-@app.route("/",methods=["GET"])
+@app.route("/write_evc",methods=["GET"])
 def Manualpoll_data():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
@@ -194,8 +194,19 @@ def Manualpoll_data():
                 "Port",
             ],
         )
-    tcp_ip_values = df["IPAddress"].tolist()
-    port_ip_values = df["Port"].tolist()
+    tcp_ip = df.get(["IPAddress"]).values.tolist()
+    if tcp_ip:
+        ip_str = str(tcp_ip).strip("['']")
+        print(ip_str)
+    else:
+        ip_str = [''] 
+
+
+    tcp_port = df.get(["Port"]).values.tolist()
+    if tcp_port:
+        Port_str = str(tcp_port).strip("['']")
+    else:
+        Port_str = [''] 
     
     return render_template(
         "evc.html",
@@ -207,11 +218,11 @@ def Manualpoll_data():
         region_options=region_options,
         tag_options=tag_options,
         run_options=run_options,
-        df=df,tcp_ip_values=tcp_ip_values,port_ip_values=port_ip_values
+        df=df,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip
     )
 
 
-@app.route('/', methods=['POST'])
+@app.route('/write_evc', methods=['POST'])
 def read_data():
     global change_to_32bit_counter, tcp_ip, tcp_port, communication_traffic
     
@@ -362,8 +373,19 @@ def read_data():
                 "Port",
             ],
         )
-    tcp_ip_values = df["IPAddress"].tolist()
-    port_ip_values = df["Port"].tolist()
+    tcp_ip = df.get(["IPAddress"]).values.tolist()
+    if tcp_ip:
+        ip_str = str(tcp_ip).strip("['']")
+        print(ip_str)
+    else:
+        ip_str = [''] 
+
+
+    tcp_port = df.get(["Port"]).values.tolist()
+    if tcp_port:
+        Port_str = str(tcp_port).strip("['']")
+    else:
+        Port_str = [''] 
     
 
     return render_template('evc.html',   df=df,
@@ -380,7 +402,7 @@ def read_data():
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options,ttcp_ip_values=tcp_ip_values,port_ip_values=port_ip_values)
+        tag_options=tag_options,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip)
     
 
 
