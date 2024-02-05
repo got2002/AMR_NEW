@@ -131,11 +131,11 @@ input[type="text"] {
                 <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
 
-                <label for="type_value{{ '{:02d}'.format(i) }}">Type Value {{ '{:02d}'.format(i + 1) }}</label>
-                <select id="list_type_value{{ '{:02d}'.format(i) }}" name="list_type_value{{ '{:02d}'.format(i) }}">
-                    <option value="ARRAY6" {% if list_type_value[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
-                    <option value="signed" {% if list_type_value[i] == 'signed' %} selected {% endif %}>signed</option>
-                    <option value="Float" {% if list_type_value[i] == 'Float' %} selected {% endif %}>Float</option>
+                <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value {{ '{:02d}'.format(i + 1) }}</label>
+                <select id="list_list_data_type{{ '{:02d}'.format(i) }}" name="list_list_data_type{{ '{:02d}'.format(i) }}">
+                    <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
+                    <option value="signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
+                    <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
                 </select>
 
                 <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
@@ -144,8 +144,7 @@ input[type="text"] {
                 <label for="or_der{{ '{:02d}'.format(i) }}">OR DER {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
 
-                <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_data_type{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}" value="{{ list_data_type[i] }}">
+                
             </div>
         {% endfor %}
     </div>
