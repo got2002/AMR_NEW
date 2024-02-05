@@ -4,30 +4,48 @@ import cx_Oracle
 connect_db = Blueprint('connect_db', __name__)
 
 
+active_connection = None  # Global variable to track the active connection
 
+def connect_to_amr_db():
+    global active_connection
+    username = "AMR_DB"
+    password = "AMR_DB"
+    hostname = "10.104.240.26"
+    port = "1521"
+    sid = "AMR"
 
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
-port = "1521"
-service_name = "orcl"
-pool_min = 1
-pool_max = 5
-pool_inc = 1
-pool_gmd = 0
-connection_pool = cx_Oracle.SessionPool(
-    user=username,
-    password=password,
-    dsn=cx_Oracle.makedsn(hostname, port, service_name),
-    min=pool_min,
-    max=pool_max,
-    increment=pool_inc,
-    getmode=pool_gmd
-)
-def fetch_data(query, params=None):
     try:
-        # Acquire a connection from the pool
-        connection = connection_pool.acquire()
+        dsn = cx_Oracle.makedsn(hostname, port, sid)
+        connection = cx_Oracle.connect(username, password, dsn)
+        active_connection = "AMR_DB"
+        print("Connected to AMR database")
+        return connection
+    except cx_Oracle.Error as e:
+        (error,) = e.args
+        print("Oracle Error:", error)
+        return None
+
+def connect_to_ptt_pivot_db():
+    global active_connection
+    username = "PTT_PIVOT"
+    password = "PTT_PIVOT"
+    hostname = "10.100.56.3"
+    port = "1521"
+    service_name = "PTTAMR_MST"
+
+    try:
+        dsn = cx_Oracle.makedsn(hostname, port, service_name=service_name)
+        connection = cx_Oracle.connect(username, password, dsn)
+        active_connection = "PTT_PIVOT"
+        print("Connected to PTT PIVOT database")
+        return connection
+    except cx_Oracle.Error as e:
+        (error,) = e.args
+        print("Oracle Error:", error)
+        return None
+
+def fetch_data(connection, query, params=None):
+    try:
         with connection.cursor() as cursor:
             if params:
                 cursor.execute(query, params)
@@ -39,6 +57,3 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
-    finally:
-        # Release the connection back to the pool
-        connection_pool.release(connection)
