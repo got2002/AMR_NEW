@@ -1852,7 +1852,7 @@ def get_tag():
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
 @app.route("/homeasgs")
-def home_asgs():
+def homeasgs():
     return render_template("homeasgs.html")
 
 
