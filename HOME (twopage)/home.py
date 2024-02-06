@@ -58,6 +58,7 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 
 
 def md5_hash(input_string):
+    # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
 
 
@@ -118,8 +119,8 @@ def fetch_data(connection, query, params=None):
 
 
 
-############  /connect database  #####################
 
+############  /connect database  #####################
 
 
 ############  Home page  #####################
@@ -364,7 +365,7 @@ def billing_data():
         region_options = [str(region[0]) for region in region_results]
 
         query = ""
-        
+        print(query)
         if query_type == "daily_data":
             # SQL query for main data
             query = """
@@ -745,9 +746,14 @@ def billing_data():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
-                    
                 ]
-               
+                dropped_columns_data = pd.concat(
+                    [
+                        pd.DataFrame(columns=df.columns),
+                        pd.DataFrame(columns=columns_to_drop),
+                    ],
+                    axis=1,
+                )
                 dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
                 dropped_columns_data[
                     "DATA_DATE"
@@ -756,7 +762,7 @@ def billing_data():
 
                 df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
-                
+                print(df.columns)
                 # Get the selected Meter ID before removing it from the DataFrame
                 selected_meter_id = df["METER_ID"].iloc[0]
 
@@ -806,9 +812,9 @@ def billing_data():
                 if not df_run6.empty:
                     df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
                     tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-                
                 return render_template(
                     "billingdata.html",
+                    
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
@@ -1475,11 +1481,13 @@ def logout():
 #         connection.commit()
 
 
-# @app.route("/add_polling_route")
-# def add_polling_route():
-#     return render_template("add_polling.html")
+@app.route("/add_polling_route")
+def add_polling_route():
+    return render_template("add_polling.html")
 
-
+@app.route("/polling_route")
+def polling_route():
+    return render_template("polling.html")
 # MAX_ADDRESS_LENGTH = 249
 
 
@@ -1548,10 +1556,17 @@ def logout():
 #     return jsonify(response)
 
 
-# @app.route("/add_mapping_route")
-# def add_mapping_route():
-#     return render_template("add_mapping.html")
+@app.route("/add_mapping_route")
+def add_mapping_route():
+    return render_template("add_mapping.html")
 
+@app.route("/mapping_config_route")
+def mapping_config_route():
+    return render_template("mapping_config.html")
+
+@app.route("/mapping_billing_route")
+def mapping_billing_route():
+    return render_template("mapping_billing.html")
 
 # @app.route("/submit_form", methods=["POST"])
 # def submit_form():
@@ -1758,7 +1773,7 @@ def billing_data_asgs():
    
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
-        selected_region1 = request.args.get('region')
+        selected_region = request.args.get('region')
         selected_tag = request.args.get('tag')
         selected_month_year = request.args.get('monthYear')
 
@@ -1770,58 +1785,60 @@ def billing_data_asgs():
         ORDER BY REGION_NAME
         """
         # Fetch REGION_NAME data using your fetch_data function
-        region_results1 = fetch_data(ptt_pivot_connection,region_query)
+        region_results = fetch_data(ptt_pivot_connection,region_query)
 
         # Define your Oracle query to fetch tag_id based on the selected REGION_NAME
         tag_query = """
         SELECT DISTINCT tag_id
         FROM VW_AMR_BILLING_DATA
-        WHERE REGION_NAME = :selected_region1
+        WHERE REGION_NAME = :selected_region
         ORDER BY tag_id
         """
         # Fetch tag_id data using your fetch_data function
-        tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region1': selected_region1})
-        
-            # Define your Oracle query to fetch data based on selected criteria
+        tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region': selected_region})
+
+        # Define your Oracle query to fetch data based on selected criteria
         billing_query = """
-                SELECT *
-                FROM VW_AMR_BILLING_DATA
-                WHERE 
-                    VW_AMR_BILLING_DATA.region_name = :selected_region1
-                    AND VW_AMR_BILLING_DATA.tag_id = :selected_tag
-                    AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
-                    ORDER BY VW_AMR_BILLING_DATA.data_date
-            """
+            SELECT *
+            FROM VW_AMR_BILLING_DATA
+            WHERE 
+                VW_AMR_BILLING_DATA.region_name = :selected_region
+                AND VW_AMR_BILLING_DATA.tag_id = :selected_tag
+                AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
+                ORDER BY VW_AMR_BILLING_DATA.data_date
+        """
         # Fetch data using your fetch_data function
-        results = fetch_data(ptt_pivot_connection, billing_query, {'selected_region1': selected_region1, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
         
+
+        results = fetch_data(ptt_pivot_connection, billing_query, {'selected_region': selected_region, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
+        print(results)
     # Render the template with the fetched data and selected region
     return render_template(
         "billingdataasgs.html",
-        region_results1=region_results1,
+        region_results=region_results,
         tag_results=tag_results,
         results=results,
-        selected_region1=selected_region1,selected_month_year=selected_month_year
+        selected_region=selected_region,
     )
 
 
-@app.route('/get_tag_asgs')
-def get_tag_asgs():
+@app.route('/get_tag')
+def get_tag():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
-        region_name = request.args.get('region')
+    region_name = request.args.get('region')
 
-        # Use the selected REGION_NAME to fetch associated tag_id values
-        tag_query = """
-        SELECT DISTINCT tag_id
-        FROM VW_AMR_BILLING_DATA
-        WHERE REGION_NAME = :region_name
-        ORDER BY tag_id
-        """
-        tag = fetch_data(ptt_pivot_connection, tag_query, {'region_name': region_name})
+    # Use the selected REGION_NAME to fetch associated tag_id values
+    tag_query = """
+    SELECT DISTINCT tag_id
+    FROM VW_AMR_BILLING_DATA
+    WHERE REGION_NAME = :region_name
+    ORDER BY tag_id
+    """
+    tag_results = fetch_data(ptt_pivot_connection,tag_query, {'region_name': region_name})
 
-        # Return the tag_id values as JSON
-        return jsonify(tag)
+    # Return the tag_id values as JSON
+    return jsonify(tag_results)
 ############ / View Billing Data  #####################
 
 
