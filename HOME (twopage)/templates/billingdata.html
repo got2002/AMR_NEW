@@ -531,7 +531,8 @@
     border-radius: 5px;
     margin-bottom: 30px;
     margin-top: 10px;
-    max-width: 1000px;
+    max-width: 200px;
+    display: flexbox;
   }
 
   select {
@@ -1437,9 +1438,10 @@
 
   #loadingOverlay img {
     width: 100px;
-    /* Adjust the width as needed */
     height: 100px;
-    /* Adjust the height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* Styling for the selected information */
@@ -1616,10 +1618,8 @@
     </div>
 
       <div class="form-container-BOx">
-        <span style="margin-right: 90%;">Search Table</span>
         <div class="table-container">
-        <input type="text"   id="searchInput" onkeyup="searchTable()" placeholder="Search for data..">
-
+      
         <div>
 
           <div class="table-container">
