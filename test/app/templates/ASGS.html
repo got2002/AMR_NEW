@@ -12,6 +12,12 @@
 </head>
 
 <style>
+    /* Global styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
     body,
     html {
@@ -470,15 +476,15 @@
                 <div class="menu">
                     <button class="toggleR">Reports Data</button>
                     <ul class="listR">
-                        <li class="list-itemR" style="--delay:0.1s"><a href="{{ url_for('billing_data') }}"
+                        <li class="list-itemR" style="--delay:0.1s"><a href="billing_data_asgs"
                                 class="list-item-link">View Billing Data</a></li>
                         <li class="list-itemR" style="--delay:0.2s"><a href="" class="list-item-link">View EVC
                                 Status</a></li>
-                        <li class="list-itemR" style="--delay:0.3s"><a href="Daily_summary" class="list-item-link">Daily
+                        <li class="list-itemR" style="--delay:0.3s"><a href="" class="list-item-link">Daily
                                 Summary</a></li>
                         <li class="list-itemR" style="--delay:0.4s"><a href="" class="list-item-link">Monthly
                                 Summery</a></li>
-                        <li class="list-itemR" style="--delay:0.5s"><a href="sitedetail_data"
+                        <li class="list-itemR" style="--delay:0.5s"><a href=""
                                 class="list-item-link">Site
                                 Detail</a></li>
                         <li class="list-itemR" style="--delay:0.6s"><a href="" class="list-item-link">New Site
@@ -508,32 +514,7 @@
                     </ul>
                 </div>
 
-                <div class="menu">
-                    <button class="toggle">Manage Users</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_user_route') }}"
-                                class="list-item-link">Add
-                                User</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="{{ url_for('edit_user_route') }}" class="list-item-link">Edit
-                                User</a>
-                        </li>
-                        <li class="list-item" style="--delay:0.6s"><a href="{{ url_for('remove_user_route') }}" class="list-item-link">Remove
-                                User</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="menu">
-                    <button class="toggle">Poll Sitting</button>
-                    <ul class="list">
-                        <li class="list-item" style="--delay:0.2s"><a href="{{ url_for('add_mapping_route') }}"
-                                class="list-item-link">Add
-                                Mapping</a></li>
-                        <li class="list-item" style="--delay:0.4s"><a href="add_polling_route"
-                                class="list-item-link">Add Polling</a>
-                        </li>
-                    </ul>
-                </div>
+                
 
             </div>
         </div>
