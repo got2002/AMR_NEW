@@ -135,6 +135,9 @@ def ASGS():
 
 
 # ############  Add User  #####################
+@app.route("/add_user")
+def add_user_route():
+    return render_template("add_user.html")
 # @app.route("/add_user", methods=["GET", "POST"])
 # def add_user_route():
 #     if request.method == "POST":
@@ -170,7 +173,9 @@ def ASGS():
 
 
 # ############  edit_user   #####################
-
+@app.route("/edit_user")
+def edit_user_route():
+    return render_template("edit_user.html")
 
 # def get_data(filter_text=None, sort_column=None):
 #     # try:
@@ -277,6 +282,11 @@ def ASGS():
 
 
 # ############   /remove_user ###################
+
+@app.route("/remove_user")
+def remove_user_route():
+    return render_template("remove_user.html")
+
 # @app.route("/remove_user", methods=["GET", "POST"])
 # def remove_user_route():
 #     # ดึงข้อมูลผู้ใช้จาก Oracle
@@ -868,8 +878,10 @@ def Daily_summary():
         # Get selected values from the dropdowns
         selected_region = request.args.get("region_dropdown")
 
-        # Fetch unique region values
-        region_results = fetch_data(region_query)
+
+            
+        region_results = fetch_data(query=region_query)
+
         region_options = [str(region[0]) for region in region_results]
 
         # Initialize the query with a condition that is always true
@@ -1441,10 +1453,8 @@ def get_type_value_from_database(address):
 ############ /Manualpoll_data  #####################
 @app.route("/logout")
 def logout():
-    # ล้าง session หรือทำงานอื่น ๆ ที่คุณต้องการเมื่อลงชื่อออก
     session.clear()
-    # ส่งไปยังหน้าลงชื่อเข้าใช้หลังจากลงชื่อออก
-    return redirect(url_for("login"))
+    return redirect(url_for("login.html"))
 
 
 ###############################################
@@ -1488,6 +1498,7 @@ def add_polling_route():
 @app.route("/polling_route")
 def polling_route():
     return render_template("polling.html")
+
 # MAX_ADDRESS_LENGTH = 249
 
 
@@ -1840,9 +1851,14 @@ def get_tag():
     # Return the tag_id values as JSON
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
+@app.route("/homeasgs")
+def homeasgs():
+    return render_template("homeasgs.html")
 
 
-
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
