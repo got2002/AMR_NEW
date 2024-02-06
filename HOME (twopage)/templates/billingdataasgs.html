@@ -1408,9 +1408,10 @@ table {
 
   #loadingOverlay img {
     width: 100px;
-    /* Adjust the width as needed */
     height: 100px;
-    /* Adjust the height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* Styling for the selected information */
@@ -1533,6 +1534,7 @@ table {
                         <option value="{{ result[0] }}" {% if selected_region1 == result[0] %}selected{% endif %}>{{ result[0] }}</option>
                     {% endfor %}
                 </select>
+
                 <label for="tag-dropdown">Select Tag:</label>
                 <select id="tag-dropdown" name="tag" class="form-control">
                     <option value="">Select Tag</option>
@@ -1540,12 +1542,14 @@ table {
                         <option value="{{ result[0] }}" {% if selected_region1 == result[0] %}selected{% endif %}>{{ result[0] }}</option>
                     {% endfor %}
                 </select>
+
                 <label for="monthYearPicker">Month & Year:</label>
                 <div class="input-group">
                     <i class="fa fa-calendar" style="margin-left: -20px;"></i>
                     <input type="text" class="form-control" id="monthYearPicker" name="monthYear" value="{{ selected_month_year }}" autocomplete="off">
                     <div class="input-group-append">
                         <span class="input-group-text" id="monthYearAddon"></i></span>
+
             <div id="selected">
                 <p class="selected" style="margin-top: 20%;"></p>
                 <h1>Selected</h1>
@@ -1573,27 +1577,25 @@ table {
 
     <div class="form-container-BOx">
         
-        <span style="margin-right: 90%;">Search Table</span>
         <div class="table-container">
-        <input type="text"   id="searchInput" onkeyup="searchTable()" placeholder="Search for data..">
 
         <table id="dataTable">
             
             <thead>
                 <tr>
-                    <th onclick="sortTable(0)">DATA_DATE</th>
-                    <th onclick="sortTable(1)">REGION_NAME</th>
-                    <th onclick="sortTable(2)">TAG_ID</th>
-                    <th onclick="sortTable(3)">METER_ID</th>
-                    <th onclick="sortTable(4)">METER_STREAM_NO</th>
-                    <th onclick="sortTable(5)">CORRECTED_VOL</th>
-                    <th onclick="sortTable(6)">CORRECTED_VOL_UNIT</th>
-                    <th onclick="sortTable(7)">UNCORRECTED_VOL</th>
-                    <th onclick="sortTable(8)">UNCORRECTED_VOL_UNIT</th>
-                    <th onclick="sortTable(9)">AVR_TF</th>
-                    <th onclick="sortTable(10)">AVR_TF_UNIT</th>
-                    <th onclick="sortTable(11)">AVR_PF</th>
-                    <th onclick="sortTable(12)">AVR_PF_UNIT</th>
+                  <th>DATA_DATE</th>
+                  <th>REGION_NAME</th>
+                  <th>TAG_ID</th>
+                  <th>METER_ID</th>
+                  <th>METER_STREAM_NO</th>
+                  <th>CORRECTED_VOL</th>
+                  <th>CORRECTED_VOL_UNIT</th>
+                  <th>UNCORRECTED_VOL</th>
+                  <th>UNCORRECTED_VOL_UNIT</th>
+                  <th>AVR_TF</th>
+                  <th>AVR_TF_UNIT</th>
+                  <th>AVR_PF</th>
+                  <th>AVR_PF_UNIT</th>
                 </tr>
             </thead>
             <tbody>
@@ -1624,7 +1626,7 @@ table {
     function clearFilters() {
         document.getElementById('region_dropdown').value = '';
         document.getElementById('tag_dropdown').value = '';
-        document.getElementById('date_picker').value = '';
+        document.getElementById('selected_month_year').value = '';
         function showLoading() {
         document.getElementById('loadingOverlay').style.display = 'block';
         }
@@ -1644,12 +1646,12 @@ table {
           selectedTag = this.value;
         });
     
-        document.getElementById('date_picker').addEventListener('change', function () {
+        document.getElementById('selected_month_year').addEventListener('change', function () {
           selectedDate = this.value;
         });
     
         // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        var formDailyData = document.querySelector('form[action="/billing_data_asgs"]'); // Adjust this selector based on your actual form
         formDailyData.addEventListener('submit', function (event) {
           event.preventDefault(); // Prevent the form from submitting immediately
     
@@ -1660,7 +1662,7 @@ table {
             // Update the displayed values after the loading is complete
             document.getElementById('selected_region').innerText = selectedRegion;
             document.getElementById('selected_tag').innerText = selectedTag;
-            document.getElementById('selected_date').innerText = selectedDate;
+            document.getElementById('selected_month_year').innerText = selectedDate;
     
             // Optionally, update the meter ID
             var selectedMeterIdSpan = document.getElementById('selected_meter_id');
@@ -1678,114 +1680,60 @@ table {
           }, 2000); // Adjust the delay time as needed (in milliseconds)
         });
       });
+          function showLoading() {
+        // แสดง loading overlay
+        document.getElementById('loadingOverlay').style.display = 'block';
+      }
+
+      // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
       function hideLoading() {
+        // ซ่อน loading overlay
         document.getElementById('loadingOverlay').style.display = 'none';
-    }
-    
-    
-      // Wait for the document to be ready
-      $(document).ready(function () {
-        $('#date_picker').datepicker({
-          format: 'mm/yyyy',
-          startView: 'months',
-          minViewMode: 'months',
-          autoclose: true
-        });
-    
-        // Event listener for region dropdown change
-        $('#region_dropdown').change(function () {
-          var selectedRegion = $(this).val();
-    
-          $.ajax({
-            type: 'GET',
-            url: '/get_tags',
-            data: { 'selected_region': selectedRegion },
-            success: function (response) {
-              // Clear existing options in the tag dropdown
-              $('#tag_dropdown').empty();
-              // Add the 'All' option
-              $('#tag_dropdown').append('<option value="" selected>All</option>');
-              // Add new tag options based on the response
-              for (var i = 0; i < response.tag_options.length; i++) {
-                var tag = response.tag_options[i];
-                $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-              }
-              hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
-            },
-            error: function (error) {
-              console.log('Error fetching tag options:', error);
-              hideLoadingOverlay(); // Hide loading overlay after AJAX request error
-            }
-          });
-        });
-      });
-</script>
-<script>
-    function searchTable() {
-        let input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("dataTable");
-        tr = table.getElementsByTagName("tr");
+      }
 
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0]; // Change index based on the column you want to search
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
 
-    function sortTable(n) {
-        let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("dataTable");
-        switching = true;
-        dir = "asc";
+  
+      $(document).ready(function(){
+            // Event listener for changes in the REGION_NAME dropdown
+            $('#region-dropdown').change(function(){
+                // Get the selected REGION_NAME
+                var selectedRegion = $(this).val();
 
-        while (switching) {
-            switching = false;
-            rows = table.rows;
+                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
+                $.ajax({
+                    url: '/get_tags_asgs',
+                    method: 'GET',
+                    data: { region: selectedRegion },
+                    success: function(data){
+                        // Clear existing options in tag_id dropdown
+                        $('#tag-dropdown').empty();
 
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("td")[n];
-                y = rows[i + 1].getElementsByTagName("td")[n];
+                        // Add a default option
+                        $('#tag-dropdown').append($('<option>', {
+                            value: '',
+                            text: 'Select Tag'
+                        }));
 
-                if (dir === "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
+                        // Add new options based on the retrieved data
+                        $.each(data, function(index, value){
+                            $('#tag-dropdown').append($('<option>', {
+                                value: value,
+                                text: value
+                            }));
+                        });
                     }
-                } else if (dir === "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
+                });
+            });
 
-            if (shouldSwitch) {
-                for (let j = 0; j < rows[i].getElementsByTagName("td").length; j++) {
-                    let temp = rows[i].getElementsByTagName("td")[j].innerHTML;
-                    rows[i].getElementsByTagName("td")[j].innerHTML = rows[i + 1].getElementsByTagName("td")[j].innerHTML;
-                    rows[i + 1].getElementsByTagName("td")[j].innerHTML = temp;
-                }
-                
-                switching = true;
-                switchcount++;
-            } else {
-                if (switchcount === 0 && dir === "asc") {
-                    dir = "desc";
-                    switching = true;
-                }
-            }
-        }
-    }
+            // Initialize the month and year datepicker
+            $('#monthYearPicker').datepicker({
+                format: "mm/yyyy",
+                viewMode: "months",
+                minViewMode: "months",
+                autoclose: true,
+                showOnFocus: true  // Display the calendar when the input field is focused
+            });
+        });
 </script>
 
 
