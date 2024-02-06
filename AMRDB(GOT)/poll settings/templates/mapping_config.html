@@ -100,9 +100,11 @@ input[type="text"] {
     </nav>
 
     <nav>
-        <a href="{{ url_for('add_mapping_route') }}">Add mapping</a>
+        <a href="{{ url_for('mapping_billing_route') }}">Mapping Billing</a>
+        <a href="{{ url_for('add_mapping_route') }}">Add Mapping Config</a>
     </nav>
 
+    <h3>Mapping Config</h3>
     <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
        <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
@@ -131,10 +133,11 @@ input[type="text"] {
                 <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
 
-                <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value {{ '{:02d}'.format(i + 1) }}</label>
-                <select id="list_list_data_type{{ '{:02d}'.format(i) }}" name="list_list_data_type{{ '{:02d}'.format(i) }}">
+                <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
+                <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
                     <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
-                    <option value="signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
+                    <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>Signed</option>
+                    <option value="Ulong" {% if list_data_type[i] == 'Ulong' %} selected {% endif %}>Ulong</option>
                     <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
                 </select>
 
