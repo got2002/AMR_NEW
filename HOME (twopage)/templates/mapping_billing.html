@@ -1,70 +1,907 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual</title>
+    <title>Mapping Billing</title>
+
+    <!-- Stylesheet -->
+    <!-- <link rel="stylesheet" href="Css/add_mapping.css"> -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker Stylesheet and Script -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+</head>
+
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @font-face {
+            font-family: "PTT45Pride-Bold";
+            src: url("PTT45Pride-Bold.otf") format("truetype");
+            font-weight: bold;
+            font-style: normal;
+          }
+          
+          body {
+            background-image: linear-gradient(to right, #5b707e, #abb2b9);
+            font-family: "PTT45Pride-Bold", sans-serif;
+            font-size: large;
+            font-weight: 600;
+            max-width: 100vw;
+          }
+          
+          
+          h1 {
+            color: #333;
+            padding: 3%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 35px;
+          }
+    
+          .text-box-group {
+            width: 40%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            z-index: 5;
+            margin-left: 50%;
+            
+          }
+          .address-pair {
+            width: 80%;
+            background-color: #fff;
+            padding: 1px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: -100px;
+    
+        }
+        .form-container {
+            margin: auto;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 4%;
+            margin-top: 4%;
+            display: flex;
+            justify-content: center;
+        }
+        
+          
+          label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            padding: 1%;
+          }
+          
+          input[type="text"],
+          select {
+            padding: 8px;
+            box-sizing: border-box;
+            width: 25%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+          }
+          
+          input[type="checkbox"] {
+            margin-right: 5px;
+          }
+          
+          h2 {
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          #statusMessage {
+            margin-top: 15px;
+            color: #4caf50;
+            font-weight: bold;
+          }
+          
+          .link-button {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+          }
+          
+          #region_dropdown {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: none;
+            width: 200px;
+            margin-bottom: 5%;
+            margin-top: 5%;
+          }
+          
+    
+          
+          .custom-btn {
+            margin: auto;
+            color: #fff;
+            width: 140px;
+            height: 40px;
+            padding: 10px 25px;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px;
+            border-radius: 5px;
+          }
+          
+          /* 1 */
+          .btn-1 {
+            border: none;
+            background-color: #333;
+            box-shadow: 0 0 5px #333;
+          }
+          
+          .btn-1:hover {
+            box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+          }
+          
+          /* 1 */
+          .btn-2 {
+            border: none;
+            background-color: #4caf50;
+            box-shadow: 0 0 5px #4caf50;
+          }
+          
+          .btn-2:hover {
+            box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+          }
+          
+          .clearfix:before,
+          .clearfix:after {
+            content: " ";
+            display: table;
+          }
+          
+          .clearfix:after {
+            clear: both;
+          }
+          
+          .clearfix {
+            zoom: 1px;
+          }
+          
+          .container {
+            position: relative;
+            margin: 0px 0px 0px left;
+            padding: 0;
+            clear: both;
+            margin-top: 150px;
+          }
+          
+          @media only screen and (min-width: 1200px) {
+            .container {
+              width: 1210px;
+            }
+          }
+          
+          @media only screen and (min-width: 960px) and (max-width: 1199px) {
+            .container {
+              width: 1030px;
+            }
+          }
+          
+          @media only screen and (min-width: 768px) and (max-width: 959px) {
+            .container {
+              width: 682px;
+            }
+          }
+          
+          @media only screen and (min-width: 480px) and (max-width: 767px) {
+            .container {
+              width: 428px;
+              margin: 0 auto;
+            }
+          }
+          
+          @media only screen and (max-width: 479px) {
+            .container {
+              width: 320px;
+              margin: 0 auto;
+            }
+          }
+          
+          .mcd-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: #fff;
+            /*height: 100px;*/
+            border-radius: 2px;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            /* == */
+            width: 250px;
+            /* == */
+            max-width: 1880px;
+            position: fixed;
+            
+          }
+          
+          .mcd-menu li {
+            position: relative;
+            /*float:left;*/
+          }
+          
+          .mcd-menu li a {
+            display: block;
+            text-decoration: none;
+            padding: 12px 20px;
+            color: #777;
+            /*text-align: center;
+            border-right: 1px solid #E7E7E7;*/
+            /* == */
+            text-align: left;
+            height: 36px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+            /* == */
+          }
+          
+          .mcd-menu li a i {
+            /*display: block;
+            font-size: 30px;
+            margin-bottom: 10px;*/
+          
+            /* == */
+            float: left;
+            font-size: 20px;
+            margin: 0 10px 0 0;
+            /* == */
+          }
+          
+          /* == */
+          .mcd-menu li a p {
+            float: left;
+            margin: 0;
+          }
+          /* == */
+          
+          .mcd-menu li a strong {
+            display: block;
+            text-transform: uppercase;
+          }
+          
+          .mcd-menu li a small {
+            display: block;
+            font-size: 10px;
+          }
+          
+          .mcd-menu li a i,
+          .mcd-menu li a strong,
+          .mcd-menu li a small {
+            position: relative;
+          
+            transition: all 300ms linear;
+            -o-transition: all 300ms linear;
+            -ms-transition: all 300ms linear;
+            -moz-transition: all 300ms linear;
+            -webkit-transition: all 300ms linear;
+          }
+          .mcd-menu li:hover > a i {
+            opacity: 1;
+            -webkit-animation: moveFromTop 300ms ease-in-out;
+            -moz-animation: moveFromTop 300ms ease-in-out;
+            -ms-animation: moveFromTop 300ms ease-in-out;
+            -o-animation: moveFromTop 300ms ease-in-out;
+            animation: moveFromTop 300ms ease-in-out;
+          }
+          .mcd-menu li:hover a strong {
+            opacity: 1;
+            -webkit-animation: moveFromLeft 300ms ease-in-out;
+            -moz-animation: moveFromLeft 300ms ease-in-out;
+            -ms-animation: moveFromLeft 300ms ease-in-out;
+            -o-animation: moveFromLeft 300ms ease-in-out;
+            animation: moveFromLeft 300ms ease-in-out;
+          }
+          .mcd-menu li:hover a small {
+            opacity: 1;
+            -webkit-animation: moveFromRight 300ms ease-in-out;
+            -moz-animation: moveFromRight 300ms ease-in-out;
+            -ms-animation: moveFromRight 300ms ease-in-out;
+            -o-animation: moveFromRight 300ms ease-in-out;
+            animation: moveFromRight 300ms ease-in-out;
+          }
+          
+          .mcd-menu li:hover > a {
+            color: #2e6ff2;
+          }
+          .mcd-menu li a.active {
+            position: relative;
+            color: #2e6ff2;
+            border: 0;
+            /*border-top: 4px solid #e67e22;
+            border-bottom: 4px solid #e67e22;
+            margin-top: -4px;*/
+            box-shadow: 0 0 5px #ddd;
+            -moz-box-shadow: 0 0 5px #ddd;
+            -webkit-box-shadow: 0 0 5px #ddd;
+          
+            /* == */
+            border-left: 4px solid #2e6ff2;
+            border-right: 4px solid #2e6ff2;
+            margin: 0 -4px;
+            /* == */
+          }
+          .mcd-menu li a.active:before {
+            content: "";
+            position: absolute;
+            /*top: 0;
+            left: 45%;
+            border-top: 5px solid #e67e22;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;*/
+          
+            /* == */
+            top: 42%;
+            left: 0;
+            border-left: 5px solid #2e6ff2;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            /* == */
+          }
+          
+          /* == */
+          .mcd-menu li a.active:after {
+            content: "";
+            position: absolute;
+            top: 42%;
+            right: 0;
+            border-right: 5px solid #2e6ff2;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+          }
+          /* == */
+          
+          @keyframes moveFromTop {
+            from {
+              opacity: 0;
+              -webkit-transform: translateY(200%);
+              -moz-transform: translateY(200%);
+              -ms-transform: translateY(200%);
+              -o-transform: translateY(200%);
+              transform: translateY(200%);
+            }
+            to {
+              opacity: 1;
+              -webkit-transform: translateY(0%);
+              -moz-transform: translateY(0%);
+              -ms-transform: translateY(0%);
+              -o-transform: translateY(0%);
+              transform: translateY(0%);
+            }
+          }
+          @keyframes moveFromLeft {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(200%);
+              -moz-transform: translateX(200%);
+              -ms-transform: translateX(200%);
+              -o-transform: translateX(200%);
+              transform: translateX(200%);
+            }
+            to {
+              opacity: 1;
+              -webkit-transform: translateX(0%);
+              -moz-transform: translateX(0%);
+              -ms-transform: translateX(0%);
+              -o-transform: translateX(0%);
+              transform: translateX(0%);
+            }
+          }
+          @keyframes moveFromRight {
+            from {
+              opacity: 0;
+              -webkit-transform: translateX(-200%);
+              -moz-transform: translateX(-200%);
+              -ms-transform: translateX(-200%);
+              -o-transform: translateX(-200%);
+              transform: translateX(-200%);
+            }
+            to {
+              opacity: 1;
+              -webkit-transform: translateX(0%);
+              -moz-transform: translateX(0%);
+              -ms-transform: translateX(0%);
+              -o-transform: translateX(0%);
+              transform: translateX(0%);
+            }
+          }
+          
+          .mcd-menu li ul,
+          .mcd-menu li ul li ul {
+            position: absolute;
+            height: auto;
+            min-width: 200px;
+            padding: 0;
+            margin: 0;
+            background: #fff;
+            /*border-top: 4px solid #e67e22;*/
+            opacity: 0;
+            visibility: hidden;
+            transition: all 300ms linear;
+            -o-transition: all 300ms linear;
+            -ms-transition: all 300ms linear;
+            -moz-transition: all 300ms linear;
+            -webkit-transition: all 300ms linear;
+            /*top: 130px;*/
+            z-index: 1000;
+          
+            /* == */
+            left: 280px;
+            top: 0px;
+            border-left: 4px solid #2e6ff2;
+            /* == */
+          }
+          .mcd-menu li ul:before {
+            content: "";
+            position: absolute;
+            /*top: -8px;
+            left: 23%;
+            border-bottom: 5px solid #e67e22;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;*/
+          
+            /* == */
+            top: 25px;
+            left: -9px;
+            border-right: 5px solid #2e6ff2;
+            border-bottom: 5px solid transparent;
+            border-top: 5px solid transparent;
+            /* == */
+          }
+          .mcd-menu li:hover > ul,
+          .mcd-menu li ul li:hover > ul {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            /*top: 100px;*/
+          
+            /* == */
+            left: 250px;
+            /* == */
+          }
+          /*.mcd-menu li ul li {
+            float: none;
+          }*/
+          .mcd-menu li ul li a {
+            padding: 10px;
+            text-align: left;
+            border: 0;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 0 5px #ddd;
+            -moz-box-shadow: 0 0 5px #ddd;
+            -webkit-box-shadow: 0 0 5px #ddd;
+            /* == */
+            height: auto;
+            /* == */
+          }
+          .mcd-menu li ul li a i {
+            font-size: 16px;
+            display: inline-block;
+            margin: 0 10px 0 0;
+          }
+          .mcd-menu li ul li ul {
+            left: 230px;
+            top: 0;
+            border: 0;
+            border-left: 4px solid #2e6ff2;
+          }
+          .mcd-menu li ul li ul:before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            /*left: -14px;*/
+            /* == */
+            left: -9px;
+            /* == */
+            border-right: 5px solid #2e6ff2;
+            border-bottom: 5px solid transparent;
+            border-top: 5px solid transparent;
+          }
+          .mcd-menu li ul li:hover > ul {
+            top: 0px;
+            left: 200px;
+          }
+          
+          /*.mcd-menu li.float {
+            float: right;
+          }*/
+          .mcd-menu li a.search {
+            /*padding: 29px 20px 30px 10px;*/
+            padding: 10px 10px 15px 10px;
+            clear: both;
+          }
+          .mcd-menu li a.search i {
+            margin: 0;
+            display: inline-block;
+            font-size: 18px;
+          }
+          .mcd-menu li a.search input {
+            border: 1px solid #eee;
+            padding: 10px;
+            background: #fff;
+            outline: none;
+            color: #777;
+          
+            /* == */
+            width: 170px;
+            float: left;
+            /* == */
+          }
+          .mcd-menu li a.search button {
+            border: 1px solid #2e6ff2;
+            /*padding: 10px;*/
+            background: #2e6ff2;
+            outline: none;
+            color: #fff;
+            margin-left: -4px;
+          
+            /* == */
+            float: left;
+            padding: 10px 10px 11px 10px;
+            /* == */
+          }
+          .mcd-menu li a.search input:focus {
+            border: 1px solid #2e6ff2;
+          }
+          
+          .search-mobile {
+            display: none !important;
+            background: #2e6ff2;
+            border-left: 1px solid #2e6ff2;
+            border-radius: 0 3px 3px 0;
+          }
+          .search-mobile i {
+            color: #fff;
+            margin: 0 !important;
+          }
+          
+          @media only screen and (min-width: 960px) and (max-width: 1199px) {
+            .mcd-menu {
+              margin-left: 10px;
+            }
+          }
+          
+          @media only screen and (min-width: 768px) and (max-width: 959px) {
+            .mcd-menu {
+              width: 200px;
+            }
+            .mcd-menu li a {
+              height: 30px;
+            }
+            .mcd-menu li a i {
+              font-size: 22px;
+            }
+            .mcd-menu li a strong {
+              font-size: 12px;
+            }
+            .mcd-menu li a small {
+              font-size: 10px;
+            }
+            .mcd-menu li a.search input {
+              width: 120px;
+              font-size: 12px;
+            }
+            .mcd-menu li a.search button {
+              padding: 8px 10px 9px 10px;
+            }
+            .mcd-menu li > ul {
+              min-width: 180px;
+            }
+            .mcd-menu li:hover > ul {
+              min-width: 180px;
+              left: 200px;
+            }
+            .mcd-menu li ul li > ul,
+            .mcd-menu li ul li ul li > ul {
+              min-width: 150px;
+            }
+            .mcd-menu li ul li:hover > ul {
+              left: 180px;
+              min-width: 150px;
+            }
+            .mcd-menu li ul li ul li:hover > ul {
+              left: 150px;
+              min-width: 150px;
+            }
+            .mcd-menu li ul a {
+              font-size: 12px;
+            }
+            .mcd-menu li ul a i {
+              font-size: 14px;
+            }
+          }
+          
+          @media only screen and (min-width: 480px) and (max-width: 767px) {
+            .mcd-menu {
+              width: 50px;
+            }
+            .mcd-menu li a {
+              position: relative;
+              padding: 12px 16px;
+              height: 20px;
+            }
+            .mcd-menu li a small {
+              display: none;
+            }
+            .mcd-menu li a strong {
+              display: none;
+            }
+            .mcd-menu li a:hover strong,
+            .mcd-menu li a.active strong {
+              display: block;
+              font-size: 10px;
+              padding: 3px 0;
+              position: absolute;
+              bottom: 0px;
+              left: 0;
+              background: #2e6ff2;
+              color: #fff;
+              min-width: 100%;
+              text-transform: lowercase;
+              font-weight: normal;
+              text-align: center;
+            }
+            .mcd-menu li .search {
+              display: none;
+            }
+          
+            .mcd-menu li > ul {
+              min-width: 180px;
+              left: 70px;
+            }
+            .mcd-menu li:hover > ul {
+              min-width: 180px;
+              left: 50px;
+            }
+            .mcd-menu li ul li > ul,
+            .mcd-menu li ul li ul li > ul {
+              min-width: 150px;
+            }
+            .mcd-menu li ul li:hover > ul {
+              left: 180px;
+              min-width: 150px;
+            }
+            .mcd-menu li ul li ul li > ul {
+              left: 35px;
+              top: 45px;
+              border: 0;
+              border-top: 4px solid #2e6ff2;
+            }
+            .mcd-menu li ul li ul li > ul:before {
+              left: 30px;
+              top: -9px;
+              border: 0;
+              border-bottom: 5px solid #2e6ff2;
+              border-left: 5px solid transparent;
+              border-right: 5px solid transparent;
+            }
+            .mcd-menu li ul li ul li:hover > ul {
+              left: 30px;
+              min-width: 150px;
+              top: 35px;
+            }
+            .mcd-menu li ul a {
+              font-size: 12px;
+            }
+            .mcd-menu li ul a i {
+              font-size: 14px;
+            }
+          }
+          
+          @media only screen and (max-width: 479px) {
+            .mcd-menu {
+              width: 50px;
+            }
+            .mcd-menu li a {
+              position: relative;
+              padding: 12px 16px;
+              height: 20px;
+            }
+            .mcd-menu li a small {
+              display: none;
+            }
+            .mcd-menu li a strong {
+              display: none;
+            }
+            .mcd-menu li a:hover strong,
+            .mcd-menu li a.active strong {
+              display: block;
+              font-size: 10px;
+              padding: 3px 0;
+              position: absolute;
+              bottom: 0px;
+              left: 0;
+              background: #2e6ff2;
+              color: #fff;
+              min-width: 100%;
+              text-transform: lowercase;
+              font-weight: normal;
+              text-align: center;
+            }
+            .mcd-menu li .search {
+              display: none;
+            }
+          
+            .mcd-menu li > ul {
+              min-width: 180px;
+              left: 70px;
+            }
+            .mcd-menu li:hover > ul {
+              min-width: 180px;
+              left: 50px;
+            }
+            .mcd-menu li ul li > ul,
+            .mcd-menu li ul li ul li > ul {
+              min-width: 150px;
+            }
+            .mcd-menu li ul li:hover > ul {
+              left: 180px;
+              min-width: 150px;
+            }
+            .mcd-menu li ul li ul li > ul {
+              left: 35px;
+              top: 45px;
+              border: 0;
+              border-top: 4px solid #2e6ff2;
+            }
+            .mcd-menu li ul li ul li > ul:before {
+              left: 30px;
+              top: -9px;
+              border: 0;
+              border-bottom: 5px solid #2e6ff2;
+              border-left: 5px solid transparent;
+              border-right: 5px solid transparent;
+            }
+            .mcd-menu li ul li ul li:hover > ul {
+              left: 30px;
+              min-width: 150px;
+              top: 35px;
+            }
+            .mcd-menu li ul a {
+              font-size: 12px;
+            }
+            .mcd-menu li ul a i {
+              font-size: 14px;
+            }
+          }
+          
+          footer {
+            background-color: #2e6ff2;
+            color: white;
+            text-align: left;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 0 5px #ddd;
+            -moz-box-shadow: 0 0 5px #ddd;
+            -webkit-box-shadow: 0 0 5px #ddd;
+          }
+          
+          .top-bar {
+            background-color: #2e6ff2;
+            color: #fff;
+            padding: 10px 10px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 80px;
+            box-shadow: 0 0 5px #ddd;
+            -moz-box-shadow: 0 0 5px #ddd;
+            -webkit-box-shadow: 0 0 5px #ddd;
+            z-index: 2;
+          }
+          
+          .container-top {
+            max-width: 1880px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          
+          .logo {
+            width: 95px;
+            padding: 0px;
+            margin: 0px;
+            display: flex;
+            margin-top: -25px;
+          }
+          .Automatic {
+            font-size: 35px;
+            font-weight: bold;
+            font-family: "PTT45Pride-Bold", sans-serif;
+            padding: 0px;
+            margin-top: -25px;
+          }
+          .navbar ul {
+            list-style: none;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #eee;
-            padding: 10px;
-        }
-
-        nav a {
-            display: inline-block;
-            margin-right: 10px;
+            display: flex;
+          }
+          
+          .navbar li {
+            margin-right: 20px;
+          }
+          
+          .navbar a {
             text-decoration: none;
-            color: #333;
+            color: #fff;
             font-weight: bold;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #fff;
-        }
+            font-size: 16px;
+            transition: color 0.3s ease-in-out;
+          }
+          
+          .navbar a:hover {
+            color: #8f8f8f;
+          }
+          
+          .mcd-menu li a i {
+            font-size: 1.5em;
+            margin-right: 10px;
+            margin-bottom: 10px;
+          }
+          
+          .mcd-menu li a:focus i,
+          .mcd-menu li a:hover i,
+          .mcd-menu li.active a i {
+            color: #3498db;
+            font-size: 1.5em;
+            margin-right: 10px;
+            margin-bottom: 10px;
+          }
+    
 
-        nav a:hover {
-            background-color: #dd2d;
-        }
-
-            .hidden {
-            display: none;
-        
-        }
-
-        /* textbox */
-
-    /* General styling for all textboxes */
-.textbox-container {
-  margin-bottom: 10px;
-
-}
-
-.textbox-pair {
-  margin-bottom: 3px;
-}
-
-input[type="text"] {
-  width: 200px; /* Adjust the width as needed */
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  box-sizing: border-box;
-}
 
 @keyframes oscillate {
             0% { transform: translateX(0); }
@@ -73,39 +910,129 @@ input[type="text"] {
         }
 
         .enable-container {
-            margin-bottom: 10px; /* Add some space between containers */
+            margin-bottom: 50px; /* Add some space between containers */
             animation: alternate-reverse; /* Apply the oscillation animation */
         }
 
-        /* Additional styling for labels and checkboxes */
-        label {
-            margin-right: 5px;
-        }
-
-        input[type="checkbox"] {
-            margin-left: 5px;
-        }
-    </style>
-
-</head>
+          form {
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+          }
+        
+        
+        
+          .form-container-BOx {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            box-sizing: border-box;
+            width: 140%;
+            margin: auto;
+            margin-top: 5%;
+            margin-bottom: 60%;
+            position: absolute;
+            top: 100%;
+            left: 1%;
+            padding: 30px;
+          }
+        
+</style>
 
 <body>
-
-    <header>
-        <h1>Manual Poll</h1>
+    <header class="top-bar">
+        <div class="container-top">
+            <div style="display: flex; align-items: center;">
+                <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+                    alt="PTT Public Company Limited Logo">
+                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
+                    ASGS)</span>
+            </div>
+            <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
+                alt="logo">LOGOUT</a>
+        </div>
     </header>
-
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-    </nav>
-
-    <nav>
-        <a href="{{ url_for('mapping_config_route') }}">Mapping config</a>
-        <a href="{{ url_for('add_mapping_route') }}">Add mapping Config</a>
-    </nav>
-
-    <h3>Mapping Billing</h3>
-    <form id="mapping_configForm" method="get" action="{{ url_for('mapping_billing_route') }}">
+    <div class="container">
+        <nav>
+            <ul class="mcd-menu">
+                <li>
+                    <a>
+                        <i class="fa fa-home"></i>
+                        <strong >Home</strong>
+                        <small>Home Page</small>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fa fa-database"></i>
+                        <strong>Reports Data</strong>
+                        <small>View Data Page</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
+                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
+                        <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                        <li><a href="#"><i class="fas fa-plus"></i>New Site Detail</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-search"></i>
+                        <strong>Polling Actions</strong>
+                        <small>Polling Page</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-file-alt"></i>
+                        <strong>Manage Sites</strong>
+                        <small>Sites Page</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                        <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                        <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-clipboard-list"></i>
+                        <strong>Manage Users</strong>
+                        <small>Users Page</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
+                        <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
+                        <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="active">
+                        <i class="fas fa-wrench"></i>
+                        <strong>Poll Sitting</strong>
+                        <small>Sitting Page</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-plus"></i>Add Mapping</a></li>
+                        <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        
+<div class="text-box-group">
+    <div id="mapping_configForm" method="get" action="{{ url_for('mapping_billing_route') }}">
+        <div class="form-container">
        <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
@@ -113,50 +1040,66 @@ input[type="text"] {
                 <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
-        <button type="submit">View</button>
-    </form>
-
+        <button class="custom-btn btn-1" type="submit">View</button>
+    </div>
+</div>
+</div>
     <!-- {% if table %}
         {{ table | safe }}
     {% else %}
         <p>No data available.</p>
     {% endif %} -->
-
-    <form method="POST" action="/update_mapping_billing_route">
+    <div class="text-box-group" style="margin-bottom: 10%;">
+    <div method="POST" action="/update_mapping_billing_route">
     <input type="hidden" name="selected_type" value="{{ selected_type }}">
-    <div class="textbox-container">
-        {% for i in range(0, list_address|length) %}
-            <div class="textbox-pair">
-                <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_address{{ '{:02d}'.format(i) }}" name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
 
-                <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
-
-                <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
-                <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
-                    <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
-                    <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
-                    <option value="Ulong" {% if list_data_type[i] == 'Ulong' %} selected {% endif %}>Ulong</option>
-                    <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
-                </select>
-
-                <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
-
-                <label for="or_der{{ '{:02d}'.format(i) }}">OR DER {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
-
-                <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_daily{{ '{:02d}'.format(i) }}" name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}">
-                
-            </div>
-        {% endfor %}
+    {% for i in range(0, list_address|length) %}
+    <div class="enable-container">
+      <div class="form-group">
+        <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
+        <input type="text" id="list_address{{ '{:02d}'.format(i) }}" name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
+      </div>
+  
+      <div class="form-group">
+        <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1) }}</label>
+        <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
+      </div>
+  
+      <div class="form-group">
+        <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
+        <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
+          <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
+          <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
+          <option value="Ulong" {% if list_data_type[i] == 'Ulong' %} selected {% endif %}>Ulong</option>
+          <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
+        <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
+      </div>
+  
+      <div class="form-group">
+        <label for="or_der{{ '{:02d}'.format(i) }}">OR DER {{ '{:02d}'.format(i + 1) }}</label>
+        <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
+        <input type="text" id="list_daily{{ '{:02d}'.format(i) }}" name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}">
+      </div>
     </div>
-    <input type="submit" value="Submit">
-</form>
+  {% endfor %}
+  
+        <input class="custom-btn btn-2" type="submit" value="Submit">
+    </form>
+    <footer class="footer">POWERED BY ATOS - ASGS</footer>
+    </div>
+    
 
 
+</body>
     
 
 <script>
