@@ -1421,28 +1421,6 @@
     padding-left: 5%;
   }
 
-  /* Styling for the loading overlay */
-  #loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    /* Ensure it appears on top of other elements */
-  }
-
-  #loadingOverlay img {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
   /* Styling for the selected information */
   .selected {
@@ -1590,6 +1568,10 @@
             <input type="text" id="date_picker" name="date_dropdown"
               value="{{ selected_date }}" autocomplete="off"
               onchange="checkDate()">
+
+              <div id="loadingOverlay" style="display: none;" >
+                <img src="static/Search.gif" alt="Loading...">
+              </div>
               <p class="selected" style="margin-top: 20%;"></p>
               <h1>Selected</h1>
               <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
@@ -1610,16 +1592,10 @@
             </div>
           </div>
         </form>
-        
-        <div id="loadingOverlay" style="display: none;" >
-          <img src="static/Search.gif" alt="Loading...">
-        </div>
-
     </div>
 
       <div class="form-container-BOx">
-        <div class="table-container">
-      
+
         <div>
 
           <div class="table-container">
