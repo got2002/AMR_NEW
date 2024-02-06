@@ -78,6 +78,7 @@ def billing_data():
         # Fetch tag_id data using your fetch_data function
         tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region1': selected_region1})
         
+        
             # Define your Oracle query to fetch data based on selected criteria
         billing_query = """
                 SELECT *
