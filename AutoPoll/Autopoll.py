@@ -40,27 +40,31 @@ try:
 except cx_Oracle.Error as e:
     (error,) = e.args
     print("Oracle Error:", error)
+    exit()
 
 
-# def executeSelect()
-#     try:
-#         with connection.cursor() as cursor:
-#             #if params:
-#             #    cursor.execute(query, params)
-#             #else:
-#             #    cursor.execute(query)
-#             cursor.execute("Select * from tab")
-#             results = cursor.fetchall()
-#         return results
-#     except cx_Oracle.Error as e:
-#         (error,) = e.args
-#         print("Oracle Error:", error)
-#         return []
+def executeSelect(text_query):
+    try:
+        with connection.cursor() as cursor:
+            #if params:
+            #    cursor.execute(query, params)
+            #else:
+            #    cursor.execute(query)
+            cursor.execute(text_query)
+            results = cursor.fetchall()
+        return results
+    except cx_Oracle.Error as e:
+        (error,) = e.args
+        print("Oracle Error:", error)
+        return []
     
 
 #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #sock.connect((tcp_ip, tcp_port))
 
 if __name__ == '__main__':
+    print(executeSelect("Select * from tab"))
+    pass
     
-    exit()
+    
+connection_pool.release(connection)
