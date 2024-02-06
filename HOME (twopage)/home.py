@@ -124,8 +124,8 @@ def fetch_data(connection, query, params=None):
 
 
 ############  Home page  #####################
-@app.route("/")
-def home():
+@app.route("/home")
+def home_amr():
     return render_template("home.html")
 ############ / Home page  #####################
 
@@ -1852,7 +1852,7 @@ def get_tag():
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
 @app.route("/homeasgs")
-def homeasgs():
+def home_asgs():
     return render_template("homeasgs.html")
 
 
