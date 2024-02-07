@@ -205,7 +205,7 @@
     margin-top: 15px;
     position: absolute;
     top: 100%;
-    left: 3%;
+    left: 10%;
     padding-bottom: 100px;
     padding: 30px;
   }
@@ -1514,34 +1514,41 @@ table {
     <form method="GET" action="{{ url_for('billing_data_asgs') }}">
             <h2> View Billing Data (ASGS)</h2>
             <div class="form-container">
-                <label for="region-dropdown">Select Region:</label>
-                <select id="region-dropdown" name="region" class="form-control">
-                    <option value="">Select Region</option>
-                    {% for result in region_results1 %}
-                        <option value="{{ result[0] }}" {% if selected_region1 == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                    {% endfor %}
-                </select>
-
-                <label for="tag-dropdown">Select Tag:</label>
-                <select id="tag-dropdown" name="tag" class="form-control">
-                    <option value="">Select Tag</option>
-                    {% for result in tag_results %}
-                        <option value="{{ result[0] }}" {% if selected_region1 == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                    {% endfor %}
-                </select>
-
-            <!-- Input field for selecting month and year -->
-            <div class="form-group col-md-4">
-                <label for="monthYearPicker">Month & Year:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="monthYearAddon"><i class="fa fa-calendar"></i></span>
+              <div class="form-row">
+                <!-- Dropdown for REGION_NAME -->
+                <div class="form-group col-md-4">
+                    <label for="region-dropdown">Select Region:</label>
+                    <select id="region-dropdown" name="region" class="form-control">
+                        <option value="">Select Region</option>
+                        {% for result in region_results %}
+                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <!-- Dropdown for tag_id -->
+                <div class="form-group col-md-4">
+                    <label for="tag-dropdown">Select Tag:</label>
+                    <select id="tag-dropdown" name="tag" class="form-control">
+                        <option value="">Select Tag</option>
+                        {% for result in tag_results %}
+                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Input field for selecting month and year -->
+                <div class="form-group col-md-4">
+                    <label for="monthYearPicker">Month & Year:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="monthYearAddon"><i class="fa fa-calendar"></i></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
+
             <div id="selected">
               <div id="loadingOverlay" style="display: none;" >
                 <img src="static/Search.gif" alt="Loading...">
@@ -1612,6 +1619,48 @@ table {
 </body>
 </html>
 <script>
+    
+    $(document).ready(function(){
+            // Event listener for changes in the REGION_NAME dropdown
+            $('#region-dropdown').change(function(){
+                // Get the selected REGION_NAME
+                var selectedRegion = $(this).val();
+
+                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
+                $.ajax({
+                    url: '/get_tag_asgs',
+                    method: 'GET',
+                    data: { region: selectedRegion },
+                    success: function(data){
+                        // Clear existing options in tag_id dropdown
+                        $('#tag-dropdown').empty();
+
+                        // Add a default option
+                        $('#tag-dropdown').append($('<option>', {
+                            value: '',
+                            text: 'Select Tag'
+                        }));
+
+                        // Add new options based on the retrieved data
+                        $.each(data, function(index, value){
+                            $('#tag-dropdown').append($('<option>', {
+                                value: value,
+                                text: value
+                            }));
+                        });
+                    }
+                });
+            });
+
+            // Initialize the month and year datepicker
+            $('#monthYearPicker').datepicker({
+                format: "mm/yyyy",
+                viewMode: "months",
+                minViewMode: "months",
+                autoclose: true,
+                showOnFocus: true  // Display the calendar when the input field is focused
+            });
+        });
     function clearFilters() {
         document.getElementById('region_dropdown').value = '';
         document.getElementById('tag_dropdown').value = '';
@@ -1681,48 +1730,7 @@ table {
       }
 
 
-  
-      $(document).ready(function(){
-            // Event listener for changes in the REGION_NAME dropdown
-            $('#region-dropdown').change(function(){
-                // Get the selected REGION_NAME
-                var selectedRegion = $(this).val();
 
-                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
-                $.ajax({
-                    url: '/get_tags_asgs',
-                    method: 'GET',
-                    data: { region: selectedRegion },
-                    success: function(data){
-                        // Clear existing options in tag_id dropdown
-                        $('#tag-dropdown').empty();
-
-                        // Add a default option
-                        $('#tag-dropdown').append($('<option>', {
-                            value: '',
-                            text: 'Select Tag'
-                        }));
-
-                        // Add new options based on the retrieved data
-                        $.each(data, function(index, value){
-                            $('#tag-dropdown').append($('<option>', {
-                                value: value,
-                                text: value
-                            }));
-                        });
-                    }
-                });
-            });
-
-            // Initialize the month and year datepicker
-            $('#monthYearPicker').datepicker({
-                format: "mm/yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                autoclose: true,
-                showOnFocus: true  // Display the calendar when the input field is focused
-            });
-        });
 </script>
 
 
