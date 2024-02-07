@@ -959,7 +959,7 @@
   }
 </style>
 <body>
-    <div class="form-container">
+    <div class="text-box-group">
         <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
     
             <label for="region_dropdown">Select Region:</label>
@@ -993,7 +993,7 @@
         <form method="POST" action="/process_selected_rows">
         
             {% if not df.empty %}
-                <table border="1" class="dataframe data"   style="text-align: center;">
+                <table style= "border :#333 1px" class="dataframe data"   style="text-align: center;">
                     <thead style="position:relative;">
                         <tr style="text-align: right;">
                             
