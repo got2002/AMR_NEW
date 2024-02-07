@@ -36,7 +36,7 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 # Replace these values with your actual database credentials
 communication_traffic = []
-change_to_32bit_counter = 1  # Initialize the counter to 2
+change_to_32bit_counter = 0  # Initialize the counter to 2
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[
         2:
@@ -920,7 +920,8 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
-    
+    evc_type_list = df.get(["evc_type"]).values.tolist()
+    print(evc_type_list)
     poll_config_list = df.get(["poll_config"]).values.tolist()
     if poll_config_list:
         config_list_str = str(poll_config_list).strip("[]'").split(",")
@@ -1439,53 +1440,54 @@ def read_data():
         address = starting_address_1 + i * 2
         
         type_value = get_type_value_from_database(address)
-        hex_value = hex(value)  # Convert the decimal value to HEX
-        binary_value = convert_to_binary_string(value, bytes_per_value)
-        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database(address)
-        if description is None:
-            description = f"Address {address}"
-            address += 0
-        if is_16bit:
-            signed_value = value - 2**16 if value >= 2**15 else value
-            is_16bit_value = True
-            float_value = value if is_16bit_value else float_value
-            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-        else:
-            signed_value = value - 2**32 if value >= 2**31 else value
-            is_16bit_value = False
-            float_value = (
-                float_value
-                if is_16bit_value
-                else struct.unpack("!f", struct.pack("!I", value))[0]
-            )
-            float_signed_value = (
-                signed_value if is_16bit_value else None
-            )  # Set signed_value to None for 32-bit
-            # Apply type_value check after determining 16-bit or 32-bit format
-            if type_value == "Float":
-                # Set float_display_value to the float representation
-                float_display_value = float_value
-            elif type_value == "signed":
-                # Set float_display_value to the signed representation
-                float_display_value = signed_value
+        if type_value is not None:  # Check if type_value is not None
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
             else:
-                # Handle other cases or set a default behavior
-                float_display_value = "Undefined"
-                print(f"Type Value for address {address}: {type_value}")
-        data_list_1.append(
-            {
-                "description": description,
-                "address": address,
-                "value": value,
-                "hex_value": hex_value,
-                "binary_value": binary_value,
-                "float_value": float_display_value,
-                "signed_value": signed_value,
-                "is_16bit": is_16bit_value,
-                "float_signed_value": signed_value,
-            }
-        )
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  # Set signed_value to None for 32-bit
+                # Apply type_value check after determining 16-bit or 32-bit format
+                if type_value == "Float":
+                    # Set float_display_value to the float representation
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    # Set float_display_value to the signed representation
+                    float_display_value = signed_value
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_1.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
         
         value, updated_address = handle_action_configuration(i, value, address)
         
@@ -1649,11 +1651,11 @@ def read_data():
     for i, value in enumerate(values_5):
         
         address = starting_address_5 + i * 2
-        type_value = get_type_value_from_database(address)
+        type_value = get_type_value_from_database_billing(address)
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)
         float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database(address)
+        description = get_description_from_database_billing(address)
         if description is None:
             description = f"Address {address}"
             address += 0
@@ -1700,11 +1702,11 @@ def read_data():
     for i, value in enumerate(values_6):
         
             address = starting_address_6 + i * 2
-            type_value = get_type_value_from_database(address)
+            type_value = get_type_value_from_database_billing(address)
             hex_value = hex(value)  # Convert the decimal value to HEX
             binary_value = convert_to_binary_string(value, bytes_per_value)
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
+            description = get_description_from_database_billing(address)
             if description is None:
                 description = f"Address {address}"
                 address += 0
@@ -1752,11 +1754,11 @@ def read_data():
     for i, value in enumerate(values_7):
         
             address = starting_address_7 + i * 2
-            type_value = get_type_value_from_database(address)
+            type_value = get_type_value_from_database_billing(address)
             hex_value = hex(value)  # Convert the decimal value to HEX
             binary_value = convert_to_binary_string(value, bytes_per_value)
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
+            description = get_description_from_database_billing(address)
             if description is None:
                 description = f"Address {address}"
                 address += 0
@@ -2365,7 +2367,9 @@ def read_data():
                 "poll_config_enable",
             ],
         )
-        # ... (other code)
+        evc_type_list = df.get(["evc_type"]).values.tolist() 
+        print(evc_type_list)
+        
         poll_config_list = df.get(["poll_config"]).values.tolist()
         print(poll_config_list)
         
@@ -2458,12 +2462,7 @@ def handle_action_configuration(i, value, address):
     return value, address
 
 
-def get_description_from_database(address):
-    
-    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
-    params = {"address": address}
-    result = fetch_data(query, params)
-    return result[0][0] if result else None
+
 
     
 @app.route("/process_selected_rows", methods=["POST"])
@@ -2472,13 +2471,36 @@ def process_selected_rows():
     return "Selected rows processed successfully"
 
 
-def get_type_value_from_database(address):
+def get_description_from_database_billing(address):
+    query = "SELECT DESCRIPTION FROM amr_mapping_billing WHERE ADDRESS = :address"
+    params = {"address": address}
+    result = fetch_data(query, params)
     
-    query = "SELECT TYPE_VALUE FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
+    return result[0][0] if result else None
+def get_type_value_from_database_billing(address):
+    query = "SELECT data_type FROM amr_mapping_billing WHERE ADDRESS = :address AND evc_type = :evc_type"
     result = fetch_data(query, params={"address": address})
+    
     if result:
-        return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
+        return result[0][0]  
     return None
+
+
+
+def get_description_from_database(address):
+    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
+    params = {"address": address}
+    result = fetch_data(query, params)
+    return result[0][0] if result else None
+def get_type_value_from_database(address):
+    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type like '13'"
+    result = fetch_data(query, params={"address": address})
+    
+    if result:
+        return result[0][0] 
+    return None
+
+
 ############ /Manualpoll_data  #####################
 @app.route("/logout")
 def logout():
