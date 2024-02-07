@@ -64,6 +64,7 @@ def update_billing_sql(sql_update):
         cursor.execute(sql_update)
     connection.commit()
 
+
 def insert_address_range_to_oracle(
     poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
@@ -435,8 +436,8 @@ def update_mapping_config():
         address_value = request.form.get(address_key.strip("',()"))
         description_value = request.form.get(description_key.strip("',()"))
         data_type_value = request.form.get(data_type_key.strip("',()"))
-        evc_type_value = request.form.get(evc_type_key.strip("',()"))
-        or_der_value = request.form.get(or_der_key.strip("',()"))
+        evc_type_value = request.form.get(evc_type_key)
+        or_der_value = request.form.get(or_der_key)
         
         # print("address:", address_value)
 
@@ -448,7 +449,7 @@ def update_mapping_config():
             DESCRIPTION = '{description_value}',
             DATA_TYPE = '{data_type_value}',
             OR_DER = '{or_der_value}'        
-        WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
+        WHERE evc_type = {evc_type_value} and or_der = {or_der_value}
     """
 
         execute_sql(update_query)
@@ -478,6 +479,7 @@ def mapping_billing_route():
     WHERE
         amr_mapping_billing.evc_type = amr_vc_type.id
         AND amr_vc_type.VC_NAME LIKE '{selected_type}'
+        AND daily = 1
     """
 
     selected_type = request.args.get("type_dropdown")
@@ -486,7 +488,12 @@ def mapping_billing_route():
     if selected_type:
         query = base_query.format(selected_type=selected_type)
         results = fetch_data(query)
-
+        
+        print("max_day:", selected_type)
+        max_daily_query = f"SELECT MAX(daily) FROM amr_mapping_billing WHERE evc_type LIKE '{selected_type}'"
+        max_daily_result = fetch_data(max_daily_query)
+        max_daily_value = str(max_daily_result[0][0]) if max_daily_result and max_daily_result[0][0] else ""
+        print(max_daily_result)
         columns = [
             "address",
             "description",
@@ -523,6 +530,7 @@ def mapping_billing_route():
             'mapping_billing.html', 
             type_options=type_options, 
             selected_type=selected_type, 
+            max_daily_value=max_daily_value,
             table=df.to_html(index=False),
             list_address=df["address"].tolist(),
             list_description=df["description"].tolist(),
@@ -545,7 +553,7 @@ def update_mapping_billing():
     type_id = str(results[0]).strip("',()")
     print("type:", type_id)
 
-    for i in range(0, 100):  # Start from 1 and end at 20
+    for i in range(0, 100): 
         i = f"{i:02d}"
         address_key = f"list_address{i}"
         description_key = f"list_description{i}"
