@@ -266,17 +266,17 @@
                         <th>VCtype</th>
                         <th>IPAddress</th>
                         <th>Port</th>
-                        <th 
+                        <th style="display:none;"
                         >evc_type</th>
-                        <th 
+                        <th style="display:none;"
                         >vc_name</th>
-                        <th 
+                        <th style="display:none;"
                         >poll_billing</th>
-                        <th 
+                        <th style="display:none;"
                         >poll_config</th>
-                        <th 
+                        <th style="display:none;"
                         >poll_billing_enable</th>
-                        <th 
+                        <th style="display:none;"
                         >poll_config_enable</th>
                     </tr>
                 </thead>
@@ -294,12 +294,12 @@
                                 <!-- <td>{{ '127.0.0.1' }}</td> -->
                                 <td>{{ row['IPAddress'] }}</td>
                                 <td>{{ row['Port'] }}</td>
-                                <td >{{ row['evc_type'] }}</td>
-                                <td >{{ row['vc_name'] }}</td>
-                                <td >{{ row['poll_billing'] }}</td>
-                                <td >{{ row['poll_config'] }}</td>
-                                <td >{{ row['poll_billing_enable'] }}</td>
-                                <td >{{ row['poll_config_enable'] }}</td>
+                                <td style="display:none;">{{ row['evc_type'] }}</td>
+                                <td style="display:none;">{{ row['vc_name'] }}</td>
+                                <td style="display:none;">{{ row['poll_billing'] }}</td>
+                                <td style="display:none;">{{ row['poll_config'] }}</td>
+                                <td style="display:none;">{{ row['poll_billing_enable'] }}</td>
+                                <td style="display:none;">{{ row['poll_config_enable'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -918,7 +918,7 @@
             </thead>
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_1 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                         <tr>
                             <td>{{ data['description'] }}</td>
                             <td>{{ data['value'] }}</td>
@@ -935,7 +935,7 @@
                                 {% endif %}
                             </td>
                         </tr>
-                    {% endif %}
+                    
                 {% endfor %}
             </tbody>
         </table>
@@ -1104,7 +1104,7 @@
             </thead>
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_6 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+               
                         <tr>
                             <td>{{ data['description'] }}</td>
                             <td>{{ data['value'] }}</td>
@@ -1122,7 +1122,7 @@
                                 {% endif %}
                             </td>
                         </tr>
-                        {% endif %}
+                      
                 {% endfor %}
             </tbody>
         </table>
