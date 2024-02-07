@@ -124,8 +124,8 @@ def fetch_data(connection, query, params=None):
 
 
 ############  Home page  #####################
-@app.route("/")
-def home():
+@app.route("/home")
+def home_amr():
     return render_template("home.html")
 ############ / Home page  #####################
 
@@ -399,7 +399,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-
+            print(query)
 
             # Return the template with the DataFrame
 
@@ -467,7 +467,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-
+            print(query)
         # Get selected values from the dropdowns
         billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
         configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
@@ -1851,6 +1851,21 @@ def get_tag():
     # Return the tag_id values as JSON
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/homeasgs")
 def homeasgs():
     return render_template("homeasgs.html")
