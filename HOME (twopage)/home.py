@@ -43,6 +43,20 @@ app.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
 
+def format_tx_message(slave_id, function_code, starting_address, quantity, data):
+    tx_message = bytearray([
+        slave_id,            # Slave Address
+        function_code,       # Function Code (Write Multiple Registers)
+        starting_address >> 8, starting_address & 0xFF,  # Starting Register Address
+        quantity >> 8, quantity & 0xFF,                  # Quantity of Registers
+        len(data)       # Byte Count (assuming each register is 2 bytes)
+    ])
+    tx_message.extend(data)
+    
+    crc = computeCRC(tx_message)
+    tx_message += crc.to_bytes(2, byteorder="big")
+    
+    return tx_message
 
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[
@@ -124,7 +138,7 @@ def fetch_data(connection, query, params=None):
 
 
 ############  Home page  #####################
-@app.route("/home")
+@app.route("/")
 def home_amr():
     return render_template("home.html")
 ############ / Home page  #####################
@@ -1998,7 +2012,7 @@ def read_data_old():
 
 
 @app.route("/write_evc",methods=["GET"])
-def Manualpoll_data():
+def Manualpoll_data_write_evc():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
        
@@ -2127,7 +2141,7 @@ def Manualpoll_data():
 
 
 @app.route('/write_evc', methods=['POST'])
-def read_data():
+def read_data_write_evc():
     global change_to_32bit_counter, tcp_ip, tcp_port, communication_traffic
     
     slave_id = int(request.form['slave_id'])
@@ -2313,23 +2327,23 @@ def read_data():
 
 
 
-@app.route("/get_tags", methods=["GET"])
-def get_tags():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        selected_region = request.args.get("selected_region")
+# @app.route("/get_tags", methods=["GET"])
+# def get_tags():
+#     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+#         print("Active Connection:", active_connection)
+#         selected_region = request.args.get("selected_region")
 
-        tag_query = """
-                SELECT DISTINCT TAG_ID
-                FROM AMR_FIELD_ID, AMR_PL_GROUP
-                WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
-                AND AMR_PL_GROUP.PL_REGION_ID = :region_id
-            """
+#         tag_query = """
+#                 SELECT DISTINCT TAG_ID
+#                 FROM AMR_FIELD_ID, AMR_PL_GROUP
+#                 WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+#                 AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+#             """
 
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-        tag_options.sort()
-        return jsonify({"tag_options": tag_options})
+#         tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+#         tag_options = [str(tag[0]) for tag in tag_results]
+#         tag_options.sort()
+#         return jsonify({"tag_options": tag_options})
     
 
 @app.route("/get_runs", methods=["GET"])
