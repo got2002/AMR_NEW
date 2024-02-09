@@ -117,13 +117,6 @@ input[type="text"] {
 
         <button type="submit">View</button><br><br>
 
-        <label for="max_day">Max Day</label>
-        <input type="text" id="max_day" name="max_day" value="{{ max_daily_value }}" readonly>
-
-        <th>Max Daily</th>
-
-        <td>{{ max_daily_value }}</td>
-
     </form>
 
     <!-- {% if table %}
@@ -135,6 +128,8 @@ input[type="text"] {
     <form method="POST" action="/update_mapping_billing_route">
     <input type="hidden" name="selected_type" value="{{ selected_type }}">
     <!-- <div class="textbox-container"> -->
+                <label for="max_day">Max day:</label>
+                <input type="text" id="max_day" name="max_day" value="{{ max_daily_value }}" >
         {% for i in range(0, list_address|length) %}
             <div class="textbox-pair">
                 <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
@@ -154,7 +149,7 @@ input[type="text"] {
                 <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
 
-                <label for="or_der{{ '{:02d}'.format(i) }}">OR DER {{ '{:02d}'.format(i + 1) }}</label>
+                <label for="or_der{{ '{:02d}'.format(i) }}">Order {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
 
                 <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
@@ -162,9 +157,11 @@ input[type="text"] {
                 
             </div>
         {% endfor %}
-    </div>
-                <label for="interval">Interval</label>
-                <input type="text" id="interval" name="interval" value=""><br><br>   
+    </div>    <br>
+
+                <label for="interval">Interval:</label>
+                <input type="text" id="interval" name="interval" value="{{ interval }}" placeholder="Enter interval value">
+                <br>
     <input type="submit" value="Submit">
 </form>
 
@@ -189,6 +186,7 @@ input[type="text"] {
         } else {
             allOption.style.display = "block";
         }
+        
     });
 </script>
 
