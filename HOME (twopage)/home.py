@@ -43,6 +43,20 @@ app.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 1  # Initialize the counter to 2
 
+def format_tx_message(slave_id, function_code, starting_address, quantity, data):
+    tx_message = bytearray([
+        slave_id,            # Slave Address
+        function_code,       # Function Code (Write Multiple Registers)
+        starting_address >> 8, starting_address & 0xFF,  # Starting Register Address
+        quantity >> 8, quantity & 0xFF,                  # Quantity of Registers
+        len(data)       # Byte Count (assuming each register is 2 bytes)
+    ])
+    tx_message.extend(data)
+    
+    crc = computeCRC(tx_message)
+    tx_message += crc.to_bytes(2, byteorder="big")
+    
+    return tx_message
 
 def convert_to_binary_string(value, bytes_per_value):
     binary_string = bin(value)[
@@ -124,7 +138,7 @@ def fetch_data(connection, query, params=None):
 
 
 ############  Home page  #####################
-@app.route("/home")
+@app.route("/")
 def home_amr():
     return render_template("home.html")
 ############ / Home page  #####################
@@ -399,7 +413,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-
+            print(query)
 
             # Return the template with the DataFrame
 
@@ -467,7 +481,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-
+            print(query)
         # Get selected values from the dropdowns
         billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
         configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
@@ -1851,6 +1865,518 @@ def get_tag():
     # Return the tag_id values as JSON
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/Manualpoll')
+def index():
+
+    global tcp_ip, tcp_port
+    return render_template('index.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[], is_16bit=False, communication_traffic=communication_traffic)
+
+@app.route('/Manualpoll', methods=['POST'])
+def read_data_old():
+    global change_to_32bit_counter  # Use the global variable
+    
+    
+
+    slave_id = int(request.form['slave_id'])
+    function_code = int(request.form['function_code'])
+    starting_address = int(request.form['starting_address'])
+    quantity = int(request.form['quantity'])
+    tcp_ip = request.form['tcp_ip']
+    tcp_port = int(request.form['tcp_port'])
+
+
+    # Check if the data should be displayed in 16-bit format or 32-bit format
+    is_16bit = request.form.get("is_16bit") == "true"
+
+    if is_16bit:
+        bytes_per_value = 2
+    else:
+        bytes_per_value = 4
+        if change_to_32bit_counter > 0:
+            quantity *= 2
+            change_to_32bit_counter -= 1
+
+    # Build the request message
+    request_message = bytearray(
+        [
+            slave_id,
+            function_code,
+            starting_address >> 8,
+            starting_address & 0xFF,
+            quantity >> 8,
+            quantity & 0xFF,
+        ]
+    )
+
+    crc = computeCRC(request_message)
+    request_message += crc.to_bytes(2, byteorder="big")
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((tcp_ip, tcp_port))
+
+    # Store the TX message in communication_traffic
+    communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+
+    sock.send(request_message)
+
+    response = sock.recv(1024)
+
+    # Store the RX message in communication_traffic
+    communication_traffic.append({"direction": "RX", "data": response.hex()})
+
+    sock.close()
+
+    data = response[3:]
+
+    values = [
+        int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data), bytes_per_value)
+    ]
+    data_list = []
+    values = values[:-1]
+    address = starting_address
+    for i, value in enumerate(values):
+        address = starting_address + i
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)  # Convert the decimal value to Binary
+
+        # Calculate the 32-bit Float Decimal Representation
+        float_value = struct.unpack('!f', struct.pack('!I', value))[0]
+        if is_16bit:
+            signed_value = value - 2**16 if value >= 2**15 else value
+            is_16bit_value = True
+            float_value = value if is_16bit_value else float_value
+            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+        else:
+            signed_value = value - 2**32 if value >= 2**31 else value
+            is_16bit_value = False
+            float_value = (
+                float_value
+                if is_16bit_value
+                else struct.unpack("!f", struct.pack("!I", value))[0]
+            )
+            float_signed_value = (
+                signed_value if is_16bit_value else None
+            )  # Set signed_value to None for 32-bit
+          
+        data_list.append({
+            'address': address,
+            'value': value,
+            'hex_value': hex_value,
+            'binary_value': binary_value,
+            'float_value': float_value  # Add the Decimal Representation to the data list
+        })
+    # Store the RX message in communication_traffic
+
+    session['tcp_ip'] = tcp_ip
+    session['tcp_port'] = tcp_port
+    # ตรวจสอบค่า is_16bit เพื่อเพิ่มข้อมูลลงในตาราง 16-bit
+    if not is_16bit:
+        # เพิ่มข้อมูลลงในตาราง 16-bit โดยเพิ่มค่าลงในตารางเดิมและเพิ่มค่าอีก 1
+        data_list_16bit = []
+        for data_16bit in data_list:
+            address_16bit = data_16bit['address']
+            value_16bit = data_16bit['value'] * 2  # เพิ่มค่าขึ้นเป็น 2 เท่าเพื่อให้เป็น 1 เท่าของข้อมูลเดิม
+            data_list_16bit.append({'address': address_16bit, 'value': value_16bit})
+
+    return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
+                           starting_address=starting_address, quantity=quantity, is_16bit=is_16bit, communication_traffic=communication_traffic)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route("/write_evc",methods=["GET"])
+def Manualpoll_data_write_evc():
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+       
+        region_query = """
+            SELECT * FROM AMR_REGION 
+        """
+        tag_query = """
+            SELECT DISTINCT TAG_ID
+            FROM AMR_FIELD_ID, AMR_PL_GROUP
+            WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+            AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+        """
+        run_query = """
+            SELECT DISTINCT METER_STREAM_NO
+            FROM AMR_FIELD_ID , amr_field_meter
+            WHERE amr_field_id.meter_id = amr_field_meter.meter_id
+            AND amr_field_id.tag_id = :tag_id
+        """
+        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_options = [str(region[0]) for region in region_results]
+
+        query = """
+            SELECT
+                AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+                AMR_PL_GROUP.PL_REGION_ID as region,
+                AMR_FIELD_ID.TAG_ID as Sitename,
+                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+                AMR_FIELD_METER.METER_ID as METERID,
+                AMR_VC_TYPE.VC_NAME as VCtype,
+                AMR_FIELD_ID.SIM_IP as IPAddress,
+                AMR_PORT_INFO.PORT_NO as port
+            FROM
+                AMR_FIELD_ID,
+                AMR_USER,
+                AMR_FIELD_CUSTOMER,
+                AMR_FIELD_METER,
+                AMR_PL_GROUP,
+                AMR_VC_TYPE,
+                AMR_PORT_INFO
+            WHERE
+                AMR_USER.USER_ENABLE=1 AND
+                AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+                AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+                AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+                AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+                AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+                AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+                {tag_condition}
+                {region_condition}
+                {run_condition}
+        """
+
+        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+        region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
+        run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
+
+        selected_tag = request.args.get("tag_dropdown")
+        selected_region = request.args.get("region_dropdown")
+        selected_run = request.args.get("run_dropdown")
+
+        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_options = [str(region[0]) for region in region_results]
+
+        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+        tag_options = [str(tag[0]) for tag in tag_results]
+
+        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+        run_options = [str(run[0]) for run in run_results]
+
+        # Sort the tag options alphabetically
+        tag_options.sort()
+
+        
+
+        if selected_tag:
+            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+        if selected_region:
+            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+        if selected_run:
+            run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
+
+
+        query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
+
+        results = fetch_data(ptt_pivot_connection,query)
+        
+        df = pd.DataFrame(
+            results,
+            columns=[
+                "RUN",
+                "Region",
+                "Sitename",
+                "NoRun",
+                "METERID",
+                "VCtype",
+                "IPAddress",
+                "Port",
+            ],
+        )
+    tcp_ip = df.get(["IPAddress"]).values.tolist()
+    if tcp_ip:
+        ip_str = str(tcp_ip).strip("['']")
+        print(ip_str)
+    else:
+        ip_str = [''] 
+
+
+    tcp_port = df.get(["Port"]).values.tolist()
+    if tcp_port:
+        Port_str = str(tcp_port).strip("['']")
+    else:
+        Port_str = [''] 
+    
+    return render_template(
+        "evc.html",
+        tables=[df.to_html(classes="data")],
+        titles=df.columns.values,
+        selected_tag=selected_tag,
+        selected_region=selected_region,
+        selected_run=selected_run,
+        region_options=region_options,
+        tag_options=tag_options,
+        run_options=run_options,
+        df=df,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip
+    )
+
+
+@app.route('/write_evc', methods=['POST'])
+def read_data_write_evc():
+    global change_to_32bit_counter, tcp_ip, tcp_port, communication_traffic
+    
+    slave_id = int(request.form['slave_id'])
+    function_code = int(request.form['function_code'])
+    starting_address = int(request.form['starting_address'])
+    quantity = int(request.form['quantity'])
+    tcp_ip = request.form['tcp_ip']
+    tcp_port = int(request.form['tcp_port'])
+
+    is_16bit = request.form.get('is_16bit') == 'true'
+
+    if is_16bit:
+        bytes_per_value = 2
+    else:
+        bytes_per_value = 4
+        if change_to_32bit_counter > 0:
+            quantity *= 2
+            change_to_32bit_counter -= 1
+
+    request_data = bytearray()
+    for i in range(quantity):
+       
+        data_i = int(request.form[f'data_{i}'])
+        request_data.extend(data_i.to_bytes(bytes_per_value, byteorder="big", signed=False))
+
+    request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((tcp_ip, tcp_port))
+    communication_traffic = []
+
+    communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+    sock.send(request_message)
+    response = sock.recv(1024)
+
+    communication_traffic.append({"direction": "RX", "data": response.hex()})
+    sock.close()
+
+
+    data = response[3:]
+    
+    values = [
+        int.from_bytes(data[i: i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data), bytes_per_value)
+    ]
+   
+   
+    session['tcp_ip'] = tcp_ip
+    session['tcp_port'] = tcp_port
+    # ตรวจสอบค่า is_16bit เพื่อเพิ่มข้อมูลลงในตาราง 16-bit
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+       
+        region_query = """
+            SELECT * FROM AMR_REGION 
+        """
+        tag_query = """
+            SELECT DISTINCT TAG_ID
+            FROM AMR_FIELD_ID, AMR_PL_GROUP
+            WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+            AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+        """
+        run_query = """
+            SELECT DISTINCT METER_STREAM_NO
+            FROM AMR_FIELD_ID , amr_field_meter
+            WHERE amr_field_id.meter_id = amr_field_meter.meter_id
+            AND amr_field_id.tag_id = :tag_id
+        """
+        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_options = [str(region[0]) for region in region_results]
+
+        query = """
+            SELECT
+                AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+                AMR_PL_GROUP.PL_REGION_ID as region,
+                AMR_FIELD_ID.TAG_ID as Sitename,
+                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+                AMR_FIELD_METER.METER_ID as METERID,
+                AMR_VC_TYPE.VC_NAME as VCtype,
+                AMR_FIELD_ID.SIM_IP as IPAddress,
+                AMR_PORT_INFO.PORT_NO as port
+            FROM
+                AMR_FIELD_ID,
+                AMR_USER,
+                AMR_FIELD_CUSTOMER,
+                AMR_FIELD_METER,
+                AMR_PL_GROUP,
+                AMR_VC_TYPE,
+                AMR_PORT_INFO
+            WHERE
+                AMR_USER.USER_ENABLE=1 AND
+                AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+                AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+                AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+                AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+                AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+                AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+                {tag_condition}
+                {region_condition}
+                {run_condition}
+        """
+
+        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+        region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
+        run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
+
+        selected_tag = request.args.get("tag_dropdown")
+        selected_region = request.args.get("region_dropdown")
+        selected_run = request.args.get("run_dropdown")
+
+        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_options = [str(region[0]) for region in region_results]
+
+        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+        tag_options = [str(tag[0]) for tag in tag_results]
+
+        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+        run_options = [str(run[0]) for run in run_results]
+
+        # Sort the tag options alphabetically
+        tag_options.sort()
+
+        
+
+        if selected_tag:
+            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+        if selected_region:
+            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+        if selected_run:
+            run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
+
+
+        query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
+
+        results = fetch_data(ptt_pivot_connection,query)
+        
+        df = pd.DataFrame(
+            results,
+            columns=[
+                "RUN",
+                "Region",
+                "Sitename",
+                "NoRun",
+                "METERID",
+                "VCtype",
+                "IPAddress",
+                "Port",
+            ],
+        )
+    tcp_ip = df.get(["IPAddress"]).values.tolist()
+    if tcp_ip:
+        ip_str = str(tcp_ip).strip("['']")
+        print(ip_str)
+    else:
+        ip_str = [''] 
+
+
+    tcp_port = df.get(["Port"]).values.tolist()
+    if tcp_port:
+        Port_str = str(tcp_port).strip("['']")
+    else:
+        Port_str = [''] 
+    
+
+    return render_template('evc.html',   df=df,
+
+        slave_id=slave_id,
+        function_code=function_code,
+        starting_address=starting_address,
+        quantity=quantity,
+        is_16bit=is_16bit,
+        communication_traffic=communication_traffic,
+        data=data,
+        tables=[df.to_html(classes="data")],
+        titles=df.columns.values,
+        selected_tag=selected_tag,
+        selected_region=selected_region,
+        region_options=region_options,
+        tag_options=tag_options,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip)
+    
+
+
+
+
+
+# @app.route("/get_tags", methods=["GET"])
+# def get_tags():
+#     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+#         print("Active Connection:", active_connection)
+#         selected_region = request.args.get("selected_region")
+
+#         tag_query = """
+#                 SELECT DISTINCT TAG_ID
+#                 FROM AMR_FIELD_ID, AMR_PL_GROUP
+#                 WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+#                 AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+#             """
+
+#         tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+#         tag_options = [str(tag[0]) for tag in tag_results]
+#         tag_options.sort()
+#         return jsonify({"tag_options": tag_options})
+    
+
+@app.route("/get_runs", methods=["GET"])
+def get_runs():
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+        selected_tag = request.args.get("selected_tag")
+
+        run_query = """
+            SELECT DISTINCT METER_STREAM_NO
+            FROM AMR_FIELD_ID , amr_field_meter
+            WHERE amr_field_id.meter_id = amr_field_meter.meter_id
+            AND amr_field_id.tag_id = :tag_id
+        """
+
+        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+        run_options = [str(run[0]) for run in run_results]
+        run_options.sort()
+        return jsonify({"run_options": run_options})
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/homeasgs")
 def homeasgs():
     return render_template("homeasgs.html")

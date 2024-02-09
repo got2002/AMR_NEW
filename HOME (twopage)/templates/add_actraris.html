@@ -949,16 +949,29 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="active">
-                        <i class="fas fa-wrench"></i>
-                        <strong>Poll Sitting</strong>
-                        <small>Sitting Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Mapping</a></li>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
-                    </ul>
-                </li>
+                  <a class="active">
+                      <i class="fas fa-wrench"></i>
+                      <strong>Polling Setting</strong>
+                      <small>Setting</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
+                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                  </ul>
+              </li>
+              <li>
+                <a>
+                    <i class="fas fa-wrench"></i>
+                    <strong>Mapping Setting</strong>
+                    <small>Setting</small>
+                </a>
+                <ul>
+                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
+                    <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
+                    <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
+                </ul>
+            </li>
             </ul>
         </nav>
         
