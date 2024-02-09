@@ -276,164 +276,35 @@
     opacity: 1;
   }
 
-
-/* Styling for all tables in the HTML structure */
-.table1 th,
-.table1 td,
-.table th,
-.table td {
-  font-size: small;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Common styles for th and td */
+th, td {
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #000000;
 }
 
-/* Styling for individual cells in all tables */
-.table th,
-.table td {
-  background-color: transparent;
-  border: 1.5px solid #171717;
-  height: 20px;
-  min-width: 55px;
-  max-width: 100px;
-  align-items: center;
-  text-align: center;
-  font-size: small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
-}
-
-/* Hover effect for individual cells in all tables */
-.table th:hover,
-.table td:hover {
-  width: 10%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-/* General styling for table cells (td) */
-td {
-  background-color: transparent;
-  border: 1.5px solid #171717;
-  height: 20px;
-  min-width: 55px;
-  max-width: 100px;
-  align-items: center;
-  text-align: center;
-  font-size: small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
-}
-
-
-/* Hover effect for table cells */
-td:hover {
-  width: 10%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-
-/* General styling for table headers (th) */
+/* Styles for th */
 th {
-  background-color: #bcb9b9;
-  border: 2px solid #171717;
-  height: 40px;
-  min-width: 55px;
-  max-width: 100px;
-  text-align: center;
-  align-items: center;
-  font-size: xx-small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
+    background-color: #bcb9b9;
+    height: 40px;
+    cursor: pointer;
+    font-size: xx-small;
 }
 
-/* Hover effect for table headers */
-th:hover {
-  width: 15%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 645px) {
-  .table {
-    width: 100%;
-  }
-}
-
-/* General styling for tables */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: large;
-  table-layout: fixed;
-  margin-top: -10px;
-  border: 2px solid #171717;
-  border-radius: 5px;
-  padding: 30px;
-}
-
-/* Styling for table headers and cells */
-th,
+/* Styles for td */
 td {
-  font-size: 10px;
-  border: 1px solid #000000;
-  text-align: center;
-  padding: 5px;
-  padding-left: 2px;
-  padding-right: 2px;
-  transition: box-shadow 0.3s ease-in-out;
+    background-color: rgb(255, 255, 255);
+    height: 20px;
+    width: 55px;
+    font-size: small;
 }
 
-/* Hover effect for table headers and cells */
-td:hover,
-th:hover {
-  background-color: #605f5f;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Additional styling for a specific table structure (.table1) */
-.table1 {
-  background-color: #a9a9a9;
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 30px;
-  margin: 10px auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Styling for table headers and cells in the .table1 structure */
-.table1 th,
-.table1 td {
-  font-size: small;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Table styles */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: large;
+    table-layout: fixed;
 }
 
 /* Container styling for tables */
@@ -2038,23 +1909,6 @@ input[type="text"]:focus {
           console.log('Error fetching tag options:', error);
           hideLoadingOverlay(); // Hide loading overlay after AJAX request error
         }
-      });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const cells = document.querySelectorAll('.th');
-
-    cells.forEach(cell => {
-      cell.addEventListener('mouseenter', () => {
-        cell.style.transform = 'scale(1.1)';
-        
-      });
-
-      cell.addEventListener('mouseleave', () => {
-        cell.style.transform = 'scale(1)';
       });
     });
   });
