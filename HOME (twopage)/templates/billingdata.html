@@ -83,12 +83,7 @@
 
 
 
-  .menu {
-    display: grid;
-    grid-template-rows: 40px max-content;
-    gap: 10px;
-    margin-top: 10%;
-  }
+
 
   .toggle {
     all: unset;
@@ -165,12 +160,14 @@
 
   form {
     margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
     background-color: #fff;
-    padding: 20px;
+    padding: 50px;
+    padding-top: 10%;
     border-radius: 5px;
     text-align: center;
+    max-width: min-content;
+    z-index: 5;
+    width: 100%;
   }
 
   .form-container {
@@ -180,16 +177,11 @@
   }
 
   .text-box-group {
-    width: 60%;
-    background-color: #fff;
-    padding: 1px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
-    margin-top: -35%;
+    margin-top: -45%;
     margin-bottom: 5%;
     z-index: 5;
-    margin-left: 40%;
+    margin-left: 50%;
   }
 
   .form-container-BOx {
@@ -198,14 +190,14 @@
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box;
-    width: 155%;
+    width: 125%;
     margin: auto;
     margin-top: 5%;
     margin-bottom: 60%;
     position: absolute;
     top: 100%;
-    left: 0%;
-    padding: 2px;
+    left: 10%;
+    padding: 50px;
   }
 
 
@@ -456,26 +448,57 @@ th:hover {
 
 
 
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
-    max-width: 200px;
-  }
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: .5rem 0;
+  margin: .125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: .25rem;
+  max-width: 200px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  padding: .5rem 1rem;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #212529;
+  white-space: nowrap;
+}
+
+/* เมื่อ hover รายการใน dropdown menu */
+.dropdown-menu li:hover {
+  background-color: #f8f9fa;
+}
+
+/* ลักษณะของลิงก์ใน dropdown menu */
+.dropdown-menu a {
+  color: #212529;
+  text-decoration: none;
+}
+
+/* เมื่อ hover ลิงก์ใน dropdown menu */
+.dropdown-menu a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
 
   #region_dropdown {
     width: 200px;
@@ -483,7 +506,7 @@ th:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
-    color: #333;
+    color: #ccc;
   }
 
   #region_dropdown:hover {
@@ -492,7 +515,7 @@ th:hover {
 
   #region_dropdown option {
     background-color: #fff;
-    color: #333;
+    color: #ccc;
   }
 
   #region_dropdown option:hover {
@@ -510,7 +533,7 @@ th:hover {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: #fff;
     color: #333;
   }
@@ -528,17 +551,6 @@ th:hover {
     background-color: #f2f2f2;
   }
 
-  .loadingoverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding-top: 20%;
-  }
 
 
   #region_dropdown {
@@ -634,17 +646,25 @@ th:hover {
     font-weight: bold;
   }
 
-  input[type="text"] {
-    padding: 8px;
-    box-sizing: border-box;
-    width: 30%;
-    border: 1px solid #050505;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    max-width: 200px;
-    display: flexbox;
-  }
+
+input[type="text"] {
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  width: 200px; 
+  box-sizing: border-box; 
+  transition: border-color 0.3s ease-in-out; 
+}
+
+input[type="text"]:hover {
+  border-color: #3498db; 
+}
+
+
+input[type="text"]:focus {
+  outline: none; 
+  border-color: #3498db;
+}
 
   select {
     padding: 8px;
@@ -794,8 +814,42 @@ th:hover {
       margin: 0 auto;
     }
   }
+  .mcd-menu li:hover>a i,
+  .mcd-menu li:hover a strong,
+  .mcd-menu li:hover a small {
+    animation: moveFromTop 500ms ease-in-out;
+  }
+  .nav-links {
+    display: flex;
+    gap: 20px; 
+  }
+  
+  @media only screen and (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: -30%;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 10px; 
+    }
+  }
+  
 
+  nav {
+    
+    padding: 20px; 
+    max-width: min-content;
+    margin-top: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
   .mcd-menu {
+    border: #2e6ff2  solid 4px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -804,12 +858,15 @@ th:hover {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    -ms-border-radius: 2px;
     /* == */
     width: 250px;
     /* == */
     max-width: 1880px;
+    border-top: #2e6ff2 solid 5px;
+    border-bottom: #2e6ff2 solid 5px;
 
-  }
+    }
 
   .mcd-menu li {
     position: relative;
@@ -1013,8 +1070,10 @@ th:hover {
     }
   }
 
+
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
+
     position: absolute;
     height: auto;
     min-width: 200px;
@@ -1422,6 +1481,20 @@ th:hover {
       font-size: 14px;
     }
   }
+  .mcd-menu li a i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mcd-menu li a:focus i,
+  .mcd-menu li a:hover i,
+  .mcd-menu li.active a i {
+    color: #3498db;
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 
   footer {
     background-color: #2e6ff2;
@@ -1477,43 +1550,7 @@ th:hover {
     margin-top: -25px;
   }
 
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
 
-  .navbar li {
-    margin-right: 20px;
-  }
-
-  .navbar a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease-in-out;
-  }
-
-  .navbar a:hover {
-    color: #8f8f8f;
-  }
-
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
 
 
   @keyframes spin {
@@ -1548,6 +1585,9 @@ th:hover {
     margin-bottom: 5px;
     margin-left: 30px;
   }
+
+  
+
 </style>
 
 <body>
@@ -1564,7 +1604,6 @@ th:hover {
   </header>
   <div class="container">
     <nav>
-      <ul class="mcd-menu">
         <ul class="mcd-menu">
           <li>
             <a href="{{ url_for('home_amr') }}">
