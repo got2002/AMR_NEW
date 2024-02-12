@@ -624,13 +624,8 @@ def billing_data():
                 "CONFIG19",
                 "CONFIG20",
             ]
-            dropped_columns_data = pd.concat(
-                [
-                    pd.DataFrame(columns=df.columns),
-                    pd.DataFrame(columns=columns_to_drop),
-                ],
-                axis=1,
-            )
+           
+            tables = {}
             dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
             dropped_columns_data[
                 "DATA_DATE"

@@ -26,6 +26,50 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
 <style>
+  html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
   @font-face {
     font-family: "PTT45Pride-Bold";
     src: url("PTT45Pride-Bold.otf") format("truetype");
@@ -35,7 +79,7 @@
 
   @media only screen and (min-width: 1024px) {
     body {
-      background-image: linear-gradient(to right, #5b707e, #abb2b9);
+      
       font-family: "PTT45Pride-Bold", sans-serif;
       font-weight: bold;
       max-width: 100vw;
@@ -83,12 +127,7 @@
 
 
 
-  .menu {
-    display: grid;
-    grid-template-rows: 40px max-content;
-    gap: 10px;
-    margin-top: 10%;
-  }
+
 
   .toggle {
     all: unset;
@@ -163,14 +202,17 @@
   }
 
 
+
   form {
     margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: #fff;
-    padding: 20px;
+    background-image: linear-gradient(to right, #5b707e, #abb2b9);
+    padding: 50px;
+    padding-top: 10%;
     border-radius: 5px;
     text-align: center;
+    max-width: min-content;
+    z-index: 5;
+    width: 100%;
   }
 
   .form-container {
@@ -180,32 +222,25 @@
   }
 
   .text-box-group {
-    width: 60%;
-    background-color: #fff;
-    padding: 1px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
     margin: auto;
-    margin-top: -35%;
+    margin-top: -45%;
     margin-bottom: 5%;
     z-index: 5;
-    margin-left: 40%;
+    margin-left: 45%;
   }
 
   .form-container-BOx {
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box;
-    width: 155%;
     margin: auto;
     margin-top: 5%;
     margin-bottom: 60%;
     position: absolute;
     top: 100%;
-    left: 0%;
-    padding: 2px;
+    left: 4px;
+    padding: 50px;
   }
 
 
@@ -284,165 +319,78 @@
     opacity: 1;
   }
 
-
-/* Styling for all tables in the HTML structure */
-.table1 th,
-.table1 td,
-.table th,
-.table td {
-  font-size: small;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Common styles for th and td */
+th, td {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #3498db;
+    transition: background-color 0.3s; /* Add smooth transition for background color change */
 }
 
-/* Styling for individual cells in all tables */
-.table th,
-.table td {
-  background-color: transparent;
-  border: 1.5px solid #171717;
-  height: 20px;
-  min-width: 55px;
-  max-width: 100px;
-  align-items: center;
-  text-align: center;
-  font-size: small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
-}
-
-/* Hover effect for individual cells in all tables */
-.table th:hover,
-.table td:hover {
-  width: 10%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-/* General styling for table cells (td) */
-td {
-  background-color: transparent;
-  border: 1.5px solid #171717;
-  height: 20px;
-  min-width: 55px;
-  max-width: 100px;
-  align-items: center;
-  text-align: center;
-  font-size: small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
-}
-
-
-/* Hover effect for table cells */
-td:hover {
-  width: 10%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-
-/* General styling for table headers (th) */
+/* Styles for th */
 th {
-  background-color: #bcb9b9;
-  border: 2px solid #171717;
-  height: 40px;
-  min-width: 55px;
-  max-width: 100px;
-  text-align: center;
-  align-items: center;
-  font-size: xx-small;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  position: relative;
+    background-color: #3498db;
+    height: 60px;
+    cursor: pointer;
+    font-size: large;
+    color: #ffffff;
+    border: 2px solid #2980b9;
+    position: relative;
+    overflow: hidden; /* Hide overflowing content */
+    word-wrap: break-word; /* Break words to the next line */
 }
 
-/* Hover effect for table headers */
-th:hover {
-  width: 15%;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: scale(1.1);
-  overflow: visible;
-  z-index: 1;
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 645px) {
-  .table {
-    width: 100%;
-  }
-}
-
-/* General styling for tables */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: large;
-  table-layout: fixed;
-  margin-top: -10px;
-  border: 2px solid #171717;
-  border-radius: 5px;
-  padding: 30px;
-}
-
-/* Styling for table headers and cells */
-th,
+/* Styles for td */
 td {
-  font-size: 10px;
-  border: 1px solid #000000;
-  text-align: center;
-  padding: 5px;
-  padding-left: 2px;
-  padding-right: 2px;
-  transition: box-shadow 0.3s ease-in-out;
+    background-color: #ecf0f1;
+    height: 40px;
+    width: auto;
+    font-size: medium;
+    border: 2px solid #bdc3c7;
+    overflow: hidden; /* Hide overflowing content */
+    word-wrap: break-word; /* Break words to the next line */
+    padding: 0%;
+}
+/* Add a pseudo-element for a decorative triangle on th */
+th::after {
+    content: '';
+    display: block;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #3498db;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* Hover effect for rows */
+tr:hover {
+    background-color: #d6eaf8;
 }
 
-/* Hover effect for table headers and cells */
-td:hover,
-th:hover {
-  background-color: #605f5f;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Alternate row colors for better readability */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
-/* Additional styling for a specific table structure (.table1) */
-.table1 {
-  background-color: #a9a9a9;
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 30px;
-  margin: 10px auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Responsive design */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        overflow-x: auto;
+    }
 }
 
-/* Styling for table headers and cells in the .table1 structure */
-.table1 th,
-.table1 td {
-  font-size: small;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Table styles */
+table {
+    border-collapse: collapse;
+    width: 300%;
+    font-size: large;
+    table-layout: fixed;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Hide overflowing content */
 }
+
 
 /* Container styling for tables */
 .table-container {
@@ -451,33 +399,64 @@ th:hover {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 0%;
-  margin-bottom: 1%;
+  margin-bottom: -5%;
 }
 
 
 
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
-    max-width: 200px;
-  }
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: .5rem 0;
+  margin: .125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: .25rem;
+  max-width: 200px;
+}
 
-  #region_dropdown {
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  padding: .5rem 1rem;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #212529;
+  white-space: nowrap;
+}
+
+/* เมื่อ hover รายการใน dropdown menu */
+.dropdown-menu li:hover {
+  background-color: #f8f9fa;
+}
+
+/* ลักษณะของลิงก์ใน dropdown menu */
+.dropdown-menu a {
+  color: #212529;
+  text-decoration: none;
+}
+
+/* เมื่อ hover ลิงก์ใน dropdown menu */
+.dropdown-menu a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+
+#region_dropdown {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
@@ -498,7 +477,6 @@ th:hover {
   #region_dropdown option:hover {
     background-color: #f2f2f2;
   }
-
   label[for="tag_dropdown"] {
     display: block;
     margin-bottom: 5px;
@@ -510,7 +488,7 @@ th:hover {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: #fff;
     color: #333;
   }
@@ -528,17 +506,6 @@ th:hover {
     background-color: #f2f2f2;
   }
 
-  .loadingoverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding-top: 20%;
-  }
 
 
   #region_dropdown {
@@ -634,17 +601,25 @@ th:hover {
     font-weight: bold;
   }
 
-  input[type="text"] {
-    padding: 8px;
-    box-sizing: border-box;
-    width: 30%;
-    border: 1px solid #050505;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    max-width: 200px;
-    display: flexbox;
-  }
+
+input[type="text"] {
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  width: 200px; 
+  box-sizing: border-box; 
+  transition: border-color 0.3s ease-in-out; 
+}
+
+input[type="text"]:hover {
+  border-color: #3498db; 
+}
+
+
+input[type="text"]:focus {
+  outline: none; 
+  border-color: #3498db;
+}
 
   select {
     padding: 8px;
@@ -794,8 +769,42 @@ th:hover {
       margin: 0 auto;
     }
   }
+  .mcd-menu li:hover>a i,
+  .mcd-menu li:hover a strong,
+  .mcd-menu li:hover a small {
+    animation: moveFromTop 500ms ease-in-out;
+  }
+  .nav-links {
+    display: flex;
+    gap: 20px; 
+  }
+  
+  @media only screen and (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: -30%;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 10px; 
+    }
+  }
+  
 
+  nav {
+    
+    padding: 20px; 
+    max-width: min-content;
+    margin-top: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
   .mcd-menu {
+    border: #2e6ff2  solid 4px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -804,12 +813,15 @@ th:hover {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    -ms-border-radius: 2px;
     /* == */
     width: 250px;
     /* == */
     max-width: 1880px;
+    border-top: #2e6ff2 solid 5px;
+    border-bottom: #2e6ff2 solid 5px;
 
-  }
+    }
 
   .mcd-menu li {
     position: relative;
@@ -1013,8 +1025,10 @@ th:hover {
     }
   }
 
+
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
+
     position: absolute;
     height: auto;
     min-width: 200px;
@@ -1422,6 +1436,20 @@ th:hover {
       font-size: 14px;
     }
   }
+  .mcd-menu li a i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mcd-menu li a:focus i,
+  .mcd-menu li a:hover i,
+  .mcd-menu li.active a i {
+    color: #3498db;
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 
   footer {
     background-color: #2e6ff2;
@@ -1477,43 +1505,7 @@ th:hover {
     margin-top: -25px;
   }
 
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
 
-  .navbar li {
-    margin-right: 20px;
-  }
-
-  .navbar a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease-in-out;
-  }
-
-  .navbar a:hover {
-    color: #8f8f8f;
-  }
-
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
 
 
   @keyframes spin {
@@ -1548,6 +1540,9 @@ th:hover {
     margin-bottom: 5px;
     margin-left: 30px;
   }
+
+  
+
 </style>
 
 <body>
@@ -1564,7 +1559,6 @@ th:hover {
   </header>
   <div class="container">
     <nav>
-      <ul class="mcd-menu">
         <ul class="mcd-menu">
           <li>
             <a href="{{ url_for('home_amr') }}">
@@ -1689,171 +1683,173 @@ th:hover {
     </div>
 
     <div class="form-container-BOx">
-
       <div>
+        <div class="table-container1">
+            {% if tables.get('config_data_run1') %}
+            <div class="table" id="table1">
+                <h5>Run 1: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run1']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
-        <div class="table-container">
-          {% if tables.get('daily_data_run1') %}
-          <div class="table" id="table1">
-            <h1>Run 1: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run1']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run2') %}
-          <div class="table" id="table2">
-            <h1>Run 2: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run2']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run3') %}
-          <div class="table" id="table3">
-            <h1>Run 3: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run3']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run4') %}
-          <div class="table" id="table4">
-            <h1>Run 4: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run4']|safe }}
-          </div>
-          {% endif %}
+            {% if tables.get('config_data_run2') %}
+            <div class="table" id="table1">
+                <h5>Run 2: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run2']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
+            {% if tables.get('config_data_run3') %}
+            <div class="table" id="table1">
+                <h5>Run 3: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run3']|safe }}
+                    </tbody>
+                </table>
+
+
+            </div>
+            {% endif %}
+
+            {% if tables.get('config_data_run4') %}
+            <div class="table" id="table1">
+                <h5>Run 4: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run4']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run5') %}
+            <div class="table" id="table1">
+                <h5>Run 5: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run5']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run6') %}
+            <div class="table" id="table1">
+                <h5>Run 6: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run6']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
         </div>
-        <div class="table-container">
-          {% if tables.get('config_data_run1') %}
-          <div class="table" id="table1">
-            <h1>Run 1: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run1']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
+    </div>
+</div>
+</div>
+<div class="table-container">
+{% if tables.get('daily_data_run1') %}
+<div class="table" id="table1">
+    <h5>Run 1: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run1']|safe }}
+</div>
+{% endif %}
 
-          {% if tables.get('config_data_run2') %}
-          <div class="table" id="table1">
-            <h1>Run 2: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run2']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
+{% if tables.get('daily_data_run2') %}
+<div class="table" id="table2">
+    <h5>Run 2: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run2']|safe }}
+</div>
+{% endif %}
 
-          {% if tables.get('config_data_run3') %}
-          <div class="table" id="table1">
-            <h1>Run 3: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run3']|safe }}
-              </tbody>
-            </table>
+{% if tables.get('daily_data_run3') %}
+<div class="table" id="table3">
+    <h5>Run 3: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run3']|safe }}
+</div>
+{% endif %}
 
-          </div>
-          {% endif %}
+{% if tables.get('daily_data_run4') %}
+<div class="table" id="table4">
+    <h5>Run 4: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run4']|safe }}
+</div>
+<div class="plot-container">
+    {{ graph_corrected|safe }}
+</div>
 
-          {% if tables.get('config_data_run4') %}
-          <div class="table" id="table1">
-            <h1>Run 4: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run4']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          {% if tables.get('config_data_run5') %}
-          <div class="table" id="table1">
-            <h1>Run 5: {{ selected_tag }}</h1>
-            <table class="table1">
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run5']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          {% if tables.get('config_data_run6') %}
-          <div class="table" id="table1">
-            <h1>Run 6: {{ selected_tag }}</h1>
-            <table class="table1">
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run6']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          <div class="plot-container">
-            {{ graph_corrected|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_uncorrected|safe }}
+</div>
 
-          <div class="plot-container">
-            {{ graph_uncorrected|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_pressure|safe }}
+</div>
 
-          <div class="plot-container">
-            {{ graph_pressure|safe }}
-          </div>
-
-          <div class="plot-container">
-            {{ graph_temperature|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_temperature|safe }}
+</div>
+{% endif %}
+</div>
+</div>
           <footer class="footer">POWERED BY ATOS - ASGS</footer>
           <!-- <script src="main.js"></script> -->
           <div>
@@ -1999,23 +1995,6 @@ th:hover {
           console.log('Error fetching tag options:', error);
           hideLoadingOverlay(); // Hide loading overlay after AJAX request error
         }
-      });
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const cells = document.querySelectorAll('.th');
-
-    cells.forEach(cell => {
-      cell.addEventListener('mouseenter', () => {
-        cell.style.transform = 'scale(1.1)';
-        
-      });
-
-      cell.addEventListener('mouseleave', () => {
-        cell.style.transform = 'scale(1)';
       });
     });
   });
