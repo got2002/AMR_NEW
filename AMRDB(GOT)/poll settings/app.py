@@ -51,34 +51,6 @@ def update_sql(sql_statement):
 
         cursor.execute(sql_statement)
     connection.commit()
-    
-# update mapping config 
-def execute_sql(sql_update):
-    with connection.cursor() as cursor:
-
-        cursor.execute(sql_update)
-    connection.commit()
-    
-# update mapping billing    
-def update_billing_sql(sql_update):
-    with connection.cursor() as cursor:
-
-        cursor.execute(sql_update)
-    connection.commit()
-
-# update mapping delete billing     
-def delete_billing_sql(sql_update):
-    with connection.cursor() as cursor:
-
-        cursor.execute(sql_update)
-    connection.commit()
-    
-# update mapping insert billing     
-def insert_billing_sql(sql_update):
-    with connection.cursor() as cursor:
-
-        cursor.execute(sql_update)
-    connection.commit()
 
 def insert_address_range_to_oracle(
     connection, poll_config, poll_billing, enable_config, enable_billing, evc_type
@@ -273,6 +245,9 @@ def update_polling_data():
     
     return redirect("/polling_route")
 
+def checkStrNone(stringcheck):
+    if stringcheck == "None": return ""
+    return stringcheck
 
 @app.route("/add_polling_route")
 def add_polling_route():
@@ -437,7 +412,7 @@ def update_mapping_config():
     type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
     results = fetch_data(type_id_query)
     type_id = str(results[0]).strip("',()")
-    print("type:", type_id)
+    print("type:", results)
 
     description_VC_TYPE = []
     
@@ -449,19 +424,18 @@ def update_mapping_config():
         evc_type_key = f"list_evc_type{i}"
         or_der_key = f"list_or_der{i}"
         
-        #print("description_key = ", description_key)
-        address_value = request.form.get(address_key.strip("',()"))
-        description_value = request.form.get(description_key.strip("',()"))
-        data_type_value = request.form.get(data_type_key.strip("',()"))
+        address_value = checkStrNone(request.form.get(address_key))
+        description_value = checkStrNone(request.form.get(description_key))
+        data_type_value = checkStrNone(request.form.get(data_type_key))
         evc_type_value = request.form.get(evc_type_key)
         or_der_value = request.form.get(or_der_key)
         
-        description_VC_TYPE.append(description_value)
-        print("---", description_VC_TYPE)
-        #description_VC_TYPE[j] = request.form.get(description_key.strip("',()"))
+        # if description_value == "None":
+        #     description_value = ""
         
-        #print("description_value = ", description_value)
-        #print("address:", address_value)
+        description_VC_TYPE.append(checkStrNone(description_value))
+        print("---", description_value)
+        # return redirect('/mapping_config') # TODO : handler an errors and alert it.
 
         # Update SQL query based on your table structure
         update_query = f"""
@@ -471,11 +445,10 @@ def update_mapping_config():
             DESCRIPTION = '{description_value}',
             DATA_TYPE = '{data_type_value}',
             OR_DER = '{or_der_value}'        
-        WHERE evc_type = {evc_type_value} and or_der = {or_der_value}
+        WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
         """
-
-        execute_sql(update_query)
-        # print(update_query)
+        print("Update Query##################", update_query)
+        update_sql(update_query)
         
     update_vc_info_query = f"""
     UPDATE AMR_VC_CONFIGURED_INFO
@@ -505,20 +478,12 @@ def update_mapping_config():
         VC_TYPE = '{evc_type_value}'
         
     """
-    # update_vc_info_query = "UPDATE AMR_VC_CONFIGURED_INFO SET"
-
-    # for i in range(1, 21):
-    #     update_vc_info_query += f" CONFIG{i} = '{description_VC_TYPE[i-1]}'"
-    #     if i < 20:
-    #         update_vc_info_query += ","
-
-    # update_vc_info_query += f" WHERE VC_TYPE = '{evc_type_value}'"
-
-
-    execute_sql(update_vc_info_query)
+    
+    update_sql(update_vc_info_query)
     print(update_vc_info_query)
 
     return redirect("/mapping_config")
+
 
 @app.route('/mapping_billing')  
 def mapping_billing_route():
@@ -639,7 +604,7 @@ def update_mapping_billing():
             DELETE FROM AMR_MAPPING_BILLING
             WHERE evc_type = '{type_id}' AND DAILY = {i}
             """
-            delete_billing_sql(delete_query)
+            update_sql(delete_query)
 
     elif max_daily_new > max_daily_value:
         # Update existing rows from 1 to max_daily_value
@@ -658,8 +623,8 @@ def update_mapping_billing():
                 VALUES ('{new_address}', '{new_description}', '{new_data_type}',  '{new_evc_type}', '{new_or_der}', '{new_daily}')
                 """
 
-                insert_billing_sql(insert_query)
-                print(insert_query)
+                update_sql(insert_query)
+                # print(insert_query)
     
     # Update SQL query based on your table structure
     for i in range(0, 5): 
@@ -691,7 +656,7 @@ def update_mapping_billing():
         WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
     """
 
-        update_billing_sql(update_query)
+        update_sql(update_query)
         print(update_query)
 
     return redirect("/mapping_billing")
