@@ -282,77 +282,87 @@
     opacity: 1;
   }
 
-/* Common styles for th and td */
-th, td {
+  td {
+    background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
+    height: 20px;
+    width: 55px;
+    align-items: center;
     text-align: center;
-    padding: 15px;
-    border: 1px solid #3498db;
-    transition: background-color 0.3s; /* Add smooth transition for background color change */
-}
+    font-size: small;
+    padding: 3px;
+    word-wrap: break-word;
+  }
 
-/* Styles for th */
-th {
-    background-color: #3498db;
-    height: 60px;
-    cursor: pointer;
-    font-size: large;
-    color: #ffffff;
-    border: 2px solid #2980b9;
-    position: relative;
-    overflow: hidden; /* Hide overflowing content */
-    word-wrap: break-word; /* Break words to the next line */
-}
-
-/* Styles for td */
-td {
-    background-color: #ecf0f1;
+  th {
+    background-color: #bcb9b9;
+    border: 2px solid #171717;
     height: 40px;
-    width: auto;
-    font-size: medium;
-    border: 2px solid #bdc3c7;
-    overflow: hidden; /* Hide overflowing content */
-    word-wrap: break-word; /* Break words to the next line */
-    padding: 0%;
-}
-/* Add a pseudo-element for a decorative triangle on th */
-th::after {
-    content: '';
-    display: block;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent transparent #3498db;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-/* Hover effect for rows */
-tr:hover {
-    background-color: #d6eaf8;
-}
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size: xx-small;
+    word-wrap: break-word;
+  }
 
-/* Alternate row colors for better readability */
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-        overflow-x: auto;
-    }
-}
-
-/* Table styles */
-table {
+  table {
     border-collapse: collapse;
-    width: 300%;
+    width: 100%;
     font-size: large;
     table-layout: fixed;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Hide overflowing content */
-}
+    margin-top: -10px;
+  }
+
+
+  th,
+  td {
+    font-size: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 60px;
+    padding: 3px;
+  }
+
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .table-container {
+    font-size: x-large;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 0%;
+    margin-bottom: 1%;
+  }
+
+  .table {
+    width: 150%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+  }
+
+  @media (max-width: 645px) {
+    .table {
+      width: 100%;
+    }
+  }
 
 
 /* Container styling for tables */
@@ -767,7 +777,7 @@ input[type="text"]:focus {
 
   }
   .mcd-menu {
-    border: #2e6ff2  solid 4px;
+
     list-style: none;
     padding: 0;
     margin: 0;
@@ -781,8 +791,7 @@ input[type="text"]:focus {
     width: 250px;
     /* == */
     max-width: 1880px;
-    border-top: #2e6ff2 solid 5px;
-    border-bottom: #2e6ff2 solid 5px;
+
 
     }
 
@@ -1657,11 +1666,11 @@ input[type="text"]:focus {
       </form>
     </div>
 
-    <div class="form-container-BOx">
+
       <div>
         <div class="table-container1">
             {% if tables.get('config_data_run1') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 1: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
@@ -1683,7 +1692,7 @@ input[type="text"]:focus {
 
 
             {% if tables.get('config_data_run2') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 2: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
@@ -1702,7 +1711,7 @@ input[type="text"]:focus {
             {% endif %}
 
             {% if tables.get('config_data_run3') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 3: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
@@ -1723,7 +1732,7 @@ input[type="text"]:focus {
             {% endif %}
 
             {% if tables.get('config_data_run4') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 4: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
@@ -1741,7 +1750,7 @@ input[type="text"]:focus {
             </div>
             {% endif %}
             {% if tables.get('config_data_run5') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 5: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
@@ -1759,7 +1768,7 @@ input[type="text"]:focus {
             </div>
             {% endif %}
             {% if tables.get('config_data_run6') %}
-            <div class="table" id="table1">
+            <div class="table1" id="table1">
                 <h5>Run 6: {{ selected_tag }}</h5>
                 <table class="table1">
                     <!-- The following line combines thead and tbody into a single block -->
