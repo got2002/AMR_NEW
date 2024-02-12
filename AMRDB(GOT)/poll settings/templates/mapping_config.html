@@ -135,6 +135,7 @@ input[type="text"] {
 
                 <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
                 <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
+                    <option value="None" {% if list_data_type[i] == 'None' %} selected {% endif %}>None</option>
                     <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
                     <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>Signed</option>
                     <option value="Ulong" {% if list_data_type[i] == 'Ulong' %} selected {% endif %}>Ulong</option>
@@ -166,15 +167,15 @@ input[type="text"] {
     // Add an event listener to dynamically update the dropdown options
     document.getElementById("type_dropdown").addEventListener("change", function () {
         // Get the selected value
-        var selectedtype = this.value;
+        // var selectedtype = this.value;
 
-        // Hide the "All" option if no type is selected
-        var allOption = this.options[0];
-        if (selectedtype) {
-            allOption.style.display = "none";
-        } else {
-            allOption.style.display = "block";
-        }
+        // // Hide the "All" option if no type is selected
+        // var allOption = this.options[0];
+        // if (selectedtype) {
+        //     allOption.style.display = "none";
+        // } else {
+        //     allOption.style.display = "block";
+        // }
     });
 </script>
 
