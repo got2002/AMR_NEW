@@ -951,77 +951,67 @@
                     </ul>
                 </li>
                 <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
-                  <a class="active">
-                      <i class="fas fa-wrench"></i>
-                      <strong>Polling Setting</strong>
-                      <small>Setting</small>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
                   </a>
                   <ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                      <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
-                        <ul>
-                            <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
-                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
-                        </ul>
-                      <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
-                      <ul>
-                        <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                        <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                        </ul>
-                        <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                          <ul>
-                              <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
-                              <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
-                          </ul>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-file-alt"></i>
+                      <strong>Manage Sites</strong>
+                      <small>Sites</small>
+                  </a>
+                  <ul>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                      <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                      <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
                   </ul>
               </li>
               <li>
                 <a>
                     <i class="fas fa-wrench"></i>
-                    <strong>Polling Actions</strong>
+                    <strong>Polling Setting</strong>
                     <small>Setting</small>
                 </a>
                 <ul>
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Manual Poll</a></li>
-                    <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                    <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                      <ul>
+                          <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                      </ul>
+                    <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                    <ul>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                      </ul>
+                      <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                        <ul>
+                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                            <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                        </ul>
                 </ul>
             </li>
-            </ul>
-        </nav>
+          </ul>
+      </nav>
     <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
        <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
