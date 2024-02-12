@@ -81,7 +81,7 @@ def insert_billing_sql(sql_update):
     connection.commit()
 
 def insert_address_range_to_oracle(
-    poll_config, poll_billing, enable_config, enable_billing, evc_type
+    connection, poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
     with connection.cursor() as cursor:
         sql_insert = """
@@ -439,22 +439,29 @@ def update_mapping_config():
     type_id = str(results[0]).strip("',()")
     print("type:", type_id)
 
-    for i in range(0, 20):  # Start from 1 and end at 20
-        i = f"{i:02d}"
+    description_VC_TYPE = []
+    
+    for j in range(0, 20):  # Start from 1 and end at 20
+        i = f"{j:02d}"
         address_key = f"list_address{i}"
         description_key = f"list_description{i}"
         data_type_key = f"list_data_type{i}"
         evc_type_key = f"list_evc_type{i}"
         or_der_key = f"list_or_der{i}"
         
-        
+        #print("description_key = ", description_key)
         address_value = request.form.get(address_key.strip("',()"))
         description_value = request.form.get(description_key.strip("',()"))
         data_type_value = request.form.get(data_type_key.strip("',()"))
         evc_type_value = request.form.get(evc_type_key)
         or_der_value = request.form.get(or_der_key)
         
-        # print("address:", address_value)
+        description_VC_TYPE.append(description_value)
+        print("---", description_VC_TYPE)
+        #description_VC_TYPE[j] = request.form.get(description_key.strip("',()"))
+        
+        #print("description_value = ", description_value)
+        #print("address:", address_value)
 
         # Update SQL query based on your table structure
         update_query = f"""
@@ -465,10 +472,51 @@ def update_mapping_config():
             DATA_TYPE = '{data_type_value}',
             OR_DER = '{or_der_value}'        
         WHERE evc_type = {evc_type_value} and or_der = {or_der_value}
-    """
+        """
 
         execute_sql(update_query)
-        print(update_query)
+        # print(update_query)
+        
+    update_vc_info_query = f"""
+    UPDATE AMR_VC_CONFIGURED_INFO
+    SET
+        CONFIG1 = '{description_VC_TYPE[0]}',
+        CONFIG2 = '{description_VC_TYPE[1]}',
+        CONFIG3 = '{description_VC_TYPE[2]}',
+        CONFIG4 = '{description_VC_TYPE[3]}',
+        CONFIG5 = '{description_VC_TYPE[4]}',
+        CONFIG6 = '{description_VC_TYPE[5]}',
+        CONFIG7 = '{description_VC_TYPE[6]}',
+        CONFIG8 = '{description_VC_TYPE[7]}',
+        CONFIG9 = '{description_VC_TYPE[8]}',
+        CONFIG10 = '{description_VC_TYPE[9]}',
+        CONFIG11 = '{description_VC_TYPE[10]}',
+        CONFIG12 = '{description_VC_TYPE[11]}',
+        CONFIG13 = '{description_VC_TYPE[12]}',
+        CONFIG14 = '{description_VC_TYPE[13]}',
+        CONFIG15 = '{description_VC_TYPE[14]}',
+        CONFIG16 = '{description_VC_TYPE[15]}',
+        CONFIG17 = '{description_VC_TYPE[16]}',
+        CONFIG18 = '{description_VC_TYPE[17]}',
+        CONFIG19 = '{description_VC_TYPE[18]}',
+        CONFIG20 = '{description_VC_TYPE[19]}'
+    
+    WHERE 
+        VC_TYPE = '{evc_type_value}'
+        
+    """
+    # update_vc_info_query = "UPDATE AMR_VC_CONFIGURED_INFO SET"
+
+    # for i in range(1, 21):
+    #     update_vc_info_query += f" CONFIG{i} = '{description_VC_TYPE[i-1]}'"
+    #     if i < 20:
+    #         update_vc_info_query += ","
+
+    # update_vc_info_query += f" WHERE VC_TYPE = '{evc_type_value}'"
+
+
+    execute_sql(update_vc_info_query)
+    print(update_vc_info_query)
 
     return redirect("/mapping_config")
 
