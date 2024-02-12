@@ -42,7 +42,21 @@ app.secret_key = "your_secret_key_here"
 
 # Replace these values with your actual database credentials
 communication_traffic = []
-change_to_32bit_counter = 1  # Initialize the counter to 2
+change_to_32bit_counter = 0  # Initialize the counter to 2
+def build_request_message(slave_id, function_code, starting_address, quantity):
+    request_message = bytearray([
+        slave_id,
+        function_code,
+        starting_address >> 8,
+        starting_address & 0xFF,
+        quantity >> 8,
+        quantity & 0xFF,
+    ])
+
+    crc = computeCRC(request_message)
+    request_message += crc
+    return request_message
+
 def computeCRC(data):
   
     crc = 0xFFFF
@@ -1922,6 +1936,7 @@ def read_data_old():
         bytes_per_value = 4
         if change_to_32bit_counter > 0:
             quantity *= 2
+            
             change_to_32bit_counter -= 1
 
     # Build the request message
@@ -1937,7 +1952,7 @@ def read_data_old():
     )
 
     crc = computeCRC(request_message)
-    request_message += crc.to_bytes(2, byteorder="big")
+    request_message += crc
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((tcp_ip, tcp_port))
@@ -1962,9 +1977,10 @@ def read_data_old():
     ]
     data_list = []
     values = values[:-1]
+    
     address = starting_address
     for i, value in enumerate(values):
-        address = starting_address + i
+        address = starting_address + i * 2
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)  # Convert the decimal value to Binary
 
@@ -2400,6 +2416,77 @@ def get_runs():
 
 
 
+
+@app.route('/manual_write')
+def write_test():
+
+    global tcp_ip, tcp_port
+    return render_template('write_test_ptt.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[], is_16bit=False, communication_traffic=communication_traffic)
+@app.route('/manual_write', methods=['POST'])
+def read_data_write():
+    try:
+        global change_to_32bit_counter, communication_traffic
+        
+        # Fetch form data
+        slave_id = int(request.form['slave_id'])
+        function_code = int(request.form['function_code'])
+        starting_address = int(request.form['starting_address'])
+        quantity = int(request.form['quantity'])
+        tcp_ip = request.form['tcp_ip']
+        tcp_port = int(request.form['tcp_port'])
+        is_16bit = request.form.get('is_16bit') == 'true'
+
+        # Adjust quantity based on data format
+        if not is_16bit and change_to_32bit_counter > 0:
+            quantity *= 2
+            change_to_32bit_counter -= 1
+
+        
+        request_data = bytearray()
+        for i in range(quantity // 2):
+            data_i = float(request.form.get(f'data_{i}'))  
+            request_data.extend(struct.pack('>f', data_i)) 
+
+        
+        request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
+       
+        # Connect to Modbus TCP server
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((tcp_ip, tcp_port))
+            communication_traffic = []
+
+            communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+            sock.send(request_message)
+            response = sock.recv(1024)
+
+            communication_traffic.append({"direction": "RX", "data": response.hex()})
+
+            data = response[3:]
+            
+            
+         
+            
+            
+            session['tcp_ip'] = tcp_ip
+            session['tcp_port'] = tcp_port
+
+    
+
+        return render_template('write_test_ptt.html',  
+            slave_id=slave_id,
+            function_code=function_code,
+            starting_address=starting_address,
+            quantity=quantity,
+            is_16bit=is_16bit,
+            communication_traffic=communication_traffic,
+            data=data,
+            
+           )
+        
+    except Exception as e:
+        
+        print("Error:", str(e))
+        return render_template('error.html', error=str(e))
 
 
 
