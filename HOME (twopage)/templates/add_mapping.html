@@ -12,9 +12,9 @@
     <!-- <link rel="stylesheet" href="Css/add_mapping.css"> -->
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
@@ -36,7 +36,6 @@
       body {
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
-        font-size: large;
         font-weight: 600;
         max-width: 100vw;
       }
@@ -53,7 +52,7 @@
       
       
       .text-box-group {
-        width: 40%;
+        width: 90%;
         background-color: #fff;
         padding: 40px;
         border-radius: 10px;
@@ -62,28 +61,91 @@
         margin-top: 20px;
         margin-bottom: 20px;
         z-index: 5;
-        margin-left: 50%;
+        margin-left: 23%;
       }
       
       label {
-        display: block;
-        margin-bottom: 10px;
+        display:  inline;
+        text-align: left;
+        font-size:  14pt/1.5;
+        line-height: 1.5em;
+        color: #333;
+        margin-bottom: 30px;
         font-weight: bold;
+        font-size: small;
       }
-      
-      input[type="text"],
       select {
-        padding: 8px;
+        padding: 5px;
         box-sizing: border-box;
-        width: 60%;
+        width: 8.2%;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-bottom: 10px;
-      }
+        margin-bottom: 15px;
+    }
+    
       
       input[type="checkbox"] {
         margin-right: 5px;
       }
+
+      input[type="text"],textarea {
+        width: 95px;
+        height: 30px;
+        padding: 7px 9px;
+        outline: none;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: all .3s ease;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+      }
+      
+      /* テキストエリアは高さを自動で調整する */
+      textarea{
+        resize: vertical;
+      }
+      
+      /* フォーカス時の境界線色と文字色 */
+      input:focus,textarea:focus {
+        border-color: #aaa;
+        color: #555;
+      }
+      
+      /* エラー時のスタイル */
+      .error {
+        border-color: red;
+      }
+
+
+    ::-webkit-input-placeholder,
+    :-moz-placeholder,
+    ::-ms-input-placeholder,
+    :focus::-webkit-input-placeholder {
+      /* Chrome/Eira, Firefox */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+      
+    }
+  
+    ::-moz-placeholder {
+      /* Older Firefox */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+  
+    :-ms-input-placeholder {
+      /* IE10+ */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+      
+    }
+
+
+
       
       h2 {
         color: #333;
@@ -974,15 +1036,9 @@
             </ul>
         </nav>
         
-    <header class="text-box-group">
-        <h1>Mapping config (Elter)</h1>
-        <button class="custom-btn btn-2" href="add_mapping.html">Elter</button>
-        <button class="custom-btn btn-1" href="add_actraris.html">Actraris</button>
-    </header>
-    <div class="text-box-group" style="text-align: center;">
-
+    <div class="text-box-group" style="text-align: left;">
         <form action="/submit_form" method="post">
-            <h2>1.</h2>
+            <h2>Fill in the information</h2>
             <label for="address1">ADDRESS:</label>
             <input type="text" id="address1" name="address1" required>
 
@@ -1004,11 +1060,10 @@
 
             <label for="data_type1">DATA_TYPE:</label>
             <input type="text" id="data_type1" name="data_type1" required>
-
-    </div>
-
-    <div class="text-box-group" style="text-align: center;">
-        <h2>2.</h2>
+            
+  
+    <div style="text-align: left;">
+        
         <label for="address2">ADDRESS:</label>
         <input type="text" id="address2" name="address2" required>
 
@@ -1031,10 +1086,9 @@
         <label for="data_type2">DATA_TYPE:</label>
         <input type="text" id="data_type2" name="data_type2" required>
 
-    </div>
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>3.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address3">ADDRESS:</label>
         <input type="text" id="address3" name="address3" required>
 
@@ -1056,10 +1110,10 @@
 
         <label for="data_type3">DATA_TYPE:</label>
         <input type="text" id="data_type3" name="data_type3" required>
-    </div>
+   
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>4.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address4">ADDRESS:</label>
         <input type="text" id="address4" name="address4" required>
 
@@ -1081,10 +1135,10 @@
 
         <label for="data_type4">DATA_TYPE:</label>
         <input type="text" id="data_type4" name="data_type4" required>
-    </div>
+  
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>5.</h2>
+    <div style="text-align: left;">
+        
         <label for="address5">ADDRESS:</label>
         <input type="text" id="address5" name="address5" required>
 
@@ -1106,11 +1160,11 @@
 
         <label for="data_type5">DATA_TYPE:</label>
         <input type="text" id="data_type5" name="data_type5" required>
-    </div>
+
 
     <!-- Sixth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>6.</h2>
+    <div style="text-align: left;">
+        
         <label for="address6">ADDRESS:</label>
         <input type="text" id="address6" name="address6" required>
 
@@ -1132,11 +1186,11 @@
 
         <label for="data_type6">DATA_TYPE:</label>
         <input type="text" id="data_type6" name="data_type6" required>
-    </div>
+    
 
     <!-- Seventh set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>7.</h2>
+    <div style="text-align: left;">
+        
         <label for="address7">ADDRESS:</label>
         <input type="text" id="address7" name="address7" required>
 
@@ -1158,11 +1212,11 @@
 
         <label for="data_type7">DATA_TYPE:</label>
         <input type="text" id="data_type7" name="data_type7" required>
-    </div>
+   
 
     <!-- Eighth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>8.</h2>
+    <div style="text-align: left;">
+        
         <label for="address8">ADDRESS:</label>
         <input type="text" id="address8" name="address8" required>
 
@@ -1184,11 +1238,11 @@
 
         <label for="data_type8">DATA_TYPE:</label>
         <input type="text" id="data_type8" name="data_type8" required>
-    </div>
+   
 
     <!-- Ninth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>9.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address9">ADDRESS:</label>
         <input type="text" id="address9" name="address9" required>
 
@@ -1210,11 +1264,9 @@
 
         <label for="data_type9">DATA_TYPE:</label>
         <input type="text" id="data_type9" name="data_type9" required>
-    </div>
-
     <!-- Tenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>10.</h2>
+    <div style="text-align: left;">
+        
         <label for="address10">ADDRESS:</label>
         <input type="text" id="address10" name="address10" required>
 
@@ -1236,11 +1288,11 @@
 
         <label for="data_type10">DATA_TYPE:</label>
         <input type="text" id="data_type10" name="data_type10" required>
-    </div>
+    
 
     <!-- Eleventh set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>11.</h2>
+    <div style="text-align: left;">
+        
         <label for="address11">ADDRESS:</label>
         <input type="text" id="address11" name="address11" required>
 
@@ -1262,11 +1314,11 @@
 
         <label for="data_type11">DATA_TYPE:</label>
         <input type="text" id="data_type11" name="data_type11" required>
-    </div>
+    
 
     <!-- Twelfth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>12.</h2>
+    <div style="text-align: left;">
+        
         <label for="address12">ADDRESS:</label>
         <input type="text" id="address12" name="address12" required>
 
@@ -1288,11 +1340,11 @@
 
         <label for="data_type12">DATA_TYPE:</label>
         <input type="text" id="data_type12" name="data_type12" required>
-    </div>
+    
 
     <!-- Thirteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>13.</h2>
+    <div style="text-align: left;">
+        
         <label for="address13">ADDRESS:</label>
         <input type="text" id="address13" name="address13" required>
 
@@ -1314,11 +1366,11 @@
 
         <label for="data_type13">DATA_TYPE:</label>
         <input type="text" id="data_type13" name="data_type13" required>
-    </div>
+    
 
     <!-- Fourteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>14.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address14">ADDRESS:</label>
         <input type="text" id="address14" name="address14" required>
 
@@ -1340,11 +1392,11 @@
 
         <label for="data_type14">DATA_TYPE:</label>
         <input type="text" id="data_type14" name="data_type14" required>
-    </div>
+    
 
     <!-- Fifteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>15.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address15">ADDRESS:</label>
         <input type="text" id="address15" name="address15" required>
 
@@ -1366,11 +1418,11 @@
 
         <label for="data_type15">DATA_TYPE:</label>
         <input type="text" id="data_type15" name="data_type15" required>
-    </div>
+    
 
     <!-- Sixteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>16.</h2>
+    <div style="text-align: left;">
+        
         <label for="address16">ADDRESS:</label>
         <input type="text" id="address16" name="address16" required>
 
@@ -1392,11 +1444,11 @@
 
         <label for="data_type16">DATA_TYPE:</label>
         <input type="text" id="data_type16" name="data_type16" required>
-    </div>
+    
 
     <!-- Seventeenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>17.</h2>
+    <div style="text-align: left;">
+        
         <label for="address17">ADDRESS:</label>
         <input type="text" id="address17" name="address17" required>
 
@@ -1418,11 +1470,11 @@
 
         <label for="data_type17">DATA_TYPE:</label>
         <input type="text" id="data_type17" name="data_type17" required>
-    </div>
+    
 
     <!-- Eighteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>18.</h2>
+    <div style="text-align: left;">
+        
         <label for="address18">ADDRESS:</label>
         <input type="text" id="address18" name="address18" required>
 
@@ -1444,11 +1496,11 @@
 
         <label for="data_type18">DATA_TYPE:</label>
         <input type="text" id="data_type18" name="data_type18" required>
-    </div>
+    
 
     <!-- Nineteenth set of textboxes -->
-    <div class="text-box-group" style="text-align: center;">
-        <h2>19.</h2>
+    <div style="text-align: left;">
+        
         <label for="address19">ADDRESS:</label>
         <input type="text" id="address19" name="address19" required>
 
@@ -1470,11 +1522,11 @@
 
         <label for="data_type19">DATA_TYPE:</label>
         <input type="text" id="data_type19" name="data_type19" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center; margin-bottom: 5%" >
-        <h2>20.</h2>
+    <div style="text-align: left; margin-bottom: 5%" >
+        
         <label for="address20">ADDRESS:</label>
         <input type="text" id="address20" name="address20" required>
 
@@ -1500,6 +1552,8 @@
         <input class="custom-btn btn-2" type="submit" value="Submit">
         <script src="add_mapping.js"></script>
         <footer class="footer">POWERED BY ATOS - ASGS</footer>
+        </form>
+        </div>
+        
 </body>
-
 </html>
