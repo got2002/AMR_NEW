@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Actraris</title>
+    <title>Add Mapping Config</title>
 
     <!-- Stylesheet
     <link rel="stylesheet" href="/HOME (Doing Here)/templates/Css/home.css"> -->
@@ -955,14 +955,14 @@
                 <a>
                     <i class="fa fa-home"></i>
                     <strong >Home</strong>
-                    <small>Home Page</small>
+                    <small>Hom</small>
                 </a>
             </li>
             <li>
                 <a>
                     <i class="fa fa-database"></i>
-                    <strong>Reports Data</strong>
-                    <small>View Data Page</small>
+                    <strong>Reports</strong>
+                    <small>View Data</small>
                 </a>
                 <ul>
                     <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
@@ -977,7 +977,7 @@
                 <a>
                     <i class="fas fa-search"></i>
                     <strong>Polling Actions</strong>
-                    <small>Polling Page</small>
+                    <small>Polling</small>
                 </a>
                 <ul>
                     <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
@@ -987,7 +987,7 @@
                 <a>
                     <i class="fas fa-file-alt"></i>
                     <strong>Manage Sites</strong>
-                    <small>Sites Page</small>
+                    <small>Sites</small>
                 </a>
                 <ul>
                     <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
@@ -999,7 +999,7 @@
                 <a>
                     <i class="fas fa-clipboard-list"></i>
                     <strong>Manage Users</strong>
-                    <small>Users Page</small>
+                    <small>Users</small>
                 </a>
                 <ul>
                     <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
@@ -1014,28 +1014,40 @@
                   <small>Setting</small>
               </a>
               <ul>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
-                  <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                  <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                  <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                    <ul>
+                        <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                        <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                    </ul>
+                  <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                  <ul>
+                    <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                    <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                    </ul>
+                    <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                      <ul>
+                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                          <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                      </ul>
               </ul>
           </li>
           <li>
             <a>
                 <i class="fas fa-wrench"></i>
-                <strong>Mapping Setting</strong>
+                <strong>Polling Actions</strong>
                 <small>Setting</small>
             </a>
             <ul>
-              <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
-                <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
-                <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
+              <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Manual Poll</a></li>
+                <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
             </ul>
         </li>
         </ul>
     </nav>
     
     <div class="text-box-group" style="text-align: left;">
-        <h2>Fill in the information</h2>
+        <h2>Add Mapping config</h2>
         <form action="/new_form" method="post">
             <label for="address1">ADDRESS:</label>
             <input type="text" id="address1" name="address1" required>
