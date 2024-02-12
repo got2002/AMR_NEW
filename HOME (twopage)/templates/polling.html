@@ -1030,11 +1030,11 @@
                 <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
-        <!-- Button to submit the form -->
+        
         <button class="custom-btn btn-1" type="button" onclick="submitForm()">View Information</button>
     </form>
 
-    <!-- {{ tables[0]|safe }} -->
+    
     <div class="text-container">
         
     <form action="/update_polling_data" method="post">
