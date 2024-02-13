@@ -65,7 +65,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: auto;
-            margin-top: 0px;
+            margin-top: -35%;
             margin-bottom: 20px;
             z-index: 5;
             margin-left: 23%;
@@ -259,7 +259,7 @@
             width: 250px;
             /* == */
             max-width: 1880px;
-            position: fixed;
+
             
           }
           
@@ -953,10 +953,10 @@
         <nav>
             <ul class="mcd-menu">
                 <li>
-                    <a>
+                  <a href="{{ url_for('homeasgs') }}">
                         <i class="fa fa-home"></i>
                         <strong >Home</strong>
-                        <small>Home</small>
+                        <small>Back to Homepage</small>
                     </a>
                 </li>
                 <li>
@@ -1025,13 +1025,23 @@
                       <li><a><i class="fas fa-plus"></i>Mapping Config</a>
                         <ul>
                             <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                            <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                            <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
-                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                            <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
                         </ul>
                         <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
                 </ul>
             </li>
+                <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                  </ul>
+              </li>
+
           </ul>
       </nav>
         
