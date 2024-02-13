@@ -1084,6 +1084,7 @@
           <div class="form-group">
             <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value: {{ '{:02d}'.format(i + 1) }}</label>
             <select id="list_list_data_type{{ '{:02d}'.format(i) }}" name="list_list_data_type{{ '{:02d}'.format(i) }}">
+              <option value="None" {% if list_data_type[i] == 'None' %} selected {% endif %}>None</option>
               <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
               <option value="signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
               <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>

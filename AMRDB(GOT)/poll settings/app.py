@@ -245,10 +245,6 @@ def update_polling_data():
     
     return redirect("/polling_route")
 
-def checkStrNone(stringcheck):
-    if stringcheck == "None": return ""
-    return stringcheck
-
 @app.route("/add_polling_route")
 def add_polling_route():
     return render_template("add_polling.html")
@@ -403,6 +399,10 @@ def mapping_config_route():
         )
     else:
         return render_template('mapping_config.html', type_options=type_options)
+
+def checkStrNone(stringcheck):
+    if stringcheck == "None": return ""
+    return stringcheck
     
 @app.route('/update_mapping_config_route', methods=['POST'])
 def update_mapping_config():
@@ -412,7 +412,7 @@ def update_mapping_config():
     type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
     results = fetch_data(type_id_query)
     type_id = str(results[0]).strip("',()")
-    print("type:", results)
+    print("type:", type_id)
 
     description_VC_TYPE = []
     
@@ -434,8 +434,8 @@ def update_mapping_config():
         #     description_value = ""
         
         description_VC_TYPE.append(checkStrNone(description_value))
-        print("---", description_value)
-        # return redirect('/mapping_config') # TODO : handler an errors and alert it.
+        # print("---", description_value)
+
 
         # Update SQL query based on your table structure
         update_query = f"""
@@ -447,7 +447,7 @@ def update_mapping_config():
             OR_DER = '{or_der_value}'        
         WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
         """
-        print("Update Query##################", update_query)
+        # print("Update Query##################", update_query)
         update_sql(update_query)
         
     update_vc_info_query = f"""
