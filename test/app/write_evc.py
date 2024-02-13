@@ -42,21 +42,33 @@ write_evc.secret_key = "your_secret_key_here"
 communication_traffic = []
 change_to_32bit_counter = 0  # Initialize the counter to 2
 
+def computeCRC(data):
+  
+    crc = 0xFFFF
+    for byte in data:
+        crc ^= byte
+        for _ in range(8):
+            if crc & 0x0001:
+                crc >>= 1
+                crc ^= 0xA001
+            else:
+                crc >>= 1
+    return crc.to_bytes(2, byteorder="little")
+
 def format_tx_message(slave_id, function_code, starting_address, quantity, data):
     tx_message = bytearray([
-        slave_id,            # Slave Address
-        function_code,       # Function Code (Write Multiple Registers)
-        starting_address >> 8, starting_address & 0xFF,  # Starting Register Address
-        quantity >> 8, quantity & 0xFF,                  # Quantity of Registers
-        len(data)       # Byte Count (assuming each register is 2 bytes)
+        slave_id,          
+        function_code,       
+        starting_address >> 8, starting_address & 0xFF,  
+        quantity >> 8, quantity & 0xFF,                 
+        len(data) // 1    
     ])
     tx_message.extend(data)
     
     crc = computeCRC(tx_message)
-    tx_message += crc.to_bytes(2, byteorder="big")
+    tx_message += crc  
     
     return tx_message
-
 
 
 @write_evc.route("/write_evc",methods=["GET"])
@@ -191,56 +203,51 @@ def write():
 @write_evc.route('/write_evc', methods=['POST'])
 def read_data():
     
-        global change_to_32bit_counter, tcp_ip, tcp_port, communication_traffic
+        global change_to_32bit_counter, communication_traffic
         
+        # Fetch form data
         slave_id = int(request.form['slave_id'])
         function_code = int(request.form['function_code'])
         starting_address = int(request.form['starting_address'])
         quantity = int(request.form['quantity'])
         tcp_ip = request.form['tcp_ip']
         tcp_port = int(request.form['tcp_port'])
-
         is_16bit = request.form.get('is_16bit') == 'true'
 
-        if is_16bit:
-            bytes_per_value = 2
-        else:
-            bytes_per_value = 4
-            if change_to_32bit_counter > 0:
-                quantity *= 2
-                change_to_32bit_counter -= 1
+        # Adjust quantity based on data format
+        if not is_16bit and change_to_32bit_counter > 0:
+            quantity *= 2
+            change_to_32bit_counter -= 1
 
+        
         request_data = bytearray()
-        for i in range(quantity):
-        
-            data_i = int(request.form[f'data_{i}'])
-            request_data.extend(data_i.to_bytes(bytes_per_value, byteorder="big", signed=False))
+        for i in range(quantity // 2):
+            data_i = float(request.form.get(f'data_{i}'))  
+            request_data.extend(struct.pack('>f', data_i)) 
 
+        
         request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
+       
+        # Connect to Modbus TCP server
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((tcp_ip, tcp_port))
+            communication_traffic = []
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((tcp_ip, tcp_port))
-        communication_traffic = []
+            communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+            sock.send(request_message)
+            response = sock.recv(1024)
 
-        communication_traffic.append({"direction": "TX", "data": request_message.hex()})
-        sock.send(request_message)
-        response = sock.recv(1024)
+            communication_traffic.append({"direction": "RX", "data": response.hex()})
 
-        communication_traffic.append({"direction": "RX", "data": response.hex()})
-        sock.close()
+            data = response[3:]
+            
+            
+         
+            
+            
+            session['tcp_ip'] = tcp_ip
+            session['tcp_port'] = tcp_port
 
-
-        data = response[3:]
-        
-        values = [
-            int.from_bytes(data[i: i + bytes_per_value], byteorder="big", signed=False)
-            for i in range(0, len(data), bytes_per_value)
-        ]
-    
-    
-        session['tcp_ip'] = tcp_ip
-        session['tcp_port'] = tcp_port
-        # ตรวจสอบค่า is_16bit เพื่อเพิ่มข้อมูลลงในตาราง 16-bit
         with connect_to_amr_db() as amr_connection:
             print("Active Connection:", active_connection)
         
