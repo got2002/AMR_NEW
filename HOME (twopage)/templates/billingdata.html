@@ -1533,10 +1533,10 @@ input[type="text"]:focus {
     <nav>
         <ul class="mcd-menu">
           <li>
-            <a href="{{ url_for('home_amr') }}">
+            <a href="{{ url_for('homeasgs') }}">
               <i class="fa fa-home"></i>
               <strong>Home</strong>
-              <small>Home</small>
+              <small>Back to Homepage</small>
             </a>
           </li>
           <li>
@@ -1608,9 +1608,7 @@ input[type="text"]:focus {
                 <li><a><i class="fas fa-plus"></i>Mapping Config</a>
                   <ul>
                       <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                      <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
-                      <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                      <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
                   </ul>
                   <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
           </ul>
