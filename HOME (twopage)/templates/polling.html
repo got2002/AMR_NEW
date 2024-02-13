@@ -1022,7 +1022,7 @@
           </ul>
       </nav>
     <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
-       <label for="type_dropdown">Select Type:</label>
+      <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
             {% for type in type_options %}
