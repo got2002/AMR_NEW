@@ -56,6 +56,7 @@
 
 .textbox-pair {
   margin-bottom: 3px;
+  
 }
 
 input[type="text"] {
@@ -91,22 +92,31 @@ input[type="text"] {
 
 <body>
 
-    
+    <header>
+        <h1>Manual Poll</h1>
+    </header>
+
     <nav>
-        <a href="{{ url_for('home_amr') }}">Home</a>
+        <a href="{{ url_for('index') }}">Home</a>
     </nav>
 
-   
-    <h3>Mapping Config</h3>
-    <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
-       <label for="type_dropdown">Select Type:</label>
+    <nav>
+        <a href="{{ url_for('mapping_config_route') }}">Mapping config</a>
+        <a href="{{ url_for('add_mapping_route') }}">Add mapping Config</a>
+    </nav>
+
+        <h3>Mapping Billing</h3>
+    <form id="mapping_configForm" method="get" action="{{ url_for('mapping_billing_route') }}">
+        <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
             {% for type in type_options %}
                 <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
-        <button type="submit">View</button>
+
+        <button type="submit">View</button><br><br>
+
     </form>
 
     <!-- {% if table %}
@@ -115,9 +125,11 @@ input[type="text"] {
         <p>No data available.</p>
     {% endif %} -->
 
-    <form method="POST" action="/update_mapping_config_route">
+    <form method="POST" action="/update_mapping_billing_route">
     <input type="hidden" name="selected_type" value="{{ selected_type }}">
-    <div class="textbox-container">
+    <!-- <div class="textbox-container"> -->
+                <label for="max_day">Max day:</label>
+                <input type="text" id="max_day" name="max_day" value="{{ max_daily_value }}" >
         {% for i in range(0, list_address|length) %}
             <div class="textbox-pair">
                 <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
@@ -128,23 +140,28 @@ input[type="text"] {
 
                 <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
                 <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
-                    <option value="None" {% if list_data_type[i] == 'None' %} selected {% endif %}>None</option>
                     <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
-                    <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>Signed</option>
+                    <option value="Signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
                     <option value="Ulong" {% if list_data_type[i] == 'Ulong' %} selected {% endif %}>Ulong</option>
                     <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
                 </select>
 
                 <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}" readonly>
+                <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
 
                 <label for="or_der{{ '{:02d}'.format(i) }}">Order {{ '{:02d}'.format(i + 1) }}</label>
                 <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
 
+                <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
+                <input type="text" id="list_daily{{ '{:02d}'.format(i) }}" name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}">
                 
             </div>
         {% endfor %}
-    </div>
+    </div>    <br>
+
+                <label for="interval">Interval:</label>
+                <input type="text" id="interval" name="interval" value="{{ interval }}" placeholder="Enter interval value">
+                <br>
     <input type="submit" value="Submit">
 </form>
 
@@ -154,21 +171,22 @@ input[type="text"] {
 <script>
     function submitForm() {
         // Trigger the form submission
-        document.getElementById("mapping_configForm").submit();
+        document.getElementById("mapping_billingForm").submit();
     }
 
     // Add an event listener to dynamically update the dropdown options
     document.getElementById("type_dropdown").addEventListener("change", function () {
         // Get the selected value
-        // var selectedtype = this.value;
+        var selectedtype = this.value;
 
-        // // Hide the "All" option if no type is selected
-        // var allOption = this.options[0];
-        // if (selectedtype) {
-        //     allOption.style.display = "none";
-        // } else {
-        //     allOption.style.display = "block";
-        // }
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
+        }
+        
     });
 </script>
 

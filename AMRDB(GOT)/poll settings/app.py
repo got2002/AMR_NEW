@@ -45,6 +45,7 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
+    
 # update polling
 def update_sql(sql_statement):
     with connection.cursor() as cursor:

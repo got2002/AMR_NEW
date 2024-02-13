@@ -244,44 +244,42 @@
                <div class="form-group">
                   <label for="quantity">Quantity</label>
                   <select type="number" class="form-control" id="quantity" name="quantity"  required>
-                  <option value="">Select an option...</option> 
+                  <option value="">Select</option> 
         
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
+                  <option value="2">1</option>
+                  <option value="4">2</option>
+                  <option value="6">3</option>
+                  <option value="8">4</option>
                   
                   </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style = "display:none;" >
                   <label for="tcp_ip">TCP IP</label>
                   <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
               </div>
               
-                <div class="form-group">
+                <div class="form-group" style = "display:none;" >
                   <label for="tcp_port">TCP Port</label>
                   <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
                 </div>
         
         
-        <div class="form-group">
-          <label for="data_0">Data 1</label>
-          <input type="number" class="form-control" id="data_0" name="data_0" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="data_1">Data 2</label>
-          <input type="number" class="form-control" id="data_1" name="data_1" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="data_2">Data 3</label>
-          <input type="number" class="form-control" id="data_2" name="data_2" required>
-        </div>
-        <div class="form-group">
-          <label for="data_3">Data 4</label>
-          <input type="number" class="form-control" id="data_3" name="data_3" required>
-        </div>
+                <div class="form-group">
+                  
+                  <input type="number" class="form-control" id="data_0" name="data_0" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_1" name="data_1" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_2" name="data_2" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_3" name="data_3" step="any" value="0" required>
+              </div>
                 <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
                 
                 <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Read Data</button>
