@@ -25,7 +25,8 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
-<style>   
+  <style>
+    
     @font-face {
       font-family: "PTT45Pride-Bold";
       src: url("PTT45Pride-Bold.otf") format("truetype");
@@ -36,8 +37,7 @@
     body {
       background-image: linear-gradient(to right, #5b707e, #abb2b9);
       font-family: "PTT45Pride-Bold", sans-serif;
-      font-size: large;
-      font-weight: 500;
+      font-weight: 600;
       max-width: 100vw;
     }
     
@@ -95,6 +95,7 @@
     }
     
     .mcd-menu {
+      font-size: large;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -662,6 +663,7 @@
     }
     
     footer {
+      font-size: small;
       background-color: #2e6ff2;
       color: white;
       text-align: left;
@@ -704,11 +706,13 @@
       margin: 0px;
       display: flex;
       margin-top: -25px;
+      
     }
     
     .Automatic {
       font-size: 35px;
       font-weight: bold;
+      font-family: "PTT45Pride-Bold", sans-serif;
       padding: 0px;
       margin-top: -25px;
     }
@@ -772,13 +776,13 @@
                     <a class="active">
                         <i class="fa fa-home"></i>
                         <strong>Home</strong>
-                        <small>Home Page</small>
+                        <small>Home</small>
                     </a>
                 </li>
                 <li>
                     <a>
                         <i class="fa fa-database"></i>
-                        <strong>Reports Data</strong>
+                        <strong>Reports</strong>
                         <small>View Data</small>
                     </a>
                     <ul>
@@ -797,7 +801,8 @@
                         <small>Polling</small>
                     </a>
                     <ul>
-                        <li><a href="write_evc"><i class="fa fa-globe"></i>Write Config</a></li>
+                        <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                        <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
                     </ul>
                 </li>
                 <li>
@@ -825,27 +830,28 @@
                     </ul>
                 </li>
                 <li>
-                    <a>
-                        <i class="fas fa-wrench"></i>
-                        <strong>Polling Setting</strong>
-                        <small>Setting</small>
-                    </a>
-                    <ul>
-                        <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
-                        <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                        <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                    </ul>
-                </li>
-                <li>
                   <a>
                       <i class="fas fa-wrench"></i>
-                      <strong>Mapping Setting</strong>
+                      <strong>Polling Setting</strong>
                       <small>Setting</small>
                   </a>
                   <ul>
-                    <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
-                      <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
-                      <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
+                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                      <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                        <ul>
+                            <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                        </ul>
+                      <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                      <ul>
+                        <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                        <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                        </ul>
+                        <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                          <ul>
+                              <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                              <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                          </ul>
                   </ul>
               </li>
             </ul>

@@ -51,15 +51,15 @@
 <input type="hidden" name="tcp_ip_filled" value="{{ tcp_ip_filled }}">
 <input type="hidden" name="tcp_port_filled" value="{{ tcp_port_filled }}">
         <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
-        <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Change to 16-bit</button>
+        <button type="submit" style="display:none;" class="btn btn-primary" name="is_16bit" value="true">Change to 16-bit</button>
 
         <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
-        <button type="submit" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
+        <button type="submit" class="btn btn-secondary" name="is_16bit" value="false">Read Data</button>
         <input type="hidden" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
 
         <div class="text-center">
-          <button type="submit" class="btn btn-success">Read Data</button>
-          <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+          <button type="submit"style="display:none;" class="btn btn-success">Read Data</button>
+          <button type="button" style="display:none;" class="btn btn-warning" onclick="clearForm()">Clear</button>
         </div>
       </form>
     </div>

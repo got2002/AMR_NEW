@@ -124,80 +124,6 @@
   
 </style>
 <body>
-    <div class="form-container">
-        <form id="filterForm" action="write_evc" method="get">
-    
-            <label for="region_dropdown">Select Region:</label>
-            <select id="region_dropdown" name="region_dropdown">
-              <option value="">All Regions</option>
-              {% for region_option in region_options %}
-              <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
-              {% endfor %}
-            </select>
-            
-            <label for="tag_dropdown">Select Tag:</label>
-            <select id="tag_dropdown" name="tag_dropdown">
-              <option value="">All Tags</option>
-              {% for tag_option in tag_options %}
-              <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
-              {% endfor %}
-            </select>
-            
-            <label for="run_dropdown">Select Run:</label>
-            <select id="run_dropdown" name="run_dropdown">
-              <option value="">All Runs</option>
-              {% for run_option in run_options %}
-                <option value="{{ run_option }}" {% if run_option== selected_run %}selected{% endif %}>{{ run_option }}</option>
-              {% endfor %}
-            </select>
-            
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-
-        <form method="POST" action="/process_selected_rows">
-        
-            {% if not df.empty %}
-                <table border="1" class="dataframe data"   style="text-align: center;">
-                    <thead style="position:relative;">
-                        <tr style="text-align: right;">
-                            
-                            
-                            <th>RUN</th>
-                            <th>Region</th>
-                            <th>Sitename</th>
-                            <th>NoRun</th>
-                            <th>METERID</th>
-                            <th>VCtype</th>
-                            <th>IPAddress</th>
-                            <th>Port</th>
-                            
-                            
-                            
-                            
-                        </tr>
-                    </thead>
-                    <tbody style="background-color: #ffffff; position: relative;">
-                        {% for _, row in df.iterrows() %}
-                            <tr >
-                                
-                               
-                            <td >{{ row['RUN'] }}</td>
-                                    <td>{{ row['Region'] }}</td>
-                                    <td>{{ row['Sitename'] }}</td>
-                                    <td>{{ row['NoRun'] }}</td>
-                                    <td>{{ row['METERID'] }}</td>
-                                    <td>{{ row['VCtype'] }}</td>
-                                    <!-- <td>{{ '127.0.0.1' }}</td> -->
-                                    <td>{{ row['IPAddress'] }}</td>
-                                    <td>{{ row['Port'] }}</td>
-  
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
-        </form>
     
         
         <div class="container-fluid" style="margin-top: 100px;">
@@ -205,17 +131,27 @@
             <div class="col-sm-3 t pt-4" >
               
               <form method="POST" >
-                <div class="form-group" style="display: none;">
+                <div class="form-group" >
                   <label for="slave_id">Slave ID</label>
                   <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
                 </div>
         
-                <div class="form-group" style="display: none;">
+                <div class="form-group" >
                   <label for="function_code">Function Code</label>
                   <input type="number" class="form-control" id="function_code" name="function_code" value="16"
                     required>
                 </div>
                 
+                
+                <div class="form-group"  >
+                  <label for="tcp_ip">TCP IP</label>
+                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
+              </div>
+              
+                <div class="form-group"  >
+                  <label for="tcp_port">TCP Port</label>
+                  <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
+                </div>
                 <div class="form-group">
                   <label for="starting_address">Starting Address</label>
                   <input type="number" class="form-control" id="starting_address" name="starting_address"
@@ -233,15 +169,7 @@
                   
                   </select>
                 </div>
-                <div class="form-group" style = "display:none;" >
-                  <label for="tcp_ip">TCP IP</label>
-                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
-              </div>
-              
-                <div class="form-group" style = "display:none;" >
-                  <label for="tcp_port">TCP Port</label>
-                  <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
-                </div>
+                
         
         
                 <div class="form-group">
@@ -276,7 +204,7 @@
             </div>
           </div>
         </div>
-             
+       
         {% if communication_traffic %}
 <div class="communication-traffic">
     <h3>Communication Traffic</h3>
@@ -427,98 +355,6 @@ var communicationTrafficTable = document.querySelector(".communication-traffic t
 
 
 
-        
-        <script>
-            $(document).ready(function () {
-                // Event listener for region dropdown change
-                $('#region_dropdown').change(function () {
-                    var selectedRegion = $(this).val();
-        
-                    // Make an AJAX request to update the tag dropdown based on the selected region
-                    $.ajax({
-                        type: 'GET',
-                        url: '/get_tags',
-                        data: { 'selected_region': selectedRegion },
-                        success: function (response) {
-                            // Sort tag options alphabetically
-                            response.tag_options.sort();
-        
-                            // Update tag dropdown options based on the sorted response
-                            var tagDropdown = $('#tag_dropdown');
-                            tagDropdown.empty(); // Clear existing options
-        
-                            // Add new options based on the sorted response
-                            for (var i = 0; i < response.tag_options.length; i++) {
-                                var tagOption = response.tag_options[i];
-                                tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                            }
-        
-                            // Load the previously selected tag option from local storage
-                            var selectedTag = localStorage.getItem('selectedTag');
-                            if (selectedTag) {
-                                tagDropdown.val(selectedTag);
-                            }
-        
-                            // Trigger a change in the tag dropdown to fetch and update run options
-                            tagDropdown.change();
-                        },
-                        error: function (error) {
-                            console.log('Error fetching tag options:', error);
-                        }
-                    });
-                });
-        
-                // Event listener for tag dropdown change
-                $('#tag_dropdown').change(function () {
-                    var selectedTag = $(this).val();
-        
-                    // Save the selected tag option to local storage
-                    localStorage.setItem('selectedTag', selectedTag);
-        
-                    // Make an AJAX request to update the run dropdown based on the selected tag
-                    $.ajax({
-                        type: 'GET',
-                        url: '/get_runs',
-                        data: { 'selected_tag': selectedTag },
-                        success: function (response) {
-                            // Sort run options alphabetically
-                            response.run_options.sort();
-        
-                            // Update run dropdown options based on the sorted response
-                            var runDropdown = $('#run_dropdown');
-                            runDropdown.empty(); // Clear existing options
-        
-                            // Add new options based on the sorted response
-                            for (var i = 0; i < response.run_options.length; i++) {
-                                var runOption = response.run_options[i];
-                                runDropdown.append('<option value="' + runOption + '">' + runOption + '</option>');
-                            }
-        
-                            // Load the previously selected run option from local storage
-                            var selectedRun = localStorage.getItem('selectedRun');
-                            if (selectedRun) {
-                                runDropdown.val(selectedRun);
-                            }
-                        },
-                        error: function (error) {
-                            console.log('Error fetching run options:', error);
-                        }
-                    });
-                });
-        
-                // Event listener for run dropdown change
-                $('#run_dropdown').change(function () {
-                    // Save the selected run option to local storage
-                    var selectedRun = $(this).val();
-                    localStorage.setItem('selectedRun', selectedRun);
-                });
-        
-                // Trigger a change in the region dropdown on page load (optional)
-                $('#region_dropdown').change();
-            });
-        </script>
-        
-        
         
        
         

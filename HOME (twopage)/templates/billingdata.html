@@ -12,8 +12,9 @@
   <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Bootstrap Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -26,55 +27,17 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
 <style>
-  html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
   @font-face {
     font-family: "PTT45Pride-Bold";
     src: url("PTT45Pride-Bold.otf") format("truetype");
     font-weight: bold;
     font-style: normal;
+  }
+  
+  body {
+    background-image: linear-gradient(to right, #5b707e, #abb2b9);
+    font-family: "PTT45Pride-Bold", sans-serif;
+    max-width: 600vw;
   }
 
   @media only screen and (min-width: 1024px) {
@@ -82,7 +45,7 @@ table {
       
       font-family: "PTT45Pride-Bold", sans-serif;
       font-weight: bold;
-      max-width: 100vw;
+      max-width: 600vw;
     }
   }
 
@@ -205,7 +168,7 @@ table {
 
   form {
     margin: auto;
-    background-image: linear-gradient(to right, #5b707e, #abb2b9);
+    background-image: linear-gradient(to right, #ffffff, #ffffff);
     padding: 50px;
     padding-top: 10%;
     border-radius: 5px;
@@ -319,77 +282,87 @@ table {
     opacity: 1;
   }
 
-/* Common styles for th and td */
-th, td {
+  td {
+    background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
+    height: 20px;
+    width: 55px;
+    align-items: center;
     text-align: center;
-    padding: 15px;
-    border: 1px solid #3498db;
-    transition: background-color 0.3s; /* Add smooth transition for background color change */
-}
+    font-size: small;
+    padding: 3px;
+    word-wrap: break-word;
+  }
 
-/* Styles for th */
-th {
-    background-color: #3498db;
-    height: 60px;
-    cursor: pointer;
-    font-size: large;
-    color: #ffffff;
-    border: 2px solid #2980b9;
-    position: relative;
-    overflow: hidden; /* Hide overflowing content */
-    word-wrap: break-word; /* Break words to the next line */
-}
-
-/* Styles for td */
-td {
-    background-color: #ecf0f1;
+  th {
+    background-color: #bcb9b9;
+    border: 2px solid #171717;
     height: 40px;
-    width: auto;
-    font-size: medium;
-    border: 2px solid #bdc3c7;
-    overflow: hidden; /* Hide overflowing content */
-    word-wrap: break-word; /* Break words to the next line */
-    padding: 0%;
-}
-/* Add a pseudo-element for a decorative triangle on th */
-th::after {
-    content: '';
-    display: block;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent transparent #3498db;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-/* Hover effect for rows */
-tr:hover {
-    background-color: #d6eaf8;
-}
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size: xx-small;
+    word-wrap: break-word;
+  }
 
-/* Alternate row colors for better readability */
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-        overflow-x: auto;
-    }
-}
-
-/* Table styles */
-table {
+  table {
     border-collapse: collapse;
-    width: 300%;
+    width: 100%;
     font-size: large;
     table-layout: fixed;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Hide overflowing content */
-}
+    margin-top: -10px;
+  }
+
+
+  th,
+  td {
+    font-size: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 60px;
+    padding: 3px;
+  }
+
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .table-container {
+    font-size: x-large;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 0%;
+    margin-bottom: 1%;
+  }
+
+  .table {
+    width: 150%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+  }
+
+  @media (max-width: 645px) {
+    .table {
+      width: 100%;
+    }
+  }
 
 
 /* Container styling for tables */
@@ -804,7 +777,7 @@ input[type="text"]:focus {
 
   }
   .mcd-menu {
-    border: #2e6ff2  solid 4px;
+
     list-style: none;
     padding: 0;
     margin: 0;
@@ -818,8 +791,7 @@ input[type="text"]:focus {
     width: 250px;
     /* == */
     max-width: 1880px;
-    border-top: #2e6ff2 solid 5px;
-    border-bottom: #2e6ff2 solid 5px;
+
 
     }
 
@@ -1564,14 +1536,14 @@ input[type="text"]:focus {
             <a href="{{ url_for('home_amr') }}">
               <i class="fa fa-home"></i>
               <strong>Home</strong>
-              <small>Home Page</small>
+              <small>Home</small>
             </a>
           </li>
           <li>
             <a class="active">
               <i class="fa fa-database"></i>
-              <strong>Reports Data</strong>
-              <small>View Data Page</small>
+              <strong>Reports</strong>
+              <small>View Data</small>
             </a>
             <ul>
               <li><a href="{{ url_for('billing_data') }}"><i class="far fa-eye"></i>View Billing
@@ -1589,52 +1561,66 @@ input[type="text"]:focus {
           </li>
           <li>
             <a>
-              <i class="fas fa-search"></i>
-              <strong>Polling Actions</strong>
-              <small>Polling Page</small>
+                <i class="fas fa-search"></i>
+                <strong>Polling Actions</strong>
+                <small>Polling</small>
             </a>
             <ul>
-              <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
+                <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
             </ul>
-          </li>
-          <li>
+        </li>
+        <li>
             <a>
-              <i class="fas fa-file-alt"></i>
-              <strong>Manage Sites</strong>
-              <small>Sites Page</small>
+                <i class="fas fa-file-alt"></i>
+                <strong>Manage Sites</strong>
+                <small>Sites</small>
             </a>
             <ul>
-              <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-              <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-              <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
             </ul>
-          </li>
-          <li>
+        </li>
+        <li>
             <a>
+                <i class="fas fa-clipboard-list"></i>
+                <strong>Manage Users</strong>
+                <small>Users</small>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+            </ul>
+        </li>
+        <li>
+          <a>
               <i class="fas fa-wrench"></i>
               <strong>Polling Setting</strong>
               <small>Setting</small>
-            </a>
-            <ul>
-              <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
-              <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-              <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>
-              <i class="fas fa-wrench"></i>
-              <strong>Mapping Setting</strong>
-              <small>Setting</small>
-            </a>
-            <ul>
-              <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
-              <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
-              <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
-            </ul>
-          </li>
-        </ul>
-    </nav>
+          </a>
+          <ul>
+              <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+              <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                <ul>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                    <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                </ul>
+              <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+              <ul>
+                <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                </ul>
+                <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                  <ul>
+                      <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                      <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                  </ul>
+          </ul>
+      </li>
+    </ul>
+</nav>
 
     <div class="text-box-group">
       <form method="get" action="{{ url_for('billing_data') }}">
@@ -1682,172 +1668,174 @@ input[type="text"]:focus {
       </form>
     </div>
 
-    <div class="form-container-BOx">
 
       <div>
+        <div class="table-container1">
+            {% if tables.get('config_data_run1') %}
+            <div class="table1" id="table1">
+                <h5>Run 1: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run1']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
-        <div class="table-container">
-          {% if tables.get('daily_data_run1') %}
-          <div class="table" id="table1">
-            <h1>Run 1: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run1']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run2') %}
-          <div class="table" id="table2">
-            <h1>Run 2: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run2']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run3') %}
-          <div class="table" id="table3">
-            <h1>Run 3: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run3']|safe }}
-          </div>
-          {% endif %}
 
-          {% if tables.get('daily_data_run4') %}
-          <div class="table" id="table4">
-            <h1>Run 4: {{ selected_tag }}</h1>
-            {{ tables['daily_data_run4']|safe }}
-          </div>
-          {% endif %}
+            {% if tables.get('config_data_run2') %}
+            <div class="table1" id="table1">
+                <h5>Run 2: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run2']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
+            {% if tables.get('config_data_run3') %}
+            <div class="table1" id="table1">
+                <h5>Run 3: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run3']|safe }}
+                    </tbody>
+                </table>
+
+
+            </div>
+            {% endif %}
+
+            {% if tables.get('config_data_run4') %}
+            <div class="table1" id="table1">
+                <h5>Run 4: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run4']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run5') %}
+            <div class="table1" id="table1">
+                <h5>Run 5: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run5']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if tables.get('config_data_run6') %}
+            <div class="table1" id="table1">
+                <h5>Run 6: {{ selected_tag }}</h5>
+                <table class="table1">
+                    <!-- The following line combines thead and tbody into a single block -->
+                    <thead>
+                        <tr>
+                            {% for key, value in dropped_columns_data[0].items() %}
+                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ tables['config_data_run6']|safe }}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
         </div>
-        <div class="table-container">
-          {% if tables.get('config_data_run1') %}
-          <div class="table" id="table1">
-            <h1>Run 1: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run1']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
+    </div>
+</div>
+</div>
+<div class="table-container">
+{% if tables.get('daily_data_run1') %}
+<div class="table" id="table1">
+    <h5>Run 1: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run1']|safe }}
+</div>
+{% endif %}
 
-          {% if tables.get('config_data_run2') %}
-          <div class="table" id="table1">
-            <h1>Run 2: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run2']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
+{% if tables.get('daily_data_run2') %}
+<div class="table" id="table2">
+    <h5>Run 2: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run2']|safe }}
+</div>
+{% endif %}
 
-          {% if tables.get('config_data_run3') %}
-          <div class="table" id="table1">
-            <h1>Run 3: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run3']|safe }}
-              </tbody>
-            </table>
+{% if tables.get('daily_data_run3') %}
+<div class="table" id="table3">
+    <h5>Run 3: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run3']|safe }}
+</div>
+{% endif %}
 
-          </div>
-          {% endif %}
+{% if tables.get('daily_data_run4') %}
+<div class="table" id="table4">
+    <h5>Run 4: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run4']|safe }}
+</div>
+<div class="plot-container">
+    {{ graph_corrected|safe }}
+</div>
 
-          {% if tables.get('config_data_run4') %}
-          <div class="table" id="table1">
-            <h1>Run 4: {{ selected_tag }}</h1>
-            <table class="table1">
-              <!-- The following line combines thead and tbody into a single block -->
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run4']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          {% if tables.get('config_data_run5') %}
-          <div class="table" id="table1">
-            <h1>Run 5: {{ selected_tag }}</h1>
-            <table class="table1">
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run5']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          {% if tables.get('config_data_run6') %}
-          <div class="table" id="table1">
-            <h1>Run 6: {{ selected_tag }}</h1>
-            <table class="table1">
-              <thead>
-                <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value
-                    }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {{ tables['config_data_run6']|safe }}
-              </tbody>
-            </table>
-          </div>
-          {% endif %}
-          <div class="plot-container">
-            {{ graph_corrected|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_uncorrected|safe }}
+</div>
 
-          <div class="plot-container">
-            {{ graph_uncorrected|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_pressure|safe }}
+</div>
 
-          <div class="plot-container">
-            {{ graph_pressure|safe }}
-          </div>
-
-          <div class="plot-container">
-            {{ graph_temperature|safe }}
-          </div>
+<div class="plot-container">
+    {{ graph_temperature|safe }}
+</div>
+{% endif %}
+</div>
+</div>
           <footer class="footer">POWERED BY ATOS - ASGS</footer>
           <!-- <script src="main.js"></script> -->
           <div>

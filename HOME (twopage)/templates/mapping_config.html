@@ -15,8 +15,9 @@
     <!-- <link rel="stylesheet" href="Css/add_mapping.css"> -->
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -56,17 +57,17 @@
       }
 
       .text-box-group {
-        width: 40%;
+        display: inline-block;
+        width: 90%;
         background-color: #fff;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin: auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 0px;
+        margin-bottom: 20px;
         z-index: 5;
-        margin-left: 50%;
-        
+        margin-left: 23%;
       }
       .address-pair {
         width: 80%;
@@ -104,7 +105,7 @@
       select {
         padding: 8px;
         box-sizing: border-box;
-        width: 25%;
+        width: 15%;
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -965,14 +966,14 @@
                     <a>
                         <i class="fa fa-home"></i>
                         <strong >Home</strong>
-                        <small>Home Page</small>
+                        <small>Home</small>
                     </a>
                 </li>
                 <li>
                     <a>
                         <i class="fa fa-database"></i>
-                        <strong>Reports Data</strong>
-                        <small>View Data Page</small>
+                        <strong>Reports</strong>
+                        <small>View Data</small>
                     </a>
                     <ul>
                         <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
@@ -984,103 +985,104 @@
                     </ul>
                 </li>
                 <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
                   <a>
-                      <i class="fas fa-wrench"></i>
-                      <strong>Polling Setting</strong>
-                      <small>Setting</small>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
                   </a>
                   <ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
-                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
                   </ul>
               </li>
               <li>
-                <a class="active">
+                  <a>
+                      <i class="fas fa-file-alt"></i>
+                      <strong>Manage Sites</strong>
+                      <small>Sites</small>
+                  </a>
+                  <ul>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                      <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                      <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+                  </ul>
+              </li>
+              <li>
+                <a>
                     <i class="fas fa-wrench"></i>
-                    <strong>Mapping Setting</strong>
+                    <strong>Polling Setting</strong>
                     <small>Setting</small>
                 </a>
                 <ul>
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
-                    <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
-                    <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                    <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                      <ul>
+                          <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                      </ul>
+                    <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                    <ul>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                      </ul>
+                      <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                        <ul>
+                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                            <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                        </ul>
                 </ul>
             </li>
-            </ul>
-        </nav>
+          </ul>
+      </nav>
         
 <div class="text-box-group">
     <div id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
         <div class="form-container">
-       <label  for="type_dropdown">Select Type:</label>
+        <label  for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
             {% for type in type_options %}
                 <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
             {% endfor %}
         </select>
-        <button class="custom-btn btn-1" type="submit">View</button>
+        <button class="custom-btn btn-1" style="margin-left : 3%;" type="submit">View</button>
     </div>
-</div>
-</div>
+
     <!-- {% if table %}
         {{ table | safe }}
     {% else %}
         <p>No data available.</p>
     {% endif %} -->
-    <div class="text-box-group" style="margin-bottom: 10%;">
+    
       <div method="POST" action="/update_mapping_config_route">
         <input type="hidden" name="selected_type" value="{{ selected_type }}">
     
         {% for i in range(0, list_address|length) %}
         <div class="enable-container">
           <div class="form-group">
-            <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
+            <label for="address{{ '{:02d}'.format(i) }}">Address: {{ '{:02d}'.format(i + 1) }}</label>
             <input type="text" id="list_address{{ '{:02d}'.format(i) }}" name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
           </div>
     
           <div class="form-group">
-            <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1) }}</label>
+            <label for="description{{ '{:02d}'.format(i) }}">Description: {{ '{:02d}'.format(i + 1) }}</label>
             <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
           </div>
     
           <div class="form-group">
-            <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value {{ '{:02d}'.format(i + 1) }}</label>
+            <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value: {{ '{:02d}'.format(i + 1) }}</label>
             <select id="list_list_data_type{{ '{:02d}'.format(i) }}" name="list_list_data_type{{ '{:02d}'.format(i) }}">
               <option value="None" {% if list_data_type[i] == 'None' %} selected {% endif %}>None</option>
               <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
@@ -1090,12 +1092,12 @@
           </div>
     
           <div class="form-group">
-            <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
+            <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type: {{ '{:02d}'.format(i + 1) }}</label>
             <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
           </div>
     
           <div class="form-group">
-            <label for="or_der{{ '{:02d}'.format(i) }}">OR DER {{ '{:02d}'.format(i + 1) }}</label>
+            <label for="or_der{{ '{:02d}'.format(i) }}">OR DER: {{ '{:02d}'.format(i + 1) }}</label>
             <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
           </div>
         </div>

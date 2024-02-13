@@ -32,7 +32,8 @@ import cx_Oracle
 import plotly.subplots as sp
 import plotly.graph_objs as go
 import matplotlib as mpt
-
+import time 
+from flask import g
 app = Flask(__name__)
 
 
@@ -41,20 +42,46 @@ app.secret_key = "your_secret_key_here"
 
 # Replace these values with your actual database credentials
 communication_traffic = []
-change_to_32bit_counter = 1  # Initialize the counter to 2
+change_to_32bit_counter = 0  # Initialize the counter to 2
+def build_request_message(slave_id, function_code, starting_address, quantity):
+    request_message = bytearray([
+        slave_id,
+        function_code,
+        starting_address >> 8,
+        starting_address & 0xFF,
+        quantity >> 8,
+        quantity & 0xFF,
+    ])
+
+    crc = computeCRC(request_message)
+    request_message += crc
+    return request_message
+
+def computeCRC(data):
+  
+    crc = 0xFFFF
+    for byte in data:
+        crc ^= byte
+        for _ in range(8):
+            if crc & 0x0001:
+                crc >>= 1
+                crc ^= 0xA001
+            else:
+                crc >>= 1
+    return crc.to_bytes(2, byteorder="little")
 
 def format_tx_message(slave_id, function_code, starting_address, quantity, data):
     tx_message = bytearray([
-        slave_id,            # Slave Address
-        function_code,       # Function Code (Write Multiple Registers)
-        starting_address >> 8, starting_address & 0xFF,  # Starting Register Address
-        quantity >> 8, quantity & 0xFF,                  # Quantity of Registers
-        len(data)       # Byte Count (assuming each register is 2 bytes)
+        slave_id,          
+        function_code,       
+        starting_address >> 8, starting_address & 0xFF,  
+        quantity >> 8, quantity & 0xFF,                 
+        len(data) // 1    
     ])
     tx_message.extend(data)
     
     crc = computeCRC(tx_message)
-    tx_message += crc.to_bytes(2, byteorder="big")
+    tx_message += crc  
     
     return tx_message
 
@@ -1909,6 +1936,7 @@ def read_data_old():
         bytes_per_value = 4
         if change_to_32bit_counter > 0:
             quantity *= 2
+            
             change_to_32bit_counter -= 1
 
     # Build the request message
@@ -1924,7 +1952,7 @@ def read_data_old():
     )
 
     crc = computeCRC(request_message)
-    request_message += crc.to_bytes(2, byteorder="big")
+    request_message += crc
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((tcp_ip, tcp_port))
@@ -1949,9 +1977,10 @@ def read_data_old():
     ]
     data_list = []
     values = values[:-1]
+    
     address = starting_address
     for i, value in enumerate(values):
-        address = starting_address + i
+        address = starting_address + i * 2
         hex_value = hex(value)  # Convert the decimal value to HEX
         binary_value = convert_to_binary_string(value, bytes_per_value)  # Convert the decimal value to Binary
 
@@ -2142,185 +2171,203 @@ def Manualpoll_data_write_evc():
 
 @app.route('/write_evc', methods=['POST'])
 def read_data_write_evc():
-    global change_to_32bit_counter, tcp_ip, tcp_port, communication_traffic
-    
-    slave_id = int(request.form['slave_id'])
-    function_code = int(request.form['function_code'])
-    starting_address = int(request.form['starting_address'])
-    quantity = int(request.form['quantity'])
-    tcp_ip = request.form['tcp_ip']
-    tcp_port = int(request.form['tcp_port'])
+    try:
+        global change_to_32bit_counter, communication_traffic
+        
+        # Fetch form data
+        slave_id = int(request.form['slave_id'])
+        function_code = int(request.form['function_code'])
+        starting_address = int(request.form['starting_address'])
+        quantity = int(request.form['quantity'])
+        tcp_ip = request.form['tcp_ip']
+        tcp_port = int(request.form['tcp_port'])
+        is_16bit = request.form.get('is_16bit') == 'true'
 
-    is_16bit = request.form.get('is_16bit') == 'true'
-
-    if is_16bit:
-        bytes_per_value = 2
-    else:
-        bytes_per_value = 4
-        if change_to_32bit_counter > 0:
+        # Adjust quantity based on data format
+        if not is_16bit and change_to_32bit_counter > 0:
             quantity *= 2
             change_to_32bit_counter -= 1
 
-    request_data = bytearray()
-    for i in range(quantity):
-       
-        data_i = int(request.form[f'data_{i}'])
-        request_data.extend(data_i.to_bytes(bytes_per_value, byteorder="big", signed=False))
-
-    request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((tcp_ip, tcp_port))
-    communication_traffic = []
-
-    communication_traffic.append({"direction": "TX", "data": request_message.hex()})
-    sock.send(request_message)
-    response = sock.recv(1024)
-
-    communication_traffic.append({"direction": "RX", "data": response.hex()})
-    sock.close()
-
-
-    data = response[3:]
-    
-    values = [
-        int.from_bytes(data[i: i + bytes_per_value], byteorder="big", signed=False)
-        for i in range(0, len(data), bytes_per_value)
-    ]
-   
-   
-    session['tcp_ip'] = tcp_ip
-    session['tcp_port'] = tcp_port
-    # ตรวจสอบค่า is_16bit เพื่อเพิ่มข้อมูลลงในตาราง 16-bit
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-       
-        region_query = """
-            SELECT * FROM AMR_REGION 
-        """
-        tag_query = """
-            SELECT DISTINCT TAG_ID
-            FROM AMR_FIELD_ID, AMR_PL_GROUP
-            WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
-            AND AMR_PL_GROUP.PL_REGION_ID = :region_id
-        """
-        run_query = """
-            SELECT DISTINCT METER_STREAM_NO
-            FROM AMR_FIELD_ID , amr_field_meter
-            WHERE amr_field_id.meter_id = amr_field_meter.meter_id
-            AND amr_field_id.tag_id = :tag_id
-        """
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
-
-        query = """
-            SELECT
-                AMR_FIELD_METER.METER_STREAM_NO as RunNo,
-                AMR_PL_GROUP.PL_REGION_ID as region,
-                AMR_FIELD_ID.TAG_ID as Sitename,
-                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
-                AMR_FIELD_METER.METER_ID as METERID,
-                AMR_VC_TYPE.VC_NAME as VCtype,
-                AMR_FIELD_ID.SIM_IP as IPAddress,
-                AMR_PORT_INFO.PORT_NO as port
-            FROM
-                AMR_FIELD_ID,
-                AMR_USER,
-                AMR_FIELD_CUSTOMER,
-                AMR_FIELD_METER,
-                AMR_PL_GROUP,
-                AMR_VC_TYPE,
-                AMR_PORT_INFO
-            WHERE
-                AMR_USER.USER_ENABLE=1 AND
-                AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
-                AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
-                AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
-                AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
-                {tag_condition}
-                {region_condition}
-                {run_condition}
-        """
-
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
-        run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
-
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-        selected_run = request.args.get("run_dropdown")
-
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
-
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-
-        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
-        run_options = [str(run[0]) for run in run_results]
-
-        # Sort the tag options alphabetically
-        tag_options.sort()
+        
+        request_data = bytearray()
+        for i in range(quantity // 2):
+            data_i = float(request.form.get(f'data_{i}'))  
+            request_data.extend(struct.pack('>f', data_i)) 
 
         
+        request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
+       
+        # Connect to Modbus TCP server
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((tcp_ip, tcp_port))
+            communication_traffic = []
 
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-        if selected_run:
-            run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
+            communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+            sock.send(request_message)
+            response = sock.recv(1024)
 
+            communication_traffic.append({"direction": "RX", "data": response.hex()})
 
-        query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
+            data = response[3:]
+            
+            
+         
+            
+            
+            session['tcp_ip'] = tcp_ip
+            session['tcp_port'] = tcp_port
 
-        results = fetch_data(ptt_pivot_connection,query)
-        
-        df = pd.DataFrame(
-            results,
-            columns=[
-                "RUN",
-                "Region",
-                "Sitename",
-                "NoRun",
-                "METERID",
-                "VCtype",
-                "IPAddress",
-                "Port",
-            ],
-        )
-    tcp_ip = df.get(["IPAddress"]).values.tolist()
-    if tcp_ip:
-        ip_str = str(tcp_ip).strip("['']")
-        print(ip_str)
-    else:
-        ip_str = [''] 
-
-
-    tcp_port = df.get(["Port"]).values.tolist()
-    if tcp_port:
-        Port_str = str(tcp_port).strip("['']")
-    else:
-        Port_str = [''] 
     
+        with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+            print("Active Connection:", active_connection)
+        
+            region_query = """
+                SELECT * FROM AMR_REGION 
+            """
+            tag_query = """
+                SELECT DISTINCT TAG_ID
+                FROM AMR_FIELD_ID, AMR_PL_GROUP
+                WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+                AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+            """
+            run_query = """
+                SELECT DISTINCT METER_STREAM_NO
+                FROM AMR_FIELD_ID , amr_field_meter
+                WHERE amr_field_id.meter_id = amr_field_meter.meter_id
+                AND amr_field_id.tag_id = :tag_id
+            """
+            region_results = fetch_data(ptt_pivot_connection,region_query)
+            region_options = [str(region[0]) for region in region_results]
 
-    return render_template('evc.html',   df=df,
+            query = """
+                SELECT
+                    AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+                    AMR_PL_GROUP.PL_REGION_ID as region,
+                    AMR_FIELD_ID.TAG_ID as Sitename,
+                    AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+                    AMR_FIELD_METER.METER_ID as METERID,
+                    AMR_VC_TYPE.VC_NAME as VCtype,
+                    AMR_FIELD_ID.SIM_IP as IPAddress,
+                    AMR_PORT_INFO.PORT_NO as port
+                FROM
+                    AMR_FIELD_ID,
+                    AMR_USER,
+                    AMR_FIELD_CUSTOMER,
+                    AMR_FIELD_METER,
+                    AMR_PL_GROUP,
+                    AMR_VC_TYPE,
+                    AMR_PORT_INFO
+                WHERE
+                    AMR_USER.USER_ENABLE=1 AND
+                    AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+                    AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+                    AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+                    AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+                    AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+                    AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+                    {tag_condition}
+                    {region_condition}
+                    {run_condition}
+            """
 
-        slave_id=slave_id,
-        function_code=function_code,
-        starting_address=starting_address,
-        quantity=quantity,
-        is_16bit=is_16bit,
-        communication_traffic=communication_traffic,
-        data=data,
-        tables=[df.to_html(classes="data")],
-        titles=df.columns.values,
-        selected_tag=selected_tag,
-        selected_region=selected_region,
-        region_options=region_options,
-        tag_options=tag_options,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip)
+            tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+            region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
+            run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
+
+            selected_tag = request.args.get("tag_dropdown")
+            selected_region = request.args.get("region_dropdown")
+            selected_run = request.args.get("run_dropdown")
+
+            region_results = fetch_data(ptt_pivot_connection,region_query)
+            region_options = [str(region[0]) for region in region_results]
+
+            tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+            tag_options = [str(tag[0]) for tag in tag_results]
+
+            run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+            run_options = [str(run[0]) for run in run_results]
+
+            # Sort the tag options alphabetically
+            tag_options.sort()
+
+            
+
+            if selected_tag:
+                tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+            if selected_region:
+                region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+            if selected_run:
+                run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
+
+
+            query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
+
+            results = fetch_data(ptt_pivot_connection,query)
+            
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "RUN",
+                    "Region",
+                    "Sitename",
+                    "NoRun",
+                    "METERID",
+                    "VCtype",
+                    "IPAddress",
+                    "Port",
+                ],
+            )
+        tcp_ip = df.get(["IPAddress"]).values.tolist()
+        if tcp_ip:
+            ip_str = str(tcp_ip).strip("['']")
+            print(ip_str)
+        else:
+            ip_str = [''] 
+
+
+        tcp_port = df.get(["Port"]).values.tolist()
+        if tcp_port:
+            Port_str = str(tcp_port).strip("['']")
+        else:
+            Port_str = [''] 
+        
+
+        return render_template('evc.html',   df=df,
+
+            slave_id=slave_id,
+            function_code=function_code,
+            starting_address=starting_address,
+            quantity=quantity,
+            is_16bit=is_16bit,
+            communication_traffic=communication_traffic,
+            data=data,
+            tables=[df.to_html(classes="data")],
+            titles=df.columns.values,
+            selected_tag=selected_tag,
+            selected_region=selected_region,
+            region_options=region_options,
+            tag_options=tag_options,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip)
+        
+    except Exception as e:
+        
+        print("Error:", str(e))
+        return render_template('error.html', error=str(e))
+
+
+@app.before_request
+def before_request():
+    g.start = time.time()
+
+@app.after_request
+def after_request(response):
+    diff = time.time() - g.start
+    if diff > 15:
+        print("Request took too long:", diff)
+        
+        return render_template('error.html',  error="Error sending data: Connection timed out")
+    return response
+
+
     
 
 
@@ -2369,6 +2416,77 @@ def get_runs():
 
 
 
+
+@app.route('/manual_write')
+def write_test():
+
+    global tcp_ip, tcp_port
+    return render_template('write_test_ptt.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[], is_16bit=False, communication_traffic=communication_traffic)
+@app.route('/manual_write', methods=['POST'])
+def read_data_write():
+    try:
+        global change_to_32bit_counter, communication_traffic
+        
+        # Fetch form data
+        slave_id = int(request.form['slave_id'])
+        function_code = int(request.form['function_code'])
+        starting_address = int(request.form['starting_address'])
+        quantity = int(request.form['quantity'])
+        tcp_ip = request.form['tcp_ip']
+        tcp_port = int(request.form['tcp_port'])
+        is_16bit = request.form.get('is_16bit') == 'true'
+
+        # Adjust quantity based on data format
+        if not is_16bit and change_to_32bit_counter > 0:
+            quantity *= 2
+            change_to_32bit_counter -= 1
+
+        
+        request_data = bytearray()
+        for i in range(quantity // 2):
+            data_i = float(request.form.get(f'data_{i}'))  
+            request_data.extend(struct.pack('>f', data_i)) 
+
+        
+        request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
+       
+        # Connect to Modbus TCP server
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((tcp_ip, tcp_port))
+            communication_traffic = []
+
+            communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+            sock.send(request_message)
+            response = sock.recv(1024)
+
+            communication_traffic.append({"direction": "RX", "data": response.hex()})
+
+            data = response[3:]
+            
+            
+         
+            
+            
+            session['tcp_ip'] = tcp_ip
+            session['tcp_port'] = tcp_port
+
+    
+
+        return render_template('write_test_ptt.html',  
+            slave_id=slave_id,
+            function_code=function_code,
+            starting_address=starting_address,
+            quantity=quantity,
+            is_16bit=is_16bit,
+            communication_traffic=communication_traffic,
+            data=data,
+            
+           )
+        
+    except Exception as e:
+        
+        print("Error:", str(e))
+        return render_template('error.html', error=str(e))
 
 
 

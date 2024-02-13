@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Actraris</title>
+    <title>Add Mapping Config</title>
 
     <!-- Stylesheet
     <link rel="stylesheet" href="/HOME (Doing Here)/templates/Css/home.css"> -->
@@ -36,7 +36,6 @@
       body {
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
-        font-size: large;
         font-weight: 600;
         max-width: 100vw;
       }
@@ -53,7 +52,7 @@
       
       
       .text-box-group {
-        width: 40%;
+        width: 90%;
         background-color: #fff;
         padding: 40px;
         border-radius: 10px;
@@ -62,29 +61,89 @@
         margin-top: 20px;
         margin-bottom: 20px;
         z-index: 5;
-        margin-left: 50%;
+        margin-left: 23%;
       }
       
       label {
-        display: block;
-        margin-bottom: 10px;
+        display:  inline;
+        text-align: left;
+        font-size:  14pt/1.5;
+        line-height: 1.5em;
+        color: #333;
+        margin-bottom: 30px;
         font-weight: bold;
+        font-size: small;
       }
-      
-      input[type="text"],
       select {
-        padding: 8px;
+        padding: 5px;
         box-sizing: border-box;
-        width: 60%;
+        width: 8.2%;
         border: 1px solid #ccc;
         border-radius: 5px;
-        margin-bottom: 10px;
-      }
+        margin-bottom: 15px;
+    }
+    
       
       input[type="checkbox"] {
         margin-right: 5px;
       }
+
+      input[type="text"],textarea {
+        width: 95px;
+        height: 30px;
+        padding: 7px 9px;
+        outline: none;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        transition: all .3s ease;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+      }
       
+      /* テキストエリアは高さを自動で調整する */
+      textarea{
+        resize: vertical;
+      }
+      
+      /* フォーカス時の境界線色と文字色 */
+      input:focus,textarea:focus {
+        border-color: #aaa;
+        color: #555;
+      }
+      
+      /* エラー時のスタイル */
+      .error {
+        border-color: red;
+      }
+
+
+    ::-webkit-input-placeholder,
+    :-moz-placeholder,
+    ::-ms-input-placeholder,
+    :focus::-webkit-input-placeholder {
+      /* Chrome/Eira, Firefox */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+      
+    }
+  
+    ::-moz-placeholder {
+      /* Older Firefox */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+  
+    :-ms-input-placeholder {
+      /* IE10+ */
+      display: inline-block;
+      margin-bottom: 30px;
+      font-weight: bold;
+      
+    }
+
       h2 {
         color: #333;
         padding: 3%;
@@ -877,112 +936,108 @@
       
 </style>
 <body>
-    <header class="top-bar">
-        <div class="container-top">
-            <div style="display: flex; align-items: center;">
-                <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                    alt="PTT Public Company Limited Logo">
-                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
-                    ASGS)</span>
-            </div>
-            <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-                alt="logo">LOGOUT</a>
+  <div class="top-bar">
+    <div class="container-top">
+        <div style="display: flex; align-items: center;">
+            <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+                alt="PTT Public Company Limited Logo">
+            <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
+                ASGS)</span>
         </div>
-    </header>
-    <div class="container">
-        <nav>
-            <ul class="mcd-menu">
-                <li>
-                    <a>
-                        <i class="fa fa-home"></i>
-                        <strong >Home</strong>
-                        <small>Home Page</small>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <i class="fa fa-database"></i>
-                        <strong>Reports Data</strong>
-                        <small>View Data Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
-                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                        <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                        <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
-                        <li><a href="#"><i class="fas fa-plus"></i>New Site Detail</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-globe"></i>Write Config</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users Page</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
-                  <a class="active">
-                      <i class="fas fa-wrench"></i>
-                      <strong>Polling Setting</strong>
-                      <small>Setting</small>
-                  </a>
-                  <ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Actraris</a></li>
-                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                  </ul>
-              </li>
-              <li>
+        <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
+            alt="logo">LOGOUT</a>
+    </div>
+</div>
+<div class="container">
+    <nav>
+        <ul class="mcd-menu">
+            <li>
                 <a>
-                    <i class="fas fa-wrench"></i>
-                    <strong>Mapping Setting</strong>
-                    <small>Setting</small>
+                    <i class="fa fa-home"></i>
+                    <strong >Home</strong>
+                    <small>Hom</small>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <i class="fa fa-database"></i>
+                    <strong>Reports</strong>
+                    <small>View Data</small>
                 </a>
                 <ul>
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping</a></li>
-                    <li><a href="{{ url_for('mapping_config_route') }}"><i class="fas fa-plus"></i>Config Mapping </a></li>
-                    <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping </a></li>
+                    <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
+                    <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
+                    <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
+                    <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                    <li><a href="#"><i class="fas fa-plus"></i>New Site Detail</a></li>
                 </ul>
             </li>
+            <li>
+              <a>
+                  <i class="fas fa-search"></i>
+                  <strong>Polling Actions</strong>
+                  <small>Polling</small>
+              </a>
+              <ul>
+                  <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                  <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+              </ul>
+          </li>
+          <li>
+              <a>
+                  <i class="fas fa-file-alt"></i>
+                  <strong>Manage Sites</strong>
+                  <small>Sites</small>
+              </a>
+              <ul>
+                  <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                  <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                  <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+              </ul>
+          </li>
+          <li>
+              <a>
+                  <i class="fas fa-clipboard-list"></i>
+                  <strong>Manage Users</strong>
+                  <small>Users</small>
+              </a>
+              <ul>
+                  <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                  <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                  <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+              </ul>
+          </li>
+          <li>
+            <a>
+                <i class="fas fa-wrench"></i>
+                <strong>Polling Setting</strong>
+                <small>Setting</small>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                  <ul>
+                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                      <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                  </ul>
+                <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                <ul>
+                  <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                  <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                  </ul>
+                  <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                    <ul>
+                        <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                        <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                    </ul>
             </ul>
-        </nav>
-        
-    <div class="text-box-group">
-        <h1>Mapping config (Actraris)</h1>
-        <button href="add_mapping_route" class="custom-btn btn-1">Elter</button>
-        <button href="add_actraris_route" class="custom-btn btn-2">Actraris</button>
-    </div>
-
-    <div class="text-box-group" style="text-align: center;">
-        <h2>1.</h2>
+        </li>
+      </ul>
+  </nav>
+    
+    <div class="text-box-group" style="text-align: left;">
+        <h2>Add Mapping config</h2>
         <form action="/new_form" method="post">
             <label for="address1">ADDRESS:</label>
             <input type="text" id="address1" name="address1" required>
@@ -1005,10 +1060,10 @@
 
             <label for="data_type1">DATA_TYPE:</label>
             <input type="text" id="data_type1" name="data_type1" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>2.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address2">ADDRESS:</label>
         <input type="text" id="address2" name="address2" required>
 
@@ -1030,10 +1085,10 @@
 
         <label for="data_type2">DATA_TYPE:</label>
         <input type="text" id="data_type2" name="data_type2" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>3.</h2>
+    <div style="text-align: left;">
+        
         <label for="address3">ADDRESS:</label>
         <input type="text" id="address3" name="address3" required>
 
@@ -1055,10 +1110,10 @@
 
         <label for="data_type3">DATA_TYPE:</label>
         <input type="text" id="data_type3" name="data_type3" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>4.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address4">ADDRESS:</label>
         <input type="text" id="address4" name="address4" required>
 
@@ -1080,10 +1135,10 @@
 
         <label for="data_type4">DATA_TYPE:</label>
         <input type="text" id="data_type4" name="data_type4" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>5.</h2>
+    <div style="text-align: left;">
+        
         <label for="address5">ADDRESS:</label>
         <input type="text" id="address5" name="address5" required>
 
@@ -1105,11 +1160,11 @@
 
         <label for="data_type5">DATA_TYPE:</label>
         <input type="text" id="data_type5" name="data_type5" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>6.</h2>
+    <div style="text-align: left;">
+        
         <label for="address6">ADDRESS:</label>
         <input type="text" id="address6" name="address6" required>
 
@@ -1131,11 +1186,11 @@
 
         <label for="data_type6">DATA_TYPE:</label>
         <input type="text" id="data_type6" name="data_type6" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>7.</h2>
+    <div style="text-align: left;">
+        
         <label for="address7">ADDRESS:</label>
         <input type="text" id="address7" name="address7" required>
 
@@ -1157,11 +1212,11 @@
 
         <label for="data_type7">DATA_TYPE:</label>
         <input type="text" id="data_type7" name="data_type7" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>8.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address8">ADDRESS:</label>
         <input type="text" id="address8" name="address8" required>
 
@@ -1183,11 +1238,11 @@
 
         <label for="data_type8">DATA_TYPE:</label>
         <input type="text" id="data_type8" name="data_type8" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>9.</h2>
+    <div style="text-align: left;">
+        
         <label for="address9">ADDRESS:</label>
         <input type="text" id="address9" name="address9" required>
 
@@ -1209,11 +1264,11 @@
 
         <label for="data_type9">DATA_TYPE:</label>
         <input type="text" id="data_type9" name="data_type9" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>10.</h2>
+    <div style="text-align: left;">
+        
         <label for="address10">ADDRESS:</label>
         <input type="text" id="address10" name="address10" required>
 
@@ -1235,10 +1290,10 @@
 
         <label for="data_type10">DATA_TYPE:</label>
         <input type="text" id="data_type10" name="data_type10" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>11.</h2>
+    <div style="text-align: left;">
+        
         <label for="address11">ADDRESS:</label>
         <input type="text" id="address11" name="address11" required>
 
@@ -1260,11 +1315,11 @@
 
         <label for="data_type11">DATA_TYPE:</label>
         <input type="text" id="data_type11" name="data_type11" required>
-    </div>
+    
 
     
-    <div class="text-box-group" style="text-align: center;">
-        <h2>12.</h2>
+    <div style="text-align: left;">
+        
         <label for="address12">ADDRESS:</label>
         <input type="text" id="address12" name="address12" required>
 
@@ -1286,10 +1341,10 @@
 
         <label for="data_type12">DATA_TYPE:</label>
         <input type="text" id="data_type12" name="data_type12" required>
-    </div>
+    
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>13.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address13">ADDRESS:</label>
         <input type="text" id="address13" name="address13" required>
 
@@ -1311,11 +1366,11 @@
 
         <label for="data_type13">DATA_TYPE:</label>
         <input type="text" id="data_type13" name="data_type13" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>14.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address14">ADDRESS:</label>
         <input type="text" id="address14" name="address14" required>
 
@@ -1337,11 +1392,11 @@
 
         <label for="data_type14">DATA_TYPE:</label>
         <input type="text" id="data_type14" name="data_type14" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>15.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address15">ADDRESS:</label>
         <input type="text" id="address15" name="address15" required>
 
@@ -1363,11 +1418,11 @@
 
         <label for="data_type15">DATA_TYPE:</label>
         <input type="text" id="data_type15" name="data_type15" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center;">
-        <h2>16.</h2>
+    <div  style="text-align: left;">
+        
         <label for="address16">ADDRESS:</label>
         <input type="text" id="address16" name="address16" required>
 
@@ -1389,11 +1444,11 @@
 
         <label for="data_type16">DATA_TYPE:</label>
         <input type="text" id="data_type16" name="data_type16" required>
-    </div>
+    
 
 
-    <div class="text-box-group" style="text-align: center; margin-bottom: 90px;">
-        <h2>17.</h2>
+    <div  style="text-align: left; margin-bottom: 5%;">
+        
         <label for="address17">ADDRESS:</label>
         <input type="text" id="address17" name="address17" required>
 
@@ -1416,7 +1471,7 @@
         <label for="data_type17">DATA_TYPE:</label>
         <input type="text" id="data_type17" name="data_type17" required>
         <input class="custom-btn btn-2" type="submit" value="Submit">
-    </div>
+    
     </form>
 
     <footer class="footer">POWERED BY ATOS - ASGS</footer>
