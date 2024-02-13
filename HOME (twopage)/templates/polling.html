@@ -85,20 +85,123 @@ input[type="text"] {
         input[type="checkbox"] {
             margin-left: 5px;
         }
+        form {
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 0px;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 5px;
+            text-align: center;
+            width: 50%;
+            margin-left: 40%;
+          }
     </style>
 
 </head>
 
 <body>
-
-    
-    <nav>
-        <a href="{{ url_for('home_amr') }}">Home</a>
-    </nav>
-
-
+    <div class="top-bar">
+        <div class="container-top">
+            <div style="display: flex; align-items: center;">
+                <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+                    alt="PTT Public Company Limited Logo">
+                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
+                    ASGS)</span>
+            </div>
+            <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
+                alt="logo">LOGOUT</a>
+        </div>
+    </div>
+    <div class="container">
+        <nav>
+            <ul class="mcd-menu">
+                <li>
+                    <a>
+                        <i class="fa fa-home"></i>
+                        <strong >Home</strong>
+                        <small>Home</small>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fa fa-database"></i>
+                        <strong>Reports</strong>
+                        <small>View Data </small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="far fa-eye"></i>View Billing Data</a></li>
+                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
+                        <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                        <li><a href="#"><i class="fas fa-plus"></i>New Site Detail</a></li>
+                    </ul>
+                </li>
+                <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-file-alt"></i>
+                      <strong>Manage Sites</strong>
+                      <small>Sites</small>
+                  </a>
+                  <ul>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                      <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                      <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+                  </ul>
+              </li>
+              <li>
+                <a>
+                    <i class="fas fa-wrench"></i>
+                    <strong>Polling Setting</strong>
+                    <small>Setting</small>
+                </a>
+                <ul>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                    <li><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+                      <ul>
+                          <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
+                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
+                      </ul>
+                    <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                    <ul>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                      </ul>
+                      <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                        <ul>
+                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Config Mapping</a></li>
+                            <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                        </ul>
+                </ul>
+            </li>
+          </ul>
+      </nav>
     <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
-       <label for="type_dropdown">Select Type:</label>
+      <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
             {% for type in type_options %}
