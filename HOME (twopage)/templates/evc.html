@@ -124,106 +124,182 @@
   
 </style>
 <body>
-  <div class="form-container">
-    <form id="filterForm" action="write_evc" method="get">
-        <label for="region_dropdown">Select Region:</label>
-        <select id="region_dropdown" name="region_dropdown">
-            <option value="">All Regions</option>
-            {% for region_option in region_options %}
-            <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
-            {% endfor %}
-        </select>
+    <div class="form-container">
+        <form id="filterForm" action="write_evc" method="get">
+    
+            <label for="region_dropdown">Select Region:</label>
+            <select id="region_dropdown" name="region_dropdown">
+              <option value="">All Regions</option>
+              {% for region_option in region_options %}
+              <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
+              {% endfor %}
+            </select>
+            
+            <label for="tag_dropdown">Select Tag:</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+              <option value="">All Tags</option>
+              {% for tag_option in tag_options %}
+              <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
+              {% endfor %}
+            </select>
+            
+            <label for="run_dropdown">Select Run:</label>
+            <select id="run_dropdown" name="run_dropdown">
+              <option value="">All Runs</option>
+              {% for run_option in run_options %}
+                <option value="{{ run_option }}" {% if run_option== selected_run %}selected{% endif %}>{{ run_option }}</option>
+              {% endfor %}
+            </select>
+            
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 
-        <label for="tag_dropdown">Select Tag:</label>
-        <select id="tag_dropdown" name="tag_dropdown">
-            <option value="">All Tags</option>
-            {% for tag_option in tag_options %}
-            <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="run_dropdown">Select Run:</label>
-        <select id="run_dropdown" name="run_dropdown">
-            <option value="">All Runs</option>
-            {% for run_option in run_options %}
-                <option value="{{ run_option }}" {% if run_option == selected_run %}selected{% endif %}>{{ run_option }}</option>
-            {% endfor %}
-        </select>
-
-        <input type="submit" value="Submit">
-    </form>
-</div>
-
-<form method="POST" action="/process_selected_rows">
-    {% if not df.empty %}
-    <table border="1" class="dataframe data" style="text-align: center;">
-        <thead style="position:relative;">
-            <tr style="text-align: right;">
-                <th>RUN</th>
-                <th>Region</th>
-                <th>Sitename</th>
-                <th>NoRun</th>
-                <th>METERID</th>
-                <th>VCtype</th>
-                <th>IPAddress</th>
-                <th>Port</th>
+        <form method="POST" action="/process_selected_rows">
+        
+            {% if not df.empty %}
+                <table border="1" class="dataframe data"   style="text-align: center;">
+                    <thead style="position:relative;">
+                        <tr style="text-align: right;">
+                            
+                            
+                            <th>RUN</th>
+                            <th>Region</th>
+                            <th>Sitename</th>
+                            <th>NoRun</th>
+                            <th>METERID</th>
+                            <th>VCtype</th>
+                            <th>IPAddress</th>
+                            <th>Port</th>
+                            
+                            
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #ffffff; position: relative;">
+                        {% for _, row in df.iterrows() %}
+                            <tr >
+                                
+                               
+                            <td >{{ row['RUN'] }}</td>
+                                    <td>{{ row['Region'] }}</td>
+                                    <td>{{ row['Sitename'] }}</td>
+                                    <td>{{ row['NoRun'] }}</td>
+                                    <td>{{ row['METERID'] }}</td>
+                                    <td>{{ row['VCtype'] }}</td>
+                                    <!-- <td>{{ '127.0.0.1' }}</td> -->
+                                    <td>{{ row['IPAddress'] }}</td>
+                                    <td>{{ row['Port'] }}</td>
+  
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </form>
+    
+        
+        <div class="container-fluid" style="margin-top: 100px;">
+          <div class="row">
+            <div class="col-sm-3 t pt-4" >
+              
+              <form method="POST" >
+                <div class="form-group" style="display: none;">
+                  <label for="slave_id">Slave ID</label>
+                  <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
+                </div>
+        
+                <div class="form-group" style="display: none;">
+                  <label for="function_code">Function Code</label>
+                  <input type="number" class="form-control" id="function_code" name="function_code" value="16"
+                    required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="starting_address">Starting Address</label>
+                  <input type="number" class="form-control" id="starting_address" name="starting_address"
+                    value="{{starting_address}}" required>
+                </div>
+               <div class="form-group">
+                  <label for="quantity">Quantity</label>
+                  <select type="number" class="form-control" id="quantity" name="quantity"  required>
+                  <option value="">Select</option> 
+        
+                  <option value="2">1</option>
+                  <option value="4">2</option>
+                  <option value="6">3</option>
+                  <option value="8">4</option>
+                  
+                  </select>
+                </div>
+                <div class="form-group" style = "display:none;" >
+                  <label for="tcp_ip">TCP IP</label>
+                  <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
+              </div>
+              
+                <div class="form-group" style = "display:none;" >
+                  <label for="tcp_port">TCP Port</label>
+                  <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
+                </div>
+        
+        
+                <div class="form-group">
+                  
+                  <input type="number" class="form-control" id="data_0" name="data_0" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_1" name="data_1" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_2" name="data_2" step="any" value="0" required>
+              </div>
+              
+              <div class="form-group">
+                  <input type="number" class="form-control" id="data_3" name="data_3" step="any" value="0" required>
+              </div>
+                <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
+                
+                <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Read Data</button>
+        
+                <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
+                <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
+                <input type="hidden" style="display: none;" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
+        
+                <div class="text-center" style="display: none;">
+                  <button type="submit" class="btn btn-success">Read Data</button>
+                  <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+             
+        {% if communication_traffic %}
+<div class="communication-traffic">
+    <h3>Communication Traffic</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Direction</th>
+                <th>Data</th>
             </tr>
         </thead>
-        <tbody style="background-color: #ffffff; position: relative;">
-            {% for _, row in df.iterrows() %}
+        <tbody>
+            {% for data in communication_traffic %}
             <tr>
-                <td>{{ row['RUN'] }}</td>
-                <td>{{ row['Region'] }}</td>
-                <td>{{ row['Sitename'] }}</td>
-                <td>{{ row['NoRun'] }}</td>
-                <td>{{ row['METERID'] }}</td>
-                <td>{{ row['VCtype'] }}</td>
-                <td>{{ row['IPAddress'] }}</td>
-                <td>{{ row['Port'] }}</td>
+                <td>{{ data['direction'] }}</td>
+                <td>{{ data['data'] }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% endif %}
-</form>
-
-<div class="container-fluid" style="margin-top: 100px;">
-    <div class="row">
-        <div class="col-sm-3 t pt-4">
-            <form method="POST">
-                <!-- ... Your form elements ... -->
-                <button type="submit" class="btn btn-primary" name="is_16bit" value="true">Read Data</button>
-                <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
-                <input type="hidden" style="display: none;" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
-            </form>
-        </div>
-    </div>
 </div>
-
-{% if communication_traffic %}
-    <div class="communication-traffic">
-        <h3>Communication Traffic</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Direction</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in communication_traffic %}
-                <tr>
-                    <td>{{ data['direction'] }}</td>
-                    <td>{{ data['data'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 {% else %}
-    <p>Communication Traffic is not available</p>
+<p>Communication Traffic is not available</p>
 {% endif %}
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     // เลือก element ของ dropdown "Quantity"
