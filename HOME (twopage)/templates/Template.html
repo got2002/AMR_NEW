@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -35px;
+    margin-top: -55px;
   }
   
   
@@ -151,6 +151,35 @@
     justify-content: left;
     margin-top: -20px;
   }
+
+
+  #run_dropdown,
+  #region_dropdown,
+  #tag_dropdown {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #3498db; /* Updated border color */
+      border-radius: 5px; /* Slightly increased border-radius for a softer look */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added a subtle box shadow */
+      width: 200px;
+      background-color: #fff; /* Set background color to white */
+      color: #333; /* Set text color */
+      transition: border-color 0.3s, box-shadow 0.3s; /* Added smooth transition */
+  }
+  
+  #run_dropdown:hover,
+  #region_dropdown:hover,
+  #tag_dropdown:hover {
+      border-color: #2980b9; /* Change border color on hover */
+  }
+  
+  #run_dropdown:focus,
+  #region_dropdown:focus,
+  #tag_dropdown:focus {
+      outline: none; /* Remove the default outline on focus */
+      border-color: #3498db; /* Change border color on focus */
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Add a subtle box shadow on focus */
+  }
   
   #statusMessage {
     margin-top: 15px;
@@ -168,21 +197,9 @@
     border-radius: 5px;
   }
   
-  #region_dropdown {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: none;
-    width: 200px;
-    margin-bottom: 5%;
-    margin-top: 5%;
-  }
+
   
-  button {
-    margin: 10px;
-    border-radius: 5px;
-  }
+
   
   .custom-btn {
     margin: auto;
@@ -990,17 +1007,10 @@ input[type="checkbox"] {
     text-align: center;
 }
 
-.container-fluid {
-    margin-top: 100px;
-}
-
 .form-group {
     margin-bottom: 20px;
 }
-form {
-    margin-top: -65px;
-    margin-bottom: 80px;
-}
+
 
 
 input[type="number"],
@@ -1047,6 +1057,25 @@ select {
   margin-left: 23%;
   
 }
+
+.container-fluid{
+    border: solid 1px #ddd;
+    background: #f9f9f9;
+    padding: 30px;
+    margin-top: 10px;
+    margin-bottom: 80px;
+}
+
+form#filterForm {
+
+    flex-direction: line;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+
+}
+
 </style>
 <body>
   <header class="top-bar">
@@ -1146,7 +1175,7 @@ select {
       </ul>
   </nav>
   <div class="text-box-group">
-    <form id="filterForm" action="write_evc" method="get">
+    <form  class="container-fluid" id="filterForm" action="write_evc" method="get">
         <label for="region_dropdown">Select Region:</label>
         <select id="region_dropdown" name="region_dropdown">
             <option value="">All Regions</option>
@@ -1154,7 +1183,7 @@ select {
             <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
             {% endfor %}
         </select>
-        <br>
+        
         <label for="tag_dropdown">Select Tag:</label>
         <select id="tag_dropdown" name="tag_dropdown">
             <option value="">All Tags</option>
@@ -1162,7 +1191,7 @@ select {
             <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
             {% endfor %}
         </select>
-
+        
         <label for="run_dropdown">Select Run:</label>
         <select id="run_dropdown" name="run_dropdown">
             <option value="">All Runs</option>
@@ -1208,11 +1237,11 @@ select {
     {% endif %}
 </form>
 
-<div class="container-fluid" style="margin-top: 50px;">
+<div class="container-fluid" >
     <div class="row">
         <div class="col-sm-3 t pt-4" >
-            <form method="POST">
-                <!-- ... Your form elements ... -->
+            <form method="POST" >
+                <h3>Confirm for Read Data</h3>
                 <button type="submit" class="custom-btn btn-2" name="is_16bit" value="true">Read Data</button>
                 <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
                 <input type="hidden" style="display: none;" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
