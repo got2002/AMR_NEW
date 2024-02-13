@@ -113,72 +113,13 @@ def connect_to_amr_db():
     hostname = "10.104.240.26"
     port = "1521"
     sid = "AMR"
-
-
-dsn = cx_Oracle.makedsn(hostname, port, service_name)
-
-try:
-    connection_info = {
-        "user": username,
-        "password": password,
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Success")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-def fetch_data(query, params=None):
     try:
-        with connection.cursor() as cursor:
-            if params:
-                cursor.execute(query, params)
-            else:
-                cursor.execute(query)
-            results = cursor.fetchall()
-        return results
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return []
-# update polling
-def update_sql(sql_statement):
-    with connection.cursor() as cursor:
+        active_connection = cx_Oracle.connect(username, password, hostname + "/" + sid)
+        print("Connected to AMR DB successfully.")
+    except Exception as e:
+        print("Error connecting to AMR DB: ", str(e))
 
-        cursor.execute(sql_statement)
-    connection.commit()
 
-def insert_address_range_to_oracle(
-    connection, poll_config, poll_billing, enable_config, enable_billing, evc_type
-):
-    with connection.cursor() as cursor:
-        sql_insert = """
-            INSERT INTO AMR_POLL_RANGE (POLL_CONFIG, POLL_BILLING, POLL_CONFIG_ENABLE, POLL_BILLING_ENABLE, EVC_TYPE)
-            VALUES (:1, :2, :3, :4, :5)
-        """
-
-        # Convert enable_config and enable_billing to comma-separated strings
-        enable_config_str = ",".join(map(str, enable_config))
-        enable_billing_str = ",".join(map(str, enable_billing))
-
-        data_to_insert = (
-            poll_config,
-            poll_billing,
-            enable_config_str,
-            enable_billing_str,
-            evc_type,
-        )
-
-        cursor.execute(sql_insert, data_to_insert)
-
-    connection.commit()
 
 ############  /connect database  #####################
 
@@ -1555,11 +1496,87 @@ def logout():
 def add_polling_route():
     return render_template("add_polling.html")
 
-@app.route("/polling_route")
-def polling_route():
-    return render_template("polling.html")
+@app.route("/update_polling_data", methods=["POST"])
+def update_polling_data(): 
+    selected_type = request.form.get("selected_type")
 
-# MAX_ADDRESS_LENGTH = 249
+    type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
+    results = fetch_data(type_id_query)
+    type_id = str(results[0]).strip("',()")
+    print(type_id)
+    
+    # Update configuration data
+    poll_config_all = ""
+    enable_config = ""
+    for i in range(0, 5):
+        start_key = f"start_config{i + 1}"
+        end_key = f"end_config{i + 1}"
+        enable_key = f"enable_config[{i}]"
+        
+        start_value = request.form.get(start_key)
+        end_value = request.form.get(end_key)
+        enable_value = 1 if request.form.get(enable_key) == "on" else 0
+
+        address_range = f"{start_value},{end_value}"
+        if len(poll_config_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_config_all += ","
+            poll_config_all += address_range
+
+        if i == 0:
+            enable_config = str(enable_value)
+        else:
+            enable_config +=  "," + str(enable_value)
+            
+    print("poll_config:", poll_config_all)
+    print("poll_config_enable:", enable_config)
+    
+    # Update billing data
+    poll_billing_all = ""
+    enable_billing = ""
+    for i in range(0, 10):
+        start_key = f"start{i + 1}"
+        end_key = f"end{i + 1}"
+        enable_key = f"enable[{i}]"
+        
+        start_value = request.form.get(start_key)
+        end_value = request.form.get(end_key)
+        enable_value = 1 if request.form.get(enable_key) == "on" else 0
+        
+        address_range = f"{start_value},{end_value}"
+        if len(poll_billing_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_billing_all += ","
+            poll_billing_all += address_range
+
+        if i == 0:
+            enable_billing = str(enable_value)
+        else:
+            enable_billing += "," + str(enable_value)
+    
+    print("poll_billing:", poll_billing_all)
+    print("poll_config_enable:", enable_billing)
+
+    update_query = f"""
+    UPDATE amr_poll_range
+    SET 
+        poll_config = '{poll_config_all}',
+        poll_billing = '{poll_billing_all}',
+        poll_config_enable = '{enable_config}',
+        poll_billing_enable = '{enable_billing}'
+    WHERE evc_type = '{type_id}'
+    """
+    update_sql(update_query)
+    print("Update Query:", update_query)
+    # After updating the data, you may redirect to the polling route or perform any other necessary actions
+    
+    return redirect("/polling_route")
+
+@app.route("/add_polling_route")
+def add_polling_route():
+    return render_template("add_polling.html")
+
+MAX_ADDRESS_LENGTH = 249
 
 
 @app.route("/save_to_oracle", methods=["POST"])
@@ -2507,7 +2524,7 @@ def read_data_write():
         print("Error:", str(e))
         return render_template('error.html', error=str(e))
     
-################################################### update_mapping_billing_route ###############################################
+###################################################  ###############################################
 
 ################################################### update_polling_data ###############################################
 @app.route("/update_polling_data", methods=["POST"])
@@ -2789,88 +2806,6 @@ def update_mapping_billing():
     return redirect("/mapping_billing")
 ################################################### update_mapping_billing_route ###############################################
 
-################################################### submit_form  ###############################################
-@app.route("/submit_form", methods=["POST"])
-def submit_form():
-    cursor = None
-    connection = None
-
-    try:
-        data_list = []
-        for i in range(1, 21):
-            address = request.form[f"address{i}"]
-            description = request.form[f"description{i}"]
-            type_value = request.form.get(f"type_value{i}")
-            evc_type = request.form[f"evc_type{i}"]
-            or_der = request.form[f"or_der{i}"]
-            data_type = request.form[f"data_type{i}"]
-
-            data_list.append(
-                (address, description, type_value, evc_type, or_der, data_type)
-            )
-
-        dsn_tns = cx_Oracle.makedsn(host, port, service_name=service)
-        connection = cx_Oracle.connect(user=username, password=password, dsn=dsn_tns)
-
-        cursor = connection.cursor()
-
-        sql_merge = """
-            MERGE INTO AMR_MAPPING_CONFIG dst
-            USING (
-                SELECT
-                    :address as address,
-                    :description as description,
-                    :type_value as type_value,
-                    :evc_type as evc_type,
-                    :or_der as or_der,
-                    :data_type as data_type
-                FROM dual
-            ) src
-            ON (dst.address = src.address)
-            WHEN MATCHED THEN
-                UPDATE SET
-                    dst.description = src.description,
-                    dst.type_value = src.type_value,
-                    dst.evc_type = src.evc_type,
-                    dst.or_der = src.or_der,
-                    dst.data_type = src.data_type
-            WHEN NOT MATCHED THEN
-                INSERT (
-                    address,
-                    description,
-                    type_value,
-                    evc_type,
-                    or_der,
-                    data_type
-                ) VALUES (
-                    src.address,
-                    src.description,
-                    src.type_value,
-                    src.evc_type,
-                    src.or_der,
-                    src.data_type
-                )
-        """
-
-        cursor.executemany(sql_merge, data_list)
-
-        # Commit the changes to the database
-        connection.commit()
-
-        return "Data saved successfully"
-    except Exception as e:
-        return f"Error occurred: {str(e)}"
-    finally:
-        if cursor is not None:
-        # Close the cursor
-            cursor.close()
-
-    if connection is not None:
-        # Close the connection
-        connection.close()
-
-
-################################################### submit_form ###############################################
 
 ################################################### submit_new_form ###############################################
 
@@ -2967,3 +2902,20 @@ def login():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+# @app.teardown_appcontext
+# def close_conn(*args, **kwargs):
+#     """This function closes the Oracle connection after each request."""
+#     global active_connection
+#     if active_connection is not None:
+#         active_connection.close()
+
+
+
+
+# @app.route('/logout')     
+# def logout():
+#     session.clear()       # remove the user and auth token from the session if it exists
+#     flash('You were logged out', 'info')
+#     return redirect(url_for('login'))   # send them back to the sign in page
