@@ -914,16 +914,7 @@
         animation: alternate-reverse; /* Apply the oscillation animation */
     }
 
-      form {
-        margin: auto;
-        margin-top: 50px;
-        margin-bottom: 50px;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        text-align: center;
-      }
-    
+
     
     
       .form-container-BOx {
@@ -1056,7 +1047,7 @@
       </nav>
         
 <div class="text-box-group">
-    <div id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
+    <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
         <div class="form-container">
         <label  for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
@@ -1074,7 +1065,7 @@
         <p>No data available.</p>
     {% endif %} -->
     
-      <div method="POST" action="/update_mapping_config_route">
+      <form method="POST" action="/update_mapping_config_route">
         <input type="hidden" name="selected_type" value="{{ selected_type }}">
     
         {% for i in range(0, list_address|length) %}
@@ -1112,9 +1103,9 @@
         {% endfor %}
     
         <input class="custom-btn btn-2" type="submit" value="Submit">
-      </div>
+      </form>
       <footer class="footer">POWERED BY ATOS - ASGS</footer>
-    </div>
+    </form>
     
 </body>
     
