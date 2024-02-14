@@ -419,44 +419,7 @@ table {
     }
   }
 
-  .custom-btn {
-    margin: 1%;
-    color: #fff;
-    width: 140px;
-    height: 40px;
-    padding: 10px 25px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-    border-radius: 5px;
-  }
 
-  /* 1 */
-  .btn-1 {
-    border: none;
-    background-color: #333;
-    box-shadow: 0 0 5px #333;
-  }
-
-  .btn-1:hover {
-    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-  }
-
-
-  /* 1 */
-  .btn-2 {
-    border: none;
-    background-color: #4CAF50;
-    box-shadow: 0 0 5px #4CAF50;
-  }
-
-  .btn-2:hover {
-    box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
-  }
 
   /* Dropdown Styles */
   .form-containerBox select,
@@ -1465,6 +1428,70 @@ table {
     z-index: 5;
     margin-top: 2%;
   }
+  .forward-button {
+    position: fixed;
+    top: 10px;
+    right: 0px; /* เปลี่ยน left เป็น right */
+  }
+.back-button {
+position: fixed;
+top: 10px;
+right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.back-button a:hover {
+    
+transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.forward-button a:hover {
+
+transform: translateY(-4px);
+}
+
 </style>
 
   <body>
@@ -1477,10 +1504,16 @@ table {
           <span class="Automatic" style="margin-left: 10px;"
             alt="logo">Automatic Meter Reading (ASGS)</span>
         </div>
-
-        <a href class="fas fa-sign-out-alt"
-          style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-          alt="logo">LOGOUT</a>
+        <div class="back-button" >
+          <a href="javascript:history.back()"style="text-decoration: none;">
+            <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+          </a>
+        </div>
+        <div class="forward-button" >
+          <a href="javascript:history.forward()"style="text-decoration: none;">
+            <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+          </a>
+        </div>
       </div>
     </div>
     <div class="container">
@@ -1513,29 +1546,6 @@ table {
           </li>
           <li>
             <a>
-                <i class="fas fa-search"></i>
-                <strong>Polling Actions</strong>
-                <small>Polling</small>
-            </a>
-            <ul>
-                <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
-            </ul>
-        </li>
-        <li>
-            <a>
-                <i class="fas fa-file-alt"></i>
-                <strong>Manage Sites</strong>
-                <small>Sites</small>
-            </a>
-            <ul>
-                <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-            </ul>
-        </li>
-        <li>
-            <a>
                 <i class="fas fa-clipboard-list"></i>
                 <strong>Manage Users</strong>
                 <small>Users</small>
@@ -1546,6 +1556,18 @@ table {
                 <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
             </ul>
         </li>
+        <li>
+          <a>
+              <i class="fas fa-file-alt"></i>
+              <strong>Manage Sites</strong>
+              <small>Sites</small>
+          </a>
+          <ul>
+              <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+              <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+              <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+          </ul>
+      </li>
         <li>
           <a>
               <i class="fas fa-wrench"></i>
@@ -1560,14 +1582,23 @@ table {
                 <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
 
                 </ul>
-                <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                  <ul>
-                      <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                      <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                  </ul>
+                
+                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
+                  <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
                   <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
           </ul>
       </li>
+          <li>
+            <a>
+                <i class="fas fa-search"></i>
+                <strong>Polling Actions</strong>
+                <small>Polling</small>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+            </ul>
+        </li>
     </ul>
 </nav>
 <div class="text-box-group">
