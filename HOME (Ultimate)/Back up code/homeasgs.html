@@ -794,7 +794,6 @@
   transform: translateY(-4px);
 }
 
-
     </style>
 <head>
     <meta charset="UTF-8">
@@ -829,7 +828,6 @@
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (ASGS)</span>
             </div>
-          
             <div class="back-button" >
               <a href="javascript:history.back()"style="text-decoration: none;">
                 <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
@@ -840,7 +838,7 @@
                 <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
               </a>
             </div>
-          
+        </div>
     </header>
     <div class="container">
         <nav>
@@ -899,19 +897,17 @@
                     <small>Setting</small>
                 </a>
                 <ul>
-                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                    <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-briefcase"></i>EVC Management</a></li>
+                    <li><a href="#"><i class="fas fa-wrench"></i>Polling Range Setting</a>
                     <ul>
                       <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
                       <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
   
                       </ul>
-                      <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                        <ul>
-                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                            <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                        </ul>
-                        <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
+                      
+                        <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-screwdriver"></i>Configuration Mapping</a></li>
+                        <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-glasses"></i>Daily Billing Mapping</a></li>
+                        <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
                 </ul>
             </li>
                 <li>
@@ -921,11 +917,10 @@
                       <small>Polling</small>
                   </a>
                   <ul>
-                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fas fa-screwdriver"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-screwdriver"></i>Write EVC (By Profile)</a></li>
                   </ul>
               </li>
-
           </ul>
       </nav>
         <footer class="footer">POWERED BY ATOS - ASGS</footer>
