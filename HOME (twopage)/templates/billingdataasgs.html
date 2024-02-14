@@ -192,7 +192,7 @@
   .text-box-group {
         width: 105%;
         background-color: #fff;
-        padding: 40px;
+
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin: auto;
@@ -1401,6 +1401,68 @@ table {
     margin-top: -15%;
     margin-bottom: -20%;
   }
+
+  .outer {
+    background: #b4b4b4;
+    opacity: 0.9;
+    width: 1068px;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 7px 7px 0px 0px;
+  }
+  
+  .outer.dark {
+    background: #273138;
+  }
+  
+  .outer.dark .dot {
+    background: #4a5c66;
+  }
+  
+  .outer.yosemite {
+    background: #f6f6f6;
+    background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+    background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+    border: 1px solid #d8d8d8;
+    border-bottom: 1px solid #b4b4b4;
+  }
+  
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #f9f9f9;
+    border-radius: 50%;
+    margin: 0 4px 0 0;
+  }
+  
+  .dot.red {
+    background: #FF6057;
+    border: 1px solid #E14640;
+  }
+  
+  .dot.amber {
+    background: #FFBD2E;
+    border: 1px solid #DFA123;
+  }
+  
+  .dot.green {
+    background: #27C93F;
+    border: 1px solid #1DAD2B;
+  }
+  .box_we {
+    width: 90%;
+    background-color: #fff;
+    padding: 20px;
+    margin: auto;
+    z-index: 5;
+    margin-top: 2%;
+  }
 </style>
 
   <body>
@@ -1506,7 +1568,13 @@ table {
       </li>
     </ul>
 </nav>
-      <div class="text-box-group">
+<div class="text-box-group">
+  <div class="outer yosemite">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+ </div>
+ <div class="box_we">
     <form method="GET" action="{{ url_for('billing_data_asgs') }}">
             <h2> View Billing Data (ASGS)</h2>
             <div class="form-container">
