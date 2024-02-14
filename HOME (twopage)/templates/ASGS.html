@@ -34,8 +34,16 @@
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading</span>
             </div>
-            <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-                alt="logo">LOGOUT</a>
+            <div class="back-button" >
+              <a href="javascript:history.back()"style="text-decoration: none;">
+                <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+              </a>
+            </div>
+            <div class="forward-button" >
+              <a href="javascript:history.forward()"style="text-decoration: none;">
+                <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+              </a>
+            </div>
         </div>
     </header>
     <div class="container">
@@ -813,6 +821,69 @@ footer {
     font-size: 1.5em;
     margin-right: 10px;
     margin-bottom: 10px;
+}
+.forward-button {
+  position: fixed;
+  top: 10px;
+  right: 0px; /* เปลี่ยน left เป็น right */
+}
+.back-button {
+position: fixed;
+top: 10px;
+right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.back-button a:hover {
+  
+transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.forward-button a:hover {
+
+transform: translateY(-4px);
 }
 
 </style>
