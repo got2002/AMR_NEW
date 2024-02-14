@@ -859,10 +859,10 @@
                     </a>
                     <ul>
                         <li><a href="{{ url_for('billing_data_asgs') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
-                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                        <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                        <li><a href="sitedetail_data"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                        <li><a href="{{ url_for('page_not_found') }}"><i class="far fa-eye"></i>View EVC Status</a></li>
+                        <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
+                        <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
+                        <li><a href="{{ url_for('page_not_found') }}"><i class="far fa-file-alt"></i>Site Detail</a></li>
                     </ul>
                 </li>
 
@@ -873,9 +873,9 @@
                       <small>Users</small>
                   </a>
                   <ul>
-                      <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                      <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                      <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+                      <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-minus"></i>Remove User</a></li>
                   </ul>
               </li>
               <li>
@@ -885,9 +885,9 @@
                     <small>Sites</small>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                    <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                    <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                    <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-plus"></i>Add Site</a></li>
+                    <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                    <li><a href="{{ url_for('page_not_found') }}"><i class="fas fa-minus"></i>Remove Site</a></li>
                 </ul>
             </li>
               <li>
@@ -898,7 +898,7 @@
                 </a>
                 <ul>
                     <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-briefcase"></i>EVC Management</a></li>
-                    <li><a href="#"><i class="fas fa-wrench"></i>Polling Range Setting</a>
+                    <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
                     <ul>
                       <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
                       <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
