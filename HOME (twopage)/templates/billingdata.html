@@ -1636,9 +1636,9 @@ transform: translateY(-4px);
                 <small>Users</small>
             </a>
             <ul>
-                <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+                <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
+                <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
             </ul>
         </li>
         <li>
@@ -1660,17 +1660,17 @@ transform: translateY(-4px);
               <small>Setting</small>
           </a>
           <ul>
-              <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-              <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+              <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-briefcase"></i>EVC Management</a></li>
+              <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
               <ul>
                 <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
                 <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
 
                 </ul>
                 
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                  <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
+                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-screwdriver"></i>Configuration Mapping</a></li>
+                  <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-glasses"></i>Daily Billing Mapping</a></li>
+                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
           </ul>
       </li>
           <li>
@@ -1680,8 +1680,8 @@ transform: translateY(-4px);
                 <small>Polling</small>
             </a>
             <ul>
-                <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                <li><a href="{{ url_for('read_data_write') }}"><i class="fas fa-screwdriver"></i>Write Config</a></li>
+                <li><a href=""><i class="fas fa-screwdriver"></i>Write EVC (By Profile)</a></li>
             </ul>
         </li>
     </ul>
