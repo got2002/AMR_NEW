@@ -136,7 +136,7 @@
 
 .table.table-bordered th,
 .table.table-bordered td {
-    white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ในเซลล์ */
+    white-space: nowrap;
 }
         
         #colSm9Container {
@@ -285,7 +285,7 @@
                         <tr >
                             
                             <td ></td>
-                        <td >{{ row['RUN'] }}</td>
+                                <td >{{ row['RUN'] }}</td>
                                 <td>{{ row['Region'] }}</td>
                                 <td>{{ row['Sitename'] }}</td>
                                 <td>{{ row['NoRun'] }}</td>
@@ -311,14 +311,45 @@
         {% endif %}
     </form>
     
+   
 <div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px; " >
-        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port,poll_config_enable_list,poll_billing_enable_list in zipped_data  %}
+        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list in zipped_data  %}
                                 <td > 
-                                    <input type="checkbox" name="configCheckbox" style="width: 50%;"  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}}" onclick="changeConfigCheckbox(this)"> 
+                                    <input type="checkbox" name="configCheckbox" style="width: 50%; "  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}}" onclick="changeConfigCheckbox(this)"> 
                                 </td>
                             {% endfor %}
 </div>
+<script>
+    document.querySelectorAll('input[name="configCheckbox"]').forEach(checkbox => {
+        checkbox.addEventListener('click', function() {
+            if (this.checked) {
+                const values = this.value.split(',');
+                const evcTypeList = values[values.length - 1].replace(/['\[\]]/g, '');
+                
+                // ส่งค่า evcTypeList ไปยังเซิร์ฟเวอร์ Python โดยใช้ Fetch APIห
+                fetch('/evc_type', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ evcTypeList })
+                })
+                .then(response => {
+                    // ดำเนินการต่อไปตามที่ต้องการหลังจากได้รับการตอบกลับจากเซิร์ฟเวอร์
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    });
+    </script>
+    
+    
+
     <script>
+        
+        
         // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
         var checkboxes = document.getElementsByName('configCheckbox');
         
@@ -477,16 +508,16 @@
    
    
 
- <!-- Canvas -->
+
  <canvas id="orbcanvas" class="orb-canvas"></canvas>
- <!-- Overlay -->
+ 
  <div class="overlay" id="overlay">
 
-     <!-- Overlay inner wrapper -->
+     
      <div class="overlay__inner">
-         <!-- Title -->
+       
 
-         <!-- Description -->
+        
          <div class="list-container" id="listcontainer">
 
              <div class="menu-icon-wrapper">
@@ -546,7 +577,7 @@
                              <button type="submit" style="display: none;" id="changeTo16BitButton" class="btn btn-primary" name="is_16bit" value="true" data-state="data" style="height: 34px; width: 45%; font-size: x-small;border-radius: 0.5rem;border: none;">Change to 16-bit</button >
 
                <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
-               <button type="submit" id="changeTo32BitButton" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
+                        <button type="submit" id="changeTo32BitButton" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
                              <!-- <div class="btn-button1">
                                  <p>Elster:</p>
                              </div> -->
@@ -953,7 +984,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_2 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -970,7 +1001,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -987,7 +1018,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_3 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1004,7 +1035,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1021,7 +1052,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_4 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1038,7 +1069,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1055,7 +1086,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_5 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+               
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1073,7 +1104,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1129,6 +1160,9 @@
     {% endif %} 
     </div>
 </div>
+
+
+
 <div id="colSm9Container_7" class="col-sm-9_7">
     <div class="table-responsive">
 
@@ -1137,7 +1171,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_7 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+             
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1155,7 +1189,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+               
                 {% endfor %}
             </tbody>
         </table>
@@ -1171,7 +1205,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_8 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+               
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1189,7 +1223,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1205,7 +1239,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_9 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+               
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1223,7 +1257,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+              
                 {% endfor %}
             </tbody>
         </table>
@@ -1239,7 +1273,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_10 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1257,7 +1291,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1273,7 +1307,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_11 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1291,7 +1325,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1307,7 +1341,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_12 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1325,7 +1359,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1342,7 +1376,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_13 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+             
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1360,7 +1394,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -1377,7 +1411,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_14 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+               
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1395,7 +1429,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+               
                 {% endfor %}
             </tbody>
         </table>
@@ -1412,7 +1446,7 @@
         <table class="table table-hover">
             <tbody style="background-color: #ffffff;">
                 {% for data in data_list_15 %}
-                {% if data['description'] and "Address" not in data['description'] %}
+                
                     <tr>
                         <td>{{ data['description'] }}</td>
                         <td>{{ data['value'] }}</td>
@@ -1430,7 +1464,7 @@
                             {% endif %}
                         </td>
                     </tr>
-                {% endif %}
+                
                 {% endfor %}
             </tbody>
         </table>
