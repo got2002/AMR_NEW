@@ -241,6 +241,7 @@
   max-width: 150%; /* Set maximum width */
   width: 150%; /* Take up the full width of the container */
   padding: 20px;
+  justify-self: center;
   border-radius: 12px; /* Rounded corners */
 }
 
@@ -1408,21 +1409,19 @@ input[type="text"]:focus {
   }
 
   footer {
-  background-color: #2e6ff2;
-  color: white;
-  text-align: left;
-  padding: 8px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  box-shadow: 0 0 5px #ddd;
-  -moz-box-shadow: 0 0 5px #ddd;
-  -webkit-box-shadow: 0 0 5px #ddd;
-  font-size: small;
-  z-index: 1000; /* กำหนดลำดับให้ footer อยู่ด้านบน */
-}
-
+    background-color: #2e6ff2;
+    color: white;
+    text-align: left;
+    padding: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 0 5px #ddd;
+    -moz-box-shadow: 0 0 5px #ddd;
+    -webkit-box-shadow: 0 0 5px #ddd;
+    font-size: small;
+  }
 
   .top-bar {
     background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
@@ -1732,7 +1731,7 @@ transform: translateY(-4px);
         </li>
     </ul>
 </nav>
-<div class="text-box-group">
+<div class="text-box-group" >
   <div class="outer yosemite">
       <div class="dot red"></div>
       <div class="dot amber"></div>
@@ -1741,7 +1740,7 @@ transform: translateY(-4px);
  <div class="box_we" >
       <form method="get" action="{{ url_for('billing_data') }}">
         <h2> View Billing Data (AMR)</h2>
-        <div class="form-container">
+        
           <label for="region_dropdown">Select Region:</label>
           <select id="region_dropdown" name="region_dropdown">
             <option value {% if not selected_region %}selected{% endif %}>All</option>
@@ -1813,7 +1812,7 @@ transform: translateY(-4px);
 {% endif %}
 </div>
 
-  <div class="plot-container" >
+  <div class="plot-container" style="justify-content: center;">
     {{ graph_corrected|safe }}
   </div>
 
