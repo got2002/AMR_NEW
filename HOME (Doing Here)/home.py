@@ -32,8 +32,12 @@ import cx_Oracle
 import plotly.subplots as sp
 import plotly.graph_objs as go
 import matplotlib as mpt
+import time
+import datetime
+import pytz
+
 app = Flask(__name__)
-app.secret_key = "your_secret_key_here"
+
 # Replace these values with your actual database credentials
 communication_traffic = []
 change_to_32bit_counter = 0  # Initialize the counter to 2
@@ -248,7 +252,7 @@ def remove_user_route():
     # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
     return render_template("remove_user.html", user_data=user_data)
 ############   /remove_user ###################
-############  View Billing Data   #####################
+############  View Billing Data   #############
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
     selected_region = request.args.get("selected_region")
@@ -916,8 +920,9 @@ def Manualpoll_data():
         ],
     )
     evc_type_list = df.get(["evc_type"]).values.tolist()
-    print(evc_type_list)
+    
     poll_config_list = df.get(["poll_config"]).values.tolist()
+    
     if poll_config_list:
         config_list_str = str(poll_config_list).strip("[]'").split(",")
     else:
@@ -928,7 +933,7 @@ def Manualpoll_data():
     else:
         billing_list_str = [''] * 20
     poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-    print(poll_config_enable_list)
+    
     if poll_config_enable_list:
         poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
     else:
@@ -951,7 +956,8 @@ def Manualpoll_data():
     else:
         Port_str = [''] 
     
-    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list)
+    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list)
+    
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -963,7 +969,7 @@ def Manualpoll_data():
         tag_options=tag_options,df=df
         ,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
         billing_list_str=billing_list_str,poll_billing_enable_list=poll_billing_enable_list,ip_str=ip_str,Port_str=Port_str,config_list_str=config_list_str,poll_billing_enable_str=poll_billing_enable_str,
-        poll_config_enable_str=poll_config_enable_str,poll_config_enable_list=poll_config_enable_list
+        poll_config_enable_str=poll_config_enable_str,poll_config_enable_list=poll_config_enable_list,evc_type_list=evc_type_list
         # quantity_1=quantity_1
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
@@ -971,8 +977,10 @@ def Manualpoll_data():
 def read_data():
     global change_to_32bit_counter  # Use the global variable
     slave_id = int(request.form["slave_id"])
+    
     function_code = int(request.form["function_code"])
     starting_address_1 = int(request.form['starting_address_1'])
+    
     quantity_1 = int(request.form['quantity_1'])
     adjusted_quantity_1 = quantity_1 - starting_address_1 + 1
     starting_address_2 = int(request.form['starting_address_2'])
@@ -1018,10 +1026,16 @@ def read_data():
     starting_address_15 = int(request.form['starting_address_15'])
     quantity_15 = int(request.form['quantity_15'])
     adjusted_quantity_15 = quantity_15 - starting_address_15 + 1
-   
+    
     tcp_ip = request.form["tcp_ip"]
     tcp_port = int(request.form["tcp_port"])
-    # Check if the data should be displayed in 16-bit format or 32-bit format
+    
+    evc_type = int(request.form["evc_type"])
+    print(evc_type)
+    
+    
+    
+    
     is_16bit = request.form.get("is_16bit") == "true"
     if is_16bit:
         bytes_per_value = 2
@@ -1044,7 +1058,7 @@ def read_data():
             adjusted_quantity_14*= 2
             adjusted_quantity_15*= 2
             change_to_32bit_counter -= 1
-     # Build the request message
+    
     request_message_1 = bytearray(
     [slave_id, function_code, starting_address_1 >> 8, starting_address_1 & 0xFF, adjusted_quantity_1 >> 8, adjusted_quantity_1 & 0xFF]
 )
@@ -1398,23 +1412,6 @@ def read_data():
     data_list_14 = []
     data_list_15 = []
     
-    
-    address = starting_address_1
-    address = starting_address_2
-    address = starting_address_3
-    address = starting_address_4
-    address = starting_address_5
-    address = starting_address_6
-    address = starting_address_7
-    address = starting_address_8
-    address = starting_address_9
-    address = starting_address_10
-    address = starting_address_11
-    address = starting_address_12
-    address = starting_address_13
-    address = starting_address_14
-    address = starting_address_15
-    
     value = 0
     values_1 = values_1[:-1]
     values_2 = values_2[:-1]
@@ -1431,15 +1428,39 @@ def read_data():
     values_13 = values_13[:-1]
     values_14 = values_14[:-1]
     values_15 = values_15[:-1]
+    
+    address = starting_address_1
+    address = starting_address_2
+    address = starting_address_3
+    address = starting_address_4
+    address = starting_address_5
+    address = starting_address_6
+    address = starting_address_7
+    address = starting_address_8
+    address = starting_address_9
+    address = starting_address_10
+    address = starting_address_11
+    address = starting_address_12
+    address = starting_address_13
+    address = starting_address_14
+    address = starting_address_15
+   
+    
+    evc_type = evc_type
     for i, value in enumerate(values_1):
-        address = starting_address_1 + i * 2
         
-        type_value = get_type_value_from_database(address)
-        if type_value is not None:  # Check if type_value is not None
-            hex_value = hex(value)  # Convert the decimal value to HEX
+        address = starting_address_1 + i * 2
+        # print(address)
+        
+        type_value = get_type_value_from_database(address,evc_type)
+        
+        if type_value is not None: 
+            hex_value = hex(value)  
             binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value 
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
             description = get_description_from_database(address)
+            
             if description is None:
                 description = f"Address {address}"
                 address += 0
@@ -1447,7 +1468,7 @@ def read_data():
                 signed_value = value - 2**16 if value >= 2**15 else value
                 is_16bit_value = True
                 float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
             else:
                 signed_value = value - 2**32 if value >= 2**31 else value
                 is_16bit_value = False
@@ -1458,14 +1479,30 @@ def read_data():
                 )
                 float_signed_value = (
                     signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
+                )  
+                
                 if type_value == "Float":
-                    # Set float_display_value to the float representation
+                    
                     float_display_value = float_value
                 elif type_value == "signed":
-                    # Set float_display_value to the signed representation
+                    
                     float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
                 else:
                     # Handle other cases or set a default behavior
                     float_display_value = "Undefined"
@@ -1477,231 +1514,28 @@ def read_data():
                     "value": value,
                     "hex_value": hex_value,
                     "binary_value": binary_value,
+                    "ulong_value": ulong_value,  
                     "float_value": float_display_value,
                     "signed_value": signed_value,
                     "is_16bit": is_16bit_value,
                     "float_signed_value": signed_value,
                 }
             )
-        
-        value, updated_address = handle_action_configuration(i, value, address)
+
         
     for i, value in enumerate(values_2):
         
         address = starting_address_2 + i * 2
-        type_value = get_type_value_from_database(address)
-        hex_value = hex(value)  # Convert the decimal value to HEX
-        binary_value = convert_to_binary_string(value, bytes_per_value)
-        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database(address)
-        if description is None:
-            description = f"Address {address}"
-            address += 0
-        if is_16bit:
-            signed_value = value - 2**16 if value >= 2**15 else value
-            is_16bit_value = True
-            float_value = value if is_16bit_value else float_value
-            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-        else:
-            signed_value = value - 2**32 if value >= 2**31 else value
-            is_16bit_value = False
-            float_value = (
-                float_value
-                if is_16bit_value
-                else struct.unpack("!f", struct.pack("!I", value))[0]
-            )
-            float_signed_value = (
-                signed_value if is_16bit_value else None
-            )  # Set signed_value to None for 32-bit
-            # Apply type_value check after determining 16-bit or 32-bit format
-            if type_value == "Float":
-                # Set float_display_value to the float representation
-                float_display_value = float_value
-            elif type_value == "signed":
-                # Set float_display_value to the signed representation
-                float_display_value = signed_value
-            else:
-                # Handle other cases or set a default behavior
-                float_display_value = "Undefined"
-                print(f"Type Value for address {address}: {type_value}")
-        data_list_2.append(
-            {
-                "description": description,
-                "address": address,
-                "value": value,
-                "hex_value": hex_value,
-                "binary_value": binary_value,
-                "float_value": float_display_value,
-                "signed_value": signed_value,
-                "is_16bit": is_16bit_value,
-                "float_signed_value": signed_value,
-            }
-        )
-        value, updated_address = handle_action_configuration(i, value, address)
-    for i, value in enumerate(values_3):
+        type_value = get_type_value_from_database(address,evc_type)
+       
         
-        address = starting_address_3 + i * 2
-        type_value = get_type_value_from_database(address)
-        hex_value = hex(value)  # Convert the decimal value to HEX
-        binary_value = convert_to_binary_string(value, bytes_per_value)
-        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database(address)
-        if description is None:
-            description = f"Address {address}"
-            address += 0
-        if is_16bit:
-            signed_value = value - 2**16 if value >= 2**15 else value
-            is_16bit_value = True
-            float_value = value if is_16bit_value else float_value
-            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-        else:
-            signed_value = value - 2**32 if value >= 2**31 else value
-            is_16bit_value = False
-            float_value = (
-                float_value
-                if is_16bit_value
-                else struct.unpack("!f", struct.pack("!I", value))[0]
-            )
-            float_signed_value = (
-                signed_value if is_16bit_value else None
-            )  # Set signed_value to None for 32-bit
-            # Apply type_value check after determining 16-bit or 32-bit format
-            if type_value == "Float":
-                # Set float_display_value to the float representation
-                float_display_value = float_value
-            elif type_value == "signed":
-                # Set float_display_value to the signed representation
-                float_display_value = signed_value
-            else:
-                # Handle other cases or set a default behavior
-                float_display_value = "Undefined"
-                print(f"Type Value for address {address}: {type_value}")
-        data_list_3.append(
-            {
-                "description": description,
-                "address": address,
-                "value": value,
-                "hex_value": hex_value,
-                "binary_value": binary_value,
-                "float_value": float_display_value,
-                "signed_value": signed_value,
-                "is_16bit": is_16bit_value,
-                "float_signed_value": signed_value,
-            }
-        )
-        
-        value, updated_address = handle_action_configuration(i, value, address)
-    for i, value in enumerate(values_4):
-        
-        address = starting_address_4 + i * 2
-        type_value = get_type_value_from_database(address)
-        hex_value = hex(value)  # Convert the decimal value to HEX
-        binary_value = convert_to_binary_string(value, bytes_per_value)
-        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database(address)
-        if description is None:
-            description = f"Address {address}"
-            address += 0
-        if is_16bit:
-            signed_value = value - 2**16 if value >= 2**15 else value
-            is_16bit_value = True
-            float_value = value if is_16bit_value else float_value
-            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-        else:
-            signed_value = value - 2**32 if value >= 2**31 else value
-            is_16bit_value = False
-            float_value = (
-                float_value
-                if is_16bit_value
-                else struct.unpack("!f", struct.pack("!I", value))[0]
-            )
-            float_signed_value = (
-                signed_value if is_16bit_value else None
-            )  # Set signed_value to None for 32-bit
-            # Apply type_value check after determining 16-bit or 32-bit format
-            if type_value == "Float":
-                # Set float_display_value to the float representation
-                float_display_value = float_value
-            elif type_value == "signed":
-                # Set float_display_value to the signed representation
-                float_display_value = signed_value
-            else:
-                # Handle other cases or set a default behavior
-                float_display_value = "Undefined"
-                print(f"Type Value for address {address}: {type_value}")
-        data_list_4.append(
-            {
-                "description": description,
-                "address": address,
-                "value": value,
-                "hex_value": hex_value,
-                "binary_value": binary_value,
-                "float_value": float_display_value,
-                "signed_value": signed_value,
-                "is_16bit": is_16bit_value,
-                "float_signed_value": signed_value,
-            }
-        )
-        value, updated_address = handle_action_configuration(i, value, address)
-    for i, value in enumerate(values_5):
-        
-        address = starting_address_5 + i * 2
-        type_value = get_type_value_from_database_billing(address)
-        hex_value = hex(value)  # Convert the decimal value to HEX
-        binary_value = convert_to_binary_string(value, bytes_per_value)
-        float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-        description = get_description_from_database_billing(address)
-        if description is None:
-            description = f"Address {address}"
-            address += 0
-        if is_16bit:
-            signed_value = value - 2**16 if value >= 2**15 else value
-            is_16bit_value = True
-            float_value = value if is_16bit_value else float_value
-            float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-        else:
-            signed_value = value - 2**32 if value >= 2**31 else value
-            is_16bit_value = False
-            float_value = (
-                float_value
-                if is_16bit_value
-                else struct.unpack("!f", struct.pack("!I", value))[0]
-            )
-            float_signed_value = (
-                signed_value if is_16bit_value else None
-            )  # Set signed_value to None for 32-bit
-            # Apply type_value check after determining 16-bit or 32-bit format
-            if type_value == "Float":
-                # Set float_display_value to the float representation
-                float_display_value = float_value
-            elif type_value == "signed":
-                # Set float_display_value to the signed representation
-                float_display_value = signed_value
-            else:
-                # Handle other cases or set a default behavior
-                float_display_value = "Undefined"
-                print(f"Type Value for address {address}: {type_value}")
-        data_list_5.append(
-            {
-                "description": description,
-                "address": address,
-                "value": value,
-                "hex_value": hex_value,
-                "binary_value": binary_value,
-                "float_value": float_display_value,
-                "signed_value": signed_value,
-                "is_16bit": is_16bit_value,
-                "float_signed_value": signed_value,
-            }
-        )
-    for i, value in enumerate(values_6):
-        
-            address = starting_address_6 + i * 2
-            type_value = get_type_value_from_database_billing(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
+        if type_value is not None: 
+            hex_value = hex(value)  
             binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value 
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database_billing(address)
+            description = get_description_from_database(address)
+            
             if description is None:
                 description = f"Address {address}"
                 address += 0
@@ -1709,7 +1543,7 @@ def read_data():
                 signed_value = value - 2**16 if value >= 2**15 else value
                 is_16bit_value = True
                 float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
             else:
                 signed_value = value - 2**32 if value >= 2**31 else value
                 is_16bit_value = False
@@ -1720,14 +1554,318 @@ def read_data():
                 )
                 float_signed_value = (
                     signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
+                )  
+                
                 if type_value == "Float":
-                    # Set float_display_value to the float representation
+                    
                     float_display_value = float_value
                 elif type_value == "signed":
-                    # Set float_display_value to the signed representation
+                    
                     float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_2.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+        value, updated_address = handle_action_configuration(i, value, address)
+    for i, value in enumerate(values_3):
+        
+        address = starting_address_3 + i * 2
+        type_value = get_type_value_from_database(address,evc_type)
+        if type_value is not None: 
+            hex_value = hex(value)  
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value 
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+            
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  
+                
+                if type_value == "Float":
+                    
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    
+                    float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_3.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+        
+        value, updated_address = handle_action_configuration(i, value, address)
+    for i, value in enumerate(values_4):
+        
+        address = starting_address_4 + i * 2
+        type_value = get_type_value_from_database(address,evc_type)
+        if type_value is not None: 
+            hex_value = hex(value)  
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value 
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+            
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  
+                
+                if type_value == "Float":
+                    
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    
+                    float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_4.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+        value, updated_address = handle_action_configuration(i, value, address)
+    for i, value in enumerate(values_5):
+        
+        address = starting_address_5 + i * 2
+        type_value = get_type_value_from_database(address,evc_type)
+        if type_value is not None: 
+            hex_value = hex(value)  
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value 
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database(address)
+            
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  
+                
+                if type_value == "Float":
+                    
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    
+                    float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                else:
+                    # Handle other cases or set a default behavior
+                    float_display_value = "Undefined"
+                    print(f"Type Value for address {address}: {type_value}")
+            data_list_5.append(
+                {
+                    "description": description,
+                    "address": address,
+                    "value": value,
+                    "hex_value": hex_value,
+                    "binary_value": binary_value,
+                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "float_value": float_display_value,
+                    "signed_value": signed_value,
+                    "is_16bit": is_16bit_value,
+                    "float_signed_value": signed_value,
+                }
+            )
+            
+            
+    for i, value in enumerate(values_6):
+        address = starting_address_6 + i * 2
+        type_value = get_type_value_from_database_billing(address,evc_type)
+        if type_value is not None:  # Check if type_value is not None
+            hex_value = hex(value)  # Convert the decimal value to HEX
+            binary_value = convert_to_binary_string(value, bytes_per_value)
+            ulong_value = value  # Set ulong_value equal to value
+            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+            description = get_description_from_database_billing(address)
+            if description is None:
+                description = f"Address {address}"
+                address += 0
+            if is_16bit:
+                signed_value = value - 2**16 if value >= 2**15 else value
+                is_16bit_value = True
+                float_value = value if is_16bit_value else float_value
+                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+            else:
+                signed_value = value - 2**32 if value >= 2**31 else value
+                is_16bit_value = False
+                float_value = (
+                    float_value
+                    if is_16bit_value
+                    else struct.unpack("!f", struct.pack("!I", value))[0]
+                )
+                float_signed_value = (
+                    signed_value if is_16bit_value else None
+                )  
+                
+                if type_value == "Float":
+                    
+                    float_display_value = float_value
+                elif type_value == "signed":
+                    
+                    float_display_value = signed_value
+                elif type_value == "Ulong":
+                    
+                    float_display_value = ulong_value
+                elif type_value == "Date":
+                    
+
+                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
+    
+                    print(date_value_utc)
+                    local_timezone = pytz.timezone('Asia/Bangkok')
+                    
+                    
+                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                    
+                    
+                    float_display_value = date_value_local.strftime("%d-%m-%Y")
                 else:
                     # Handle other cases or set a default behavior
                     float_display_value = "Undefined"
@@ -1739,474 +1877,532 @@ def read_data():
                     "value": value,
                     "hex_value": hex_value,
                     "binary_value": binary_value,
+                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
                     "float_value": float_display_value,
                     "signed_value": signed_value,
                     "is_16bit": is_16bit_value,
                     "float_signed_value": signed_value,
                 }
             )
+
+        
+            
             
     for i, value in enumerate(values_7):
         
             address = starting_address_7 + i * 2
-            type_value = get_type_value_from_database_billing(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database_billing(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_7.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_7.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_8):
         
             address = starting_address_8 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_8.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_8.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
             
     for i, value in enumerate(values_9):
         
             address = starting_address_9 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_9.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_9.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_10):
         
             address = starting_address_10 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_10.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_10.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_11):
         
             address = starting_address_11 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_11.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_11.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
         
     for i, value in enumerate(values_12):
         
             address = starting_address_12 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_12.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_12.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_13):
         
             address = starting_address_13 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_13.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_13.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_14):
         
             address = starting_address_14 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_14.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_14.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     for i, value in enumerate(values_15):
         
             address = starting_address_15 + i * 2
-            type_value = get_type_value_from_database(address)
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}"
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  # Set signed_value to None for 32-bit
-                # Apply type_value check after determining 16-bit or 32-bit format
-                if type_value == "Float":
-                    # Set float_display_value to the float representation
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    # Set float_display_value to the signed representation
-                    float_display_value = signed_value
+            type_value = get_type_value_from_database_billing(address,evc_type)
+            if type_value is not None:  # Check if type_value is not None
+                hex_value = hex(value)  # Convert the decimal value to HEX
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value  # Set ulong_value equal to value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database_billing(address)
+                if description is None:
+                    description = f"Address {address}"
+                    address += 0
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_value = value if is_16bit_value else float_value
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  # Add ulong to display
                 else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_15.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    float_signed_value = (
+                        signed_value if is_16bit_value else None
+                    )  # Set signed_value to None for 32-bit
+                    # Apply type_value check after determining 16-bit or 32-bit format
+                    if type_value == "Float":
+                        # Set float_display_value to the float representation
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        # Set float_display_value to the signed representation
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        # Set float_display_value to the ulong representation
+                        float_display_value = ulong_value
+                    else:
+                        # Handle other cases or set a default behavior
+                        float_display_value = "Undefined"
+                        print(f"Type Value for address {address}: {type_value}")
+                data_list_15.append(
+                    {
+                        "description": description,
+                        "address": address,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
     value, updated_address = handle_action_configuration(i, value, address)
         
     combined_data = {
@@ -2363,26 +2559,27 @@ def read_data():
             ],
         )
         evc_type_list = df.get(["evc_type"]).values.tolist() 
-        print(evc_type_list)
+       
+        # print(evc_type_list)
         
         poll_config_list = df.get(["poll_config"]).values.tolist()
-        print(poll_config_list)
+        # print(poll_config_list)
         
         if poll_config_list:
             config_list_str = str(poll_config_list).strip("[]'").split(",")
-            print(config_list_str)
+            # print(config_list_str)
         else:
         # Provide a default value if poll_config_list is empty
             config_list_str = [''] * 10
         poll_billing_list = df.get(["poll_billing"]).values.tolist()
         if poll_billing_list:
             billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
-            print(billing_list_str)
+            # print(billing_list_str)
         else:
         # Provide a default value if poll_config_list is empty
             billing_list_str = [''] * 20
         poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-        print(poll_config_enable_list)
+        # print(poll_config_enable_list)
         if poll_config_enable_list:
             poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
         else:
@@ -2400,16 +2597,17 @@ def read_data():
         else:
         # Provide a default value if poll_config_list is empty
             ip_str = [''] 
-        print(ip_str)
+        # print(ip_str)
         tcp_port = df.get(["Port"]).values.tolist()
         if tcp_port:
             Port_str = str(tcp_port[0]).strip("[]'").split(",")
-            print(Port_str)
+            # print(Port_str)
         else:
         # Provide a default value if poll_config_list is empty
             Port_str = [''] 
     
-        zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list)
+        zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list)
+        
     return render_template(
         "Manual poll.html",
         df=df,
@@ -2442,7 +2640,7 @@ def read_data():
         communication_traffic_15=communication_traffic_15,
         zipped_data=zipped_data,
         poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
-        billing_list_str=billing_list_str,poll_config_enable_list=poll_config_enable_list,poll_billing_enable_list=poll_billing_enable_list,
+        billing_list_str=billing_list_str,poll_config_enable_list=poll_config_enable_list,poll_billing_enable_list=poll_billing_enable_list,evc_type_list=evc_type_list,
         
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
@@ -2472,9 +2670,9 @@ def get_description_from_database_billing(address):
     result = fetch_data(query, params)
     
     return result[0][0] if result else None
-def get_type_value_from_database_billing(address):
+def get_type_value_from_database_billing(address,evc_type):
     query = "SELECT data_type FROM amr_mapping_billing WHERE ADDRESS = :address AND evc_type = :evc_type"
-    result = fetch_data(query, params={"address": address})
+    result = fetch_data(query, params={"address": address, "evc_type" :evc_type})
     
     if result:
         return result[0][0]  
@@ -2487,13 +2685,24 @@ def get_description_from_database(address):
     params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
-def get_type_value_from_database(address):
-    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type like '13'"
-    result = fetch_data(query, params={"address": address})
+
+
+def get_type_value_from_database(address,evc_type):
+    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type = :evc_type"
+    result = fetch_data(query, params={"address": address , "evc_type" :evc_type })
+    print(result)
+    
     
     if result:
         return result[0][0] 
     return None
+
+
+
+
+
+
+
 
 
 ############ /Manualpoll_data  #####################
