@@ -1570,17 +1570,27 @@ transform: translateY(-4px);
               <small>Setting</small>
           </a>
           <ul>
-              <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-briefcase"></i>EVC Management</a></li>
+              <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
               <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
               <ul>
                 <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+                <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
 
                 </ul>
-                
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-screwdriver"></i>Configuration Mapping</a></li>
-                  <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-glasses"></i>Daily Billing Mapping</a></li>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
+        
+                  <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
+                  <ul>
+                    <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
+                    <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
+                  </ul>
+                  <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
+                    <ul>
+                      <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
+                    </ul>
+
+
+                  <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
           </ul>
       </li>
           <li>
@@ -1590,8 +1600,8 @@ transform: translateY(-4px);
                 <small>Polling</small>
             </a>
             <ul>
-                <li><a href="{{ url_for('read_data_write') }}"><i class="fas fa-screwdriver"></i>Write Config</a></li>
-                <li><a href=""><i class="fas fa-screwdriver"></i>Write EVC (By Profile)</a></li>
+                <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
+                
             </ul>
         </li>
     </ul>
