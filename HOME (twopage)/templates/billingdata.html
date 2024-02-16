@@ -56,6 +56,7 @@
     color: #333;
     width: 100%;
     padding: 3px;
+    
   }
 
   input {
@@ -173,6 +174,7 @@
     border-radius: 5px;
     z-index: 5;
     width: 100%;
+    
   }
 
   .form-container {
@@ -277,6 +279,7 @@
     font-size: small;
     padding: 3px;
     word-wrap: break-word;
+    
   }
 
   th {
@@ -307,6 +310,7 @@
     text-align: center;
     width: 60px;
     padding: 3px;
+    
   }
 
   .table1 {
@@ -327,11 +331,12 @@
     word-wrap: break-word;
   }
   .table-container1 {
+    
     font-size: x-large;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 10%;
+    margin-top: 0%;
     margin-bottom: 1%;
   }
   .table-container {
@@ -341,6 +346,7 @@
     justify-content: space-between;
     margin-top: 0%;
     margin-bottom: 1%;
+    
   }
 
   .table {
@@ -348,6 +354,7 @@
     box-sizing: border-box;
     padding: 30px;
     margin: 10px auto;
+    
   }
 
   @media (max-width: 645px) {
@@ -365,6 +372,7 @@
   justify-content: space-between;
   margin-top: 0%;
   margin-bottom: -5%;
+  
 }
 
 
@@ -1819,7 +1827,7 @@ transform: translateY(-4px);
 {% endif %}
 </div>
 
-  <div class="plot-container" style="justify-content: center;">
+  <div class="plot-container">
     {{ graph_corrected|safe }}
   </div>
 
@@ -1835,7 +1843,7 @@ transform: translateY(-4px);
     {{ graph_temperature|safe }}
 
 </div>
-<div class="table-container1">
+<div class="plot-container">
   {% if tables.get('config_data_run1') %}
   <div class="table1" id="table1">
       <h5>Run 1: {{ selected_tag }}</h5>
