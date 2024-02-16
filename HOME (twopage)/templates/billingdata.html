@@ -182,7 +182,6 @@
   }
 
   .text-box-group {
-    
     background-color: #fff;
     min-width: 1000px; 
     min-height: 800px; 
@@ -242,7 +241,7 @@
   max-width: 150%; /* Set maximum width */
   width: 150%; /* Take up the full width of the container */
   padding: 20px;
-  justify-content: center;
+  justify-self: center;
   border-radius: 12px; /* Rounded corners */
 }
 
@@ -1817,19 +1816,19 @@ transform: translateY(-4px);
     {{ graph_corrected|safe }}
   </div>
 
-  <div class="plot-container">
+  <div class="plot-container" style="justify-content: center;">
     {{ graph_uncorrected|safe }}
   </div>
 
-  <div class="plot-container">
+  <div class="plot-container" style="justify-content: center;">
     {{ graph_pressure|safe }}
   </div>
 
-  <div class="plot-container">
+  <div class="plot-container" style="justify-content: center;">
     {{ graph_temperature|safe }}
 
 </div>
-<div class="table-container1">
+<div class="table-container1" style="justify-content: center;">
   {% if tables.get('config_data_run1') %}
   <div class="table1" id="table1">
       <h5>Run 1: {{ selected_tag }}</h5>
