@@ -38,6 +38,7 @@
     background-image: linear-gradient(to right, #5b707e, #abb2b9);
     font-family: "PTT45Pride-Bold", sans-serif;
     max-width: 600vw;
+    overflow-x: none;
   }
 
   @media only screen and (min-width: 1024px) {
@@ -56,7 +57,6 @@
     color: #333;
     width: 100%;
     padding: 3px;
-    
   }
 
   input {
@@ -168,19 +168,19 @@
 
 
   form {
-    
+    margin: auto;
     padding: 50px;
     padding-top: 10%;
     border-radius: 5px;
     z-index: 5;
     width: 100%;
-    
   }
 
   .form-container {
-    margin: auto;
-    justify-content: center;
-    align-items: center;
+
+  justify-content: center;
+  align-items: center;
+
   }
 
   .text-box-group {
@@ -192,13 +192,11 @@
     margin: auto;
     margin-top: -45%;
     z-index: 5;
-    margin-left: 29%;
-    margin-bottom: 10%;
-
+    margin-left: 30%;
+    margin-bottom: 5%;
   }
 
   .form-container-BOx {
-    
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box;
@@ -210,25 +208,23 @@
     left: 4px;
     padding: 50px;
   }
+  
   .box_we {
 
-    width: 90%;
-    background-color: #fff;
+    width: 50%;
     padding: 20px;
-    margin: auto;
     z-index: 5;
-    margin-top: -5%;
+    margin-top: -4%;
+    margin-bottom: 5%;
   }
-  .box_we_1 {
-
-    width: 100%;
-    background-color: #fff;
+  .box_wee {
+    width: 50%;
     padding: 20px;
-    margin: auto;
     z-index: 5;
-    margin-top: -5%;
-  }
+    margin-top: -40%;
+    margin-bottom: 5%;
 
+  }
   .scrolling-text {
     animation: scroll-left 60s linear infinite;
     white-space: nowrap;
@@ -249,11 +245,11 @@
   display: flex;
   flex-wrap: wrap;
   margin: 20px auto;
-  max-width: 150%; /* Set maximum width */
-  width: 150%; /* Take up the full width of the container */
+  max-width: 150%;
+  width: 100%;
   padding: 20px;
-  margin: center;
   justify-content: space-around;
+  margin-top: 5%;
 }
 
 /* Individual plot styling */
@@ -288,7 +284,6 @@
     font-size: small;
     padding: 3px;
     word-wrap: break-word;
-    
   }
 
   th {
@@ -319,7 +314,6 @@
     text-align: center;
     width: 60px;
     padding: 3px;
-    
   }
 
   .table1 {
@@ -339,15 +333,7 @@
     text-align: center;
     word-wrap: break-word;
   }
-  .table-container1 {
-    
-    font-size: x-large;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 0%;
-    margin-bottom: 1%;
-  }
+
   .table-container {
     font-size: x-large;
     display: flex;
@@ -355,7 +341,7 @@
     justify-content: space-between;
     margin-top: 0%;
     margin-bottom: 1%;
-    
+    margin: auto;
   }
 
   .table {
@@ -380,11 +366,19 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 0%;
-  margin-bottom: -5%;
-  
+  margin-bottom: -15%;
 }
 
+/* Container styling for tables */
+.table-container1 {
+  font-size: x-large;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  justify-content: space-between;
+  margin-top: 0%;
 
+}
 
 .dropdown-menu {
   position: absolute;
@@ -459,18 +453,18 @@
   #region_dropdown option:hover {
     background-color: #f2f2f2;
   }
-
   label[for="tag_dropdown"] {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+
   }
 
   #tag_dropdown {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: #fff;
     color: #333;
   }
@@ -487,6 +481,8 @@
   #tag_dropdown option:hover {
     background-color: #f2f2f2;
   }
+
+
 
   #region_dropdown {
     padding: 8px;
@@ -549,8 +545,8 @@
   }
 
   /* Dropdown Styles */
-  .form-container select,
-  .form-container input[type="date"] {
+  .form-containerBox select,
+  .form-containerBox input[type="date"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 16px;
@@ -1755,13 +1751,13 @@ transform: translateY(-4px);
         </li>
     </ul>
 </nav>
-<div class="text-box-group" >
+<div class="text-box-group">
   <div class="outer yosemite">
       <div class="dot red"></div>
       <div class="dot amber"></div>
       <div class="dot green"></div>
  </div>
- <div class="box_we" >
+
       <form method="get" action="{{ url_for('billing_data') }}">
         <h2> View Billing Data (AMR)</h2>
         
@@ -1806,7 +1802,9 @@ transform: translateY(-4px);
         </div>
       </form>
     </div>
-<div class="table-container" >
+  </div>
+</div>
+<div class="box_we">
 {% if tables.get('daily_data_run1') %}
 <div class="table" id="table1">
     <h5>Run 1: {{ selected_tag }}</h5>
@@ -1836,29 +1834,25 @@ transform: translateY(-4px);
 {% endif %}
 </div>
 
-  <div class="plot-container">
-    {{ graph_corrected|safe }}
-  </div>
+<div class="plot-container">
+  {{ graph_corrected|safe }}
+</div>
 
-  <div class="plot-container">
-    {{ graph_uncorrected|safe }}
-  </div>
+<div class="plot-container">
+  {{ graph_uncorrected|safe }}
+</div>
 
-  <div class="plot-container">
-    {{ graph_pressure|safe }}
-  </div>
+<div class="plot-container">
+  {{ graph_pressure|safe }}
+</div>
 
-  <div class="plot-container">
-    {{ graph_temperature|safe }}
+<div class="plot-container">
+  {{ graph_temperature|safe }}
+</div>
+
 
 </div>
-<div class="form" >
-  <div class="outer yosemite">
-      <div class="dot red"></div>
-      <div class="dot amber"></div>
-      <div class="dot green"></div>
- </div>
- <div class="box_we_1" >
+<div class="box_wee">
   {% if tables.get('config_data_run1') %}
   <div class="table1" id="table1">
       <h5>Run 1: {{ selected_tag }}</h5>
@@ -1972,14 +1966,10 @@ transform: translateY(-4px);
   </div>
   {% endif %}
 </div>
-
-          <footer class="footer">POWERED BY ATOS - ASGS</footer>
-          <!-- <script src="main.js"></script> -->
-          <div>
-          </div>
-        </div>
-</body>
 </div>
+<footer class="footer">POWERED BY ATOS - ASGS</footer>
+</body>
+
 
 </html>
 
