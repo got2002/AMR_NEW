@@ -1,53 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billing Data (ASGS)</title>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Data (AMR)</title>
 
-    <!-- Stylesheet -->
-    <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
+  <!-- Stylesheet -->
+  <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Bootstrap Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Datepicker Stylesheet and Script -->
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
-  </head>
-  <style>
-
-
-    @font-face {
-      font-family: "PTT45Pride-Bold";
-      src: url("PTT45Pride-Bold.otf") format("truetype");
-      font-weight: bold;
-      font-style: normal;
-    }
-    
-    body {
-      background-image: linear-gradient(to right, #5b707e, #abb2b9);
-      font-family: "PTT45Pride-Bold", sans-serif;
-      min-width: 1200px; 
-      font-weight: bold;
-      min-height: 800px; 
-    }
+  <!-- Bootstrap Datepicker Stylesheet and Script -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+</head>
+<style>
+  @font-face {
+    font-family: "PTT45Pride-Bold";
+    src: url("PTT45Pride-Bold.otf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
   
+  body {
+    background-image: linear-gradient(to right, #5b707e, #abb2b9);
+    font-family: "PTT45Pride-Bold", sans-serif;
+    max-width: 600vw;
+  }
 
+  @media only screen and (min-width: 1024px) {
+    body {
+      
+      font-family: "PTT45Pride-Bold", sans-serif;
+      font-weight: bold;
+      max-width: 600vw;
+    }
+  }
 
   label {
     display: block;
@@ -88,12 +88,9 @@
     text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
   }
 
-  .menu {
-    display: grid;
-    grid-template-rows: 40px max-content;
-    gap: 10px;
-    margin-top: 10%;
-  }
+
+
+
 
   .toggle {
     all: unset;
@@ -168,14 +165,14 @@
   }
 
 
+
   form {
     margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: #fff;
-    padding: 20px;
+    padding: 50px;
+    padding-top: 10%;
     border-radius: 5px;
-    text-align: center;
+    z-index: 5;
+    width: 100%;
   }
 
   .form-container {
@@ -185,31 +182,38 @@
   }
 
   .text-box-group {
-        background-color: #fff;
-        min-width: 1000px; 
-        min-height: 800px; 
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: -39%;
-        z-index: 5;
-        margin-left: 27%;
-        margin-bottom: 10%;
-      }
-
-  .form-container-BOx {
-    width: 90%;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        z-index: 5;
-        margin-left: 23%;
+    background-color: #fff;
+    min-width: 1000px; 
+    min-height: 800px; 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: -39%;
+    z-index: 5;
+    margin-left: 27%;
+    margin-bottom: 10%;
   }
 
+  .form-container-BOx {
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 60%;
+    position: absolute;
+    top: 100%;
+    left: 4px;
+    padding: 50px;
+  }
+  .box_we {
+    width: 90%;
+    background-color: #fff;
+    padding: 20px;
+    margin: auto;
+    z-index: 5;
+    margin-top: 2%;
+  }
 
   .scrolling-text {
     animation: scroll-left 60s linear infinite;
@@ -226,110 +230,211 @@
     }
   }
 
-/* Container styling */
-.plot-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 20px auto; /* Updated margin */
-  width: 90%; /* Adjusted width for better responsiveness */
-  padding: 20px;
-  background-color: #f8f8f8; /* Light background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-  border-radius: 12px; /* Rounded corners */
-}
+  /* Container styling */
+  .plot-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px auto;
+    /* Updated margin */
+    width: 90%;
+    /* Adjusted width for better responsiveness */
+    padding: 20px;
 
-/* Individual plot styling */
-.plot-container>div {
-  width: 45%;
-  margin: 10px;
-  border-radius: 8px;
-  overflow: hidden; /* Ensure rounded corners are applied */
-  background-color: #ffffff; /* White background color */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-}
+    border-radius: 12px;
+    /* Rounded corners */
+  }
 
-/* Adjusted style for the .plotly element within the plot container */
-.plot-container>div .plotly {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-}
+  /* Individual plot styling */
+  .plot-container>div {
+    width: 45%;
+    margin: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ensure rounded corners are applied */
+    background-color: #ffffff;
+    /* White background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle box shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    /* Smooth transitions on hover */
+  }
 
+  /* Hover animation */
+  .plot-container>div:hover {
+    transform: scale(1.05);
+    /* Scale up on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Increase box shadow on hover */
+    background-color: #f0f0f0;
+    /* Change background color on hover */
+  }
 
+  /* Adjusted style for the .plotly element within the plot container */
+  .plot-container>div .plotly {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
 
-/* Common styles for th and td */
-th, td {
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #000000;
-}
+  /* Optional: Add transition to the plotly element for a smoother effect */
+  .plot-container>div .plotly {
+    transition: opacity 0.3s ease-in-out;
+  }
 
-/* Styles for th */
-th {
-    background-color: #bcb9b9;
-    height: 40px;
-    cursor: pointer;
-    font-size: xx-small;
-}
+  /* Optional: Fade in on hover */
+  .plot-container>div:hover .plotly {
+    opacity: 1;
+  }
 
-/* Styles for td */
-td {
+  td {
     background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
     height: 20px;
     width: 55px;
+    align-items: center;
+    text-align: center;
     font-size: small;
-}
+    padding: 3px;
+    word-wrap: break-word;
+  }
 
-/* Table styles */
-table {
+  th {
+    background-color: #bcb9b9;
+    border: 2px solid #171717;
+    height: 40px;
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size: xx-small;
+    word-wrap: break-word;
+  }
+
+  table {
     border-collapse: collapse;
     width: 100%;
     font-size: large;
     table-layout: fixed;
-}
-
-/* Container styles */
-.table-container {
-    margin-top: 0%;
-    margin-bottom: 5%;
-    margin-left: auto; /* ขยับ container ไปทางขวา */
-    margin-right: auto; /* ขยับ container ไปทางซ้าย */
-}
-
-
-/* Responsive design for smaller screens */
-@media (max-width: 645px) {
-    .table {
-        width: 100%;
-    }
-}
-
-
-
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
-    max-width: 200px;
+    margin-top: -10px;
   }
 
-  #region_dropdown {
+
+  th,
+  td {
+    font-size: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 60px;
+    padding: 3px;
+  }
+
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .table-container {
+    font-size: x-large;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 0%;
+    margin-bottom: 1%;
+  }
+
+  .table {
+    width: 150%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+  }
+
+  @media (max-width: 645px) {
+    .table {
+      width: 100%;
+    }
+  }
+
+
+/* Container styling for tables */
+.table-container {
+  font-size: x-large;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 0%;
+  margin-bottom: -5%;
+}
+
+
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: .5rem 0;
+  margin: .125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: .25rem;
+  max-width: 200px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  padding: .5rem 1rem;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #212529;
+  white-space: nowrap;
+}
+
+/* เมื่อ hover รายการใน dropdown menu */
+.dropdown-menu li:hover {
+  background-color: #f8f9fa;
+}
+
+/* ลักษณะของลิงก์ใน dropdown menu */
+.dropdown-menu a {
+  color: #212529;
+  text-decoration: none;
+}
+
+/* เมื่อ hover ลิงก์ใน dropdown menu */
+.dropdown-menu a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+
+#region_dropdown {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
@@ -350,7 +455,6 @@ table {
   #region_dropdown option:hover {
     background-color: #f2f2f2;
   }
-
   label[for="tag_dropdown"] {
     display: block;
     margin-bottom: 5px;
@@ -362,7 +466,7 @@ table {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: #fff;
     color: #333;
   }
@@ -380,17 +484,6 @@ table {
     background-color: #f2f2f2;
   }
 
-  .loadingoverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding-top: 20%;
-  }
 
 
   #region_dropdown {
@@ -414,7 +507,44 @@ table {
     }
   }
 
+  .custom-btn {
+    margin: 1%;
+    color: #fff;
+    width: 140px;
+    height: 40px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    border-radius: 5px;
+  }
 
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
+
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+  }
+
+
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4CAF50;
+    box-shadow: 0 0 5px #4CAF50;
+  }
+
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4CAF50, 0 0 20px #fff inset;
+  }
 
   /* Dropdown Styles */
   .form-containerBox select,
@@ -446,20 +576,28 @@ table {
 
   label {
     display: block;
-    margin-bottom: 5px;
     font-weight: bold;
   }
 
-  input[type="text"]{
-    padding: 8px;
-    box-sizing: border-box;
-    width: 30%;
-    border: 1px solid #050505;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    max-width: 1000px;
-  }
+
+input[type="text"] {
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  width: 200px; 
+  box-sizing: border-box; 
+  transition: border-color 0.3s ease-in-out; 
+}
+
+input[type="text"]:hover {
+  border-color: #3498db; 
+}
+
+
+input[type="text"]:focus {
+  outline: none; 
+  border-color: #3498db;
+}
 
   select {
     padding: 8px;
@@ -471,9 +609,6 @@ table {
     margin-top: 10px;
     max-width: 1000px;
   }
-
-
-
 
 
   input[type="checkbox"] {
@@ -498,20 +633,16 @@ table {
   }
 
   #region_dropdown {
-    padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: none;
     width: 200px;
-    margin-bottom: 5%;
-    margin-top: 5%;
   }
 
   button {
     margin: 10px;
     border-radius: 5px;
-
   }
 
   .custom-btn {
@@ -581,9 +712,9 @@ table {
 
   .button-container {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(3, auto);
     justify-content: center;
-    gap: 10px; 
+    gap: 10px;
     margin-bottom: 40px;
   }
 
@@ -618,8 +749,42 @@ table {
       margin: 0 auto;
     }
   }
+  .mcd-menu li:hover>a i,
+  .mcd-menu li:hover a strong,
+  .mcd-menu li:hover a small {
+    animation: moveFromTop 500ms ease-in-out;
+  }
+  .nav-links {
+    display: flex;
+    gap: 20px; 
+  }
+  
+  @media only screen and (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: -30%;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 10px; 
+    }
+  }
+  
 
+  nav {
+    
+    padding: 20px; 
+    max-width: min-content;
+    margin-top: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
   .mcd-menu {
+
     list-style: none;
     padding: 0;
     margin: 0;
@@ -628,12 +793,14 @@ table {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    -ms-border-radius: 2px;
     /* == */
     width: 250px;
     /* == */
     max-width: 1880px;
 
-  }
+
+    }
 
   .mcd-menu li {
     position: relative;
@@ -837,8 +1004,10 @@ table {
     }
   }
 
+
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
+
     position: absolute;
     height: auto;
     min-width: 200px;
@@ -1246,12 +1415,26 @@ table {
       font-size: 14px;
     }
   }
+  .mcd-menu li a i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mcd-menu li a:focus i,
+  .mcd-menu li a:hover i,
+  .mcd-menu li.active a i {
+    color: #3498db;
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 
   footer {
     background-color: #2e6ff2;
     color: white;
     text-align: left;
-    padding: 10px;
+    padding: 8px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -1301,43 +1484,7 @@ table {
     margin-top: -25px;
   }
 
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
 
-  .navbar li {
-    margin-right: 20px;
-  }
-
-  .navbar a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease-in-out;
-  }
-
-  .navbar a:hover {
-    color: #8f8f8f;
-  }
-
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
 
 
   @keyframes spin {
@@ -1353,6 +1500,7 @@ table {
   .selected {
     margin-top: 15%;
     margin: auto;
+    padding-left: 5%;
   }
 
 
@@ -1362,6 +1510,15 @@ table {
     margin-bottom: -20%;
   }
 
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-left: 30px;
+  }
   .outer {
     background: #b4b4b4;
     opacity: 0.9;
@@ -1415,14 +1572,7 @@ table {
     background: #27C93F;
     border: 1px solid #1DAD2B;
   }
-  .box_we {
-    width: 90%;
-    background-color: #fff;
-    padding: 20px;
-    margin: auto;
-    z-index: 5;
-    margin-top: 2%;
-  }
+  
   .forward-button {
     position: fixed;
     top: 10px;
@@ -1489,34 +1639,31 @@ transform: translateY(-4px);
 
 </style>
 
-  <body>
-    <div class="top-bar">
-      <div class="container-top">
-        <div style="display: flex; align-items: center;">
-          <img class="logo"
-            src="https://www.pttplc.com/uploads/About/about-logo.png"
-            alt="PTT Public Company Limited Logo">
-          <span class="Automatic" style="margin-left: 10px;"
-            alt="logo">Automatic Meter Reading (ASGS)</span>
-        </div>
-        <div class="back-button" >
-          <a href="javascript:history.back()"style="text-decoration: none;">
-            <i class="fas fa-arrow-circle-left"style="margin-right: 10px"></i> Back
-          </a>
-        </div>
-        <div class="forward-button" >
-          <a href="javascript:history.forward()"style="text-decoration: none;">
-            <i class="fas fa-arrow-circle-right"style="margin-right: -80px"></i> Forward
-          </a>
-        </div>
+<body>
+  <header class="top-bar">
+    <div class="container-top">
+      <div style="display: flex; align-items: center;">
+        <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+          alt="PTT Public Company Limited Logo">
+        <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR)</span>
+      </div>
+      <div class="back-button" >
+        <a href="javascript:history.back()"style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+        </a>
+      </div>
+      <div class="forward-button" >
+        <a href="javascript:history.forward()"style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+        </a>
       </div>
     </div>
-    <div class="container">
-      <nav>
+  </header>
+  <div class="container">
+    <nav>
         <ul class="mcd-menu">
-            <ul class="mcd-menu">
           <li>
-            <a href="{{ url_for('homeasgs') }}">
+            <a href="{{ url_for('home_amr') }}">
               <i class="fa fa-home"></i>
               <strong>Home</strong>
               <small>Back to Homepage</small>
@@ -1529,7 +1676,7 @@ transform: translateY(-4px);
               <small>View Data</small>
             </a>
             <ul>
-              <li><a href="{{ url_for('billing_data_asgs') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
+              <li><a href="{{ url_for('billing_data') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
               <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
               <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily
                   Summary</a></li>
@@ -1613,222 +1760,356 @@ transform: translateY(-4px);
       <div class="dot green"></div>
  </div>
  <div class="box_we">
-    <form method="GET" action="{{ url_for('billing_data_asgs') }}">
-            <h2> View Billing Data (ASGS)</h2>
-            <div class="form-container">
-              <div class="form-row">
-                <!-- Dropdown for REGION_NAME -->
-                <div class="form-group col-md-4">
-                    <label for="region-dropdown">Select Region:</label>
-                    <select id="region-dropdown" name="region" class="form-control">
-                        <option value="">Select Region</option>
-                        {% for result in region_results %}
-                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-        
-                <!-- Dropdown for tag_id -->
-                <div class="form-group col-md-4">
-                    <label for="tag-dropdown">Select Tag:</label>
-                    <select id="tag-dropdown" name="tag" class="form-control">
-                        <option value="">Select Tag</option>
-                        {% for result in tag_results %}
-                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <!-- Input field for selecting month and year -->
-                <div class="form-group col-md-4">
-                    <label for="monthYearPicker">Month & Year:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="monthYearAddon"><i class="fa fa-calendar"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <form method="get" action="{{ url_for('billing_data') }}">
+        <h2> View Billing Data (AMR)</h2>
+        <div class="form-container">
+          <label for="region_dropdown">Select Region:</label>
+          <select id="region_dropdown" name="region_dropdown">
+            <option value {% if not selected_region %}selected{% endif %}>All</option>
+            {% for region in region_options %}
+            <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+            </option>
+            {% endfor %}
+          </select>
+          <label for="tag_dropdown">Select Site:</label>
+          <select id="tag_dropdown" name="tag_dropdown">
+            <option value {% if not selected_tag %}selected{% endif %}>All</option>
+            {% for tag in tag_options %}
+            <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+            {% endfor %}
+          </select>
 
-            <div id="selected">
-              <div id="loadingOverlay" style="display: none;" >
-                <img src="static/Search.gif" alt="Loading...">
-            </div>
-                <p class="selected" style="margin-top: 20%;"></p>
-                <h1>Selected</h1>
-                <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-                <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-                <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-                <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-                </p>
+          <label for="date_picker">Select Date:</label>
+          <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
+            onchange="checkDate()">
 
-            </div>
-        <div class="button-container">
-        <button class="custom-btn btn-2" type="submit" name="query_type"
-        value="submit" onclick="showLoading()" >Submit</button>
-        <button class="custom-btn btn-1 btn-secondary" type="button"
-        onclick="clearFilters()">Clear
-        Filters</button>
+          <div id="loadingOverlay" style="display: none;">
+            <img src="static/Search.gif" alt="Loading...">
+          </div>
+          <p class="selected" style="margin-top: 20%;"></p>
+          <h1>Selected</h1>
+          <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+          <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+          <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+          <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+          </p>
+          <div class="button-container">
+            <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+              onclick="showLoading()">Daily Data</button>
+            <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+              onclick="showLoading()">Config Data</button>
+            <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+              Filters</button>
+          </div>
+        </div>
+      </form>
     </div>
+<div class="table-container">
+{% if tables.get('daily_data_run1') %}
+<div class="table" id="table1">
+    <h5>Run 1: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run1']|safe }}
 </div>
-    </form>     
-      <div class="table-container" >
-        <table id="dataTable">
-            <thead>
-                <tr>
-                  <th>DATA_DATE</th>
-                  <th>REGION_NAME</th>
-                  <th>TAG_ID</th>
-                  <th>METER_ID</th>
-                  <th>METER_STREAM_NO</th>
-                  <th>CORRECTED_VOL</th>
-                  <th>CORRECTED_VOL_UNIT</th>
-                  <th>UNCORRECTED_VOL</th>
-                  <th>UNCORRECTED_VOL_UNIT</th>
-                  <th>AVR_TF</th>
-                  <th>AVR_TF_UNIT</th>
-                  <th>AVR_PF</th>
-                  <th>AVR_PF_UNIT</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in results %}
-                    <tr>
-                        <td>{{ row[0] }}</td>
-                        <td>{{ row[1] }}</td>
-                        <td>{{ row[2] }}</td>
-                        <td>{{ row[3] }}</td>
-                        <td>{{ row[4] }}</td>
-                        <td>{{ row[5] }}</td>
-                        <td>{{ row[6] }}</td>
-                        <td>{{ row[7] }}</td>
-                        <td>{{ row[8] }}</td>
-                        <td>{{ row[9] }}</td>
-                        <td>{{ row[10] }}</td>
-                        <td>{{ row[11] }}</td>
-                        <td>{{ row[12] }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <footer class="footer">POWERED BY ATOS - ASGS</footer>
+{% endif %}
+
+{% if tables.get('daily_data_run2') %}
+<div class="table" id="table2">
+    <h5>Run 2: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run2']|safe }}
+</div>
+{% endif %}
+
+{% if tables.get('daily_data_run3') %}
+<div class="table" id="table3">
+    <h5>Run 3: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run3']|safe }}
+</div>
+{% endif %}
+
+{% if tables.get('daily_data_run4') %}
+<div class="table" id="table4">
+    <h5>Run 4: {{ selected_tag }}</h5>
+    {{ tables['daily_data_run4']|safe }}
+</div>
+{% endif %}
+</div>
+<div class="plot-container">
+    {{ graph_corrected|safe }}
+</div>
+
+<div class="plot-container">
+    {{ graph_uncorrected|safe }}
+</div>
+
+<div class="plot-container">
+    {{ graph_pressure|safe }}
+</div>
+
+<div class="plot-container">
+    {{ graph_temperature|safe }}
+</div>
+</div>
+<div class="table-container1">
+  {% if tables.get('config_data_run1') %}
+  <div class="table1" id="table1">
+      <h5>Run 1: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run1']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run2') %}
+  <div class="table1" id="table1">
+      <h5>Run 2: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run2']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run3') %}
+  <div class="table1" id="table1">
+      <h5>Run 3: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run3']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run4') %}
+  <div class="table1" id="table1">
+      <h5>Run 4: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run4']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+  
+  {% if tables.get('config_data_run5') %}
+  <div class="table1" id="table1">
+      <h5>Run 5: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run5']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+  {% if tables.get('config_data_run6') %}
+  <div class="table1" id="table1">
+      <h5>Run 6: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run6']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+</div>
+
+          <footer class="footer">POWERED BY ATOS - ASGS</footer>
+          <!-- <script src="main.js"></script> -->
+          <div>
+          </div>
+        </div>
 </body>
+</div>
+
 </html>
+
+<!-- Add this script for the JavaScript functionality -->
 <script>
-    
-    $(document).ready(function(){
-            // Event listener for changes in the REGION_NAME dropdown
-            $('#region-dropdown').change(function(){
-                // Get the selected REGION_NAME
-                var selectedRegion = $(this).val();
 
-                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
-                $.ajax({
-                    url: '/get_tag_asgs',
-                    method: 'GET',
-                    data: { region: selectedRegion },
-                    success: function(data){
-                        // Clear existing options in tag_id dropdown
-                        $('#tag-dropdown').empty();
+  function clearFilters() {
+    document.getElementById('region_dropdown').value = '';
+    document.getElementById('tag_dropdown').value = '';
+    document.getElementById('date_picker').value = '';
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'block';
+    }
+  }
 
-                        // Add a default option
-                        $('#tag-dropdown').append($('<option>', {
-                            value: '',
-                            text: 'Select Tag'
-                        }));
+  document.addEventListener('DOMContentLoaded', function () {
+    // Assuming you have JavaScript/jQuery to handle changes and update the display
+    var selectedRegion = null;
+    var selectedTag = null;
+    var selectedDate = null;
 
-                        // Add new options based on the retrieved data
-                        $.each(data, function(index, value){
-                            $('#tag-dropdown').append($('<option>', {
-                                value: value,
-                                text: value
-                            }));
-                        });
-                    }
-                });
-            });
+    document.getElementById('region_dropdown').addEventListener('change', function () {
+      selectedRegion = this.value;
+    });
 
-            // Initialize the month and year datepicker
-            $('#monthYearPicker').datepicker({
-                format: "mm/yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                autoclose: true,
-                showOnFocus: true  // Display the calendar when the input field is focused
-            });
-        });
-    function clearFilters() {
-        document.getElementById('region_dropdown').value = '';
-        document.getElementById('tag_dropdown').value = '';
-        document.getElementById('selected_month_year').value = '';
-        function showLoading() {
-        document.getElementById('loadingOverlay').style.display = 'block';
+    document.getElementById('tag_dropdown').addEventListener('change', function () {
+      selectedTag = this.value;
+    });
+
+    document.getElementById('date_picker').addEventListener('change', function () {
+      selectedDate = this.value;
+    });
+
+    // Event listener for form submission with 'daily_data' event
+    var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+    formDailyData.addEventListener('config_data', function (event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+
+      showLoadingOverlay();
+
+      // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+      setTimeout(function () {
+        // Update the displayed values after the loading is complete
+        document.getElementById('selected_region').innerText = selectedRegion;
+        document.getElementById('selected_tag').innerText = selectedTag;
+        document.getElementById('selected_date').innerText = selectedDate;
+
+        // Optionally, update the meter ID
+        var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+        if (selectedMeterIdSpan) {
+          selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
         }
-      }
-    
-      document.addEventListener('DOMContentLoaded', function () {
-        // Assuming you have JavaScript/jQuery to handle changes and update the display
-        var selectedRegion = null;
-        var selectedTag = null;
-        var selectedDate = null;
-    
-        document.getElementById('region_dropdown').addEventListener('change', function () {
-          selectedRegion = this.value;
-        });
-    
-        document.getElementById('tag_dropdown').addEventListener('change', function () {
-          selectedTag = this.value;
-        });
-    
-        document.getElementById('selected_month_year').addEventListener('change', function () {
-          selectedDate = this.value;
-        });
-    
-        // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data_asgs"]'); // Adjust this selector based on your actual form
-        formDailyData.addEventListener('submit', function (event) {
-          event.preventDefault(); // Prevent the form from submitting immediately
-    
-          showLoadingOverlay();
-    
-          // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-          setTimeout(function () {
-            // Update the displayed values after the loading is complete
-            document.getElementById('selected_region').innerText = selectedRegion;
-            document.getElementById('selected_tag').innerText = selectedTag;
-            document.getElementById('selected_month_year').innerText = selectedDate;
-    
-            // Optionally, update the meter ID
-            var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-            if (selectedMeterIdSpan) {
-              selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-            }
-    
-            // Reset selected values
-            selectedRegion = null;
-            selectedTag = null;
-            selectedDate = null;
-    
-            // Submit the form programmatically
-            formDailyData.submit();
-          }, 2000); // Adjust the delay time as needed (in milliseconds)
-        });
+
+        // Reset selected values
+        selectedRegion = null;
+        selectedTag = null;
+        selectedDate = null;
+
+        // Submit the form programmatically
+        formDailyData.submit();
+      }, 2000); // Adjust the delay time as needed (in milliseconds)
+    });
+
+    // Event listener for form submission with 'config_data' event
+    var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+    formConfigData.addEventListener('daily_data', function (event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+
+      showLoadingOverlay();
+
+      // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+      setTimeout(function () {
+        // Update the displayed values after the loading is complete
+        document.getElementById('selected_region').innerText = selectedRegion;
+        document.getElementById('selected_tag').innerText = selectedTag;
+        document.getElementById('selected_date').innerText = selectedDate;
+
+        // Optionally, update the meter ID
+        var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+        if (selectedMeterIdSpan) {
+          selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+        }
+
+        // Reset selected values
+        selectedRegion = null;
+        selectedTag = null;
+        selectedDate = null;
+
+        // Submit the form programmatically
+        formConfigData.submit();
+      }, 2000); // Adjust the delay time as needed (in milliseconds)
+    });
+  });
+  function showLoading() {
+    // แสดง loading overlay
+    document.getElementById('loadingOverlay').style.display = 'block';
+  }
+
+  // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
+  function hideLoading() {
+    // ซ่อน loading overlay
+    document.getElementById('loadingOverlay').style.display = 'none';
+  }
+
+
+  // Wait for the document to be ready
+  $(document).ready(function () {
+    $('#date_picker').datepicker({
+      format: 'mm/yyyy',
+      startView: 'months',
+      minViewMode: 'months',
+      autoclose: true
+    });
+
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function () {
+      var selectedRegion = $(this).val();
+
+      $.ajax({
+        type: 'GET',
+        url: '/get_tags',
+        data: { 'selected_region': selectedRegion },
+        success: function (response) {
+          // Clear existing options in the tag dropdown
+          $('#tag_dropdown').empty();
+          // Add the 'All' option
+          $('#tag_dropdown').append('<option value="" selected>All</option>');
+          // Add new tag options based on the response
+          for (var i = 0; i < response.tag_options.length; i++) {
+            var tag = response.tag_options[i];
+            $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+          }
+          hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
+        },
+        error: function (error) {
+          console.log('Error fetching tag options:', error);
+          hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+        }
       });
-          function showLoading() {
-        // แสดง loading overlay
-        document.getElementById('loadingOverlay').style.display = 'block';
-      }
-
-      // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
-      function hideLoading() {
-        // ซ่อน loading overlay
-        document.getElementById('loadingOverlay').style.display = 'none';
-      }
-
-
-
+    });
+  });
 </script>
-
-

@@ -897,16 +897,16 @@
             margin-left: 5px;
         }
         form {
+            columns:  2;
             margin: auto;
-            margin-top: 20px;
-            margin-bottom: 0px;
+            margin-top: -90px;
+            margin-bottom: 100px;
             background-color: #fff;
             padding: 25px;
             border-radius: 5px;
             text-align: center;
-            width: 50%;
-            margin-left: 40%;
-            
+            width: 90%;
+            margin-left: 25%;
           }
     </style>
     
@@ -916,7 +916,7 @@
 <body>
     <div class="top-bar">
         <div class="container-top">
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center; ">
                 <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
@@ -1021,7 +1021,7 @@
 
           </ul>
       </nav>
-    <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
+    <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}" style="margin-top: 90px;">
       <label for="type_dropdown">Select Type:</label>
         <select id="type_dropdown" name="type_dropdown">
             <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
@@ -1031,7 +1031,8 @@
         </select>
         
         <button class="custom-btn btn-1" type="button" onclick="submitForm()">View Information</button>
-    </form>
+      </form>
+    
 
     
     <div class="text-container">
@@ -1039,7 +1040,7 @@
     <form action="/update_polling_data" method="post">
         <input type="hidden" name="selected_type" value="{{ selected_type }}">
         <div class="text-container">
-            <h2>Poll Configure</h2>
+            <h2 style="margin: auto;">Poll Configure</h2>
             {% for i in range(0, list_config|length, 2) %}
             <div class="text-container">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
@@ -1050,13 +1051,13 @@
 
                     <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
                     <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[{{ i//2 }}]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
-                   
+
                 </div>
             {% endfor %}
         </div>
-    </form>
-    <form action="/update_polling_data" method="post" style="margin-bottom: 5%;">
-        <h2 >Poll Billing</h2>
+    
+    <form action="/update_polling_data" method="post" ">
+        <h2 style="margin: auto;">Poll Billing</h2>
         <div class="textbox-container" >
             {% for i in range(0, list_billing|length, 2) %}
                 <div class="textbox-pair">
@@ -1071,9 +1072,11 @@
                    
                 </div>
             {% endfor %}
-        </div >
+        </div ><button class="custom-btn btn-2" type="submit">Save Edit Data</button>
+        </form>
+        
 
-        <button class="custom-btn btn-2" type="submit">Save Edit Data</button>
+        
     </form>
     <footer class="footer">POWERED BY ATOS - ASGS</footer>
 

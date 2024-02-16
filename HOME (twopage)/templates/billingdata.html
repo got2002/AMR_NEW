@@ -38,6 +38,7 @@
     background-image: linear-gradient(to right, #5b707e, #abb2b9);
     font-family: "PTT45Pride-Bold", sans-serif;
     max-width: 600vw;
+    overflow-x: none;
   }
 
   @media only screen and (min-width: 1024px) {
@@ -168,29 +169,31 @@
 
   form {
     margin: auto;
-    background-image: linear-gradient(to right, #ffffff, #ffffff);
     padding: 50px;
     padding-top: 10%;
     border-radius: 5px;
-    text-align: center;
-    max-width: min-content;
     z-index: 5;
     width: 100%;
   }
 
   .form-container {
-    text-align: center;
-    margin-bottom: 30px;
-    margin-top: 5%;
+
+  justify-content: center;
+  align-items: center;
+
   }
 
   .text-box-group {
-    
+    background-color: #fff;
+    min-width: 1000px; 
+    min-height: 800px; 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
     margin-top: -45%;
-    margin-bottom: 5%;
     z-index: 5;
-    margin-left: 45%;
+    margin-left: 30%;
+    margin-bottom: 5%;
   }
 
   .form-container-BOx {
@@ -205,8 +208,23 @@
     left: 4px;
     padding: 50px;
   }
+  
+  .box_we {
 
+    width: 50%;
+    padding: 20px;
+    z-index: 5;
+    margin-top: -4%;
+    margin-bottom: 5%;
+  }
+  .box_wee {
+    width: 50%;
+    padding: 20px;
+    z-index: 5;
+    margin-top: -40%;
+    margin-bottom: 5%;
 
+  }
   .scrolling-text {
     animation: scroll-left 60s linear infinite;
     white-space: nowrap;
@@ -222,65 +240,39 @@
     }
   }
 
-  /* Container styling */
-  .plot-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 20px auto;
-    /* Updated margin */
-    width: 90%;
-    /* Adjusted width for better responsiveness */
-    padding: 20px;
-    background-color: #f8f8f8;
-    /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Subtle box shadow */
-    border-radius: 12px;
-    /* Rounded corners */
-  }
+/* Container styling */
+.plot-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  max-width: 150%;
+  width: 100%;
+  padding: 20px;
+  justify-content: space-around;
+  margin-top: 5%;
+}
 
-  /* Individual plot styling */
-  .plot-container>div {
-    width: 45%;
-    margin: 10px;
-    border-radius: 8px;
-    overflow: hidden;
-    /* Ensure rounded corners are applied */
-    background-color: #ffffff;
-    /* White background color */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Subtle box shadow */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
-    /* Smooth transitions on hover */
-  }
+/* Individual plot styling */
+.plot-container > div {
+  width: 45%;
+  margin: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f8f8; /* Light background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  /* Smooth transitions on hover */
+}
 
-  /* Hover animation */
-  .plot-container>div:hover {
-    transform: scale(1.05);
-    /* Scale up on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    /* Increase box shadow on hover */
-    background-color: #f0f0f0;
-    /* Change background color on hover */
-  }
 
-  /* Adjusted style for the .plotly element within the plot container */
-  .plot-container>div .plotly {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-  }
 
-  /* Optional: Add transition to the plotly element for a smoother effect */
-  .plot-container>div .plotly {
-    transition: opacity 0.3s ease-in-out;
-  }
+/* Adjusted style for the .plotly element within the plot container */
+.plot-container > div .plotly {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
 
-  /* Optional: Fade in on hover */
-  .plot-container>div:hover .plotly {
-    opacity: 1;
-  }
 
   td {
     background-color: rgb(255, 255, 255);
@@ -349,6 +341,7 @@
     justify-content: space-between;
     margin-top: 0%;
     margin-bottom: 1%;
+    margin: auto;
   }
 
   .table {
@@ -356,6 +349,7 @@
     box-sizing: border-box;
     padding: 30px;
     margin: 10px auto;
+    
   }
 
   @media (max-width: 645px) {
@@ -372,10 +366,19 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 0%;
-  margin-bottom: -5%;
+  margin-bottom: -15%;
 }
 
+/* Container styling for tables */
+.table-container1 {
+  font-size: x-large;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  justify-content: space-between;
+  margin-top: 0%;
 
+}
 
 .dropdown-menu {
   position: absolute;
@@ -668,6 +671,7 @@ input[type="text"]:focus {
 
   .btn-1:hover {
     box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
   }
 
   /* 1 */
@@ -679,6 +683,7 @@ input[type="text"]:focus {
 
   .btn-2:hover {
     box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
   }
 
   .clearfix:before,
@@ -1439,7 +1444,7 @@ input[type="text"]:focus {
   }
 
   .top-bar {
-    background-color: #2e6ff2;
+    background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
     color: #fff;
     padding: 10px 10px;
     width: 100%;
@@ -1512,8 +1517,123 @@ input[type="text"]:focus {
     margin-bottom: 5px;
     margin-left: 30px;
   }
-
+  .outer {
+    background: #b4b4b4;
+    opacity: 0.9;
+    width: 979.5px;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 7px 7px 0px 0px;
+  }
   
+  .outer.dark {
+    background: #273138;
+  }
+  
+  .outer.dark .dot {
+    background: #4a5c66;
+  }
+  
+  .outer.yosemite {
+    background: #f6f6f6;
+    background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+    background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+    border: 1px solid #d8d8d8;
+    border-bottom: 1px solid #b4b4b4;
+  }
+  
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #f9f9f9;
+    border-radius: 50%;
+    margin: 0 4px 0 0;
+  }
+  
+  .dot.red {
+    background: #FF6057;
+    border: 1px solid #E14640;
+  }
+  
+  .dot.amber {
+    background: #FFBD2E;
+    border: 1px solid #DFA123;
+  }
+  
+  .dot.green {
+    background: #27C93F;
+    border: 1px solid #1DAD2B;
+  }
+  
+  .forward-button {
+    position: fixed;
+    top: 10px;
+    right: 0px; /* เปลี่ยน left เป็น right */
+  }
+.back-button {
+position: fixed;
+top: 10px;
+right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.back-button a:hover {
+    
+transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.forward-button a:hover {
+
+transform: translateY(-4px);
+}
 
 </style>
 
@@ -1525,8 +1645,16 @@ input[type="text"]:focus {
           alt="PTT Public Company Limited Logo">
         <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR)</span>
       </div>
-      <a href class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-        alt="logo">LOGOUT</a>
+      <div class="back-button" >
+        <a href="javascript:history.back()"style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+        </a>
+      </div>
+      <div class="forward-button" >
+        <a href="javascript:history.forward()"style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+        </a>
+      </div>
     </div>
   </header>
   <div class="container">
@@ -1558,39 +1686,28 @@ input[type="text"]:focus {
           </li>
           <li>
             <a>
-                <i class="fas fa-search"></i>
-                <strong>Polling Actions</strong>
-                <small>Polling</small>
-            </a>
-            <ul>
-              <li><a href="write_evc"><i class="fa fa-globe"></i>Write Config</a></li>
-                
-            </ul>
-        </li>
-        <li>
-            <a>
-                <i class="fas fa-file-alt"></i>
-                <strong>Manage Sites</strong>
-                <small>Sites</small>
-            </a>
-            <ul>
-                <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-            </ul>
-        </li>
-        <li>
-            <a>
                 <i class="fas fa-clipboard-list"></i>
                 <strong>Manage Users</strong>
                 <small>Users</small>
             </a>
             <ul>
-                <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
+                <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
+                <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
+                <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
             </ul>
         </li>
+        <li>
+          <a>
+              <i class="fas fa-file-alt"></i>
+              <strong>Manage Sites</strong>
+              <small>Sites</small>
+          </a>
+          <ul>
+              <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+              <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+              <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+          </ul>
+      </li>
         <li>
           <a>
               <i class="fas fa-wrench"></i>
@@ -1598,31 +1715,52 @@ input[type="text"]:focus {
               <small>Setting</small>
           </a>
           <ul>
-            <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-            <li style="display:none;"><a><i class="fas fa-plus"></i>Add Mapping Config</a>
+              <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
+              <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
               <ul>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
-                  <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
-              </ul>
-            <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
-            <ul>
-              <li><a href="polling_route"><i class="fas fa-plus"></i>Polling</a></li>
-              <li style="display:none;"><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-              </ul>
-              <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                <ul>
-                    <li><a href="mapping_config"><i class="fas fa-plus"></i>Config Mapping</a></li>
-                    <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
+
                 </ul>
+        
+                  <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
+                  <ul>
+                    <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
+                    <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
+                  </ul>
+                  <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
+                    <ul>
+                      <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
+                    </ul>
+
+
+                  <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
           </ul>
       </li>
+          <li>
+            <a>
+                <i class="fas fa-search"></i>
+                <strong>Polling Actions</strong>
+                <small>Polling</small>
+            </a>
+            <ul>
+                <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
+                
+            </ul>
+        </li>
     </ul>
 </nav>
+<div class="text-box-group">
+  <div class="outer yosemite">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+ </div>
 
-    <div class="text-box-group">
       <form method="get" action="{{ url_for('billing_data') }}">
         <h2> View Billing Data (AMR)</h2>
-        <div class="form-container">
+        
           <label for="region_dropdown">Select Region:</label>
           <select id="region_dropdown" name="region_dropdown">
             <option value {% if not selected_region %}selected{% endif %}>All</option>
@@ -1664,131 +1802,9 @@ input[type="text"]:focus {
         </div>
       </form>
     </div>
-
-
-      <div>
-        <div class="table-container1">
-            {% if tables.get('config_data_run1') %}
-            <div class="table1" id="table1">
-                <h5>Run 1: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run1']|safe }}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
-
-
-
-            {% if tables.get('config_data_run2') %}
-            <div class="table1" id="table1">
-                <h5>Run 2: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run2']|safe }}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-
-            {% if tables.get('config_data_run3') %}
-            <div class="table1" id="table1">
-                <h5>Run 3: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run3']|safe }}
-                    </tbody>
-                </table>
-
-
-            </div>
-            {% endif %}
-
-            {% if tables.get('config_data_run4') %}
-            <div class="table1" id="table1">
-                <h5>Run 4: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run4']|safe }}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-            {% if tables.get('config_data_run5') %}
-            <div class="table1" id="table1">
-                <h5>Run 5: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run5']|safe }}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-            {% if tables.get('config_data_run6') %}
-            <div class="table1" id="table1">
-                <h5>Run 6: {{ selected_tag }}</h5>
-                <table class="table1">
-                    <!-- The following line combines thead and tbody into a single block -->
-                    <thead>
-                        <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ tables['config_data_run6']|safe }}
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-        </div>
-    </div>
+  </div>
 </div>
-</div>
-<div class="table-container">
+<div class="box_we">
 {% if tables.get('daily_data_run1') %}
 <div class="table" id="table1">
     <h5>Run 1: {{ selected_tag }}</h5>
@@ -1815,31 +1831,145 @@ input[type="text"]:focus {
     <h5>Run 4: {{ selected_tag }}</h5>
     {{ tables['daily_data_run4']|safe }}
 </div>
-<div class="plot-container">
-    {{ graph_corrected|safe }}
-</div>
-
-<div class="plot-container">
-    {{ graph_uncorrected|safe }}
-</div>
-
-<div class="plot-container">
-    {{ graph_pressure|safe }}
-</div>
-
-<div class="plot-container">
-    {{ graph_temperature|safe }}
-</div>
 {% endif %}
 </div>
+
+<div class="plot-container">
+  {{ graph_corrected|safe }}
 </div>
-          <footer class="footer">POWERED BY ATOS - ASGS</footer>
-          <!-- <script src="main.js"></script> -->
-          <div>
-          </div>
-        </div>
+
+<div class="plot-container">
+  {{ graph_uncorrected|safe }}
+</div>
+
+<div class="plot-container">
+  {{ graph_pressure|safe }}
+</div>
+
+<div class="plot-container">
+  {{ graph_temperature|safe }}
+</div>
+
+
+</div>
+<div class="box_wee">
+  {% if tables.get('config_data_run1') %}
+  <div class="table1" id="table1">
+      <h5>Run 1: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run1']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run2') %}
+  <div class="table1" id="table1">
+      <h5>Run 2: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run2']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run3') %}
+  <div class="table1" id="table1">
+      <h5>Run 3: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run3']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+
+  {% if tables.get('config_data_run4') %}
+  <div class="table1" id="table1">
+      <h5>Run 4: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run4']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+  
+  {% if tables.get('config_data_run5') %}
+  <div class="table1" id="table1">
+      <h5>Run 5: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run5']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+  {% if tables.get('config_data_run6') %}
+  <div class="table1" id="table1">
+      <h5>Run 6: {{ selected_tag }}</h5>
+      <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+              <tr>
+                  {% for key, value in dropped_columns_data[0].items() %}
+                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {{ tables['config_data_run6']|safe }}
+          </tbody>
+      </table>
+  </div>
+  {% endif %}
+</div>
+</div>
+<footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
-</div>
+
 
 </html>
 

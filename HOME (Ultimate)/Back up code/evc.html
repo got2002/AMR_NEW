@@ -66,7 +66,7 @@
     margin-top: -32%;
     margin-bottom: 100px;
     z-index: 5;
-    margin-left: 23%;
+    margin-left: 26%;
   }
   
   label {
@@ -881,7 +881,8 @@
   }
   
   .top-bar {
-    background-color: #2e6ff2;
+    background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
+
     color: #fff;
     padding: 10px 10px;
     width: 100%;
@@ -1067,58 +1068,122 @@ form#filterForm {
 
 }
 .outer {
-    background: #b4b4b4;
-    opacity: 0.9;
-    width: 98%;
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 7px 7px 0px 0px;
-    z-index: 5;
-    &.dark {
-      background: #273138;
-      
-      .dot {
-        background: #4a5c66;
-      }
-    }
+  background: #b4b4b4;
+  opacity: 0.9;
+  width: 1068px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 7px 7px 0px 0px;
+}
+
+.outer.dark {
+  background: #273138;
+}
+
+.outer.dark .dot {
+  background: #4a5c66;
+}
+
+.outer.yosemite {
+  background: #f6f6f6;
+  background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+  background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+  background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+  background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+  background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+  border: 1px solid #d8d8d8;
+  border-bottom: 1px solid #b4b4b4;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #f9f9f9;
+  border-radius: 50%;
+  margin: 0 4px 0 0;
+}
+
+.dot.red {
+  background: #FF6057;
+  border: 1px solid #E14640;
+}
+
+.dot.amber {
+  background: #FFBD2E;
+  border: 1px solid #DFA123;
+}
+
+.dot.green {
+  background: #27C93F;
+  border: 1px solid #1DAD2B;
+}
+.forward-button {
+  position: fixed;
+  top: 10px;
+  right: 0px; /* เปลี่ยน left เป็น right */
+}
+.back-button {
+position: fixed;
+top: 10px;
+right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.back-button a:hover {
   
-    &.yosemite {
-      background: #f6f6f6; /* Old browsers */
-      background: -moz-linear-gradient(top,  #f6f6f6 0%, #dadada 100%); /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#dadada)); /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top,  #f6f6f6 0%,#dadada 100%); /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top,  #f6f6f6 0%,#dadada 100%); /* Opera 11.10+ */
-      background: -ms-linear-gradient(top,  #f6f6f6 0%,#dadada 100%); /* IE10+ */
-      background: linear-gradient(to bottom,  #f6f6f6 0%,#dadada 100%); /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#dadada',GradientType=0 ); /* IE6-9 */
-      border: 1px solid #d8d8d8;
-      border-bottom: 1px solid #b4b4b4;
-    }
-  }
-  
-  .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    background: #f9f9f9;
-    border-radius: 50%;
-    margin: 0 4px 0 0;
-    
-    &.red {
-      background: #FF6057;
-      border: 1px solid #E14640;
-    }
-  
-    &.amber {
-      background: #FFBD2E;
-      border: 1px solid #DFA123;
-    }
-  
-    &.green {
-      background: #27C93F;
-      border: 1px solid #1DAD2B;
-    }
-  }
+transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.forward-button a:hover {
+
+transform: translateY(-4px);
+}
+
   
 </style>
 <body>
@@ -1129,8 +1194,16 @@ form#filterForm {
                 alt="PTT Public Company Limited Logo">
             <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (ASGS)</span>
         </div>
-        <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-            alt="logo">LOGOUT</a>
+        <div class="back-button" >
+          <a href="javascript:history.back()">
+            <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+          </a>
+        </div>
+        <div class="forward-button" >
+          <a href="javascript:history.forward()">
+            <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+          </a>
+        </div>
     </div>
 </header>
 <div class="container">

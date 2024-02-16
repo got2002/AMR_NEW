@@ -48,19 +48,98 @@
         align-items: left;
         justify-content: left;
       }
+      .outer {
+        background: #b4b4b4;
+        opacity: 0.9;
+        width: 96%;
+        margin: 10px auto;
+        padding: 10px;
+        border-radius: 7px 7px 0px 0px;
+      }
+      
+      .outer.dark {
+        background: #273138;
+      }
+      
+      .outer.dark .dot {
+        background: #4a5c66;
+      }
+      
+      .outer.yosemite {
+        background: #f6f6f6;
+        background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+        background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+        border: 1px solid #d8d8d8;
+        border-bottom: 1px solid #b4b4b4;
+      }
+      
+      .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: #f9f9f9;
+        border-radius: 50%;
+        margin: 0 4px 0 0;
+      }
+      
+      .dot.red {
+        background: #FF6057;
+        border: 1px solid #E14640;
+      }
+      
+      .dot.amber {
+        background: #FFBD2E;
+        border: 1px solid #DFA123;
+      }
+      
+      .dot.green {
+        background: #27C93F;
+        border: 1px solid #1DAD2B;
+      }
+      .box_we {
+ 
+width:  155%;
+        box-sizing: border-box; 
+        font-size: x-small;
 
+padding-left: 5%;
+
+        margin: auto;
+
+        margin-bottom: 5%; /* ลดระยะลงเพื่อไม่ให้มีช่องว่างมากเกินไป */
+      }
       .text-box-group {
-        width: 90%;
+        width: 45%;
         background-color: #fff;
-        padding: 40px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin: auto;
-        margin-top: -30%;
+        margin-top: -32%; /* ปรับค่าเป็นค่าที่เหมาะสม */
         margin-bottom: 20px;
         z-index: 5;
-        margin-left: 23%;
+        position: relative;
+        left: -2%;
+
       }
+      
+      .text-box-group2 {
+        width: 37%;
+        background-color: #fff;
+        padding-bottom: -30%;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        margin-bottom: 20px;
+        z-index: 3;
+        position: fixed;
+        right: 3%; /* ปรับค่าเป็นค่าที่เหมาะสม */
+      }
+      
       .address-pair {
         width: 80%;
         padding: 1px;
@@ -100,11 +179,11 @@
       select {
         padding: 5px;
         box-sizing: border-box;
-        width: 25%;
+        width: 15%;
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-        margin-top: 10px;
+        margin-top: 1px;
       }
       
       input[type="checkbox"] {
@@ -896,7 +975,80 @@
         margin-bottom: 10px;
       }
 
-    
+
+      
+
+
+/* คอลัมน์ใหม่เฉพาะในขนาดหน้าจอกว้าง */
+@media (min-width: 1024px) {
+  .box_we {
+    column-width: auto; /* ให้เนื้อหาปรับขนาดตามขนาดหน้าจอ */
+  }
+}
+.forward-button {
+  position: fixed;
+  top: 10px;
+  right: 0px; /* เปลี่ยน left เป็น right */
+}
+.back-button {
+position: fixed;
+top: 10px;
+right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.back-button a:hover {
+  
+transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+margin: auto;
+color: #fff;
+width: 50px;
+height: 10px;
+padding: 10px 25px;
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 90px;
+border-radius: 5px;
+margin-bottom: -25px;
+margin-left: 10%;
+}
+
+.forward-button a:hover {
+
+transform: translateY(-4px);
+}
+
 </style>
 <body>
     <header class="top-bar">
@@ -906,8 +1058,17 @@
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
             </div>
-            <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-                alt="logo">LOGOUT</a>
+            <div class="back-button" >
+              <a href="javascript:history.back()"style="text-decoration: none;">
+                <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+              </a>
+            </div>
+            <div class="forward-button">
+              <a href="javascript:history.forward()" style="text-decoration: none;">
+                <i class="fas fa-arrow-circle-right" style="margin-right: -90px"></i> Forward
+              </a>
+            </div>
+            
         </div>
     </header>
     <div class="container">
@@ -995,13 +1156,18 @@
     </nav>
         </form>
         
-        <div class="text-box-group" style="text-align: left;">
-        
+        <div class="text-box-group" style="padding-bottom: 14.5%;">
+            <div class="outer yosemite">
+        <div class="dot red"></div>
+        <div class="dot amber"></div>
+        <div class="dot green"></div>
+   </div>
+   <div class="box_we" style="text-align: left;">
         <h2>Fill in the information</h2>
         <label>SELECT EVC TYPE :</label>
         <input type="text" id="evc_type" name="evc_type" required>
     <!-- Address Pair 1 -->
-    <h1 ><i  style="padding-right: 10px;"></i> Poll Billing</h1>
+    <h1 ><i  style="padding-right: 10px;"></i> Poll Configure</h1>
 
       <div >
         <label for="start1">Start Address:</label>
@@ -1054,7 +1220,14 @@
         <input type="checkbox" id="enable5" name="enable5" checked>
     </div>
     </form>
-    
+
+<div class="text-box-group2" style="margin-top: -24.5%;">
+    <div class="outer yosemite" style="margin-top: 0%;">
+<div class="dot red"></div>
+<div class="dot amber"></div>
+<div class="dot green"></div>
+</div>
+    <div class="box_we">
     <h1>Poll Billing</h1>
     <div>
         <label for="start6">Start Address:</label>
@@ -1147,7 +1320,7 @@
 
     <!-- Address Pair 15 -->
     <div>
-        <label for="start15">Start Address:</label>
+        <label for="start15" >Start Address:</label>
         <input type="text" id="start15" name="start15" required>
         <label for="end15">End Address:</label>
         <input type="text" id="end15" name="end15" required>
@@ -1155,11 +1328,13 @@
         <input type="checkbox" id="enable15" name="enable15" checked>
     </div>
     </form>
-    <div  style=" margin-top: 1%">
+    <div  style=" margin-top: 1%; margin-left: -35%">
     <button class="custom-btn btn-2" type="button" onclick="saveToOracle()">Save to Oracle</button>
     <div id="statusMessage"></div>
     <script src="add_polling.js"></script>
     <footer class="footer">POWERED BY ATOS - ASGS</footer>
+  </div>
+</div> 
 </body>
 
 </html>
