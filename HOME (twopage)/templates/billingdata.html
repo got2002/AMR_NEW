@@ -185,7 +185,6 @@
   }
 
   .text-box-group {
-    
     margin: auto;
     margin-top: -45%;
     margin-bottom: 5%;
@@ -232,10 +231,7 @@
     width: 90%;
     /* Adjusted width for better responsiveness */
     padding: 20px;
-    background-color: #f8f8f8;
-    /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Subtle box shadow */
+
     border-radius: 12px;
     /* Rounded corners */
   }
@@ -1893,6 +1889,8 @@ transform: translateY(-4px);
     <h5>Run 4: {{ selected_tag }}</h5>
     {{ tables['daily_data_run4']|safe }}
 </div>
+{% endif %}
+</div>
 <div class="plot-container">
     {{ graph_corrected|safe }}
 </div>
@@ -1907,8 +1905,6 @@ transform: translateY(-4px);
 
 <div class="plot-container">
     {{ graph_temperature|safe }}
-</div>
-{% endif %}
 </div>
 </div>
           <footer class="footer">POWERED BY ATOS - ASGS</footer>
