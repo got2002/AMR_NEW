@@ -1520,7 +1520,7 @@ def billing_data_asgs():
         # Define your Oracle query to fetch REGION_NAME
         region_query = """
         SELECT DISTINCT REGION_NAME
-        FROM VW_AMR_BILLING_DATA
+        FROM VW_ASGS_AMR_BILLING_DATA
         ORDER BY REGION_NAME
         """
         # Fetch REGION_NAME data using your fetch_data function
@@ -1529,7 +1529,7 @@ def billing_data_asgs():
         # Define your Oracle query to fetch tag_id based on the selected REGION_NAME
         tag_query = """
         SELECT DISTINCT tag_id
-        FROM VW_AMR_BILLING_DATA
+        FROM VW_ASGS_AMR_BILLING_DATA
         WHERE REGION_NAME = :selected_region
         ORDER BY tag_id
         """
@@ -1539,12 +1539,12 @@ def billing_data_asgs():
         # Define your Oracle query to fetch data based on selected criteria
         billing_query = """
             SELECT *
-            FROM VW_AMR_BILLING_DATA
+            FROM VW_ASGS_AMR_BILLING_DATA
             WHERE 
-                VW_AMR_BILLING_DATA.region_name = :selected_region
-                AND VW_AMR_BILLING_DATA.tag_id = :selected_tag
-                AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
-                ORDER BY VW_AMR_BILLING_DATA.data_date
+                VW_ASGS_AMR_BILLING_DATA.region_name = :selected_region
+                AND VW_ASGS_AMR_BILLING_DATA.tag_id = :selected_tag
+                AND TO_CHAR(VW_ASGS_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
+                ORDER BY VW_ASGS_AMR_BILLING_DATA.data_date
         """
         # Fetch data using your fetch_data function
         
@@ -1570,7 +1570,7 @@ def get_tag():
     # Use the selected REGION_NAME to fetch associated tag_id values
     tag_query = """
     SELECT DISTINCT tag_id
-    FROM VW_AMR_BILLING_DATA
+    FROM VW_ASGS_AMR_BILLING_DATA
     WHERE REGION_NAME = :region_name
     ORDER BY tag_id
     """
@@ -3080,3 +3080,22 @@ def login():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+# @app.teardown_appcontext
+# def close_conn(*args, **kwargs):
+#     """This function closes the Oracle connection after each request."""
+#     global active_connection
+#     if active_connection is not None:
+#         active_connection.close()
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html'), 404
+
+# @app.route('/logout')     
+# def logout():
+#     session.clear()       # remove the user and auth token from the session if it exists
+#     flash('You were logged out', 'info')
+#     return redirect(url_for('login'))   # send them back to the sign in page

@@ -678,7 +678,7 @@
     }
     
     .top-bar {
-      background-color: #2e6ff2;
+      background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
       color: #fff;
       padding: 10px 10px;
       width: 100%;
@@ -755,7 +755,70 @@
         margin-right: 10px;
         margin-bottom: 10px;
     }
-    
+    .forward-button {
+      position: fixed;
+      top: 10px;
+      right: 0px; /* เปลี่ยน left เป็น right */
+    }
+.back-button {
+  position: fixed;
+  top: 10px;
+  right: 110px; /* เปลี่ยน left เป็น right */
+}
+
+.back-button a {
+  margin: auto;
+  color: #fff;
+  width: 50px;
+  height: 10px;
+  padding: 10px 25px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 90px;
+  border-radius: 5px;
+  margin-bottom: -25px;
+  margin-left: 10%;
+}
+
+.back-button a:hover {
+      
+  transform: translateY(-4px);
+}
+/* Your existing styles here */
+
+
+
+.forward-button a {
+  margin: auto;
+  color: #fff;
+  width: 50px;
+  height: 10px;
+  padding: 10px 25px;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 90px;
+  border-radius: 5px;
+  margin-bottom: -25px;
+  margin-left: 10%;
+}
+
+.forward-button a:hover {
+  
+  transform: translateY(-4px);
+}
+
     </style>
 <body>
     <header class="top-bar">
@@ -765,8 +828,16 @@
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR)</span>
               </div>
-              <a href=""  style="margin-right: 25px; margin-top: -95px; font-size: 15px; "
-        alt="logo" class="fas fa-sign-out-alt">LOGOUT</a>
+              <div class="back-button" >
+                <a href="javascript:history.back()"style="text-decoration: none;">
+                  <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+                </a>
+              </div>
+              <div class="forward-button" >
+                <a href="javascript:history.forward()"style="text-decoration: none;">
+                  <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+                </a>
+              </div>
         </div>  
     </header>
     <div class="container">
@@ -786,7 +857,7 @@
                         <small>View Data</small>
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('billing_data') }}"><i class="far fa-eye"></i>View Billing Data</a></li>
+                        <li><a href="{{ url_for('billing_data') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
                         <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
                         <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
                         <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
@@ -795,68 +866,72 @@
                     </ul>
                 </li>
                 <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling</small>
-                    </a>
-                    <ul>
-                        <li><a href="write_evc"><i class="fa fa-globe"></i>Write Config</a></li>
-                        
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                        <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                        <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users</small>
-                    </a>
-                    <ul>
-                        <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                        <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                        <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
                   <a>
-                      <i class="fas fa-wrench"></i>
-                      <strong>Polling Setting</strong>
-                      <small>Setting</small>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
                   </a>
                   <ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                      <li style="display:none;"><a><i class="fas fa-plus"></i>Add Mapping Config</a>
-                        <ul>
-                            <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Add Mapping Actraris</a></li>
-                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Add Mapping Elter</a></li>
-                        </ul>
-                      <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
-                      <ul>
-                        <li><a href="polling_route"><i class="fas fa-plus"></i>Polling</a></li>
-                        <li style="display:none;"><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-                        </ul>
-                        <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                          <ul>
-                              <li><a href="mapping_config"><i class="fas fa-plus"></i>Config Mapping</a></li>
-                              <li><a href="{{ url_for('mapping_billing_route') }}"><i class="fas fa-plus"></i>Billing Mapping</a></li>
-                          </ul>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
                   </ul>
               </li>
-            </ul>
-        </nav>
+              <li>
+                <a>
+                    <i class="fas fa-file-alt"></i>
+                    <strong>Manage Sites</strong>
+                    <small>Sites</small>
+                </a>
+                <ul>
+                    <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                    <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                    <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                </ul>
+            </li>
+              <li>
+                <a>
+                    <i class="fas fa-wrench"></i>
+                    <strong>Polling Setting</strong>
+                    <small>Setting</small>
+                </a>
+                <ul>
+                    <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
+                    <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
+                    <ul>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
+  
+                      </ul>
+              
+                        <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
+                        <ul>
+                          <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
+                          <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
+                        </ul>
+                        <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
+                          <ul>
+                            <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
+                            <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
+                          </ul>
 
+
+                        <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
+                </ul>
+            </li>
+                <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
+                  </a>
+                  <ul>
+                      <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
+                      
+                  </ul>
+              </li>
+          </ul>
+      </nav>
         <footer class="footer">POWERED BY ATOS - ASGS</footer>
         <script src="main.js"></script>
 </body>

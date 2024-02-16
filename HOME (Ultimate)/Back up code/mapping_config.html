@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Polling</title>
+    <title>Mapping Config</title>
 
     <!-- Stylesheet -->
-    <!-- <link rel="stylesheet" href="Css/add_polling.css"> -->
+    <!-- <link rel="stylesheet" href="Css/add_mapping.css"> -->
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -26,8 +29,9 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
-<style>
-    @font-face {
+
+    <style>
+      @font-face {
         font-family: "PTT45Pride-Bold";
         src: url("PTT45Pride-Bold.otf") format("truetype");
         font-weight: bold;
@@ -37,6 +41,7 @@
       body {
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
+        font-size: large;
         font-weight: 600;
         max-width: 100vw;
       }
@@ -44,26 +49,32 @@
       
       h1 {
         color: #333;
+        padding: 3%;
         display: flex;
-        align-items: left;
-        justify-content: left;
+        align-items: center;
+        justify-content: center;
+        margin-top: 35px;
       }
 
       .text-box-group {
+        display: inline-block;
         width: 90%;
         background-color: #fff;
-        padding: 40px;
+        padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin: auto;
-        margin-top: -30%;
+        margin-top: -35%;
         margin-bottom: 20px;
         z-index: 5;
         margin-left: 23%;
       }
       .address-pair {
         width: 80%;
+        background-color: #fff;
         padding: 1px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin: auto;
         margin-top: 5px;
         margin-bottom: 5px;
@@ -73,38 +84,31 @@
         margin-right: -100px;
 
     }
-    .bottom-zone {
-        width: 30%;
-        background-color: #fff;
-        padding: 1px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    .form-container {
         margin: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        display: flex;
         align-items: center;
+        text-align: center;
+        margin-bottom: 4%;
+        margin-top: 4%;
+        display: flex;
         justify-content: center;
-        margin-right: 170px;
     }
+    
       
       label {
-        margin-top: 5px;
         margin-bottom: 10px;
         font-weight: bold;
         padding: 1%;
-        
       }
       
       input[type="text"],
       select {
-        padding: 5px;
+        padding: 8px;
         box-sizing: border-box;
-        width: 25%;
+        width: 15%;
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-        margin-top: 10px;
       }
       
       input[type="checkbox"] {
@@ -114,7 +118,8 @@
       h2 {
         color: #333;
         display: flex;
-        align-items: left;
+        align-items: center;
+        justify-content: center;
       }
       
       #statusMessage {
@@ -160,9 +165,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 20px;
+        margin-top: 0px;
         border-radius: 5px;
-        margin-bottom: 20px;
       }
       
       /* 1 */
@@ -255,6 +259,7 @@
         /* == */
         max-width: 1880px;
 
+        
       }
       
       .mcd-menu li {
@@ -821,7 +826,7 @@
       }
       
       .top-bar {
-        background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
+        background-color: #2e6ff2;
         color: #fff;
         padding: 10px 10px;
         width: 100%;
@@ -896,271 +901,236 @@
         margin-bottom: 10px;
       }
 
+
+
+@keyframes oscillate {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(0px); }
+        100% { transform: translateX(0); }
+    }
+
+    .enable-container {
+        margin-bottom: 50px; /* Add some space between containers */
+        animation: alternate-reverse; /* Apply the oscillation animation */
+    }
+
+
     
-</style>
+    
+      .form-container-BOx {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        text-align: center;
+        box-sizing: border-box;
+        width: 140%;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 60%;
+        position: absolute;
+        top: 100%;
+        left: 1%;
+        padding: 30px;
+      }
+    
+    </style>
+
+</head>
+
 <body>
     <header class="top-bar">
         <div class="container-top">
             <div style="display: flex; align-items: center;">
                 <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
                     alt="PTT Public Company Limited Logo">
-                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
+                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR -
+                    ASGS)</span>
             </div>
             <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
                 alt="logo">LOGOUT</a>
         </div>
     </header>
     <div class="container">
-      <nav>
-          <ul class="mcd-menu">
-              <li>
-                <a href="{{ url_for('homeasgs') }}">
-                      <i class="fa fa-home"></i>
-                      <strong >Home</strong>
-                      <small>Back to Homepage</small>
+        <nav>
+            <ul class="mcd-menu">
+                <li>
+                  <a href="{{ url_for('homeasgs') }}">
+                        <i class="fa fa-home"></i>
+                        <strong >Home</strong>
+                        <small>Back to Homepage</small>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fa fa-database"></i>
+                        <strong>Reports</strong>
+                        <small>View Data</small>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="far fa-eye"></i>View Monthly Data</a></li>
+                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
+                        <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                    </ul>
+                </li>
+                <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
                   </a>
+                  <ul>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                  </ul>
               </li>
               <li>
                   <a>
-                      <i class="fa fa-database"></i>
-                      <strong>Reports</strong>
-                      <small>View Data</small>
+                      <i class="fas fa-file-alt"></i>
+                      <strong>Manage Sites</strong>
+                      <small>Sites</small>
                   </a>
                   <ul>
-                      <li><a href="#"><i class="far fa-eye"></i>View Monthly Data</a></li>
-                      <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                      <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                      <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                      <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                      <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
+                      <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
+                      <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
+                      <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
+                      <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
                   </ul>
               </li>
               <li>
                 <a>
-                    <i class="fas fa-search"></i>
-                    <strong>Polling Actions</strong>
-                    <small>Polling</small>
+                    <i class="fas fa-wrench"></i>
+                    <strong>Polling Setting</strong>
+                    <small>Setting</small>
                 </a>
                 <ul>
-                    <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                    <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
-                </ul>
-            </li>
-            <li>
-                <a>
-                    <i class="fas fa-file-alt"></i>
-                    <strong>Manage Sites</strong>
-                    <small>Sites</small>
-                </a>
-                <ul>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                    <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                    <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                </ul>
-            </li>
-            <li>
-                <a>
-                    <i class="fas fa-clipboard-list"></i>
-                    <strong>Manage Users</strong>
-                    <small>Users</small>
-                </a>
-                <ul>
-                    <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                    <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                    <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
-                </ul>
-            </li>
-            <li>
-              <a>
-                  <i class="fas fa-wrench"></i>
-                  <strong>Polling Setting</strong>
-                  <small>Setting</small>
-              </a>
-              <ul>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                  <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
-                  <ul>
-                    <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                    <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-
-                    </ul>
-                    <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                      <ul>
-                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                          <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
+                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
+                    <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                    <ul>
+                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
+                      <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
+  
                       </ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
-              </ul>
-          </li>
-        </ul>
-    </nav>
-        </form>
-        
-        <div class="text-box-group" style="text-align: left;">
-        
-        <h2>Fill in the information</h2>
-        <label>SELECT EVC TYPE :</label>
-        <input type="text" id="evc_type" name="evc_type" required>
-    <!-- Address Pair 1 -->
-    <h1 ><i  style="padding-right: 10px;"></i> Poll Billing</h1>
+                      <li><a><i class="fas fa-plus"></i>Mapping Config</a>
+                        <ul>
+                            <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
+                            <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
+                        </ul>
+                        <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
+                </ul>
+            </li>
+                <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
+                  </a>
+                  <ul>
+                      <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
+                      <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
+                  </ul>
+              </li>
 
-      <div >
-        <label for="start1">Start Address:</label>
-        <input type="text" id="start1" name="start1" required>
-        <label for="end1">End Address:</label>
-        <input type="text" id="end1" name="end1" required>
-        <label for="enable1">Enable:</label>
-        <input type="checkbox" id="enable1" name="enable1" checked>
-      </div>
-
-    <!-- Address Pair 2 -->
-      <div >
-        <label for="start2">Start Address:</label>
-        <input type="text" id="start2" name="start2" required>
-        <label for="end2">End Address:</label>
-        <input type="text" id="end2" name="end2" required>
-        <label for="enable2">Enable:</label>
-        <input type="checkbox" id="enable2" name="enable2" checked>
-      </div>
-
-    <!-- Address Pair 3 -->
-    <div >
+          </ul>
+      </nav>
         
-        <label for="start3">Start Address:</label>
-        <input type="text" id="start3" name="start3" required>
-        <label for="end3">End Address:</label>
-        <input type="text" id="end3" name="end3" required>
-        <label for="enable3">Enable:</label>
-        <input type="checkbox" id="enable3" name="enable3" checked>
+<div class="text-box-group">
+    <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
+        <div class="form-container">
+        <label  for="type_dropdown">Select Type:</label>
+        <select id="type_dropdown" name="type_dropdown">
+            <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
+            {% for type in type_options %}
+                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
+        <button class="custom-btn btn-1" style="margin-left : 3%;" type="submit">View</button>
     </div>
 
-    <!-- Address Pair 4 -->
-    <div >
-        
-        <label for="start4">Start Address:</label>
-        <input type="text" id="start4" name="start4" required>
-        <label for="end4">End Address:</label>
-        <input type="text" id="end4" name="end4" required>
-        <label for="enable4">Enable:</label>
-        <input type="checkbox" id="enable4" name="enable4" checked>
-    </div>
-
-    <!-- Address Pair 5 -->
-    <div>
-        <label for="start5">Start Address:</label>
-        <input type="text" id="start5" name="start5" required>
-        <label for="end5">End Address:</label>
-        <input type="text" id="end5" name="end5" required>
-        <label for="enable5">Enable:</label>
-        <input type="checkbox" id="enable5" name="enable5" checked>
-    </div>
+    <!-- {% if table %}
+        {{ table | safe }}
+    {% else %}
+        <p>No data available.</p>
+    {% endif %} -->
+    
+      <form method="POST" action="/update_mapping_config_route">
+        <input type="hidden" name="selected_type" value="{{ selected_type }}">
+    
+        {% for i in range(0, list_address|length) %}
+        <div class="enable-container">
+          <div class="form-group">
+            <label for="address{{ '{:02d}'.format(i) }}">Address: {{ '{:02d}'.format(i + 1) }}</label>
+            <input type="text" id="list_address{{ '{:02d}'.format(i) }}" name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
+          </div>
+    
+          <div class="form-group">
+            <label for="description{{ '{:02d}'.format(i) }}">Description: {{ '{:02d}'.format(i + 1) }}</label>
+            <input type="text" id="list_description{{ '{:02d}'.format(i) }}" name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
+          </div>
+    
+          <div class="form-group">
+            <label for="list_data_type{{ '{:02d}'.format(i) }}">Type Value: {{ '{:02d}'.format(i + 1) }}</label>
+            <select id="list_list_data_type{{ '{:02d}'.format(i) }}" name="list_list_data_type{{ '{:02d}'.format(i) }}">
+              <option value="None" {% if list_data_type[i] == 'None' %} selected {% endif %}>None</option>
+              <option value="ARRAY6" {% if list_data_type[i] == 'ARRAY6' %} selected {% endif %}>ARRAY6</option>
+              <option value="signed" {% if list_data_type[i] == 'signed' %} selected {% endif %}>signed</option>
+              <option value="Float" {% if list_data_type[i] == 'Float' %} selected {% endif %}>Float</option>
+            </select>
+          </div>
+    
+          <div class="form-group">
+            <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type: {{ '{:02d}'.format(i + 1) }}</label>
+            <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
+          </div>
+    
+          <div class="form-group">
+            <label for="or_der{{ '{:02d}'.format(i) }}">OR DER: {{ '{:02d}'.format(i + 1) }}</label>
+            <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
+          </div>
+        </div>
+        {% endfor %}
+    
+        <input class="custom-btn btn-2" type="submit" value="Submit">
+      </form>
+      <footer class="footer">POWERED BY ATOS - ASGS</footer>
     </form>
     
-    <h1>Poll Billing</h1>
-    <div>
-        <label for="start6">Start Address:</label>
-        <input type="text" id="start6" name="start6" required>
-        <label for="end6">End Address:</label>
-        <input type="text" id="end6" name="end6" required>
-        <label for="enable6">Enable:</label>
-        <input type="checkbox" id="enable6" name="enable6" checked>
-    </div>
+</body>
+    
 
-    <!-- Address Pair 7 -->
-    <div>
-        <label for="start7">Start Address:</label>
-        <input type="text" id="start7" name="start7" required>
-        <label for="end7">End Address:</label>
-        <input type="text" id="end7" name="end7" required>
-        <label for="enable7">Enable:</label>
-        <input type="checkbox" id="enable7" name="enable7" checked>
-    </div>
+<script>
+    function submitForm() {
+        // Trigger the form submission
+        document.getElementById("mapping_configForm").submit();
+    }
 
-    <!-- Address Pair 8 -->
-    <div>
-        <label for="start8">Start Address:</label>
-        <input type="text" id="start8" name="start8" required>
-        <label for="end8">End Address:</label>
-        <input type="text" id="end8" name="end8" required>
-        <label for="enable8">Enable:</label>
-        <input type="checkbox" id="enable8" name="enable8" checked>
-    </div>
+    // Add an event listener to dynamically update the dropdown options
+    document.getElementById("type_dropdown").addEventListener("change", function () {
+        // Get the selected value
+        var selectedtype = this.value;
 
-    <!-- Address Pair 9 -->
-    <div>
-        <label for="start9">Start Address:</label>
-        <input type="text" id="start9" name="start9" required>
-        <label for="end9">End Address:</label>
-        <input type="text" id="end9" name="end9" required>
-        <label for="enable9">Enable:</label>
-        <input type="checkbox" id="enable9" name="enable9" checked>
-    </div>
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
+        }
+    });
+</script>
 
-    <!-- Address Pair 10 -->
-    <div>
-        <label for="start10">Start Address:</label>
-        <input type="text" id="start10" name="start10" required>
-        <label for="end10">End Address:</label>
-        <input type="text" id="end10" name="end10" required>
-        <label for="enable10">Enable:</label>
-        <input type="checkbox" id="enable10" name="enable10" checked>
-    </div>
-
-    <!-- Address Pair 11 -->
-    <div>
-        <label for="start11">Start Address:</label>
-        <input type="text" id="start11" name="start11" required>
-        <label for="end11">End Address:</label>
-        <input type="text" id="end11" name="end11" required>
-        <label for="enable11">Enable:</label>
-        <input type="checkbox" id="enable11" name="enable11" checked>
-    </div>
-
-    <!-- Address Pair 12 -->
-    <div>
-        <label for="start12">Start Address:</label>
-        <input type="text" id="start12" name="start12" required>
-        <label for="end12">End Address:</label>
-        <input type="text" id="end12" name="end12" required>
-        <label for="enable12">Enable:</label>
-        <input type="checkbox" id="enable12" name="enable12" checked>
-    </div>
-
-    <!-- Address Pair 13 -->
-    <div>
-        <label for="start13">Start Address:</label>
-        <input type="text" id="start13" name="start13" required>
-        <label for="end13">End Address:</label>
-        <input type="text" id="end13" name="end13" required>
-        <label for="enable13">Enable:</label>
-        <input type="checkbox" id="enable13" name="enable13" checked>
-    </div>
-
-    <!-- Address Pair 14 -->
-    <div>
-        <label for="start14">Start Address:</label>
-        <input type="text" id="start14" name="start14" required>
-        <label for="end14">End Address:</label>
-        <input type="text" id="end14" name="end14" required>
-        <label for="enable14">Enable:</label>
-        <input type="checkbox" id="enable14" name="enable14" checked>
-    </div>
-
-    <!-- Address Pair 15 -->
-    <div>
-        <label for="start15">Start Address:</label>
-        <input type="text" id="start15" name="start15" required>
-        <label for="end15">End Address:</label>
-        <input type="text" id="end15" name="end15" required>
-        <label for="enable15">Enable:</label>
-        <input type="checkbox" id="enable15" name="enable15" checked>
-    </div>
-    </form>
-    <div  style=" margin-top: 1%">
-    <button class="custom-btn btn-2" type="button" onclick="saveToOracle()">Save to Oracle</button>
-    <div id="statusMessage"></div>
-    <script src="add_polling.js"></script>
-    <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
 
 </html>
-

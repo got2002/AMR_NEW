@@ -36,14 +36,12 @@
             font-style: normal;
           }
           
+          
           body {
-            background-image: linear-gradient(to right, #5b707e, #abb2b9), url("your-image.jpg");
-            background-size: cover; /* ปรับขนาดรูปภาพให้เต็มพื้นหลัง */
-            background-position: center; /* จัดตำแหน่งรูปภาพให้กลาง */
-            background-repeat: no-repeat; /* ปิดการทำซ้ำรูปภาพ */
-            font-family: "PTT45Pride-Bold", sans-serif;
-            font-weight: 600;
-            max-width: 100vw;
+            overflow: hidden;
+            height: 750px;
+            background-color: #5b707e; /* For browsers that do not support gradients */
+            background-image: linear-gradient(#5b707e, #abb2b9, #5b707e);
           }
           
         .login {
