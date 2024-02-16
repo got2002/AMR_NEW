@@ -312,39 +312,14 @@
     </form>
     
    
-<div class="checkbox" style="   top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px; " >
-        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list in zipped_data  %}
-                                <td > 
-                                    <input type="checkbox" name="configCheckbox" style="width: 50%; "  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}}" onclick="changeConfigCheckbox(this)"> 
-                                </td>
-                            {% endfor %}
-</div>
-<script>
-    document.querySelectorAll('input[name="configCheckbox"]').forEach(checkbox => {
-        checkbox.addEventListener('click', function() {
-            if (this.checked) {
-                const values = this.value.split(',');
-                const evcTypeList = values[values.length - 1].replace(/['\[\]]/g, '');
-                
-                // ส่งค่า evcTypeList ไปยังเซิร์ฟเวอร์ Python โดยใช้ Fetch APIห
-                fetch('/evc_type', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ evcTypeList })
-                })
-                .then(response => {
-                    // ดำเนินการต่อไปตามที่ต้องการหลังจากได้รับการตอบกลับจากเซิร์ฟเวอร์
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
-        });
-    });
-    </script>
-    
+    <div class="checkbox" style="top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px;">
+        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list in zipped_data %}
+        <td>
+            <input type="checkbox" name="configCheckbox" style="width: 50%;" value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}}" onclick="changeConfigCheckbox(this)">
+        </td>
+        {% endfor %}
+    </div>
+
     
 
     <script>
@@ -369,30 +344,38 @@
             });
         });
         document.addEventListener('DOMContentLoaded', function() {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                // Split the value by commas and take the third part (tcp_ip)
-                var pollConfigListParts = this.value.split(',');
-                // Access the first element of the array and remove any unwanted characters
-                var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
-                var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
-
-                // Set the value of tcp_ip input field
-                document.getElementById('tcp_ip').value = tcp_ip;
-                document.getElementById('tcp_port').value = tcp_port;
-            }
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        var pollConfigListParts = this.value.split(',');
+                        
+                        var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
+                        var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
+                        var evc_type = pollConfigListParts[47].replace(/[\[\]']/g, ''); // Assuming evc_type_list is at index 6 in pollConfigListParts
+                        
+                        // Set the value of tcp_ip, tcp_port, and evc_type input fields
+                        document.getElementById('tcp_ip').value = tcp_ip;
+                        document.getElementById('tcp_port').value = tcp_port;
+                        document.getElementById('evc_type').value = evc_type;
+                    }
+                });
+            });
         });
-    });
-});
 
     </script>
-    
-    
-    
+ 
 
+
+
+
+
+
+
+
+
+    
 
 <script>
     function changeConfigCheckbox(checkbox) {
@@ -462,9 +445,9 @@
     function disableField(fieldName, value) {
         var field = document.getElementById(fieldName);
         if (field) {
-            field.classList.add('disabled'); // Add disabled class
-            field.value = value; // Set the field value to '0'
-            field.removeAttribute('disabled'); // Remove disabled attribute
+            field.classList.add('disabled'); 
+            field.value = value; 
+            field.removeAttribute('disabled'); 
         }
     }
 </script>
@@ -569,14 +552,17 @@
                             <label for="tcp_port">TCP Port</label>
                             <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ tcp_port }}">
                         </div>
-
+                        <div class="form-group">
+                            <label for="evc_type">EVC_TYPE</label>
+                            <input type="text" class="form-control" id="evc_type" name="evc_type" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{evc_type}}">
+                        </div>
                         
                          <div class="btn-container" id="showDataButton">
-                             <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
+                           
 
                              <button type="submit" style="display: none;" id="changeTo16BitButton" class="btn btn-primary" name="is_16bit" value="true" data-state="data" style="height: 34px; width: 45%; font-size: x-small;border-radius: 0.5rem;border: none;">Change to 16-bit</button >
 
-               <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
+              
                         <button type="submit" id="changeTo32BitButton" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
                              <!-- <div class="btn-button1">
                                  <p>Elster:</p>
