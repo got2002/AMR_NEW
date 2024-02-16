@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify, redirect, flash
 import cx_Oracle
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 
+#### Global Variable 
+#For specific configuration data per day 
+QUANTITY_CONFIG_DATA = 20  #ค่า config มี 20 ค่า
+#For specific quantity of poll range 
+QUANTITY_RANGE_CONFIG_LIST = 10  # poll range ทำเป็น list จะมี 10 element
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 username = "root"
 password = "root"
@@ -130,9 +136,10 @@ def polling_route():
         ]
         df = pd.DataFrame(results, columns=columns)
 
-        print(results)
+        
         poll_config_list = df.get(["poll_config"]).values.tolist()
         list_config = str(poll_config_list[0]).strip("[]'").split(",")
+        # print("===", poll_config_list)
         
         poll_billing_list = df.get(["poll_billing"]).values.tolist()
         list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
@@ -350,7 +357,7 @@ def mapping_config_route():
         amr_mapping_config.evc_type = amr_vc_type.id
         AND amr_vc_type.VC_NAME LIKE '{selected_type}'
     """
-
+    
     selected_type = request.args.get("type_dropdown")
     selected_type = f"{selected_type}" if selected_type else ""
 
@@ -414,26 +421,84 @@ def update_mapping_config():
     results = fetch_data(type_id_query)
     type_id = str(results[0]).strip("',()")
     print("type:", type_id)
-
-    description_VC_TYPE = []
     
-    for j in range(0, 20):  # Start from 1 and end at 20
+    query = """
+        SELECT
+            apr.evc_type,
+            apr.poll_config
+
+
+        FROM
+            amr_poll_range apr
+        JOIN
+        amr_vc_type avt ON apr.evc_type = avt.id
+        {type_condition}
+        """
+    type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
+    
+    # Check if a type is selected before executing the query
+    if type_condition:
+        query = query.format(type_condition=type_condition)
+        results = fetch_data(query)
+        # print(results)
+
+        columns = [
+            "evc_type",
+            "poll_config",
+            
+        ]
+        df = pd.DataFrame(results, columns=columns)
+
+        
+        poll_config_list = df.get(["poll_config"]).values.tolist()
+        list_config = str(poll_config_list[0]).strip("[]'").split(",")
+        print("start:", list_config)     
+
+    description_VC_TYPE = [] 
+
+    for j in range(0,QUANTITY_CONFIG_DATA):  
         i = f"{j:02d}"
         address_key = f"list_address{i}"
         description_key = f"list_description{i}"
         data_type_key = f"list_data_type{i}"
         evc_type_key = f"list_evc_type{i}"
         or_der_key = f"list_or_der{i}"
-        
+
         address_value = checkStrNone(request.form.get(address_key))
         description_value = checkStrNone(request.form.get(description_key))
         data_type_value = checkStrNone(request.form.get(data_type_key))
         evc_type_value = request.form.get(evc_type_key)
         or_der_value = request.form.get(or_der_key)
+
+        valid = False
         
-        # if description_value == "None":
-        #     description_value = ""
+        #check config
+        print(address_value)
+        # if textbox = None ไม่ต้อง check address แต่ต้องappend array ด้วย blank เพราะเดี๋ยวจะไม่ครบใน sql command
+        if address_value == "": 
+            description_VC_TYPE.append("")
+            continue
+        k = 0
+        for k in range(0,QUANTITY_RANGE_CONFIG_LIST,2):
+           
+            address_value_int = int(address_value)
+            address_check_low = int(list_config[k])
+            address_check_high = int(list_config[k+1])
+            k+=2
+            print("low = ", address_check_low, ", high = ", address_check_high, "; value = ", address_value_int)
+            if address_check_low  <= address_value_int :
+                if address_value_int <= address_check_high:
+                    valid = True; print("Result = True"); break
+            print("Result = False")
         
+        
+        if valid == False:
+            print("Error : invalid address ; alert หน้าจอ และ ออกจาก function นี้ได้เลย ")
+            
+            #error
+            return ""
+             
+    
         description_VC_TYPE.append(checkStrNone(description_value))
         # print("---", description_value)
 
@@ -451,6 +516,8 @@ def update_mapping_config():
         # print("Update Query##################", update_query)
         update_sql(update_query)
         
+        
+    
     update_vc_info_query = f"""
     UPDATE AMR_VC_CONFIGURED_INFO
     SET
@@ -481,7 +548,7 @@ def update_mapping_config():
     """
     
     update_sql(update_vc_info_query)
-    print(update_vc_info_query)
+    # print(update_vc_info_query)
 
     return redirect("/mapping_config")
 
@@ -627,6 +694,7 @@ def update_mapping_billing():
                 update_sql(insert_query)
                 # print(insert_query)
     
+    
     # Update SQL query based on your table structure
     for i in range(0, 5): 
         i = f"{i:02d}"
@@ -645,6 +713,15 @@ def update_mapping_billing():
         daily_value = request.form.get(daily_key.strip("',()"))
         # print("address:", address_value)
         
+        
+        # for k in range(1,20,2): 
+        #     address_check_low = poll_config_list[k]
+        #     address_check_high = poll_config_list[k+1]
+        #     k+=2
+        #     if address_check_low  < address_value and address_value < address_check_high
+        #         valid = true; break
+        
+        
         # Update SQL query based on your table structure
         update_query = f"""
         UPDATE AMR_MAPPING_BILLING
@@ -655,7 +732,7 @@ def update_mapping_billing():
             OR_DER = '{or_der_value}',
             DAILY = '{daily_value}'        
         WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
-    """
+        """
 
         update_sql(update_query)
         print(update_query)
