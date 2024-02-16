@@ -1843,7 +1843,13 @@ transform: translateY(-4px);
     {{ graph_temperature|safe }}
 
 </div>
-<div class="plot-container">
+<div class="text-box-group" >
+  <div class="outer yosemite">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+ </div>
+ <div class="box_we" >
   {% if tables.get('config_data_run1') %}
   <div class="table1" id="table1">
       <h5>Run 1: {{ selected_tag }}</h5>
