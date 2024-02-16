@@ -209,9 +209,7 @@
     padding: 50px;
   }
   .box_we {
-    margin: auto;
-    justify-content: center;
-    align-items: center;
+
     width: 90%;
     background-color: #fff;
     padding: 20px;
@@ -243,8 +241,10 @@
   max-width: 150%; /* Set maximum width */
   width: 150%; /* Take up the full width of the container */
   padding: 20px;
-  justify-self: center;
-  border-radius: 12px; /* Rounded corners */
+  margin: center;
+
+
+  justify-content: space-around;
 }
 
 /* Individual plot styling */
@@ -1814,7 +1814,7 @@ transform: translateY(-4px);
 {% endif %}
 </div>
 
-  <div class="plot-container" >
+  <div class="plot-container" style="justify-content: center;">
     {{ graph_corrected|safe }}
   </div>
 
