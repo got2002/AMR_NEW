@@ -80,7 +80,7 @@
       -moz-border-radius: 2px;
       -webkit-border-radius: 2px;
       /* == */
-      width: 250px;
+      width: 260px;
       /* == */
       max-width: 1880px;
     }
@@ -88,7 +88,7 @@
     .mcd-menu li {
       position: relative;
       /*float:left;*/
-      
+      width: 260px;
     }
     
     .mcd-menu li a {
@@ -327,7 +327,7 @@
       /*top: 100px;*/
     
       /* == */
-      left: 250px;
+      left: 260px;
       /* == */
     }
     /*.mcd-menu li ul li {
@@ -352,7 +352,7 @@
       
     }
     .mcd-menu li ul li ul {
-      left: 230px;
+      left: 290px;
       top: 0;
       border: 0;
       border-left: 4px solid #2e6ff2;
@@ -371,50 +371,13 @@
     }
     .mcd-menu li ul li:hover > ul {
       top: 0px;
-      left: 200px;
+      left: 260px;
     }
     
     /*.mcd-menu li.float {
       float: right;
     }*/
-    .mcd-menu li a.search {
-      /*padding: 29px 20px 30px 10px;*/
-      padding: 10px 10px 15px 10px;
-      clear: both;
-    }
-    .mcd-menu li a.search i {
-      margin: 0;
-      display: inline-block;
-      font-size: 18px;
-    }
-    .mcd-menu li a.search input {
-      border: 1px solid #eee;
-      padding: 10px;
-      background: #fff;
-      outline: none;
-      color: #777;
-    
-      /* == */
-      width: 170px;
-      float: left;
-      /* == */
-    }
-    .mcd-menu li a.search button {
-      border: 1px solid #2e6ff2;
-      /*padding: 10px;*/
-      background: #2e6ff2;
-      outline: none;
-      color: #fff;
-      margin-left: -4px;
-    
-      /* == */
-      float: left;
-      padding: 10px 10px 11px 10px;
-      /* == */
-    }
-    .mcd-menu li a.search input:focus {
-      border: 1px solid #2e6ff2;
-    }
+
     
     .search-mobile {
       display: none !important;
@@ -858,11 +821,12 @@
                         <small>View </small>
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('billing_data_asgs') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
-                        <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                        <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                        <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                        <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                        <li><a href="{{ url_for('billing_data_asgs') }}"><i></i>- View Monthly Data</a></li>
+                        <li><a href="#"><i></i>- View EVC Status</a></li>
+                        <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
+                        <li><a href="#"><i></i>- Monthly Summery</a></li>
+                        <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
+                        <li><a href="#"><i></i>- New Site Detail</a></li>
                     </ul>
                 </li>
                 <li>
@@ -872,9 +836,9 @@
                       <small>Users</small>
                   </a>
                   <ul>
-                      <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                      <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                      <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
+                      <li><a href="#"><i></i>- </i>Add User</a></li>
+                      <li><a href="#"><i></i>- </i>Edit User</a></li>
+                      <li><a href="#"><i></i>- </i>Remove User</a></li>
                   </ul>
               </li>
               <li>
@@ -884,9 +848,9 @@
                     <small>Sites</small>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                    <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                    <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+                    <li><a href="#"><i></i>- Add Site</a></li>
+                    <li><a href="#"><i></i>- Edit Site</a></li>
+                    <li><a href="#"><i></i>- </i>Remove Site</a></li>
                 </ul>
             </li>
               <li>
@@ -896,27 +860,27 @@
                     <small>Setting</small>
                 </a>
                 <ul>
-                    <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
-                    <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
+                    <li><a href="#"><i></i>- EVC Management</a></li>
+                    <li><a><i></i>- Polling Range Setting</a>
                     <ul>
-                      <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                      <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
+                      <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
+                      <li><a href="#"><i></i>- </i>Add Polling</a></li>
   
                       </ul>
               
-                        <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
+                        <li><a><i></i>- Configuration Mapping</a>
                         <ul>
-                          <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
-                          <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
+                          <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
+                          <li><a href="#"><i></i>- Add Mapping Config</a></li>
                         </ul>
-                        <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
+                        <li><a><i></i>- Daily Billing Mapping</a>
                           <ul>
-                            <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
-                            <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
+                            <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
+                            <li><a href="#"><i></i>- Add Billing Mapping</a></li>
                           </ul>
 
 
-                        <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
+                        <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
                 </ul>
             </li>
                 <li>
@@ -926,8 +890,7 @@
                       <small>Polling</small>
                   </a>
                   <ul>
-                      <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
-                      
+                      <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
                   </ul>
               </li>
           </ul>
