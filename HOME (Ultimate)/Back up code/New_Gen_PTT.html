@@ -34,7 +34,8 @@
     <!-- Bootstrap Datepicker Stylesheet and Script -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
 <style>
     @font-face {
@@ -48,7 +49,9 @@
         background-image: linear-gradient(to right, #5b707e, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
         font-weight: bold;
-        height: 100%
+        height: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     h1,
@@ -59,6 +62,7 @@
     h6 {
         color: #333;
     }
+
     label {
         display: block;
         margin-bottom: 10px;
@@ -67,6 +71,7 @@
         width: 100%;
         padding: 3px;
     }
+
     input {
         width: 20%;
         padding: 5px;
@@ -445,17 +450,17 @@
         font-size: 1.5em;
         margin-right: 10px;
         margin-bottom: 10px;
-      }
-    
-      .mcd-menu li a:focus i,
-      .mcd-menu li a:hover i,
-      .mcd-menu li.active a i {
+    }
+
+    .mcd-menu li a:focus i,
+    .mcd-menu li a:hover i,
+    .mcd-menu li.active a i {
         color: #3498db;
         font-size: 1.5em;
         margin-right: 10px;
         margin-bottom: 10px;
-      }
-    
+    }
+
 
     @media only screen and (min-width: 960px) and (max-width: 1199px) {
         .mcd-menu {
@@ -722,19 +727,22 @@
     }
 
     footer {
+        align-items: right;
         background-color: #2e6ff2;
         color: white;
-        text-align: left;
+        text-align: right;
+        /* เปลี่ยนจาก left เป็น right */
         padding: 8px;
         position: fixed;
         bottom: 0;
-        left: 0;
+        left: -13px;
         width: 100%;
         box-shadow: 0 0 5px #ddd;
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         font-size: small;
     }
+
 
     .container-top {
         max-width: 1880px;
@@ -754,14 +762,10 @@
         filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
     }
 
-    .Automatic {
-        font-size: 35px;
-        font-weight: bold;
-        padding: 0px;
-        margin-top: -25px;
-    }
 
-    .back-button, .forward-button {
+
+    .back-button,
+    .forward-button {
         position: fixed;
         top: 110px;
         background-color: transparent;
@@ -771,17 +775,19 @@
         font-size: medium;
         outline: none;
         z-index: 999;
+        filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
     }
-    
+
     .back-button {
         right: 180px;
     }
-    
+
     .forward-button {
         right: 20px;
     }
-    
-    .back-button a, .forward-button a {
+
+    .back-button a,
+    .forward-button a {
         width: 100px;
         color: white;
         text-decoration: none;
@@ -792,76 +798,111 @@
         transition: background-color 0.3s, transform 0.3s, opacity 0.3s, box-shadow 0.3s;
         display: inline-block;
         background: linear-gradient(to bottom, #2e6ff2, #4571a0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px rgba(120, 190, 244);
         transform-style: preserve-3d;
     }
-    
-    .back-button a:hover, .forward-button a:hover {
+
+    .back-button a:hover,
+    .forward-button a:hover {
         background: linear-gradient(to bottom, #2e6ff2, #4571a0);
-        transform: translateY(-2px) rotateX(10deg); /* เพิ่ม rotateX */
+        transform: translateY(-2px) rotateX(10deg);
+        /* เพิ่ม rotateX */
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
-    
-    .back-button a::before, .forward-button a::before {
+
+    .back-button a::before,
+    .forward-button a::before {
         font-size: smaller;
         margin-right: 4px;
     }
-    
-    .back-button i, .forward-button i {
+
+    .back-button i,
+    .forward-button i {
         font-size: larger;
         transition: transform 0.3s;
     }
-    
+
     .back-button i {
         margin-right: 10%;
     }
-    
+
     .forward-button i {
         margin-left: 10%;
     }
-    
+
     .container {
         position: relative;
         margin: 0px 0px 0px left;
         padding: 0;
         clear: both;
-        margin-top: 150px;
+        margin-top: 100px;
+        margin-left: -1%;
+    }
+
+    .btn-shine {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 12px 48px;
+        color: #ffffff;
+        background: linear-gradient(to right, white 0, #ffffff 10%, white 20%);
+        background-size: 200% 100%;
+        background-position: 100% 0;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 7s infinite linear;
+        animation-fill-mode: forwards;
+        -webkit-text-size-adjust: none;
+        font-weight: 600;
+        font-size: 60px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    @keyframes shine {
+        0% {
+            background-position: 100% 0;
+        }
+
+        100% {
+            background-position: -100% 0;
+        }
     }
 </style>
 
 <body>
     <header class="top-bar">
-        <div class="container-top">
             <div style="display: flex; align-items: center;">
                 <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
                     alt="PTT Public Company Limited Logo">
-                <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR)</span>
+                <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR)</a>
             </div>
         </div>
-            <div class="back-button">
-                <a href="javascript:history.back()" style="text-decoration: none;">
-                    <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
-                </a>
-            </div>
-            <div class="forward-button">
-                <a href="javascript:history.forward()" style="text-decoration: none;">
-                    Forward <i class="fas fa-arrow-circle-right"  style="margin-left: 10%;"></i>
-                </a>
-            </div>            
+        <div class="back-button">
+            <a href="javascript:history.back()" style="text-decoration: none;">
+                <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
+            </a>
+        </div>
+        <div class="forward-button">
+            <a href="javascript:history.forward()" style="text-decoration: none;">
+                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 10%;"></i>
+            </a>
+        </div>
         </div>
     </header>
     <div class="container">
         <nav>
             <ul class="mcd-menu">
                 <li>
-                    <a href="{{ url_for('home_amr') }}">
+                    <a class="active" href="{{ url_for('home_amr') }}">
                         <i class="fa fa-home"></i>
                         <strong>Home</strong>
                         <small>Back to Homepage</small>
                     </a>
                 </li>
                 <li>
-                    <a class="active">
+                    <a>
                         <i class="fa fa-database"></i>
                         <strong>Reports</strong>
                         <small>View Data</small>
