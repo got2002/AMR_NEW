@@ -116,11 +116,11 @@ input[type="text"] {
     </form>
 
     <!-- {{ tables[0]|safe }} -->
-
+    <div class="secondFormContainer" style="display: none;">
         <h2>Poll Configure</h2>
     <form action="/update_polling_data" method="post">
         <input type="hidden" name="selected_type" value="{{ selected_type }}">
-        <div class="textbox-container" >
+        
             {% for i in range(0, list_config|length, 2) %}
                 <div class="textbox-pair">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
@@ -136,7 +136,7 @@ input[type="text"] {
             {% endfor %}
         </div>
 
-        <div class="textbox-container" style="display: none;">
+        <div class="secondFormContainer" style="display: none;">
             <h2>Poll Billing</h2>
             {% for i in range(0, list_billing|length, 2) %}
                 <div class="textbox-pair">
