@@ -46,7 +46,7 @@
     }
 
     body {
-        background-image: linear-gradient(to right, #5b707e, #abb2b9);
+        background-image: linear-gradient(to right, #848282, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
         font-weight: bold;
         height: 100%;
@@ -758,7 +758,7 @@
         margin: 0px;
         display: flex;
         margin-top: -25px;
-        filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
+        filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255))
     }
 
 
@@ -850,16 +850,269 @@
         text-decoration: none;
         white-space: nowrap;
     }
+
+    .box_we {
+        width: 90%;
+        background-color: #fff;
+        padding: 20px;
+        margin: auto;
+        z-index: 5;
+        margin-top: -1%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .container-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .container-menu label {
+        color: #333;
+        margin-right: 10px;
+        width: 60px;
+    }
+
+    .container-menu select,
+    .container-menu input {
+        background-color: #fff;
+        color: #333;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        
+    }
+
+    .container-menu input {
+        width: 150px;
+        /* ปรับขนาด input ตามที่ต้องการ */
+    }
+
+
+    .textbox-container {
+        position: relative;
+        width: 60%;
+        margin: auto;
+        margin-top: -370px;
+        margin-bottom: 20px;
+        margin-left: 27%;
+        height: 100%;
+        background-color: #FFFFFF;
+        border: 2px solid #b7b7b7;
+        box-shadow: 0 5px 15px rgba(29, 89, 251, 0.3);
+        color: #040506;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+
+
+    .outer {
+        background: #b4b4b4;
+        opacity: 0.9;
+        width: 999.5px;
+        margin: 0px auto;
+        padding: 10px;
+        border-radius: 7px 7px 0px 0px;
+    }
+
+    .outer.dark {
+        background: #273138;
+    }
+
+    .outer.dark .dot {
+        background: #4a5c66;
+    }
+
+    .outer.yosemite {
+        background: #f6f6f6;
+        background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+        background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+        background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+        border: 1px solid #d8d8d8;
+        border-bottom: 1px solid #b4b4b4;
+    }
+
+    .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: #f9f9f9;
+        border-radius: 50%;
+        margin: 0 4px 0 0;
+    }
+
+    .dot.red {
+        background: #FF6057;
+        border: 1px solid #E14640;
+    }
+
+    .dot.amber {
+        background: #FFBD2E;
+        border: 1px solid #DFA123;
+    }
+
+    .dot.green {
+        background: #27C93F;
+        border: 1px solid #1DAD2B;
+    }
+
+    .selected {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .selected h1 {
+        margin-bottom: 10px;
+        /* เพิ่มระยะห่างด้านล่าง */
+    }
+
+    .selected p {
+        margin: 5px 0;
+        /* เพิ่มระยะห่างด้านบนและด้านล่าง */
+    }
+
+    .selected span {
+        font-weight: bold;
+    }
+
+    .custom-btn {
+
+        color: #fff;
+        width: 130px;
+        height: 40px;
+        padding: 10px 25px;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        border-radius: 5px;
+        margin-bottom: -25px;
+    }
+    
+    .button-container {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        justify-content: center;
+        gap: 30px; 
+        margin-bottom: 60px;
+      }
+    
+    .custom-btn {
+        /* รายละเอียดของ .custom-btn คงเดิม */
+        margin-left: 0px; /* ระยะห่างด้านซ้าย */
+        margin-right: 0px; /* ระยะห่างด้านขวา */
+    }
+    
+    
+    
+
+    
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
+
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+  }
+
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+    #region_dropdown {
+        width: 200px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #333;
+    }
+
+    #region_dropdown:hover {
+        border-color: #666;
+    }
+
+    #region_dropdown option {
+        background-color: #fff;
+        color: #333;
+    }
+
+    #region_dropdown option:hover {
+        background-color: #f2f2f2;
+    }
+
+
+    #tag_dropdown {
+        width: 200px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #333;
+    }
+
+    #tag_dropdown:hover {
+        border-color: #666;
+    }
+
+    #tag_dropdown option {
+        background-color: #fff;
+        color: #333;
+    }
+
+    #tag_dropdown option:hover {
+        background-color: #f2f2f2;
+    }
+
+    .nano-container {
+        width: 90%;
+        background-color: #fff;
+        padding: 20px;
+        margin: auto;
+        z-index: 5;
+        margin-top: -1%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+
 </style>
 
 <body>
     <header class="top-bar">
-            <div style="display: flex; align-items: center;">
-                <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                    alt="PTT Public Company Limited Logo">
-                <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR)</a>
-            </div>
-        </div>
+
+        <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+            alt="PTT Public Company Limited Logo">
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR)</a>
         <div class="back-button">
             <a href="javascript:history.back()" style="text-decoration: none;">
                 <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
@@ -959,5 +1212,236 @@
                 </li>
             </ul>
         </nav>
-        <footer class="footer">POWERED BY ATOS - ASGS</footer>
+    </div>
+    <div class="textbox-container">
+        <div class="outer yosemite">
+            <div class="dot red"></div>
+            <div class="dot amber"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="box_we">
+            <form method="get" action="{{ url_for('billing_data') }}">
+                <h2> View Billing Data (AMR)</h2>
+                <div class="container-menu">
+                    <label for="region_dropdown">Select Region:</label>
+                    <select id="region_dropdown" name="region_dropdown">
+                        <option value {% if not selected_region %}selected{% endif %}>All</option>
+                        {% for region in region_options %}
+                        <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <label for="tag_dropdown">Select Site:</label>
+                    <select id="tag_dropdown" name="tag_dropdown">
+                        <option value {% if not selected_tag %}selected{% endif %}>All</option>
+                        {% for tag in tag_options %}
+                        <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="date_picker">Select Date:</label>
+                    <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
+                        autocomplete="off" onchange="checkDate()">
+                        </div>
+
+                    <div id="loadingOverlay" style="display: none;">
+                        <img src="static/Search.gif" alt="Loading...">
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+                        onclick="showLoading()">Daily Data</button>
+                    <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                        onclick="showLoading()">Config Data</button>
+                    <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                        Filters</button>
+                </div>
+                    <div class="selected">
+                        <h1>Selected</h1>
+                        <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+                        <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+                        <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+                        <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div class="textbox-container" style="margin-top: 2%;">
+        <div class="outer yosemite">
+            <div class="dot red"></div>
+            <div class="dot amber"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="box_we" style="margin-top: 2%;">
+        {% if tables.get('daily_data_run1') %}
+        <div class="table" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run1']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run2') %}
+        <div class="table" id="table2">
+            <h5>Run 2: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run2']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run3') %}
+        <div class="table" id="table3">
+            <h5>Run 3: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run3']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run4') %}
+        <div class="table" id="table4">
+            <h5>Run 4: {{ selected_tag }}</h5>
+            {{ tables['daily_data_run4']|safe }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="box_we">
+    <div class="plot-container">
+        {{ graph_corrected|safe }}
+    </div>
+
+    <div class="plot-container">
+        {{ graph_uncorrected|safe }}
+    </div>
+
+    <div class="plot-container">
+        {{ graph_pressure|safe }}
+    </div>
+
+    <div class="plot-container">
+        {{ graph_temperature|safe }}
+    </div>
+    </div>
+    </div>
+
+        <div class="textbox-container" style="margin-top: 2%; margin-bottom: 5%; width: 90%;margin-left: 5%">
+        <div class="outer yosemite" style="width: 1000%;">
+            <div class="dot red"></div>
+            <div class="dot amber"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="box_we"; style="margin-top: 2%;" >
+        {% if tables.get('config_data_run1') %}
+        <div class="table1" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run1']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if tables.get('config_data_run2') %}
+        <div class="table1" id="table1">
+            <h5>Run 2: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run2']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if tables.get('config_data_run3') %}
+        <div class="table1" id="table1">
+            <h5>Run 3: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run3']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if tables.get('config_data_run4') %}
+        <div class="table1" id="table1">
+            <h5>Run 4: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run4']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if tables.get('config_data_run5') %}
+        <div class="table1" id="table1">
+            <h5>Run 5: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run5']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% if tables.get('config_data_run6') %}
+        <div class="table1" id="table1">
+            <h5>Run 6: {{ selected_tag }}</h5>
+            <table class="table1">
+                <!-- The following line combines thead and tbody into a single block -->
+                <thead>
+                    <tr>
+                        {% for key, value in dropped_columns_data[0].items() %}
+                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ tables['config_data_run6']|safe }}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    
+    <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
