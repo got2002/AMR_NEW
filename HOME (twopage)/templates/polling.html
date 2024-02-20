@@ -116,53 +116,48 @@ input[type="text"] {
     </form>
 
     <!-- {{ tables[0]|safe }} -->
-    <div id="secondFormContainer" class="secondFormContainer" style="display: none;">
+
         <h2>Poll Configure</h2>
-        <form action="/update_polling_data" method="post">
-            <input type="hidden" name="selected_type" value="{{ selected_type }}">
-    
+    <form action="/update_polling_data" method="post">
+        <input type="hidden" name="selected_type" value="{{ selected_type }}">
+        <div class="textbox-container">
             {% for i in range(0, list_config|length, 2) %}
                 <div class="textbox-pair">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
                     <input type="text" id="start{{ i//2 + 1 }}" name="start_config{{ i//2 + 1 }}" value="{{ list_config[i] }}">
-    
+
                     <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
                     <input type="text" id="end{{ i//2 + 1 }}" name="end_config{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
-    
+
                     <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
                     <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[{{ i//2 }}]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
+                   
                 </div>
             {% endfor %}
-    
-            <h2>Poll Billing</h2>
+        </div>
+
+        <h2>Poll Billing</h2>
+        <div class="textbox-container">
             {% for i in range(0, list_billing|length, 2) %}
                 <div class="textbox-pair">
                     <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
                     <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_billing[i] }}">
-    
+
                     <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
                     <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
-    
+
                     <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
                     <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable[{{ i//2 }}]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
+                   
                 </div>
             {% endfor %}
-    
-            <button type="submit" style="display: none;">Save Edit Data</button>
-        </form>
-    </div>
+        </div>
+
+        <button type="submit">Save Edit Data</button>
+    </form>
     
 
     <script>
-        function showForm() {
-            const formContainer = document.getElementById("secondFormContainer");
-            if (formContainer) {
-                formContainer.style.display = "block";
-            } else {
-                console.error("Form container not found");
-            }
-        }
-
         function saveToOracle() {
     // Collect data from the Poll Configure form
     var configureData = collectFormData('start_config', 'end_config', 'enable_config');
@@ -217,8 +212,6 @@ input[type="text"] {
             allOption.style.display = "block";
         }
     });
-
-
     </script>
 
 </body>
