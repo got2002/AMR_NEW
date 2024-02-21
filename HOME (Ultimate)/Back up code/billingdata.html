@@ -9,7 +9,7 @@
     <meta name="author" content="Prompt">
     <meta name="copyright" content="Copyright © 2024">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW GEN</title>
+    <title>View Monthly Data</title>
 
     <!-- Stylesheet -->
     <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
@@ -1446,3 +1446,141 @@
     
     <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
+<script>
+
+  function clearFilters() {
+    document.getElementById('region_dropdown').value = '';
+    document.getElementById('tag_dropdown').value = '';
+    document.getElementById('date_picker').value = '';
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'block';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Assuming you have JavaScript/jQuery to handle changes and update the display
+    var selectedRegion = null;
+    var selectedTag = null;
+    var selectedDate = null;
+
+    document.getElementById('region_dropdown').addEventListener('change', function () {
+      selectedRegion = this.value;
+    });
+
+    document.getElementById('tag_dropdown').addEventListener('change', function () {
+      selectedTag = this.value;
+    });
+
+    document.getElementById('date_picker').addEventListener('change', function () {
+      selectedDate = this.value;
+    });
+
+    // Event listener for form submission with 'daily_data' event
+    var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+    formDailyData.addEventListener('config_data', function (event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+
+      showLoadingOverlay();
+
+      // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+      setTimeout(function () {
+        // Update the displayed values after the loading is complete
+        document.getElementById('selected_region').innerText = selectedRegion;
+        document.getElementById('selected_tag').innerText = selectedTag;
+        document.getElementById('selected_date').innerText = selectedDate;
+
+        // Optionally, update the meter ID
+        var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+        if (selectedMeterIdSpan) {
+          selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+        }
+
+        // Reset selected values
+        selectedRegion = null;
+        selectedTag = null;
+        selectedDate = null;
+
+        // Submit the form programmatically
+        formDailyData.submit();
+      }, 2000); // Adjust the delay time as needed (in milliseconds)
+    });
+
+    // Event listener for form submission with 'config_data' event
+    var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+    formConfigData.addEventListener('daily_data', function (event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+
+      showLoadingOverlay();
+
+      // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+      setTimeout(function () {
+        // Update the displayed values after the loading is complete
+        document.getElementById('selected_region').innerText = selectedRegion;
+        document.getElementById('selected_tag').innerText = selectedTag;
+        document.getElementById('selected_date').innerText = selectedDate;
+
+        // Optionally, update the meter ID
+        var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+        if (selectedMeterIdSpan) {
+          selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+        }
+
+        // Reset selected values
+        selectedRegion = null;
+        selectedTag = null;
+        selectedDate = null;
+
+        // Submit the form programmatically
+        formConfigData.submit();
+      }, 2000); // Adjust the delay time as needed (in milliseconds)
+    });
+  });
+  function showLoading() {
+    // แสดง loading overlay
+    document.getElementById('loadingOverlay').style.display = 'block';
+  }
+
+  // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
+  function hideLoading() {
+    // ซ่อน loading overlay
+    document.getElementById('loadingOverlay').style.display = 'none';
+  }
+
+
+  // Wait for the document to be ready
+  $(document).ready(function () {
+    $('#date_picker').datepicker({
+      format: 'mm/yyyy',
+      startView: 'months',
+      minViewMode: 'months',
+      autoclose: true
+    });
+
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function () {
+      var selectedRegion = $(this).val();
+
+      $.ajax({
+        type: 'GET',
+        url: '/get_tags',
+        data: { 'selected_region': selectedRegion },
+        success: function (response) {
+          // Clear existing options in the tag dropdown
+          $('#tag_dropdown').empty();
+          // Add the 'All' option
+          $('#tag_dropdown').append('<option value="" selected>All</option>');
+          // Add new tag options based on the response
+          for (var i = 0; i < response.tag_options.length; i++) {
+            var tag = response.tag_options[i];
+            $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
+          }
+          hideLoadingOverlay(); // Hide loading overlay after successful AJAX request
+        },
+        error: function (error) {
+          console.log('Error fetching tag options:', error);
+          hideLoadingOverlay(); // Hide loading overlay after AJAX request error
+        }
+      });
+    });
+  });
+</script>
