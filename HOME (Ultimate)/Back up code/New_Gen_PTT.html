@@ -859,16 +859,18 @@
         z-index: 5;
         margin-top: -1%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         text-align: center;
     }
-    
+
     .container-menu {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
+        width: 100%;
+        flex-direction: row;
     }
 
     .container-menu label {
@@ -885,7 +887,7 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-        
+
     }
 
     .container-menu input {
@@ -1003,48 +1005,50 @@
         border-radius: 5px;
         margin-bottom: -25px;
     }
-    
+
     .button-container {
         display: grid;
         grid-template-columns: repeat(3, auto);
         justify-content: center;
-        gap: 30px; 
+        gap: 30px;
         margin-bottom: 60px;
-      }
-    
+    }
+
     .custom-btn {
         /* รายละเอียดของ .custom-btn คงเดิม */
-        margin-left: 0px; /* ระยะห่างด้านซ้าย */
-        margin-right: 0px; /* ระยะห่างด้านขวา */
+        margin-left: 0px;
+        /* ระยะห่างด้านซ้าย */
+        margin-right: 0px;
+        /* ระยะห่างด้านขวา */
     }
-    
-    
-    
 
-    
-  /* 1 */
-  .btn-1 {
-    border: none;
-    background-color: #333;
-    box-shadow: 0 0 5px #333;
-  }
 
-  .btn-1:hover {
-    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-    transform: translateY(-4px);
-  }
 
-  /* 1 */
-  .btn-2 {
-    border: none;
-    background-color: #4caf50;
-    box-shadow: 0 0 5px #4caf50;
-  }
 
-  .btn-2:hover {
-    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
-    transform: translateY(-4px);
-  }
+
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
+    }
+
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+        transform: translateY(-4px);
+    }
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4caf50;
+        box-shadow: 0 0 5px #4caf50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+        transform: translateY(-4px);
+    }
 
     #region_dropdown {
         width: 200px;
@@ -1103,8 +1107,6 @@
         align-items: center;
         text-align: center;
     }
-    
-
 </style>
 
 <body>
@@ -1220,228 +1222,18 @@
             <div class="dot green"></div>
         </div>
         <div class="box_we">
-            <form method="get" action="{{ url_for('billing_data') }}">
-                <h2> View Billing Data (AMR)</h2>
-                <div class="container-menu">
-                    <label for="region_dropdown">Select Region:</label>
-                    <select id="region_dropdown" name="region_dropdown">
-                        <option value {% if not selected_region %}selected{% endif %}>All</option>
-                        {% for region in region_options %}
-                        <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                    <label for="tag_dropdown">Select Site:</label>
-                    <select id="tag_dropdown" name="tag_dropdown">
-                        <option value {% if not selected_tag %}selected{% endif %}>All</option>
-                        {% for tag in tag_options %}
-                        <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                        {% endfor %}
-                    </select>
+            
+            <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
+                <label for="type_dropdown">Select Type:</label>
+                <select id="type_dropdown" name="type_dropdown">
+                    <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --</option>
+                    {% for type in type_options %}
+                    <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
 
-                    <label for="date_picker">Select Date:</label>
-                    <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
-                        autocomplete="off" onchange="checkDate()">
-                        </div>
-
-                    <div id="loadingOverlay" style="display: none;">
-                        <img src="static/Search.gif" alt="Loading...">
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
-                        onclick="showLoading()">Daily Data</button>
-                    <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
-                        onclick="showLoading()">Config Data</button>
-                    <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
-                        Filters</button>
-                </div>
-                    <div class="selected">
-                        <h1>Selected</h1>
-                        <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-                        <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-                        <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-                        <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-                    </div>
-                </div>
+                <button class="custom-btn btn-1" type="button" onclick="submitForm()">View Information</button>
             </form>
-        </div>
-    </div>
-    </div>
-    <div class="textbox-container" style="margin-top: 2%;">
-        <div class="outer yosemite">
-            <div class="dot red"></div>
-            <div class="dot amber"></div>
-            <div class="dot green"></div>
-        </div>
-        <div class="box_we" style="margin-top: 2%;">
-        {% if tables.get('daily_data_run1') %}
-        <div class="table" id="table1">
-            <h5>Run 1: {{ selected_tag }}</h5>
-            {{ tables['daily_data_run1']|safe }}
-        </div>
-        {% endif %}
 
-        {% if tables.get('daily_data_run2') %}
-        <div class="table" id="table2">
-            <h5>Run 2: {{ selected_tag }}</h5>
-            {{ tables['daily_data_run2']|safe }}
-        </div>
-        {% endif %}
-
-        {% if tables.get('daily_data_run3') %}
-        <div class="table" id="table3">
-            <h5>Run 3: {{ selected_tag }}</h5>
-            {{ tables['daily_data_run3']|safe }}
-        </div>
-        {% endif %}
-
-        {% if tables.get('daily_data_run4') %}
-        <div class="table" id="table4">
-            <h5>Run 4: {{ selected_tag }}</h5>
-            {{ tables['daily_data_run4']|safe }}
-        </div>
-        {% endif %}
-    </div>
-    <div class="box_we">
-    <div class="plot-container">
-        {{ graph_corrected|safe }}
-    </div>
-
-    <div class="plot-container">
-        {{ graph_uncorrected|safe }}
-    </div>
-
-    <div class="plot-container">
-        {{ graph_pressure|safe }}
-    </div>
-
-    <div class="plot-container">
-        {{ graph_temperature|safe }}
-    </div>
-    </div>
-    </div>
-
-        <div class="textbox-container" style="margin-top: 2%; margin-bottom: 5%; width: 90%;margin-left: 5%">
-        <div class="outer yosemite" style="width: 1000%;">
-            <div class="dot red"></div>
-            <div class="dot amber"></div>
-            <div class="dot green"></div>
-        </div>
-        <div class="box_we"; style="margin-top: 2%;" >
-        {% if tables.get('config_data_run1') %}
-        <div class="table1" id="table1">
-            <h5>Run 1: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run1']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        {% if tables.get('config_data_run2') %}
-        <div class="table1" id="table1">
-            <h5>Run 2: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run2']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        {% if tables.get('config_data_run3') %}
-        <div class="table1" id="table1">
-            <h5>Run 3: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run3']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        {% if tables.get('config_data_run4') %}
-        <div class="table1" id="table1">
-            <h5>Run 4: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run4']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-
-        {% if tables.get('config_data_run5') %}
-        <div class="table1" id="table1">
-            <h5>Run 5: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run5']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-        {% if tables.get('config_data_run6') %}
-        <div class="table1" id="table1">
-            <h5>Run 6: {{ selected_tag }}</h5>
-            <table class="table1">
-                <!-- The following line combines thead and tbody into a single block -->
-                <thead>
-                    <tr>
-                        {% for key, value in dropped_columns_data[0].items() %}
-                        <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ tables['config_data_run6']|safe }}
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
-    </div>
-    
-    <footer class="footer">POWERED BY ATOS - ASGS</footer>
+            <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
