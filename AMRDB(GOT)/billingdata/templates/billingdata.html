@@ -25,21 +25,13 @@
             <h2>Billing data</h2>
 
         <form method="get" action="/">
-            <label for="user_name_dropdown">Select user_name:</label>
-        <select id="user_name_dropdown" name="user_name_dropdown">
-            <option value="" {% if selected_user_name == "" %}selected{% endif %}> Select user_name </option>
-            {% for user_name in user_name_options %}
-                <option value="{{ user_name }}" {% if selected_user_name == user_name %}selected{% endif %}>{{ user_name }}</option>
-            {% endfor %}
-        </select>
+            <!-- Replace the user_name_dropdown and password_dropdown select elements with text inputs -->
+            <label for="user_name">User Name:</label>
+            <input type="text" id="user_name" name="user_name" value="{{ selected_user_name }}">
 
-            <label for="password_dropdown">Select password:</label>
-        <select id="password_dropdown" name="password_dropdown">
-            <option value="" {% if selected_password == "" %}selected{% endif %}> Select password </option>
-            {% for password in password_options %}
-                <option value="{{ password }}" {% if selected_password == password %}selected{% endif %}>{{ password }}</option>
-            {% endfor %}
-        </select>
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password" value="{{ selected_password }}">
+
         
         <button type="submit">submit</button><br>
  
