@@ -13,8 +13,8 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Bootstrap Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -33,17 +33,16 @@
     font-weight: bold;
     font-style: normal;
   }
-  
+
   body {
     background-image: linear-gradient(to right, #5b707e, #abb2b9);
     font-family: "PTT45Pride-Bold", sans-serif;
     max-width: 600vw;
-    overflow-x: none;
   }
 
   @media only screen and (min-width: 1024px) {
     body {
-      
+
       font-family: "PTT45Pride-Bold", sans-serif;
       font-weight: bold;
       max-width: 600vw;
@@ -177,23 +176,22 @@
   }
 
   .form-container {
-
-  justify-content: center;
-  align-items: center;
-
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 5%;
   }
 
   .text-box-group {
     background-color: #fff;
-    min-width: 1000px; 
-    min-height: 800px; 
+    min-width: 1000px;
+    min-height: 800px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
     margin-top: -45%;
     z-index: 5;
-    margin-left: 30%;
-    margin-bottom: 5%;
+    margin-left: 35%;
+    margin-bottom: 10%;
   }
 
   .form-container-BOx {
@@ -208,23 +206,16 @@
     left: 4px;
     padding: 50px;
   }
-  
+
   .box_we {
-
-    width: 50%;
+    width: 90%;
+    background-color: #fff;
     padding: 20px;
+    margin: auto;
     z-index: 5;
-    margin-top: -4%;
-    margin-bottom: 5%;
+    margin-top: -1%;
   }
-  .box_wee {
-    width: 50%;
-    padding: 20px;
-    z-index: 5;
-    margin-top: -40%;
-    margin-bottom: 5%;
 
-  }
   .scrolling-text {
     animation: scroll-left 60s linear infinite;
     white-space: nowrap;
@@ -240,39 +231,62 @@
     }
   }
 
-/* Container styling */
-.plot-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto;
-  max-width: 150%;
-  width: 100%;
-  padding: 20px;
-  justify-content: space-around;
-  margin-top: 5%;
-}
+  /* Container styling */
+  .plot-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px auto;
+    /* Updated margin */
+    width: 90%;
+    /* Adjusted width for better responsiveness */
+    padding: 20px;
 
-/* Individual plot styling */
-.plot-container > div {
-  width: 45%;
-  margin: 10px;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #f8f8f8; /* Light background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  /* Smooth transitions on hover */
-}
+    border-radius: 12px;
+    /* Rounded corners */
+  }
 
+  /* Individual plot styling */
+  .plot-container>div {
+    width: 45%;
+    margin: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ensure rounded corners are applied */
+    background-color: #ffffff;
+    /* White background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle box shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    /* Smooth transitions on hover */
+  }
 
+  /* Hover animation */
+  .plot-container>div:hover {
+    transform: scale(1.05);
+    /* Scale up on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Increase box shadow on hover */
+    background-color: #f0f0f0;
+    /* Change background color on hover */
+  }
 
-/* Adjusted style for the .plotly element within the plot container */
-.plot-container > div .plotly {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-}
+  /* Adjusted style for the .plotly element within the plot container */
+  .plot-container>div .plotly {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
 
+  /* Optional: Add transition to the plotly element for a smoother effect */
+  .plot-container>div .plotly {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* Optional: Fade in on hover */
+  .plot-container>div:hover .plotly {
+    opacity: 1;
+  }
 
   td {
     background-color: rgb(255, 255, 255);
@@ -341,7 +355,6 @@
     justify-content: space-between;
     margin-top: 0%;
     margin-bottom: 1%;
-    margin: auto;
   }
 
   .table {
@@ -349,7 +362,6 @@
     box-sizing: border-box;
     padding: 30px;
     margin: 10px auto;
-    
   }
 
   @media (max-width: 645px) {
@@ -359,80 +371,71 @@
   }
 
 
-/* Container styling for tables */
-.table-container {
-  font-size: x-large;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 0%;
-  margin-bottom: -15%;
-}
-
-/* Container styling for tables */
-.table-container1 {
-  font-size: x-large;
-  display: flex;
-  flex-wrap: wrap;
-  margin: auto;
-  justify-content: space-between;
-  margin-top: 0%;
-
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 10rem;
-  padding: .5rem 0;
-  margin: .125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, .15);
-  border-radius: .25rem;
-  max-width: 200px;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.dropdown-menu li {
-  padding: .5rem 1rem;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.5;
-  color: #212529;
-  white-space: nowrap;
-}
-
-/* เมื่อ hover รายการใน dropdown menu */
-.dropdown-menu li:hover {
-  background-color: #f8f9fa;
-}
-
-/* ลักษณะของลิงก์ใน dropdown menu */
-.dropdown-menu a {
-  color: #212529;
-  text-decoration: none;
-}
-
-/* เมื่อ hover ลิงก์ใน dropdown menu */
-.dropdown-menu a:hover {
-  color: #007bff;
-  text-decoration: underline;
-}
+  /* Container styling for tables */
+  .table-container {
+    font-size: x-large;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 0%;
+    margin-bottom: -5%;
+  }
 
 
-#region_dropdown {
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    max-width: 200px;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-menu li {
+    padding: .5rem 1rem;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    white-space: nowrap;
+  }
+
+  /* เมื่อ hover รายการใน dropdown menu */
+  .dropdown-menu li:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* ลักษณะของลิงก์ใน dropdown menu */
+  .dropdown-menu a {
+    color: #212529;
+    text-decoration: none;
+  }
+
+  /* เมื่อ hover ลิงก์ใน dropdown menu */
+  .dropdown-menu a:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
+
+
+  #region_dropdown {
     width: 200px;
     padding: 8px;
     border: 1px solid #ccc;
@@ -453,6 +456,7 @@
   #region_dropdown option:hover {
     background-color: #f2f2f2;
   }
+
   label[for="tag_dropdown"] {
     display: block;
     margin-bottom: 5px;
@@ -578,24 +582,24 @@
   }
 
 
-input[type="text"] {
-  padding: 8px; 
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
-  width: 200px; 
-  box-sizing: border-box; 
-  transition: border-color 0.3s ease-in-out; 
-}
+  input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+  }
 
-input[type="text"]:hover {
-  border-color: #3498db; 
-}
+  input[type="text"]:hover {
+    border-color: #3498db;
+  }
 
 
-input[type="text"]:focus {
-  outline: none; 
-  border-color: #3498db;
-}
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+  }
 
   select {
     padding: 8px;
@@ -747,33 +751,35 @@ input[type="text"]:focus {
       margin: 0 auto;
     }
   }
+
   .mcd-menu li:hover>a i,
   .mcd-menu li:hover a strong,
   .mcd-menu li:hover a small {
     animation: moveFromTop 500ms ease-in-out;
   }
+
   .nav-links {
     display: flex;
-    gap: 20px; 
+    gap: 20px;
   }
-  
+
   @media only screen and (max-width: 768px) {
     nav {
       flex-direction: column;
       align-items: flex-start;
       margin-left: -30%;
     }
-  
+
     .nav-links {
       flex-direction: column;
-      gap: 10px; 
+      gap: 10px;
     }
   }
-  
+
 
   nav {
-    
-    padding: 20px; 
+
+    padding: 20px;
     max-width: min-content;
     margin-top: 20%;
     display: flex;
@@ -781,8 +787,9 @@ input[type="text"]:focus {
     align-items: center;
 
   }
-  .mcd-menu {
 
+  .mcd-menu {
+    font-size: large;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -791,18 +798,16 @@ input[type="text"]:focus {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    -ms-border-radius: 2px;
     /* == */
-    width: 250px;
+    width: 260px;
     /* == */
     max-width: 1880px;
-
-
-    }
+  }
 
   .mcd-menu li {
     position: relative;
     /*float:left;*/
+    width: 260px;
   }
 
   .mcd-menu li a {
@@ -811,7 +816,8 @@ input[type="text"]:focus {
     padding: 12px 20px;
     color: #777;
     /*text-align: center;
-  border-right: 1px solid #E7E7E7;*/
+    border-right: 1px solid #E7E7E7;*/
+
     /* == */
     text-align: left;
     height: 36px;
@@ -822,8 +828,8 @@ input[type="text"]:focus {
 
   .mcd-menu li a i {
     /*display: block;
-  font-size: 30px;
-  margin-bottom: 10px;*/
+    font-size: 30px;
+    margin-bottom: 10px;*/
 
     /* == */
     float: left;
@@ -898,8 +904,8 @@ input[type="text"]:focus {
     color: #2e6ff2;
     border: 0;
     /*border-top: 4px solid #e67e22;
-  border-bottom: 4px solid #e67e22;
-  margin-top: -4px;*/
+    border-bottom: 4px solid #e67e22;
+    margin-top: -4px;*/
     box-shadow: 0 0 5px #ddd;
     -moz-box-shadow: 0 0 5px #ddd;
     -webkit-box-shadow: 0 0 5px #ddd;
@@ -915,10 +921,10 @@ input[type="text"]:focus {
     content: "";
     position: absolute;
     /*top: 0;
-  left: 45%;
-  border-top: 5px solid #e67e22;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;*/
+    left: 45%;
+    border-top: 5px solid #e67e22;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;*/
 
     /* == */
     top: 42%;
@@ -1002,10 +1008,8 @@ input[type="text"]:focus {
     }
   }
 
-
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
-
     position: absolute;
     height: auto;
     min-width: 200px;
@@ -1034,10 +1038,10 @@ input[type="text"]:focus {
     content: "";
     position: absolute;
     /*top: -8px;
-  left: 23%;
-  border-bottom: 5px solid #e67e22;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;*/
+    left: 23%;
+    border-bottom: 5px solid #e67e22;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;*/
 
     /* == */
     top: 25px;
@@ -1056,13 +1060,13 @@ input[type="text"]:focus {
     /*top: 100px;*/
 
     /* == */
-    left: 250px;
+    left: 260px;
     /* == */
   }
 
   /*.mcd-menu li ul li {
-  float: none;
-}*/
+    float: none;
+  }*/
   .mcd-menu li ul li a {
     padding: 10px;
     text-align: left;
@@ -1080,10 +1084,11 @@ input[type="text"]:focus {
     font-size: 16px;
     display: inline-block;
     margin: 0 10px 0 0;
+
   }
 
   .mcd-menu li ul li ul {
-    left: 230px;
+    left: 290px;
     top: 0;
     border: 0;
     border-left: 4px solid #2e6ff2;
@@ -1104,54 +1109,13 @@ input[type="text"]:focus {
 
   .mcd-menu li ul li:hover>ul {
     top: 0px;
-    left: 200px;
+    left: 260px;
   }
 
   /*.mcd-menu li.float {
-  float: right;
-}*/
-  .mcd-menu li a.search {
-    /*padding: 29px 20px 30px 10px;*/
-    padding: 10px 10px 15px 10px;
-    clear: both;
-  }
+    float: right;
+  }*/
 
-  .mcd-menu li a.search i {
-    margin: 0;
-    display: inline-block;
-    font-size: 18px;
-  }
-
-  .mcd-menu li a.search input {
-    border: 1px solid #eee;
-    padding: 10px;
-    background: #fff;
-    outline: none;
-    color: #777;
-
-    /* == */
-    width: 170px;
-    float: left;
-    /* == */
-  }
-
-  .mcd-menu li a.search button {
-    border: 1px solid #2e6ff2;
-    /*padding: 10px;*/
-    background: #2e6ff2;
-    outline: none;
-    color: #fff;
-    margin-left: -4px;
-
-    /* == */
-    float: left;
-    padding: 10px 10px 11px 10px;
-    /* == */
-  }
-
-  .mcd-menu li a.search input:focus {
-    border: 1px solid #2e6ff2;
-  }
 
   .search-mobile {
     display: none !important;
@@ -1413,20 +1377,6 @@ input[type="text"]:focus {
       font-size: 14px;
     }
   }
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
 
   footer {
     background-color: #2e6ff2;
@@ -1517,6 +1467,7 @@ input[type="text"]:focus {
     margin-bottom: 5px;
     margin-left: 30px;
   }
+
   .outer {
     background: #b4b4b4;
     opacity: 0.9;
@@ -1525,15 +1476,15 @@ input[type="text"]:focus {
     padding: 10px;
     border-radius: 7px 7px 0px 0px;
   }
-  
+
   .outer.dark {
     background: #273138;
   }
-  
+
   .outer.dark .dot {
     background: #4a5c66;
   }
-  
+
   .outer.yosemite {
     background: #f6f6f6;
     background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
@@ -1546,7 +1497,7 @@ input[type="text"]:focus {
     border: 1px solid #d8d8d8;
     border-bottom: 1px solid #b4b4b4;
   }
-  
+
   .dot {
     display: inline-block;
     width: 10px;
@@ -1555,86 +1506,84 @@ input[type="text"]:focus {
     border-radius: 50%;
     margin: 0 4px 0 0;
   }
-  
+
   .dot.red {
     background: #FF6057;
     border: 1px solid #E14640;
   }
-  
+
   .dot.amber {
     background: #FFBD2E;
     border: 1px solid #DFA123;
   }
-  
+
   .dot.green {
     background: #27C93F;
     border: 1px solid #1DAD2B;
   }
-  
+
   .forward-button {
     position: fixed;
     top: 10px;
-    right: 0px; /* เปลี่ยน left เป็น right */
+    right: 0px;
+    /* เปลี่ยน left เป็น right */
   }
-.back-button {
-position: fixed;
-top: 10px;
-right: 110px; /* เปลี่ยน left เป็น right */
-}
 
-.back-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
-}
+  .back-button {
+    position: fixed;
+    top: 10px;
+    right: 110px;
+    /* เปลี่ยน left เป็น right */
+  }
 
-.back-button a:hover {
-    
-transform: translateY(-4px);
-}
-/* Your existing styles here */
+  .back-button a {
+    margin: auto;
+    color: #fff;
+    width: 50px;
+    height: 10px;
+    padding: 10px 25px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+    border-radius: 5px;
+    margin-bottom: -25px;
+    margin-left: 10%;
+  }
 
+  .back-button a:hover {
+    transform: translateY(-4px);
+  }
 
+  .forward-button a {
+    margin: auto;
+    color: #fff;
+    width: 50px;
+    height: 10px;
+    padding: 10px 25px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 90px;
+    border-radius: 5px;
+    margin-bottom: -25px;
+    margin-left: 10%;
+  }
 
-.forward-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
-}
+  .forward-button a:hover {
 
-.forward-button a:hover {
-
-transform: translateY(-4px);
-}
-
+    transform: translateY(-4px);
+  }
 </style>
 
 <body>
@@ -1645,331 +1594,327 @@ transform: translateY(-4px);
           alt="PTT Public Company Limited Logo">
         <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR)</span>
       </div>
-      <div class="back-button" >
-        <a href="javascript:history.back()"style="text-decoration: none;">
-          <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+      <div class="back-button">
+        <a href="javascript:history.back()" style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-left" style="margin-right: 20px"></i> Back
         </a>
       </div>
-      <div class="forward-button" >
-        <a href="javascript:history.forward()"style="text-decoration: none;">
-          <i class="fas fa-arrow-circle-right"style="margin-right: -90px"></i> Forward
+      <div class="forward-button">
+        <a href="javascript:history.forward()" style="text-decoration: none;">
+          <i class="fas fa-arrow-circle-right" style="margin-right: -90px"></i> Forward
         </a>
       </div>
     </div>
   </header>
   <div class="container">
     <nav>
-        <ul class="mcd-menu">
-          <li>
-            <a href="{{ url_for('home_amr') }}">
-              <i class="fa fa-home"></i>
-              <strong>Home</strong>
-              <small>Back to Homepage</small>
-            </a>
-          </li>
-          <li>
-            <a class="active">
-              <i class="fa fa-database"></i>
-              <strong>Reports</strong>
-              <small>View Data</small>
-            </a>
-            <ul>
-              <li><a href="{{ url_for('billing_data') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
-              <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-              <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily
-                  Summary</a></li>
-              <li><a href="#"><i class="fas fa-file-alt"></i>Monthly
-                  Summery</a></li>
-              <li><a href="sitedetail_data"><i class="far fa-file-alt"></i>Site
-                  Detail</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>
-                <i class="fas fa-clipboard-list"></i>
-                <strong>Manage Users</strong>
-                <small>Users</small>
-            </a>
-            <ul>
-                <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
-            </ul>
+      <ul class="mcd-menu">
+        <li>
+          <a href="{{ url_for('home_amr') }}">
+            <i class="fa fa-home"></i>
+            <strong>Home</strong>
+            <small>Back to Homepage</small>
+          </a>
+        </li>
+        <li>
+          <a class="active">
+            <i class="fa fa-database"></i>
+            <strong>Reports</strong>
+            <small>View Data</small>
+          </a>
+          <ul>
+            <li><a href="{{ url_for('billing_data') }}"><i></i>- View Monthly Data</a></li>
+            <li><a href="#"><i></i>- View EVC Status</a></li>
+            <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
+            <li><a href="#"><i></i>- Monthly Summery</a></li>
+            <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
+            <li><a href="#"><i></i>- New Site Detail</a></li>
+          </ul>
         </li>
         <li>
           <a>
-              <i class="fas fa-file-alt"></i>
-              <strong>Manage Sites</strong>
-              <small>Sites</small>
+            <i class="fas fa-clipboard-list"></i>
+            <strong>Manage Users</strong>
+            <small>Users</small>
           </a>
           <ul>
-              <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-              <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-              <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
+            <li><a href="#"><i></i>- </i>Add User</a></li>
+            <li><a href="#"><i></i>- </i>Edit User</a></li>
+            <li><a href="#"><i></i>- </i>Remove User</a></li>
           </ul>
-      </li>
+        </li>
         <li>
           <a>
-              <i class="fas fa-wrench"></i>
-              <strong>Polling Setting</strong>
-              <small>Setting</small>
+            <i class="fas fa-file-alt"></i>
+            <strong>Manage Sites</strong>
+            <small>Sites</small>
           </a>
           <ul>
-              <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
-              <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
+            <li><a href="#"><i></i>- Add Site</a></li>
+            <li><a href="#"><i></i>- Edit Site</a></li>
+            <li><a href="#"><i></i>- </i>Remove Site</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            <i class="fas fa-wrench"></i>
+            <strong>Polling Setting</strong>
+            <small>Setting</small>
+          </a>
+          <ul>
+            <li><a href="#"><i></i>- EVC Management</a></li>
+            <li><a><i></i>- Polling Range Setting</a>
               <ul>
-                <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
+                <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
+                <li><a href="#"><i></i>- </i>Add Polling</a></li>
 
-                </ul>
-        
-                  <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
-                  <ul>
-                    <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
-                  </ul>
-                  <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
-                    <ul>
-                      <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
-                      <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
-                    </ul>
+              </ul>
+
+            <li><a><i></i>- Configuration Mapping</a>
+              <ul>
+                <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
+                <li><a href="#"><i></i>- Add Mapping Config</a></li>
+              </ul>
+            <li><a><i></i>- Daily Billing Mapping</a>
+              <ul>
+                <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
+                <li><a href="#"><i></i>- Add Billing Mapping</a></li>
+              </ul>
 
 
-                  <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
+            <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
           </ul>
-      </li>
-          <li>
-            <a>
-                <i class="fas fa-search"></i>
-                <strong>Polling Actions</strong>
-                <small>Polling</small>
-            </a>
-            <ul>
-                <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
-                
-            </ul>
         </li>
-    </ul>
-</nav>
-<div class="text-box-group">
-  <div class="outer yosemite">
-      <div class="dot red"></div>
-      <div class="dot amber"></div>
-      <div class="dot green"></div>
- </div>
+        <li>
+          <a>
+            <i class="fas fa-search"></i>
+            <strong>Polling Actions</strong>
+            <small>Polling</small>
+          </a>
+          <ul>
+            <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="text-box-group">
+      <div class="outer yosemite">
+        <div class="dot red"></div>
+        <div class="dot amber"></div>
+        <div class="dot green"></div>
+      </div>
+      <div class="box_we">
+        <form method="get" action="{{ url_for('billing_data') }}">
+          <h2> View Billing Data (AMR)</h2>
+          <div class="form-container">
+            <label for="region_dropdown">Select Region:</label>
+            <select id="region_dropdown" name="region_dropdown">
+              <option value {% if not selected_region %}selected{% endif %}>All</option>
+              {% for region in region_options %}
+              <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
+              </option>
+              {% endfor %}
+            </select>
+            <label for="tag_dropdown">Select Site:</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+              <option value {% if not selected_tag %}selected{% endif %}>All</option>
+              {% for tag in tag_options %}
+              <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+              {% endfor %}
+            </select>
 
-      <form method="get" action="{{ url_for('billing_data') }}">
-        <h2> View Billing Data (AMR)</h2>
-        
-          <label for="region_dropdown">Select Region:</label>
-          <select id="region_dropdown" name="region_dropdown">
-            <option value {% if not selected_region %}selected{% endif %}>All</option>
-            {% for region in region_options %}
-            <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}
-            </option>
-            {% endfor %}
-          </select>
-          <label for="tag_dropdown">Select Site:</label>
-          <select id="tag_dropdown" name="tag_dropdown">
-            <option value {% if not selected_tag %}selected{% endif %}>All</option>
-            {% for tag in tag_options %}
-            <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-            {% endfor %}
-          </select>
+            <label for="date_picker">Select Date:</label>
+            <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
+              onchange="checkDate()">
 
-          <label for="date_picker">Select Date:</label>
-          <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off"
-            onchange="checkDate()">
-
-          <div id="loadingOverlay" style="display: none;">
-            <img src="static/Search.gif" alt="Loading...">
+            <div id="loadingOverlay" style="display: none;">
+              <img src="static/Search.gif" alt="Loading...">
+            </div>
+            <p class="selected" style="margin-top: 20%;"></p>
+            <h1>Selected</h1>
+            <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+            <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+            <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
+            <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+            </p>
+            <div class="button-container">
+              <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+                onclick="showLoading()">Daily Data</button>
+              <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                onclick="showLoading()">Config Data</button>
+              <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                Filters</button>
+            </div>
           </div>
-          <p class="selected" style="margin-top: 20%;"></p>
-          <h1>Selected</h1>
-          <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-          <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-          <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-          <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-          </p>
-          <div class="button-container">
-            <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
-              onclick="showLoading()">Daily Data</button>
-            <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
-              onclick="showLoading()">Config Data</button>
-            <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
-              Filters</button>
-          </div>
+        </form>
+      </div>
+      <div class="table-container">
+        {% if tables.get('daily_data_run1') %}
+        <div class="table" id="table1">
+          <h5>Run 1: {{ selected_tag }}</h5>
+          {{ tables['daily_data_run1']|safe }}
         </div>
-      </form>
+        {% endif %}
+
+        {% if tables.get('daily_data_run2') %}
+        <div class="table" id="table2">
+          <h5>Run 2: {{ selected_tag }}</h5>
+          {{ tables['daily_data_run2']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run3') %}
+        <div class="table" id="table3">
+          <h5>Run 3: {{ selected_tag }}</h5>
+          {{ tables['daily_data_run3']|safe }}
+        </div>
+        {% endif %}
+
+        {% if tables.get('daily_data_run4') %}
+        <div class="table" id="table4">
+          <h5>Run 4: {{ selected_tag }}</h5>
+          {{ tables['daily_data_run4']|safe }}
+        </div>
+        {% endif %}
+      </div>
+      <div class="plot-container">
+        {{ graph_corrected|safe }}
+      </div>
+
+      <div class="plot-container">
+        {{ graph_uncorrected|safe }}
+      </div>
+
+      <div class="plot-container">
+        {{ graph_pressure|safe }}
+      </div>
+
+      <div class="plot-container">
+        {{ graph_temperature|safe }}
+      </div>
+    </div>
+    <div class="table-container1">
+      {% if tables.get('config_data_run1') %}
+      <div class="table1" id="table1">
+        <h5>Run 1: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run1']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if tables.get('config_data_run2') %}
+      <div class="table1" id="table1">
+        <h5>Run 2: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run2']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if tables.get('config_data_run3') %}
+      <div class="table1" id="table1">
+        <h5>Run 3: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run3']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if tables.get('config_data_run4') %}
+      <div class="table1" id="table1">
+        <h5>Run 4: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run4']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if tables.get('config_data_run5') %}
+      <div class="table1" id="table1">
+        <h5>Run 5: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run5']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+      {% if tables.get('config_data_run6') %}
+      <div class="table1" id="table1">
+        <h5>Run 6: {{ selected_tag }}</h5>
+        <table class="table1">
+          <!-- The following line combines thead and tbody into a single block -->
+          <thead>
+            <tr>
+              {% for key, value in dropped_columns_data[0].items() %}
+              <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {{ tables['config_data_run6']|safe }}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+
+    <footer class="footer">POWERED BY ATOS - ASGS</footer>
+    <!-- <script src="main.js"></script> -->
+    <div>
     </div>
   </div>
-</div>
-<div class="box_we">
-{% if tables.get('daily_data_run1') %}
-<div class="table" id="table1">
-    <h5>Run 1: {{ selected_tag }}</h5>
-    {{ tables['daily_data_run1']|safe }}
-</div>
-{% endif %}
-
-{% if tables.get('daily_data_run2') %}
-<div class="table" id="table2">
-    <h5>Run 2: {{ selected_tag }}</h5>
-    {{ tables['daily_data_run2']|safe }}
-</div>
-{% endif %}
-
-{% if tables.get('daily_data_run3') %}
-<div class="table" id="table3">
-    <h5>Run 3: {{ selected_tag }}</h5>
-    {{ tables['daily_data_run3']|safe }}
-</div>
-{% endif %}
-
-{% if tables.get('daily_data_run4') %}
-<div class="table" id="table4">
-    <h5>Run 4: {{ selected_tag }}</h5>
-    {{ tables['daily_data_run4']|safe }}
-</div>
-{% endif %}
-</div>
-
-<div class="plot-container">
-  {{ graph_corrected|safe }}
-</div>
-
-<div class="plot-container">
-  {{ graph_uncorrected|safe }}
-</div>
-
-<div class="plot-container">
-  {{ graph_pressure|safe }}
-</div>
-
-<div class="plot-container">
-  {{ graph_temperature|safe }}
-</div>
-
-
-</div>
-<div class="box_wee">
-  {% if tables.get('config_data_run1') %}
-  <div class="table1" id="table1">
-      <h5>Run 1: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run1']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-
-  {% if tables.get('config_data_run2') %}
-  <div class="table1" id="table1">
-      <h5>Run 2: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run2']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-
-  {% if tables.get('config_data_run3') %}
-  <div class="table1" id="table1">
-      <h5>Run 3: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run3']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-
-  {% if tables.get('config_data_run4') %}
-  <div class="table1" id="table1">
-      <h5>Run 4: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run4']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-  
-  {% if tables.get('config_data_run5') %}
-  <div class="table1" id="table1">
-      <h5>Run 5: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run5']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-  {% if tables.get('config_data_run6') %}
-  <div class="table1" id="table1">
-      <h5>Run 6: {{ selected_tag }}</h5>
-      <table class="table1">
-          <!-- The following line combines thead and tbody into a single block -->
-          <thead>
-              <tr>
-                  {% for key, value in dropped_columns_data[0].items() %}
-                  <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                  {% endfor %}
-              </tr>
-          </thead>
-          <tbody>
-              {{ tables['config_data_run6']|safe }}
-          </tbody>
-      </table>
-  </div>
-  {% endif %}
-</div>
-</div>
-<footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
-
+</div>
 
 </html>
 

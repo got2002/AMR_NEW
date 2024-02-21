@@ -472,7 +472,16 @@ table {
     max-width: 1000px;
   }
 
-
+  #region_dropdown {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: none;
+    width: 200px;
+    margin-bottom: 5%;
+    margin-top: 5%;
+  }
 
 
 
@@ -487,6 +496,9 @@ table {
     font-weight: bold;
   }
 
+
+
+
   .link-button {
     display: inline-block;
     margin-top: 15px;
@@ -496,18 +508,6 @@ table {
     color: white;
     border-radius: 5px;
   }
-
-  #region_dropdown {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: none;
-    width: 200px;
-    margin-bottom: 5%;
-    margin-top: 5%;
-  }
-
   button {
     margin: 10px;
     border-radius: 5px;
@@ -620,6 +620,7 @@ table {
   }
 
   .mcd-menu {
+    font-size: large;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -629,24 +630,25 @@ table {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     /* == */
-    width: 250px;
+    width: 260px;
     /* == */
     max-width: 1880px;
-
   }
-
+  
   .mcd-menu li {
     position: relative;
     /*float:left;*/
+    width: 260px;
   }
-
+  
   .mcd-menu li a {
     display: block;
     text-decoration: none;
     padding: 12px 20px;
     color: #777;
     /*text-align: center;
-  border-right: 1px solid #E7E7E7;*/
+    border-right: 1px solid #E7E7E7;*/
+  
     /* == */
     text-align: left;
     height: 36px;
@@ -654,50 +656,48 @@ table {
     border-bottom: 1px solid #eee;
     /* == */
   }
-
+  
   .mcd-menu li a i {
     /*display: block;
-  font-size: 30px;
-  margin-bottom: 10px;*/
-
+    font-size: 30px;
+    margin-bottom: 10px;*/
+  
     /* == */
     float: left;
     font-size: 20px;
     margin: 0 10px 0 0;
     /* == */
   }
-
+  
   /* == */
   .mcd-menu li a p {
     float: left;
     margin: 0;
   }
-
   /* == */
-
+  
   .mcd-menu li a strong {
     display: block;
     text-transform: uppercase;
   }
-
+  
   .mcd-menu li a small {
     display: block;
     font-size: 10px;
   }
-
+  
   .mcd-menu li a i,
   .mcd-menu li a strong,
   .mcd-menu li a small {
     position: relative;
-
+  
     transition: all 300ms linear;
     -o-transition: all 300ms linear;
     -ms-transition: all 300ms linear;
     -moz-transition: all 300ms linear;
     -webkit-transition: all 300ms linear;
   }
-
-  .mcd-menu li:hover>a i {
+  .mcd-menu li:hover > a i {
     opacity: 1;
     -webkit-animation: moveFromTop 300ms ease-in-out;
     -moz-animation: moveFromTop 300ms ease-in-out;
@@ -705,7 +705,6 @@ table {
     -o-animation: moveFromTop 300ms ease-in-out;
     animation: moveFromTop 300ms ease-in-out;
   }
-
   .mcd-menu li:hover a strong {
     opacity: 1;
     -webkit-animation: moveFromLeft 300ms ease-in-out;
@@ -714,7 +713,6 @@ table {
     -o-animation: moveFromLeft 300ms ease-in-out;
     animation: moveFromLeft 300ms ease-in-out;
   }
-
   .mcd-menu li:hover a small {
     opacity: 1;
     -webkit-animation: moveFromRight 300ms ease-in-out;
@@ -723,38 +721,36 @@ table {
     -o-animation: moveFromRight 300ms ease-in-out;
     animation: moveFromRight 300ms ease-in-out;
   }
-
-  .mcd-menu li:hover>a {
+  
+  .mcd-menu li:hover > a {
     color: #2e6ff2;
   }
-
   .mcd-menu li a.active {
     position: relative;
     color: #2e6ff2;
     border: 0;
     /*border-top: 4px solid #e67e22;
-  border-bottom: 4px solid #e67e22;
-  margin-top: -4px;*/
+    border-bottom: 4px solid #e67e22;
+    margin-top: -4px;*/
     box-shadow: 0 0 5px #ddd;
     -moz-box-shadow: 0 0 5px #ddd;
     -webkit-box-shadow: 0 0 5px #ddd;
-
+  
     /* == */
     border-left: 4px solid #2e6ff2;
     border-right: 4px solid #2e6ff2;
     margin: 0 -4px;
     /* == */
   }
-
   .mcd-menu li a.active:before {
     content: "";
     position: absolute;
     /*top: 0;
-  left: 45%;
-  border-top: 5px solid #e67e22;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;*/
-
+    left: 45%;
+    border-top: 5px solid #e67e22;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;*/
+  
     /* == */
     top: 42%;
     left: 0;
@@ -763,7 +759,7 @@ table {
     border-bottom: 5px solid transparent;
     /* == */
   }
-
+  
   /* == */
   .mcd-menu li a.active:after {
     content: "";
@@ -774,9 +770,8 @@ table {
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
   }
-
   /* == */
-
+  
   @keyframes moveFromTop {
     from {
       opacity: 0;
@@ -786,7 +781,6 @@ table {
       -o-transform: translateY(200%);
       transform: translateY(200%);
     }
-
     to {
       opacity: 1;
       -webkit-transform: translateY(0%);
@@ -796,7 +790,6 @@ table {
       transform: translateY(0%);
     }
   }
-
   @keyframes moveFromLeft {
     from {
       opacity: 0;
@@ -806,7 +799,6 @@ table {
       -o-transform: translateX(200%);
       transform: translateX(200%);
     }
-
     to {
       opacity: 1;
       -webkit-transform: translateX(0%);
@@ -816,7 +808,6 @@ table {
       transform: translateX(0%);
     }
   }
-
   @keyframes moveFromRight {
     from {
       opacity: 0;
@@ -826,7 +817,6 @@ table {
       -o-transform: translateX(-200%);
       transform: translateX(-200%);
     }
-
     to {
       opacity: 1;
       -webkit-transform: translateX(0%);
@@ -836,7 +826,7 @@ table {
       transform: translateX(0%);
     }
   }
-
+  
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
     position: absolute;
@@ -855,23 +845,22 @@ table {
     -webkit-transition: all 300ms linear;
     /*top: 130px;*/
     z-index: 1000;
-
+  
     /* == */
     left: 280px;
     top: 0px;
     border-left: 4px solid #2e6ff2;
     /* == */
   }
-
   .mcd-menu li ul:before {
     content: "";
     position: absolute;
     /*top: -8px;
-  left: 23%;
-  border-bottom: 5px solid #e67e22;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;*/
-
+    left: 23%;
+    border-bottom: 5px solid #e67e22;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;*/
+  
     /* == */
     top: 25px;
     left: -9px;
@@ -880,22 +869,20 @@ table {
     border-top: 5px solid transparent;
     /* == */
   }
-
-  .mcd-menu li:hover>ul,
-  .mcd-menu li ul li:hover>ul {
+  .mcd-menu li:hover > ul,
+  .mcd-menu li ul li:hover > ul {
     display: block;
     opacity: 1;
     visibility: visible;
     /*top: 100px;*/
-
+  
     /* == */
-    left: 250px;
+    left: 260px;
     /* == */
   }
-
   /*.mcd-menu li ul li {
-  float: none;
-}*/
+    float: none;
+  }*/
   .mcd-menu li ul li a {
     padding: 10px;
     text-align: left;
@@ -908,20 +895,18 @@ table {
     height: auto;
     /* == */
   }
-
   .mcd-menu li ul li a i {
     font-size: 16px;
     display: inline-block;
     margin: 0 10px 0 0;
+    
   }
-
   .mcd-menu li ul li ul {
-    left: 230px;
+    left: 290px;
     top: 0;
     border: 0;
     border-left: 4px solid #2e6ff2;
   }
-
   .mcd-menu li ul li ul:before {
     content: "";
     position: absolute;
@@ -934,158 +919,98 @@ table {
     border-bottom: 5px solid transparent;
     border-top: 5px solid transparent;
   }
-
-  .mcd-menu li ul li:hover>ul {
+  .mcd-menu li ul li:hover > ul {
     top: 0px;
-    left: 200px;
+    left: 260px;
   }
-
+  
   /*.mcd-menu li.float {
-  float: right;
-}*/
-  .mcd-menu li a.search {
-    /*padding: 29px 20px 30px 10px;*/
-    padding: 10px 10px 15px 10px;
-    clear: both;
-  }
+    float: right;
+  }*/
 
-  .mcd-menu li a.search i {
-    margin: 0;
-    display: inline-block;
-    font-size: 18px;
-  }
-
-  .mcd-menu li a.search input {
-    border: 1px solid #eee;
-    padding: 10px;
-    background: #fff;
-    outline: none;
-    color: #777;
-
-    /* == */
-    width: 170px;
-    float: left;
-    /* == */
-  }
-
-  .mcd-menu li a.search button {
-    border: 1px solid #2e6ff2;
-    /*padding: 10px;*/
-    background: #2e6ff2;
-    outline: none;
-    color: #fff;
-    margin-left: -4px;
-
-    /* == */
-    float: left;
-    padding: 10px 10px 11px 10px;
-    /* == */
-  }
-
-  .mcd-menu li a.search input:focus {
-    border: 1px solid #2e6ff2;
-  }
-
+  
   .search-mobile {
     display: none !important;
     background: #2e6ff2;
     border-left: 1px solid #2e6ff2;
     border-radius: 0 3px 3px 0;
   }
-
   .search-mobile i {
     color: #fff;
     margin: 0 !important;
   }
-
+  
   @media only screen and (min-width: 960px) and (max-width: 1199px) {
     .mcd-menu {
       margin-left: 10px;
     }
   }
-
+  
   @media only screen and (min-width: 768px) and (max-width: 959px) {
     .mcd-menu {
       width: 200px;
     }
-
     .mcd-menu li a {
       height: 30px;
     }
-
     .mcd-menu li a i {
       font-size: 22px;
     }
-
     .mcd-menu li a strong {
       font-size: 12px;
     }
-
     .mcd-menu li a small {
       font-size: 10px;
     }
-
     .mcd-menu li a.search input {
       width: 120px;
       font-size: 12px;
     }
-
     .mcd-menu li a.search button {
       padding: 8px 10px 9px 10px;
     }
-
-    .mcd-menu li>ul {
+    .mcd-menu li > ul {
       min-width: 180px;
     }
-
-    .mcd-menu li:hover>ul {
+    .mcd-menu li:hover > ul {
       min-width: 180px;
       left: 200px;
     }
-
-    .mcd-menu li ul li>ul,
-    .mcd-menu li ul li ul li>ul {
+    .mcd-menu li ul li > ul,
+    .mcd-menu li ul li ul li > ul {
       min-width: 150px;
     }
-
-    .mcd-menu li ul li:hover>ul {
+    .mcd-menu li ul li:hover > ul {
       left: 180px;
       min-width: 150px;
     }
-
-    .mcd-menu li ul li ul li:hover>ul {
+    .mcd-menu li ul li ul li:hover > ul {
       left: 150px;
       min-width: 150px;
     }
-
     .mcd-menu li ul a {
       font-size: 12px;
     }
-
     .mcd-menu li ul a i {
       font-size: 14px;
     }
   }
-
+  
   @media only screen and (min-width: 480px) and (max-width: 767px) {
     .mcd-menu {
       width: 50px;
     }
-
     .mcd-menu li a {
       position: relative;
       padding: 12px 16px;
       height: 20px;
     }
-
     .mcd-menu li a small {
       display: none;
     }
-
     .mcd-menu li a strong {
       display: none;
     }
-
     .mcd-menu li a:hover strong,
     .mcd-menu li a.active strong {
       display: block;
@@ -1101,39 +1026,33 @@ table {
       font-weight: normal;
       text-align: center;
     }
-
     .mcd-menu li .search {
       display: none;
     }
-
-    .mcd-menu li>ul {
+  
+    .mcd-menu li > ul {
       min-width: 180px;
       left: 70px;
     }
-
-    .mcd-menu li:hover>ul {
+    .mcd-menu li:hover > ul {
       min-width: 180px;
       left: 50px;
     }
-
-    .mcd-menu li ul li>ul,
-    .mcd-menu li ul li ul li>ul {
+    .mcd-menu li ul li > ul,
+    .mcd-menu li ul li ul li > ul {
       min-width: 150px;
     }
-
-    .mcd-menu li ul li:hover>ul {
+    .mcd-menu li ul li:hover > ul {
       left: 180px;
       min-width: 150px;
     }
-
-    .mcd-menu li ul li ul li>ul {
+    .mcd-menu li ul li ul li > ul {
       left: 35px;
       top: 45px;
       border: 0;
       border-top: 4px solid #2e6ff2;
     }
-
-    .mcd-menu li ul li ul li>ul:before {
+    .mcd-menu li ul li ul li > ul:before {
       left: 30px;
       top: -9px;
       border: 0;
@@ -1141,41 +1060,34 @@ table {
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
     }
-
-    .mcd-menu li ul li ul li:hover>ul {
+    .mcd-menu li ul li ul li:hover > ul {
       left: 30px;
       min-width: 150px;
       top: 35px;
     }
-
     .mcd-menu li ul a {
       font-size: 12px;
     }
-
     .mcd-menu li ul a i {
       font-size: 14px;
     }
   }
-
+  
   @media only screen and (max-width: 479px) {
     .mcd-menu {
       width: 50px;
     }
-
     .mcd-menu li a {
       position: relative;
       padding: 12px 16px;
       height: 20px;
     }
-
     .mcd-menu li a small {
       display: none;
     }
-
     .mcd-menu li a strong {
       display: none;
     }
-
     .mcd-menu li a:hover strong,
     .mcd-menu li a.active strong {
       display: block;
@@ -1191,39 +1103,33 @@ table {
       font-weight: normal;
       text-align: center;
     }
-
     .mcd-menu li .search {
       display: none;
     }
-
-    .mcd-menu li>ul {
+  
+    .mcd-menu li > ul {
       min-width: 180px;
       left: 70px;
     }
-
-    .mcd-menu li:hover>ul {
+    .mcd-menu li:hover > ul {
       min-width: 180px;
       left: 50px;
     }
-
-    .mcd-menu li ul li>ul,
-    .mcd-menu li ul li ul li>ul {
+    .mcd-menu li ul li > ul,
+    .mcd-menu li ul li ul li > ul {
       min-width: 150px;
     }
-
-    .mcd-menu li ul li:hover>ul {
+    .mcd-menu li ul li:hover > ul {
       left: 180px;
       min-width: 150px;
     }
-
-    .mcd-menu li ul li ul li>ul {
+    .mcd-menu li ul li ul li > ul {
       left: 35px;
       top: 45px;
       border: 0;
       border-top: 4px solid #2e6ff2;
     }
-
-    .mcd-menu li ul li ul li>ul:before {
+    .mcd-menu li ul li ul li > ul:before {
       left: 30px;
       top: -9px;
       border: 0;
@@ -1231,17 +1137,14 @@ table {
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
     }
-
-    .mcd-menu li ul li ul li:hover>ul {
+    .mcd-menu li ul li ul li:hover > ul {
       left: 30px;
       min-width: 150px;
       top: 35px;
     }
-
     .mcd-menu li ul a {
       font-size: 12px;
     }
-
     .mcd-menu li ul a i {
       font-size: 14px;
     }
@@ -1350,10 +1253,6 @@ table {
     }
   }
 
-  .selected {
-    margin-top: 15%;
-    margin: auto;
-  }
 
 
   /* Styling for the selected information */
@@ -1513,99 +1412,96 @@ transform: translateY(-4px);
     </div>
     <div class="container">
       <nav>
-        <ul class="mcd-menu">
+          <ul class="mcd-menu">
             <ul class="mcd-menu">
-          <li>
-            <a href="{{ url_for('homeasgs') }}">
-              <i class="fa fa-home"></i>
-              <strong>Home</strong>
-              <small>Back to Homepage</small>
-            </a>
-          </li>
-          <li>
-            <a class="active">
-              <i class="fa fa-database"></i>
-              <strong>Reports</strong>
-              <small>View Data</small>
-            </a>
-            <ul>
-              <li><a href="{{ url_for('billing_data_asgs') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
-              <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-              <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily
-                  Summary</a></li>
-              <li><a href="#"><i class="fas fa-file-alt"></i>Monthly
-                  Summery</a></li>
-              <li><a href="sitedetail_data"><i class="far fa-file-alt"></i>Site
-                  Detail</a></li>
-            </ul>
-          </li>
-          <li>
-            <a>
-                <i class="fas fa-clipboard-list"></i>
-                <strong>Manage Users</strong>
-                <small>Users</small>
-            </a>
-            <ul>
-                <li><a href="#"><i class="fas fa-plus"></i>Add User</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i>Edit User</a></li>
-                <li><a href="#"><i class="fas fa-minus"></i>Remove User</a></li>
-            </ul>
-        </li>
-        <li>
-          <a>
-              <i class="fas fa-file-alt"></i>
-              <strong>Manage Sites</strong>
-              <small>Sites</small>
-          </a>
-          <ul>
-              <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-              <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-              <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-          </ul>
-      </li>
-        <li>
-          <a>
-              <i class="fas fa-wrench"></i>
-              <strong>Polling Setting</strong>
-              <small>Setting</small>
-          </a>
-          <ul>
-              <li><a href="#"><i class="fas fa-briefcase"></i>EVC Management</a></li>
-              <li><a><i class="fas fa-wrench"></i>Polling Range Setting</a>
-              <ul>
-                <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                <li><a href="#"><i class="fas fa-plus"></i>Add Polling</a></li>
-
-                </ul>
-        
-                  <li><a><i class="fas fa-wrench"></i>Configuration Mapping</a>
+              <li>
+                  <a href="{{ url_for('homeasgs') }}" >
+                      <i class="fa fa-home"></i>
+                      <strong>Home</strong>
+                      <small>Back to Homepage</small>
+                  </a>
+              </li>
+              <li>
+                  <a class="active">
+                      <i class="fa fa-database"></i>
+                      <strong>Reports</strong>
+                      <small>View </small>
+                  </a>
                   <ul>
-                    <li><a href="mapping_config"><i class="fas fa-plus"></i>Mapping Config</a></li>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Mapping Config</a></li>
+                      <li><a href="{{ url_for('billing_data_asgs') }}"><i></i>- View Monthly Data</a></li>
+                      <li><a href="#"><i></i>- View EVC Status</a></li>
+                      <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
+                      <li><a href="#"><i></i>- Monthly Summery</a></li>
+                      <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
+                      <li><a href="#"><i></i>- New Site Detail</a></li>
                   </ul>
-                  <li><a><i class="fas fa-wrench"></i>Daily Billing Mapping</a>
-                    <ul>
-                      <li><a href="mapping_billing"><i class="fas fa-plus"></i>Billing Mapping</a></li>
-                      <li><a href="#"><i class="fas fa-plus"></i>Add Billing Mapping</a></li>
+              </li>
+              <li>
+                <a>
+                    <i class="fas fa-clipboard-list"></i>
+                    <strong>Manage Users</strong>
+                    <small>Users</small>
+                </a>
+                <ul>
+                    <li><a href="#"><i></i>- </i>Add User</a></li>
+                    <li><a href="#"><i></i>- </i>Edit User</a></li>
+                    <li><a href="#"><i></i>- </i>Remove User</a></li>
+                </ul>
+            </li>
+            <li>
+              <a>
+                  <i class="fas fa-file-alt"></i>
+                  <strong>Manage Sites</strong>
+                  <small>Sites</small>
+              </a>
+              <ul>
+                  <li><a href="#"><i></i>- Add Site</a></li>
+                  <li><a href="#"><i></i>- Edit Site</a></li>
+                  <li><a href="#"><i></i>- </i>Remove Site</a></li>
+              </ul>
+          </li>
+            <li>
+              <a>
+                  <i class="fas fa-wrench"></i>
+                  <strong>Polling Setting</strong>
+                  <small>Setting</small>
+              </a>
+              <ul>
+                  <li><a href="#"><i></i>- EVC Management</a></li>
+                  <li><a><i></i>- Polling Range Setting</a>
+                  <ul>
+                    <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
+                    <li><a href="#"><i></i>- </i>Add Polling</a></li>
+
                     </ul>
+            
+                      <li><a><i></i>- Configuration Mapping</a>
+                      <ul>
+                        <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
+                        <li><a href="#"><i></i>- Add Mapping Config</a></li>
+                      </ul>
+                      <li><a><i></i>- Daily Billing Mapping</a>
+                        <ul>
+                          <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
+                          <li><a href="#"><i></i>- Add Billing Mapping</a></li>
+                        </ul>
 
 
-                  <li><a href="#"><i class="fas fa-glasses"></i>Hourly Billing Mapping</a></li>
-          </ul>
-      </li>
-          <li>
-            <a>
-                <i class="fas fa-search"></i>
-                <strong>Polling Actions</strong>
-                <small>Polling</small>
-            </a>
-            <ul>
-                <li><a href="write_evc"><i class="fas fa-screwdriver"></i>Write Config</a></li>
-                
-            </ul>
-        </li>
-    </ul>
-</nav>
+                      <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
+              </ul>
+          </li>
+              <li>
+                <a>
+                    <i class="fas fa-search"></i>
+                    <strong>Polling Actions</strong>
+                    <small>Polling</small>
+                </a>
+                <ul>
+                    <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 <div class="text-box-group">
   <div class="outer yosemite">
       <div class="dot red"></div>
@@ -1645,7 +1541,7 @@ transform: translateY(-4px);
                     <div class="input-group">
                         <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
                         <div class="input-group-append">
-                            <span class="input-group-text" id="monthYearAddon"><i class="fa fa-calendar"></i></span>
+                            <span class="input-group-text" id="monthYearAddon"></span>
                         </div>
                     </div>
                 </div>
