@@ -886,21 +886,23 @@ padding-left: 5%;
       }
       
       footer {
+        align-items: right;
         background-color: #2e6ff2;
         color: white;
-        text-align: left;
-        padding: 10px;
+        text-align: right;
+        padding: 8px;
         position: fixed;
         bottom: 0;
-        left: 0;
+        left: -13px;
         width: 100%;
         box-shadow: 0 0 5px #ddd;
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
-      }
+        font-size: small;
+    }
       
       .top-bar {
-        background-color: #2e6ff2;
+        background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
         color: #fff;
         padding: 10px 10px;
         width: 100%;
@@ -912,8 +914,7 @@ padding-left: 5%;
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         z-index: 2;
-      }
-      
+    }
       .container-top {
         max-width: 1880px;
         width: 100%;
@@ -985,68 +986,70 @@ padding-left: 5%;
     column-width: auto; /* ให้เนื้อหาปรับขนาดตามขนาดหน้าจอ */
   }
 }
+.back-button,
 .forward-button {
-  position: fixed;
-  top: 10px;
-  right: 0px; /* เปลี่ยน left เป็น right */
+    position: fixed;
+    top: 110px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: medium;
+    outline: none;
+    z-index: 999;
+    filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
 }
+
 .back-button {
-position: fixed;
-top: 10px;
-right: 110px; /* เปลี่ยน left เป็น right */
+    right: 180px;
 }
 
-.back-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
+.forward-button {
+    right: 20px;
 }
 
-.back-button a:hover {
-  
-transform: translateY(-4px);
-}
-/* Your existing styles here */
-
-
-
+.back-button a,
 .forward-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
+    width: 100px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    display: inline-block;
+    background: linear-gradient(to bottom, #2e6ff2, #4571a0);
+    box-shadow: 0 4px 8px rgba(120, 190, 244);
+    transform-style: preserve-3d;
 }
 
+.back-button a:hover,
 .forward-button a:hover {
+    background: linear-gradient(to bottom, #2e6ff2, #4571a0);
+    transform: translateY(-2px) rotateX(10deg);
+    /* เพิ่ม rotateX */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
 
-transform: translateY(-4px);
+.back-button a::before,
+.forward-button a::before {
+    font-size: smaller;
+    margin-right: 4px;
+}
+
+.back-button i,
+.forward-button i {
+    font-size: larger;
+    transition: transform 0.3s;
+}
+
+.back-button i {
+    margin-right: 10%;
+}
+
+.forward-button i {
+    margin-left: 10%;
 }
 
 </style>
@@ -1058,26 +1061,25 @@ transform: translateY(-4px);
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR - ASGS)</span>
             </div>
-            <div class="back-button" >
-              <a href="javascript:history.back()"style="text-decoration: none;">
-                <i class="fas fa-arrow-circle-left"style="margin-right: 20px"></i> Back
+            <div class="back-button">
+              <a href="javascript:history.back()" style="text-decoration: none;">
+                  <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
               </a>
-            </div>
-            <div class="forward-button">
+          </div>
+          <div class="forward-button">
               <a href="javascript:history.forward()" style="text-decoration: none;">
-                <i class="fas fa-arrow-circle-right" style="margin-right: -90px"></i> Forward
+                  Forward <i class="fas fa-arrow-circle-right" style="margin-left: 10%;"></i>
               </a>
-            </div>
-            
-        </div>
+          </div>
+          </div>
     </header>
     <div class="container">
       <nav>
           <ul class="mcd-menu">
               <li>
-                <a href="{{ url_for('homeasgs') }}">
+                  <a class="active" href="{{ url_for('home_amr') }}">
                       <i class="fa fa-home"></i>
-                      <strong >Home</strong>
+                      <strong>Home</strong>
                       <small>Back to Homepage</small>
                   </a>
               </li>
@@ -1088,75 +1090,80 @@ transform: translateY(-4px);
                       <small>View Data</small>
                   </a>
                   <ul>
-                      <li><a href="#"><i class="far fa-eye"></i>View Monthly Data</a></li>
-                      <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                      <li><a href="#"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                      <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                      <li><a href="#"><i class="far fa-file-alt"></i>Site Detail</a></li>
+                      <li><a href="{{ url_for('billing_data') }}"><i></i>- View Monthly Data</a></li>
+                      <li><a href="#"><i></i>- View EVC Status</a></li>
+                      <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
+                      <li><a href="#"><i></i>- Monthly Summery</a></li>
+                      <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
+                      <li><a href="#"><i></i>- New Site Detail</a></li>
                   </ul>
               </li>
               <li>
-                <a>
-                    <i class="fas fa-search"></i>
-                    <strong>Polling Actions</strong>
-                    <small>Polling</small>
-                </a>
-                <ul>
-                    <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                    <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
-                </ul>
-            </li>
-            <li>
-                <a>
-                    <i class="fas fa-file-alt"></i>
-                    <strong>Manage Sites</strong>
-                    <small>Sites</small>
-                </a>
-                <ul>
-                    <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                    <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                    <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-                </ul>
-            </li>
-            <li>
-                <a>
-                    <i class="fas fa-clipboard-list"></i>
-                    <strong>Manage Users</strong>
-                    <small>Users</small>
-                </a>
-                <ul>
-                    <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                    <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                    <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
-                </ul>
-            </li>
-            <li>
-              <a>
-                  <i class="fas fa-wrench"></i>
-                  <strong>Polling Setting</strong>
-                  <small>Setting</small>
-              </a>
-              <ul>
-                  <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                  <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
+                  <a>
+                      <i class="fas fa-clipboard-list"></i>
+                      <strong>Manage Users</strong>
+                      <small>Users</small>
+                  </a>
                   <ul>
-                    <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                    <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-
-                    </ul>
-                    <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                      <ul>
-                          <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                          <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                      </ul>
-                      <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
-              </ul>
-          </li>
-        </ul>
-    </nav>
+                      <li><a href="#"><i></i>- </i>Add User</a></li>
+                      <li><a href="#"><i></i>- </i>Edit User</a></li>
+                      <li><a href="#"><i></i>- </i>Remove User</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-file-alt"></i>
+                      <strong>Manage Sites</strong>
+                      <small>Sites</small>
+                  </a>
+                  <ul>
+                      <li><a href="#"><i></i>- Add Site</a></li>
+                      <li><a href="#"><i></i>- Edit Site</a></li>
+                      <li><a href="#"><i></i>- </i>Remove Site</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-wrench"></i>
+                      <strong>Polling Setting</strong>
+                      <small>Setting</small>
+                  </a>
+                  <ul>
+                      <li><a href="#"><i></i>- EVC Management</a></li>
+                      <li><a><i></i>- Polling Range Setting</a>
+                          <ul>
+                              <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
+                              <li><a href="#"><i></i>- </i>Add Polling</a></li>
+                          </ul>
+                      <li><a><i></i>- Configuration Mapping</a>
+                          <ul>
+                              <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
+                              <li><a href="#"><i></i>- Add Mapping Config</a></li>
+                          </ul>
+                      <li><a><i></i>- Daily Billing Mapping</a>
+                          <ul>
+                              <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
+                              <li><a href="#"><i></i>- Add Billing Mapping</a></li>
+                          </ul>
+                      <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a>
+                      <i class="fas fa-search"></i>
+                      <strong>Polling Actions</strong>
+                      <small>Polling</small>
+                  </a>
+                  <ul>
+                      <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
+                  </ul>
+              </li>
+          </ul>
+      </nav>
+ 
         </form>
         
-        <div class="text-box-group" style="padding-bottom: 14.5%;">
+        <div class="text-box-group" style="padding-bottom: 14%; ">
             <div class="outer yosemite">
         <div class="dot red"></div>
         <div class="dot amber"></div>
@@ -1221,7 +1228,7 @@ transform: translateY(-4px);
     </div>
     </form>
 
-<div class="text-box-group2" style="margin-top: -24.5%;">
+<div class="text-box-group2" style="margin-top: -23.5%;">
     <div class="outer yosemite" style="margin-top: 0%;">
 <div class="dot red"></div>
 <div class="dot amber"></div>
