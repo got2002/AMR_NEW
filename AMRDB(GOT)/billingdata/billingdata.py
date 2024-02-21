@@ -70,13 +70,13 @@ def get_tags():
 @app.route("/")
 def billingdata():
     # SQL query to fetch unique PL_REGION_ID values
-    user_name_query = "SELECT user_name FROM amr_user_tests ORDER BY user_name"
-    user_name_results = fetch_data(user_name_query)
-    user_name_options = [str(user_name[0]) for user_name in user_name_results]
+    # user_name_query = "SELECT user_name FROM amr_user_tests ORDER BY user_name"
+    # user_name_results = fetch_data(user_name_query)
+    # user_name_options = [str(user_name[0]) for user_name in user_name_results]
     
-    password_query = "SELECT password FROM amr_user_tests ORDER BY password"
-    password_results = fetch_data(password_query)
-    password_options = [str(password[0]) for password in password_results]
+    # password_query = "SELECT password FROM amr_user_tests ORDER BY password"
+    # password_results = fetch_data(password_query)
+    # password_options = [str(password[0]) for password in password_results]
     
     user_name_query = """
     SELECT amr_region.id,amr_user_tests.description 
@@ -91,13 +91,13 @@ def billingdata():
         {password_condition}
         
     """
-    selected_user_name = request.args.get("user_name_dropdown")
-    user_name_condition = f"AND amr_user_tests.user_name = '{selected_user_name}'" if selected_user_name else ""
-    print("===:", selected_user_name)
+    # selected_user_name = request.args.get("user_name_dropdown")
+    # user_name_condition = f"AND amr_user_tests.user_name = '{selected_user_name}'" if selected_user_name else ""
+    # print("===:", selected_user_name)
     
-    selected_password = request.args.get("password_dropdown")
-    password_condition = f"AND amr_user_tests.password = '{selected_password}'" if selected_password else ""
-    print("=", password_condition)
+    # selected_password = request.args.get("password_dropdown")
+    # password_condition = f"AND amr_user_tests.password = '{selected_password}'" if selected_password else ""
+    # print("=", password_condition)
 
     
     region_query = """
@@ -144,12 +144,12 @@ def billingdata():
     region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
     
     
-    selected_user_name = request.form.get('user_name_dropdown')
-    selected_password = request.form.get('password_dropdown')
+    # Get selected values from the text inputs
+    selected_user_name = request.form.get('user_name')
+    selected_password = request.form.get('password')
     selected_date = request.args.get('date_dropdown')
     selected_tag = request.args.get('tag_dropdown')
     selected_region = request.args.get('region_dropdown')
-    
    
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
@@ -192,8 +192,8 @@ def billingdata():
                         selected_date=selected_date,
                         selected_tag=selected_tag,
                         selected_region=selected_region,
-                        user_name_options=user_name_options,
-                        password_options=password_options,
+                        # user_name_options=user_name_options,
+                        # password_options=password_options,
                         region_options=region_options,
                         tag_options=tag_options)
 
@@ -206,8 +206,8 @@ def billingdata():
                                selected_date=selected_date,
                                selected_region=selected_region,
                                selected_tag=selected_tag,
-                               user_name_options=user_name_options,
-                               password_options=password_options,
+                            #    user_name_options=user_name_options,
+                            #    password_options=password_options,
                                region_options=region_options,
                                tag_options=tag_options,
                                tables=[])
