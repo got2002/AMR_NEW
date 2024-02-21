@@ -838,10 +838,11 @@
         margin-left: -1%;
     }
 
+
     .btn-shine {
         position: absolute;
         top: 50%;
-        left: 50%;
+        left: 32%;
         transform: translate(-50%, -50%);
         padding: 12px 48px;
         color: #ffffff;
@@ -849,7 +850,7 @@
         font-size: 60px;
         text-decoration: none;
         white-space: nowrap;
-    }
+      }
 
     .box_we {
         width: 90%;
@@ -859,18 +860,16 @@
         z-index: 5;
         margin-top: -1%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         text-align: center;
     }
-
+    
     .container-menu {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
-        width: 100%;
-        flex-direction: row;
     }
 
     .container-menu label {
@@ -887,12 +886,12 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-
+        
     }
 
     .container-menu input {
         width: 150px;
-        /* ปรับขนาด input ตามที่ต้องการ */
+
     }
 
 
@@ -1005,50 +1004,48 @@
         border-radius: 5px;
         margin-bottom: -25px;
     }
-
+    
     .button-container {
         display: grid;
         grid-template-columns: repeat(3, auto);
         justify-content: center;
-        gap: 30px;
+        gap: 30px; 
         margin-bottom: 60px;
-    }
-
+      }
+    
     .custom-btn {
         /* รายละเอียดของ .custom-btn คงเดิม */
-        margin-left: 0px;
-        /* ระยะห่างด้านซ้าย */
-        margin-right: 0px;
-        /* ระยะห่างด้านขวา */
+        margin-left: 0px; /* ระยะห่างด้านซ้าย */
+        margin-right: 0px; /* ระยะห่างด้านขวา */
     }
+    
+    
+    
 
+    
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
 
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
 
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+  }
 
-
-    /* 1 */
-    .btn-1 {
-        border: none;
-        background-color: #333;
-        box-shadow: 0 0 5px #333;
-    }
-
-    .btn-1:hover {
-        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-        transform: translateY(-4px);
-    }
-
-    /* 1 */
-    .btn-2 {
-        border: none;
-        background-color: #4caf50;
-        box-shadow: 0 0 5px #4caf50;
-    }
-
-    .btn-2:hover {
-        box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
-        transform: translateY(-4px);
-    }
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
 
     #region_dropdown {
         width: 200px;
@@ -1107,6 +1104,8 @@
         align-items: center;
         text-align: center;
     }
+    
+
 </style>
 
 <body>
@@ -1114,7 +1113,7 @@
 
         <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
             alt="PTT Public Company Limited Logo">
-        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR)</a>
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading</a>
         <div class="back-button">
             <a href="javascript:history.back()" style="text-decoration: none;">
                 <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
@@ -1215,25 +1214,6 @@
             </ul>
         </nav>
     </div>
-    <div class="textbox-container">
-        <div class="outer yosemite">
-            <div class="dot red"></div>
-            <div class="dot amber"></div>
-            <div class="dot green"></div>
-        </div>
-        <div class="box_we">
-            
-            <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
-                <label for="type_dropdown">Select Type:</label>
-                <select id="type_dropdown" name="type_dropdown">
-                    <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --</option>
-                    {% for type in type_options %}
-                    <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}</option>
-                    {% endfor %}
-                </select>
 
-                <button class="custom-btn btn-1" type="button" onclick="submitForm()">View Information</button>
-            </form>
-
-            <footer class="footer">POWERED BY ATOS - ASGS</footer>
+    <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
