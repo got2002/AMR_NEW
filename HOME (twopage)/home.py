@@ -2284,8 +2284,6 @@ def insert_address_range_to_oracle(
 
     connection.commit()
 
-
-
 @app.route("/polling_route")
 def polling_route():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
