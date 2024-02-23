@@ -37,6 +37,7 @@ import datetime
 import pytz
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 # Replace these values with your actual database credentials
 communication_traffic = []
@@ -253,6 +254,7 @@ def get_tags():
     tag_options = [str(tag[0]) for tag in tag_results]
     tag_options.sort()
     return jsonify({"tag_options": tag_options})
+
 @app.route("/billing_data")
 def billing_data():
     query_type = request.args.get("query_type")

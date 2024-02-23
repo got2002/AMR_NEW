@@ -18,39 +18,24 @@
 </head>
 
 <body>
-    <div class="main2" id="main2">
-        <img class="imgpttlogo"
-            src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-            alt="AMR Logo" />
+    <a href="{{ url_for('home') }}">home</a>
             <h2>Billing data</h2>
-
-        <form method="get" action="/">
-            <!-- Replace the user_name_dropdown and password_dropdown select elements with text inputs -->
-            <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name" value="{{ selected_user_name }}">
-
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password" value="{{ selected_password }}">
-
-        
-        <button type="submit">submit</button><br>
- 
-        <form method="get" action="/">
-            <label for="tag_dropdown">Select Region :</label>
+        <form method="get" action="billingdata">
+            <label for="tag_dropdown">Region :</label>
             <select id="region_dropdown" name="region_dropdown">
                 <option value="" {% if not selected_region %}selected{% endif %}>All</option>
                 {% for region in region_options %}
                 <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
                 {% endfor %}
             </select>
-            <label for="tag_dropdown">Select Site :</label>
+            <label for="tag_dropdown">Site :</label>
             <select id="tag_dropdown" name="tag_dropdown">
                 <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
                 {% for tag in tag_options %}
                 <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
                 {% endfor %}
             </select>
-            <label for="date_picker">Select Date :</label>
+            <label for="date_picker">Date :</label>
             <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}" autocomplete="off">
 
             
@@ -89,7 +74,6 @@
 
     </script>
         <script>
-
 
     // Wait for the document to be ready
     $(document).ready(function () {

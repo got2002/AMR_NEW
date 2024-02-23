@@ -9,7 +9,7 @@
     <meta name="author" content="Prompt">
     <meta name="copyright" content="Copyright © 2024">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME ASGS</title>
+    <title>HOME AMR</title>
 
     <!-- Stylesheet -->
     <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
@@ -840,17 +840,17 @@
 
 
     .btn-shine {
-      position: absolute;
-      top: 50%;
-      left: 38%;
-      transform: translate(-50%, -50%);
-      padding: 12px 48px;
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 60px;
-      text-decoration: none;
-      white-space: nowrap;
-  }
+        position: absolute;
+        top: 50%;
+        left: 38%;
+        transform: translate(-50%, -50%);
+        padding: 12px 48px;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 60px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
 
 
     .box_we {
@@ -865,7 +865,7 @@
         align-items: center;
         text-align: center;
     }
-    
+
     .container-menu {
         display: flex;
         justify-content: space-between;
@@ -887,7 +887,7 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-        
+
     }
 
     .container-menu input {
@@ -1005,48 +1005,50 @@
         border-radius: 5px;
         margin-bottom: -25px;
     }
-    
+
     .button-container {
         display: grid;
         grid-template-columns: repeat(3, auto);
         justify-content: center;
-        gap: 30px; 
+        gap: 30px;
         margin-bottom: 60px;
-      }
-    
+    }
+
     .custom-btn {
         /* รายละเอียดของ .custom-btn คงเดิม */
-        margin-left: 0px; /* ระยะห่างด้านซ้าย */
-        margin-right: 0px; /* ระยะห่างด้านขวา */
+        margin-left: 0px;
+        /* ระยะห่างด้านซ้าย */
+        margin-right: 0px;
+        /* ระยะห่างด้านขวา */
     }
-    
-    
-    
 
-    
-  /* 1 */
-  .btn-1 {
-    border: none;
-    background-color: #333;
-    box-shadow: 0 0 5px #333;
-  }
 
-  .btn-1:hover {
-    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-    transform: translateY(-4px);
-  }
 
-  /* 1 */
-  .btn-2 {
-    border: none;
-    background-color: #4caf50;
-    box-shadow: 0 0 5px #4caf50;
-  }
 
-  .btn-2:hover {
-    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
-    transform: translateY(-4px);
-  }
+
+    /* 1 */
+    .btn-1 {
+        border: none;
+        background-color: #333;
+        box-shadow: 0 0 5px #333;
+    }
+
+    .btn-1:hover {
+        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+        transform: translateY(-4px);
+    }
+
+    /* 1 */
+    .btn-2 {
+        border: none;
+        background-color: #4caf50;
+        box-shadow: 0 0 5px #4caf50;
+    }
+
+    .btn-2:hover {
+        box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+        transform: translateY(-4px);
+    }
 
     #region_dropdown {
         width: 200px;
@@ -1105,8 +1107,6 @@
         align-items: center;
         text-align: center;
     }
-    
-
 </style>
 
 <body>
@@ -1114,7 +1114,12 @@
 
         <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
             alt="PTT Public Company Limited Logo">
-        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (ASGS)</a>
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR) : {{ username }}</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <!-- <h2>Welcome {{ username }}</h2>
+        <p>User: {{ description }}</p>
+        <p>Level: {{ user_level }}</p> -->
+
         <div class="back-button">
             <a href="javascript:history.back()" style="text-decoration: none;">
                 <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
@@ -1158,11 +1163,11 @@
                         <strong>Manage Users</strong>
                         <small>Users</small>
                     </a>
-                    <ul>
+                    <!-- <ul>
                         <li><a href="#"><i></i>- </i>Add User</a></li>
                         <li><a href="#"><i></i>- </i>Edit User</a></li>
                         <li><a href="#"><i></i>- </i>Remove User</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li>
                     <a>
@@ -1170,11 +1175,11 @@
                         <strong>Manage Sites</strong>
                         <small>Sites</small>
                     </a>
-                    <ul>
+                    <!-- <ul>
                         <li><a href="#"><i></i>- Add Site</a></li>
                         <li><a href="#"><i></i>- Edit Site</a></li>
                         <li><a href="#"><i></i>- </i>Remove Site</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li>
                     <a>
@@ -1184,21 +1189,21 @@
                     </a>
                     <ul>
                         <li><a href="#"><i></i>- EVC Management</a></li>
-                        <li><a><i></i>- Polling Range Setting</a>
-                            <ul>
+                        <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling Range Setting</a>
+                            <!-- <ul>
                                 <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
                                 <li><a href="#"><i></i>- </i>Add Polling</a></li>
-                            </ul>
-                        <li><a><i></i>- Configuration Mapping</a>
-                            <ul>
+                            </ul> -->
+                        <li><a href="mapping_config"><i></i>- Configuration Mapping</a>
+                            <!-- <ul>
                                 <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
                                 <li><a href="#"><i></i>- Add Mapping Config</a></li>
-                            </ul>
-                        <li><a><i></i>- Daily Billing Mapping</a>
-                            <ul>
+                            </ul> -->
+                        <li><a href="mapping_billing"><i></i>- Daily Billing Mapping</a>
+                            <!-- <ul>
                                 <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
                                 <li><a href="#"><i></i>- Add Billing Mapping</a></li>
-                            </ul>
+                            </ul> -->
                         <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
                     </ul>
                 </li>
