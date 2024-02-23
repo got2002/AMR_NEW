@@ -59,37 +59,24 @@ password = "root"
 hostname = "192.168.102.192"
 port = "1521"
 service_name = "orcl"
-pool_min = 1
-pool_max = 5
-pool_inc = 1
-pool_gmd = 0
-connection_pool = cx_Oracle.SessionPool(
-    user=username,
-    password=password,
-    dsn=cx_Oracle.makedsn(hostname, port, service_name),
-    min=pool_min,
-    max=pool_max,
-    increment=pool_inc,
-    getmode=pool_gmd
-)
+
+
 def fetch_data(query, params=None):
     try:
-        # Acquire a connection from the pool
-        connection = connection_pool.acquire()
-        with connection.cursor() as cursor:
-            if params:
-                cursor.execute(query, params)
-            else:
-                cursor.execute(query)
-            results = cursor.fetchall()
+        dsn = cx_Oracle.makedsn(hostname, port, service_name)
+        with cx_Oracle.connect(username, password, dsn) as connection:
+            with connection.cursor() as cursor:
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+                results = cursor.fetchall()
         return results
     except cx_Oracle.Error as e:
         (error,) = e.args
         print("Oracle Error:", error)
         return []
-    finally:
-        # Release the connection back to the pool
-        connection_pool.release(connection)
+
 def execute_query(query, params=None):
     try:
         dsn = cx_Oracle.makedsn(hostname, port, service_name)
@@ -833,7 +820,8 @@ WHERE
 def Manualpoll_data():
     region_query = """
         SELECT * FROM AMR_REGION 
-        """
+    """
+    
     tag_query = """
         SELECT DISTINCT TAG_ID
         FROM AMR_FIELD_ID
@@ -842,6 +830,7 @@ def Manualpoll_data():
         AND TAG_ID NOT LIKE '%remove%
         """
     region_results = fetch_data(region_query)
+    
     region_options = [str(region[0]) for region in region_results]
     query = """
         SELECT
@@ -919,6 +908,9 @@ def Manualpoll_data():
             "poll_config_enable",
         ],
     )
+    run = df.get(["RUN"]).values.tolist()
+    METERID =df.get(["METERID"]).values.tolist()
+   
     evc_type_list = df.get(["evc_type"]).values.tolist()
     
     poll_config_list = df.get(["poll_config"]).values.tolist()
@@ -956,7 +948,7 @@ def Manualpoll_data():
     else:
         Port_str = [''] 
     
-    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list)
+    zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
     
     return render_template(
         "Manual poll.html",
@@ -966,13 +958,16 @@ def Manualpoll_data():
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options,df=df
+        tag_options=tag_options,df=df,run=run,METERID=METERID
         ,poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
         billing_list_str=billing_list_str,poll_billing_enable_list=poll_billing_enable_list,ip_str=ip_str,Port_str=Port_str,config_list_str=config_list_str,poll_billing_enable_str=poll_billing_enable_str,
         poll_config_enable_str=poll_config_enable_str,poll_config_enable_list=poll_config_enable_list,evc_type_list=evc_type_list
         # quantity_1=quantity_1
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
+
+    
+    
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
     global change_to_32bit_counter  # Use the global variable
@@ -1031,9 +1026,11 @@ def read_data():
     tcp_port = int(request.form["tcp_port"])
     
     evc_type = int(request.form["evc_type"])
-    print(evc_type)
     
-    
+    run = int(request.form["run"])
+    run = run
+    METERID = str(request.form["METERID"])
+   
     
     
     is_16bit = request.form.get("is_16bit") == "true"
@@ -1139,12 +1136,14 @@ def read_data():
     sock_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock_1.connect((tcp_ip, tcp_port))
     communication_traffic_1 = []
+    
     # Store the TX message in communication_traffic_1
     communication_traffic_1.append({"direction": "TX", "data": request_message_1.hex()})
     sock_1.send(request_message_1)
     response_1 = sock_1.recv(1024)
     # Store the RX message in communication_traffic_1
     communication_traffic_1.append({"direction": "RX", "data": response_1.hex()})
+    
     sock_1.close()
     data_1 = response_1[3:]
     
@@ -1445,30 +1444,115 @@ def read_data():
     address = starting_address_14
     address = starting_address_15
    
-    
+    formatted_data = []
     evc_type = evc_type
     for i, value in enumerate(values_1):
-        
         address = starting_address_1 + i * 2
-        # print(address)
+        print(address)
+       
+        address_from_db = get_address_from_database(evc_type,address)
         
+        
+        if address_from_db is not None:
+            
+            type_value = get_type_value_from_database(address_from_db, evc_type)
+           
+            if type_value is not None:
+                hex_value = hex(value)
+                binary_value = convert_to_binary_string(value, bytes_per_value)
+                ulong_value = value
+                float_value = struct.unpack("!f", struct.pack("!I", value))[0]
+                description = get_description_from_database(address_from_db)
+                if description is None:
+                    description = f"Address {address_from_db}"
+                    address_from_db += 0
+
+                if is_16bit:
+                    signed_value = value - 2**16 if value >= 2**15 else value
+                    is_16bit_value = True
+                    float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"
+                else:
+                    signed_value = value - 2**32 if value >= 2**31 else value
+                    is_16bit_value = False
+                    float_value = (
+                        float_value
+                        if is_16bit_value
+                        else struct.unpack("!f", struct.pack("!I", value))[0]
+                    )
+                    if type_value == "Float":
+                        float_display_value = float_value
+                    elif type_value == "signed":
+                        float_display_value = signed_value
+                    elif type_value == "Ulong":
+                        float_display_value = ulong_value
+                    elif type_value == "Date":
+                        date_value_utc = datetime.datetime.utcfromtimestamp(value)
+                        local_timezone = pytz.timezone('Asia/Bangkok')
+                        date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
+                        float_display_value = date_value_local.strftime("%d-%b-%y")
+                    else:
+                        float_display_value = "Undefined"
+
+                data_list_1.append(
+                    {
+                        "description": description,
+                        "address": address_from_db,
+                        "value": value,
+                        "hex_value": hex_value,
+                        "binary_value": binary_value,
+                        "ulong_value": ulong_value,
+                        "float_value": float_display_value,
+                        "signed_value": signed_value,
+                        "is_16bit": is_16bit_value,
+                        "float_signed_value": signed_value,
+                    }
+                )
+                
+                print(data_list_1)
+            if i == len(values_1) - 1:
+                for float_display_value in data_list_1:
+                        formatted_data.append(float_display_value['address'] )
+
+                for item in formatted_data:
+                    
+                    # print(item)
+                    test = get_address_test_from_database(evc_type,item)
+                    # break
+                    # print(test)
+                    
+                    # insert_data(formatted_data[1],run,evc_type,METERID)
+                    
+                    # type_value = type_value
+                    # run = run
+                    # evc_type = evc_type
+                    # METERID = METERID
+                   
+                   
+    for i, value in enumerate(values_2):
+        
+        address = starting_address_2 + i * 2
         type_value = get_type_value_from_database(address,evc_type)
+        # print(address, ":" ,evc_type)
         
         if type_value is not None: 
+            
             hex_value = hex(value)  
             binary_value = convert_to_binary_string(value, bytes_per_value)
             ulong_value = value 
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
             description = get_description_from_database(address)
-            
+            # print(description)
             if description is None:
                 description = f"Address {address}"
                 address += 0
+                
             if is_16bit:
+                
                 signed_value = value - 2**16 if value >= 2**15 else value
                 is_16bit_value = True
                 float_value = value if is_16bit_value else float_value
                 float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+                
             else:
                 signed_value = value - 2**32 if value >= 2**31 else value
                 is_16bit_value = False
@@ -1484,30 +1568,27 @@ def read_data():
                 if type_value == "Float":
                     
                     float_display_value = float_value
+                    # print(float_display_value)
                 elif type_value == "signed":
                     
                     float_display_value = signed_value
+                    # print(float_display_value)
                 elif type_value == "Ulong":
                     
                     float_display_value = ulong_value
-                elif type_value == "Date":
-                    
+                    # print(float_display_value)
+                elif type_value == "Date": 
+                   
+                    date_value = datetime.datetime.fromtimestamp(value)
+                  
+                    float_display_value = date_value.strftime("%d-%b-%y")
 
-                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
-    
-                    print(date_value_utc)
-                    local_timezone = pytz.timezone('Asia/Bangkok')
-                    
-                    
-                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
-                    
-                    
-                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                    # print(float_display_value)
                 else:
                     # Handle other cases or set a default behavior
                     float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_1.append(
+                    # print(f"Type Value for address {address}: {type_value}")
+            data_list_2.append(
                 {
                     "description": description,
                     "address": address,
@@ -1519,103 +1600,48 @@ def read_data():
                     "signed_value": signed_value,
                     "is_16bit": is_16bit_value,
                     "float_signed_value": signed_value,
+                    
                 }
             )
-
-        
-    for i, value in enumerate(values_2):
-        
-        address = starting_address_2 + i * 2
-        type_value = get_type_value_from_database(address,evc_type)
-       
-        
-        if type_value is not None: 
-            hex_value = hex(value)  
-            binary_value = convert_to_binary_string(value, bytes_per_value)
-            ulong_value = value 
-            float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-            description = get_description_from_database(address)
-            
-            if description is None:
-                description = f"Address {address}"
-                address += 0
-            if is_16bit:
-                signed_value = value - 2**16 if value >= 2**15 else value
-                is_16bit_value = True
-                float_value = value if is_16bit_value else float_value
-                float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
-            else:
-                signed_value = value - 2**32 if value >= 2**31 else value
-                is_16bit_value = False
-                float_value = (
-                    float_value
-                    if is_16bit_value
-                    else struct.unpack("!f", struct.pack("!I", value))[0]
-                )
-                float_signed_value = (
-                    signed_value if is_16bit_value else None
-                )  
+            if i == len(values_2) - 1:
                 
-                if type_value == "Float":
-                    
-                    float_display_value = float_value
-                elif type_value == "signed":
-                    
-                    float_display_value = signed_value
-                elif type_value == "Ulong":
-                    
-                    float_display_value = ulong_value
-                elif type_value == "Date":
-                    
-
-                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
-    
-                    print(date_value_utc)
-                    local_timezone = pytz.timezone('Asia/Bangkok')
+                for float_display_value in data_list_2:
+                    formatted_data.append(f"{float_display_value['float_value']}")
+                
+                
+                for data in formatted_data:
+                    run = run
+                    evc_type = evc_type
+                    METERID = METERID
                     
                     
-                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
-                    
-                    
-                    float_display_value = date_value_local.strftime("%d-%m-%Y")
-                else:
-                    # Handle other cases or set a default behavior
-                    float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
-            data_list_2.append(
-                {
-                    "description": description,
-                    "address": address,
-                    "value": value,
-                    "hex_value": hex_value,
-                    "binary_value": binary_value,
-                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
-                    "float_value": float_display_value,
-                    "signed_value": signed_value,
-                    "is_16bit": is_16bit_value,
-                    "float_signed_value": signed_value,
-                }
-            )
+                    break
+                
+                
         value, updated_address = handle_action_configuration(i, value, address)
     for i, value in enumerate(values_3):
-        
+        # print(address, ":" ,evc_type)
         address = starting_address_3 + i * 2
         type_value = get_type_value_from_database(address,evc_type)
         if type_value is not None: 
+            
             hex_value = hex(value)  
             binary_value = convert_to_binary_string(value, bytes_per_value)
             ulong_value = value 
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
             description = get_description_from_database(address)
-            
+            # print(description)
             if description is None:
                 description = f"Address {address}"
                 address += 0
+                
             if is_16bit:
+                
                 signed_value = value - 2**16 if value >= 2**15 else value
                 is_16bit_value = True
                 float_value = value if is_16bit_value else float_value
                 float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+                
             else:
                 signed_value = value - 2**32 if value >= 2**31 else value
                 is_16bit_value = False
@@ -1631,29 +1657,26 @@ def read_data():
                 if type_value == "Float":
                     
                     float_display_value = float_value
+                    # print(float_display_value)
                 elif type_value == "signed":
                     
                     float_display_value = signed_value
+                    # print(float_display_value)
                 elif type_value == "Ulong":
                     
                     float_display_value = ulong_value
-                elif type_value == "Date":
-                    
+                    # print(float_display_value)
+                elif type_value == "Date": 
+                   
+                    date_value = datetime.datetime.fromtimestamp(value)
+                  
+                    float_display_value = date_value.strftime("%d-%b-%y")
 
-                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
-    
-                    print(date_value_utc)
-                    local_timezone = pytz.timezone('Asia/Bangkok')
-                    
-                    
-                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
-                    
-                    
-                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                    # print(float_display_value)
                 else:
                     # Handle other cases or set a default behavior
                     float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
+                    # print(f"Type Value for address {address}: {type_value}")
             data_list_3.append(
                 {
                     "description": description,
@@ -1661,34 +1684,54 @@ def read_data():
                     "value": value,
                     "hex_value": hex_value,
                     "binary_value": binary_value,
-                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "ulong_value": ulong_value,  
                     "float_value": float_display_value,
                     "signed_value": signed_value,
                     "is_16bit": is_16bit_value,
                     "float_signed_value": signed_value,
+                    
                 }
             )
+            if i == len(values_3) - 1:
+                
+                for float_display_value in data_list_3:
+                    formatted_data.append(f"{float_display_value['float_value']},{float_display_value['address']},{float_display_value['description']}")
+                
+                
+                for data in formatted_data:
+                    run = run
+                    evc_type = evc_type
+                    METERID = METERID
+                      
+                    
+                    break
+                
         
         value, updated_address = handle_action_configuration(i, value, address)
     for i, value in enumerate(values_4):
         
         address = starting_address_4 + i * 2
         type_value = get_type_value_from_database(address,evc_type)
+        # print(address, ":" ,evc_type)
         if type_value is not None: 
+            
             hex_value = hex(value)  
             binary_value = convert_to_binary_string(value, bytes_per_value)
             ulong_value = value 
             float_value = struct.unpack("!f", struct.pack("!I", value))[0]
             description = get_description_from_database(address)
-            
+            # print(description)
             if description is None:
                 description = f"Address {address}"
                 address += 0
+                
             if is_16bit:
+                
                 signed_value = value - 2**16 if value >= 2**15 else value
                 is_16bit_value = True
                 float_value = value if is_16bit_value else float_value
                 float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"  
+                
             else:
                 signed_value = value - 2**32 if value >= 2**31 else value
                 is_16bit_value = False
@@ -1704,29 +1747,26 @@ def read_data():
                 if type_value == "Float":
                     
                     float_display_value = float_value
+                    # print(float_display_value)
                 elif type_value == "signed":
                     
                     float_display_value = signed_value
+                    # print(float_display_value)
                 elif type_value == "Ulong":
                     
                     float_display_value = ulong_value
-                elif type_value == "Date":
-                    
+                    # print(float_display_value)
+                elif type_value == "Date": 
+                   
+                    date_value = datetime.datetime.fromtimestamp(value)
+                  
+                    float_display_value = date_value.strftime("%d-%b-%y")
 
-                    date_value_utc = datetime.datetime.utcfromtimestamp(value)
-    
-                    print(date_value_utc)
-                    local_timezone = pytz.timezone('Asia/Bangkok')
-                    
-                    
-                    date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
-                    
-                    
-                    float_display_value = date_value_local.strftime("%d-%m-%Y")
+                    # print(float_display_value)
                 else:
                     # Handle other cases or set a default behavior
                     float_display_value = "Undefined"
-                    print(f"Type Value for address {address}: {type_value}")
+                    # print(f"Type Value for address {address}: {type_value}")
             data_list_4.append(
                 {
                     "description": description,
@@ -1734,13 +1774,27 @@ def read_data():
                     "value": value,
                     "hex_value": hex_value,
                     "binary_value": binary_value,
-                    "ulong_value": ulong_value,  # Add ulong value to data dictionary
+                    "ulong_value": ulong_value,  
                     "float_value": float_display_value,
                     "signed_value": signed_value,
                     "is_16bit": is_16bit_value,
                     "float_signed_value": signed_value,
+                    
                 }
             )
+            if i == len(values_4) - 1:
+                
+                for float_display_value in data_list_4:
+                    formatted_data.append(f"{float_display_value['float_value']}")
+                
+                
+                for data in formatted_data:
+                    run = run
+                    evc_type = evc_type
+                    METERID = METERID
+                      
+                   
+                    break
         value, updated_address = handle_action_configuration(i, value, address)
     for i, value in enumerate(values_5):
         
@@ -1787,7 +1841,7 @@ def read_data():
 
                     date_value_utc = datetime.datetime.utcfromtimestamp(value)
     
-                    print(date_value_utc)
+                    
                     local_timezone = pytz.timezone('Asia/Bangkok')
                     
                     
@@ -1858,7 +1912,7 @@ def read_data():
 
                     date_value_utc = datetime.datetime.utcfromtimestamp(value)
     
-                    print(date_value_utc)
+                    
                     local_timezone = pytz.timezone('Asia/Bangkok')
                     
                     
@@ -2457,6 +2511,7 @@ def read_data():
     region_query = """
         SELECT * FROM AMR_REGION 
         """
+    
     tag_query = """
         SELECT DISTINCT TAG_ID
         FROM AMR_FIELD_ID
@@ -2464,6 +2519,7 @@ def read_data():
         WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
         """
     region_results = fetch_data(region_query)
+    
     region_options = [str(region[0]) for region in region_results]
     query = """
         SELECT
@@ -2519,6 +2575,7 @@ def read_data():
     if selected_region:
         region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
     query = query.format(tag_condition=tag_condition, region_condition=region_condition)
+    
     df = pd.DataFrame(
         columns=[
             "RUN",
@@ -2558,6 +2615,8 @@ def read_data():
                 "poll_config_enable",
             ],
         )
+        METERID =df.get(["METERID"]).values.tolist()
+        run = df.get(["RUN"]).values.tolist() 
         evc_type_list = df.get(["evc_type"]).values.tolist() 
        
         # print(evc_type_list)
@@ -2606,11 +2665,11 @@ def read_data():
         # Provide a default value if poll_config_list is empty
             Port_str = [''] 
     
-        zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list)
+        zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
         
     return render_template(
         "Manual poll.html",
-        df=df,
+        df=df,METERID=METERID,
         data_list_1=data_list_1,data_list_2=data_list_2,data_list_3=data_list_3,data_list_4=data_list_4,data_list_5=data_list_5,data_list_6=data_list_6,data_list_7=data_list_7,data_list_8=data_list_8,
         data_list_9=data_list_9,data_list_10=data_list_10,data_list_11=data_list_11,data_list_12=data_list_12,data_list_13=data_list_13,data_list_14=data_list_14,data_list_15=data_list_15,
         slave_id=slave_id,
@@ -2638,7 +2697,7 @@ def read_data():
         communication_traffic_13=communication_traffic_13,
         communication_traffic_14=communication_traffic_14,
         communication_traffic_15=communication_traffic_15,
-        zipped_data=zipped_data,
+        zipped_data=zipped_data,run=run,
         poll_config_list=poll_config_list,poll_billing_list=poll_billing_list,
         billing_list_str=billing_list_str,poll_config_enable_list=poll_config_enable_list,poll_billing_enable_list=poll_billing_enable_list,evc_type_list=evc_type_list,
         
@@ -2671,7 +2730,7 @@ def get_description_from_database_billing(address):
     
     return result[0][0] if result else None
 def get_type_value_from_database_billing(address,evc_type):
-    query = "SELECT data_type FROM amr_mapping_billing WHERE ADDRESS = :address AND evc_type = :evc_type"
+    query = "SELECT data_type FROM amr_mapping_billing WHERE ADDRESS = :address AND evc_type = :evc_type "
     result = fetch_data(query, params={"address": address, "evc_type" :evc_type})
     
     if result:
@@ -2680,17 +2739,38 @@ def get_type_value_from_database_billing(address,evc_type):
 
 
 
-def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address"
-    params = {"address": address}
+def get_description_from_database(address_from_db):
+    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address_from_db order by address DESC"
+    params = {"address_from_db": address_from_db}
     result = fetch_data(query, params)
     return result[0][0] if result else None
 
 
-def get_type_value_from_database(address,evc_type):
-    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type = :evc_type"
-    result = fetch_data(query, params={"address": address , "evc_type" :evc_type })
-    print(result)
+def get_address_from_database(evc_type, address):
+    query = "SELECT address, or_der FROM AMR_MAPPING_CONFIG WHERE evc_type = :evc_type AND ADDRESS = :address  ORDER BY or_der "
+    params = {"evc_type": evc_type, "address": address}
+    
+    result = fetch_data(query, params)
+    
+    return result[0][0] if result else None
+
+
+def get_address_test_from_database(evc_type,item):
+    query = "SELECT address FROM AMR_MAPPING_CONFIG WHERE evc_type = :evc_type  ORDER BY or_der "
+    params = {"evc_type": evc_type}
+    
+    result = fetch_data(query, params)
+    # print(result)
+    for item in result:
+        test = str(item)
+        cleaned_test = test.replace(',', '').replace("'", "").replace("(", "").replace(")", "")
+        # print(cleaned_test)
+
+    return result[0][0] if result else None
+
+def get_type_value_from_database(address_from_db,evc_type):
+    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address_from_db AND evc_type = :evc_type ORDER BY or_der" 
+    result = fetch_data(query, params={"address_from_db": address_from_db , "evc_type" :evc_type })
     
     
     if result:
@@ -2698,7 +2778,21 @@ def get_type_value_from_database(address,evc_type):
     return None
 
 
+def insert_data(data_0,run, evc_type, METERID):
+    try:
+        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+            with connection.cursor() as cursor:
+                sql = """
+                    INSERT INTO AMR_CONFIGURED_DATA (DATA_DATE, METER_STREAM_NO, AMR_VC_TYPE, METER_ID) 
+                    VALUES (TO_DATE(:data_0, 'DD-MON-YY'), :run, :evc_type, :METERID)
+                    """
+                cursor.execute(sql, {'data_0': data_0, 'run': run, 'evc_type': evc_type, 'METERID': METERID})
+                connection.commit()
+                print("insert_data_ek successful")  
+    except cx_Oracle.Error as error:
+        print("Oracle Error:", error)
 
+        
 
 
 
@@ -2946,3 +3040,4 @@ def submit_new_form():
 ####################################################
 if __name__ == "__main__":
     app.run(debug=True)
+
