@@ -110,8 +110,7 @@ def login():
 
 
 @app.route('/')
-def home():
-    
+def home():  
         if 'username' in session:
             user = users[session['username']]
             return render_template('home.html', username=session['username'], description=user['description'], user_level=user['user_level'])
@@ -142,6 +141,13 @@ def get_tags():
 
 @app.route("/billingdata")
 def billingdata():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    # Fetch user information from the session
+    logged_in_user = session['username']
+    if logged_in_user not in users:
+        return redirect(url_for('login'))
     
     region_query = """
     SELECT * FROM AMR_REGION 
@@ -319,7 +325,6 @@ def billingdata_user():
     # Fetch unique region values
     region_results = fetch_data(region_query, params={'logged_in_user': logged_in_user})
     region_options = [str(region[0]) for region in region_results]
-    region_list = (region_options[0]).strip("',[]")
     # print("des", region_options)
 
     for region in region_results:
@@ -388,7 +393,7 @@ def billingdata_user():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
