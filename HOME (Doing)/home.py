@@ -55,7 +55,7 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 
 
 def md5_hash(input_string):
-    # เข้ารหัสรหัสผ่านโดยใช้ MD5
+    # Password encription with MD5
     return hashlib.md5(input_string.encode()).hexdigest()
 
 
@@ -124,10 +124,10 @@ def add_user_route():
         password = request.form["password"]
         user_level = request.form["user_level"]
 
-        # เข้ารหัสรหัสผ่านโดยใช้ MD5
+        # Password encription with MD5
         hashed_password = md5_hash(password)
 
-        # แปลงเป็น RAWTOHEX ก่อนที่จะบันทึกลงใน Oracle
+        # Convert RAWTOHEX then store into Oracle
         hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(
             hashed_password
         )
