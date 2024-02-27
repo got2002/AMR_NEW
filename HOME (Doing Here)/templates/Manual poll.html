@@ -313,9 +313,9 @@
     
    
     <div class="checkbox" style="top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px;">
-        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list in zipped_data %}
+        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list,run,METERID in zipped_data %}
         <td>
-            <input type="checkbox" name="configCheckbox" style="width: 50%;" value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}}" onclick="changeConfigCheckbox(this)">
+            <input type="checkbox" name="configCheckbox" style="width: 50%;" value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}},{{run}},{{METERID}}" onclick="changeConfigCheckbox(this)">
         </td>
         {% endfor %}
     </div>
@@ -354,11 +354,15 @@
                         var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
                         var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
                         var evc_type = pollConfigListParts[47].replace(/[\[\]']/g, ''); // Assuming evc_type_list is at index 6 in pollConfigListParts
-                        
+                        var run = pollConfigListParts[48].replace(/[\[\]']/g, '');
+                        var METERID = pollConfigListParts[49].replace(/[\[\]']/g, '');
                         // Set the value of tcp_ip, tcp_port, and evc_type input fields
                         document.getElementById('tcp_ip').value = tcp_ip;
                         document.getElementById('tcp_port').value = tcp_port;
                         document.getElementById('evc_type').value = evc_type;
+                        document.getElementById('run').value = run;
+                        document.getElementById('METERID').value = METERID;
+
                     }
                 });
             });
@@ -556,7 +560,14 @@
                             <label for="evc_type">EVC_TYPE</label>
                             <input type="text" class="form-control" id="evc_type" name="evc_type" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{evc_type}}">
                         </div>
-                        
+                        <div class="form-group">
+                            <label for="run">RUN</label>
+                            <input type="text" class="form-control" id="run" name="run" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{RUN}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="METERID">METER_ID</label>
+                            <input type="text" class="form-control" id="METERID" name="METERID" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{METERID}}">
+                        </div>
                          <div class="btn-container" id="showDataButton">
                            
 
@@ -590,7 +601,7 @@
                                     </form>
                                 </div>
                             {% endif %}
-
+                                        
                              <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
                          </div>
                      </form>
@@ -951,6 +962,7 @@
                                     <!-- Display float_value for float and others -->
                                 {% endif %}
                             </td>
+                            
                         </tr>
                     
                 {% endfor %}
