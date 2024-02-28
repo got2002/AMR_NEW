@@ -1734,10 +1734,10 @@
                         <div class="button-container">
                             <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
                                 onclick="showLoading()">Daily Data</button>
-                            <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
-                                onclick="showLoading()">Config Data</button>
-                            <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
-                                Filters</button>
+                            <!-- <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                                onclick="showLoading()">Config Data</button> -->
+                            <!-- <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                                Filters</button> -->
                         </div>
                     </div>
                 </form>
@@ -1943,7 +1943,7 @@
         });
 
         // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        var formDailyData = document.querySelector('form[action="/billing_data_user"]'); // Adjust this selector based on your actual form
         formDailyData.addEventListener('config_data', function (event) {
             event.preventDefault(); // Prevent the form from submitting immediately
 
@@ -1973,7 +1973,7 @@
         });
 
         // Event listener for form submission with 'config_data' event
-        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
+        var formConfigData = document.querySelector('form[action="/billing_data_user_group"]'); // Adjust this selector based on your actual form
         formConfigData.addEventListener('daily_data', function (event) {
             event.preventDefault(); // Prevent the form from submitting immediately
 
