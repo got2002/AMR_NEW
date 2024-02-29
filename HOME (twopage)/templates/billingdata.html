@@ -348,6 +348,24 @@
     word-wrap: break-word;
   }
 
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
   .table-container {
     font-size: x-large;
     display: flex;
@@ -357,18 +375,6 @@
     margin-bottom: 1%;
   }
 
-  .table {
-    width: 150%;
-    box-sizing: border-box;
-    padding: 30px;
-    margin: 10px auto;
-  }
-
-  @media (max-width: 645px) {
-    .table {
-      width: 100%;
-    }
-  }
 
 
   /* Container styling for tables */

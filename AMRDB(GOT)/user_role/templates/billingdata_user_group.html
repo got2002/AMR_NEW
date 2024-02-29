@@ -18,16 +18,12 @@
 </head>
 
 <body>
-    <a href="{{ url_for('home') }}">home</a>
+    <a href="{{ url_for('home_user_group') }}">home</a>
     <h2>Billing data</h2>
-    <form method="get" action="billingdata">
-        <label for="tag_dropdown">Region :</label>
-        <select id="region_dropdown" name="region_dropdown">
-            <option value="" {% if not selected_region %}selected{% endif %}>All</option>
-            {% for region in region_options %}
-            <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
-            {% endfor %}
-        </select>
+    <form method="get" action="billingdata_user_group">
+        <label for="tag_dropdown">Select Region :</label>
+        <input id="region_dropdown" name="region_dropdown" value="{{ region_options }}">
+
         <label for="tag_dropdown">Site :</label>
         <select id="tag_dropdown" name="tag_dropdown">
             <option value="" {% if not selected_tag %}selected{% endif %}>All</option>

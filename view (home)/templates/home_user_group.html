@@ -9,7 +9,7 @@
     <meta name="author" content="Prompt">
     <meta name="copyright" content="Copyright © 2024">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME ASGS</title>
+    <title>HOME AMR</title>
 
     <!-- Stylesheet -->
     <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
@@ -46,15 +46,13 @@
     }
 
     body {
-        background: #909090;
-
+        background-image: linear-gradient(to right, #848282, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
         font-weight: bold;
         height: 100%;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-
 
     h1,
     h2,
@@ -133,11 +131,6 @@
         width: 260px;
         /* == */
         max-width: 1880px;
-        border-radius: 5%;
-        border-top: #0055ff solid 5px;
-        border-bottom: #0055ff solid 5px;
-        filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244));
-
     }
 
     .mcd-menu li {
@@ -151,14 +144,14 @@
         text-decoration: none;
         padding: 12px 20px;
         color: #777;
-        text-align: center;
-
+        /*text-align: center;
+        border-right: 1px solid #E7E7E7;*/
 
         /* == */
         text-align: left;
         height: 36px;
         position: relative;
-
+        border-bottom: 1px solid #eee;
         /* == */
     }
 
@@ -719,7 +712,7 @@
     }
 
     .top-bar {
-        background-image: linear-gradient(0deg, #0055ff, #469ff7, #0055ff);
+        background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
         color: #fff;
         padding: 10px 10px;
         width: 100%;
@@ -731,7 +724,6 @@
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         z-index: 2;
-        border-bottom: #ddd solid 3px;
     }
 
     footer {
@@ -748,7 +740,6 @@
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         font-size: small;
-        border-top: #ddd solid 3px;
     }
 
 
@@ -766,8 +757,7 @@
         padding: 0px;
         margin: 0px;
         display: flex;
-        margin-top: 0px;
-        margin-left: 30%;
+        margin-top: -25px;
         filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255))
     }
 
@@ -775,30 +765,29 @@
 
     .back-button,
     .forward-button {
-
         position: fixed;
         top: 110px;
         background-color: transparent;
         border: none;
         cursor: pointer;
         color: white;
-        font-size: 10px;
+        font-size: medium;
         outline: none;
         z-index: 999;
         filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
     }
 
     .back-button {
-        right: 140px;
+        right: 180px;
     }
 
     .forward-button {
-        right: 40px;
+        right: 20px;
     }
 
     .back-button a,
     .forward-button a {
-        width: 61px;
+        width: 100px;
         color: white;
         text-decoration: none;
         padding: 8px 16px;
@@ -853,7 +842,7 @@
     .btn-shine {
         position: absolute;
         top: 50%;
-        left: 25%;
+        left: 38%;
         transform: translate(-50%, -50%);
         padding: 12px 48px;
         color: #ffffff;
@@ -862,6 +851,7 @@
         text-decoration: none;
         white-space: nowrap;
     }
+
 
     .box_we {
         width: 90%;
@@ -902,7 +892,7 @@
 
     .container-menu input {
         width: 150px;
-
+        /* ปรับขนาด input ตามที่ต้องการ */
     }
 
 
@@ -1120,17 +1110,23 @@
 </style>
 
 <body>
-
     <header class="top-bar">
-        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (ASGS)</a>
+
+        <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+            alt="PTT Public Company Limited Logo">
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR) : {{ username }}</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <!-- <h2>Welcome {{ username }}</h2>
+            <p>User: {{ description }}</p>
+            <p>Level: {{ user_level }}</p> -->
         <div class="back-button">
             <a href="javascript:history.back()" style="text-decoration: none;">
-                <i class="fas fa-arrow-circle-left" style="margin-right: 27%;"></i> Back
+                <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
             </a>
         </div>
         <div class="forward-button">
             <a href="javascript:history.forward()" style="text-decoration: none;">
-                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 11%;"></i>
+                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 10%;"></i>
             </a>
         </div>
         </div>
@@ -1138,17 +1134,7 @@
     <div class="container">
         <nav>
             <ul class="mcd-menu">
-                <li>
-                    <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                        alt="PTT Public Company Limited Logo">
-                </li>
-                <li>
-                    <a class="active" href="{{ url_for('home_amr') }}">
-                        <i class="fa fa-home"></i>
-                        <strong>Home</strong>
-                        <small>Back to Homepage</small>
-                    </a>
-                </li>
+                <a class="active" href="{{ url_for('home_user_group') }}"></a>
                 <li>
                     <a>
                         <i class="fa fa-database"></i>
@@ -1156,75 +1142,8 @@
                         <small>View Data</small>
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('billing_data') }}"><i></i>- View Monthly Data</a></li>
-                        <li><a href="#"><i></i>- View EVC Status</a></li>
-                        <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
-                        <li><a href="#"><i></i>- Monthly Summery</a></li>
-                        <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
-                        <li><a href="#"><i></i>- New Site Detail</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i></i>- </i>Add User</a></li>
-                        <li><a href="#"><i></i>- </i>Edit User</a></li>
-                        <li><a href="#"><i></i>- </i>Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i></i>- Add Site</a></li>
-                        <li><a href="#"><i></i>- Edit Site</a></li>
-                        <li><a href="#"><i></i>- </i>Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-wrench"></i>
-                        <strong>Polling Setting</strong>
-                        <small>Setting</small>
-                    </a>
-                    <ul style="margin-top: -60%;">
-                        <li><a href="#"><i></i>- EVC Management</a></li>
-                        <li><a><i></i>- Polling Range Setting</a>
-                            <ul>
-                                <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
-                                <li><a href="#"><i></i>- </i>Add Polling</a></li>
-                            </ul>
-                        <li><a><i></i>- Configuration Mapping</a>
-                            <ul>
-                                <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
-                                <li><a href="#"><i></i>- Add Mapping Config</a></li>
-                            </ul>
-                        <li><a><i></i>- Daily Billing Mapping</a>
-                            <ul>
-                                <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
-                                <li><a href="#"><i></i>- Add Billing Mapping</a></li>
-                            </ul>
-                        <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling</small>
-                    </a>
-                    <ul>
-                        <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
-                    </ul>
-                </li>
-            </ul>
+                        <li><a href="{{ url_for('billing_data_user_group') }}"><i></i>- View Monthly Data</a></li>
+
         </nav>
     </div>
 

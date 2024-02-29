@@ -1593,7 +1593,8 @@
                 <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
                     alt="PTT Public Company Limited Logo">
                 <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (AMR) : {{
-                    username }}</span>
+                    user_group
+                    }}</span>
             </div>
             <div class="back-button">
                 <a href="javascript:history.back()" style="text-decoration: none;">
@@ -1611,7 +1612,7 @@
         <nav>
             <ul class="mcd-menu">
                 <li>
-                    <a href="{{ url_for('home_user') }}">
+                    <a href="{{ url_for('home_user_group') }}">
                         <i class="fa fa-home"></i>
                         <strong>Home</strong>
                         <small>Back to Homepage</small>
@@ -1624,7 +1625,7 @@
                         <small>View Data</small>
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('billing_data_user') }}"><i></i>- View Monthly Data</a></li>
+                        <li><a href="{{ url_for('billing_data_user_group') }}"><i></i>- View Monthly Data</a></li>
                         <!-- <li><a href="#"><i></i>- View EVC Status</a></li>
                         <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
                         <li><a href="#"><i></i>- Monthly Summery</a></li>
@@ -1705,21 +1706,23 @@
                 <div class="dot green"></div>
             </div>
             <div class="box_we">
-                <form method="get" action="{{ url_for('billing_data_user') }}">
+                <form method="get" action="{{ url_for('billing_data_user_group') }}">
                     <h2> View Billing Data (AMR)</h2>
                     <div class="form-container">
                         <label for="tag_dropdown">Select Region :</label>
                         <input id="region_dropdown" name="region_dropdown" value="{{ region_options }}" readonly>
 
-
-                        <label for="tag_dropdown">Select Site :</label>
-                        <input id="tag_dropdown" name="tag_dropdown" value="{{ tag_options }}" readonly>
-
+                        <label for="tag_dropdown">Select Site:</label>
+                        <select id="tag_dropdown" name="tag_dropdown">
+                            <option value {% if not selected_tag %}selected{% endif %}>All</option>
+                            {% for tag in tag_options %}
+                            <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                            {% endfor %}
+                        </select>
 
                         <label for="date_picker">Select Date :</label>
                         <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
                             autocomplete="off">
-
 
                         <div id="loadingOverlay" style="display: none;">
                             <img src="static/Search.gif" alt="Loading...">
@@ -1734,8 +1737,8 @@
                         <div class="button-container">
                             <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
                                 onclick="showLoading()">Daily Data</button>
-                            <!-- <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
-                                onclick="showLoading()">Config Data</button> -->
+                            <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                                onclick="showLoading()">Config Data</button>
                             <!-- <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
                                 Filters</button> -->
                         </div>
@@ -1943,7 +1946,7 @@
         });
 
         // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data_user"]'); // Adjust this selector based on your actual form
+        var formDailyData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
         formDailyData.addEventListener('config_data', function (event) {
             event.preventDefault(); // Prevent the form from submitting immediately
 
@@ -1973,7 +1976,7 @@
         });
 
         // Event listener for form submission with 'config_data' event
-        var formConfigData = document.querySelector('form[action="/billing_data_user_group"]'); // Adjust this selector based on your actual form
+        var formConfigData = document.querySelector('form[action="/billing_data"]'); // Adjust this selector based on your actual form
         formConfigData.addEventListener('daily_data', function (event) {
             event.preventDefault(); // Prevent the form from submitting immediately
 

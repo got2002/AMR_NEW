@@ -40,17 +40,44 @@
         border-radius: 4px;
     }
 
-    button {
+    .login-button {
         background-color: #4caf50;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
+        /* Green */
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        /* font-size: 16px;
+        margin: 4px 2px; */
         cursor: pointer;
     }
 
-    button:hover {
-        background-color: #45a049;
+    /* Define your styles for the Clear button */
+    .clear-button {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        /* font-size: 16px;
+        margin: 4px 2px; */
+        cursor: pointer;
+    }
+
+    /* Define your styles for the Clear button when hovered over */
+    .clear-button:hover {
+        background-color: #d32f2f;
+    }
+
+    .logo {
+        display: grid;
+        place-items: center;
+        /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
+        /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
+        height: center;
+        /* ตัวอย่างเท่านี้โลโก้จะปรับขนาดเพื่อแสดงในความสูง 100px */
     }
 </style>
 
@@ -67,7 +94,8 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <br>
-        <button type="submit">Login</button>
+        <button type="submit" class="login-button">Login</button>
+        <button type="reset" class="clear-button">Clear</button>
     </form>
 </body>
 

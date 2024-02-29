@@ -9,7 +9,7 @@
     <meta name="author" content="Prompt">
     <meta name="copyright" content="Copyright © 2024">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME ASGS</title>
+    <title>HOME AMR</title>
 
     <!-- Stylesheet -->
     <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
@@ -46,15 +46,13 @@
     }
 
     body {
-        background: #909090;
-
+        background-image: linear-gradient(to right, #848282, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
         font-weight: bold;
         height: 100%;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-
 
     h1,
     h2,
@@ -133,11 +131,6 @@
         width: 260px;
         /* == */
         max-width: 1880px;
-        border-radius: 5%;
-        border-top: #0055ff solid 5px;
-        border-bottom: #0055ff solid 5px;
-        filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244));
-
     }
 
     .mcd-menu li {
@@ -151,14 +144,14 @@
         text-decoration: none;
         padding: 12px 20px;
         color: #777;
-        text-align: center;
-
+        /*text-align: center;
+        border-right: 1px solid #E7E7E7;*/
 
         /* == */
         text-align: left;
         height: 36px;
         position: relative;
-
+        border-bottom: 1px solid #eee;
         /* == */
     }
 
@@ -719,7 +712,7 @@
     }
 
     .top-bar {
-        background-image: linear-gradient(0deg, #0055ff, #469ff7, #0055ff);
+        background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
         color: #fff;
         padding: 10px 10px;
         width: 100%;
@@ -731,7 +724,6 @@
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         z-index: 2;
-        border-bottom: #ddd solid 3px;
     }
 
     footer {
@@ -748,7 +740,6 @@
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         font-size: small;
-        border-top: #ddd solid 3px;
     }
 
 
@@ -766,8 +757,7 @@
         padding: 0px;
         margin: 0px;
         display: flex;
-        margin-top: 0px;
-        margin-left: 30%;
+        margin-top: -25px;
         filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255))
     }
 
@@ -775,30 +765,29 @@
 
     .back-button,
     .forward-button {
-
         position: fixed;
         top: 110px;
         background-color: transparent;
         border: none;
         cursor: pointer;
         color: white;
-        font-size: 10px;
+        font-size: medium;
         outline: none;
         z-index: 999;
         filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
     }
 
     .back-button {
-        right: 140px;
+        right: 180px;
     }
 
     .forward-button {
-        right: 40px;
+        right: 20px;
     }
 
     .back-button a,
     .forward-button a {
-        width: 61px;
+        width: 100px;
         color: white;
         text-decoration: none;
         padding: 8px 16px;
@@ -851,17 +840,18 @@
 
 
     .btn-shine {
-        position: absolute;
-        top: 50%;
-        left: 25%;
-        transform: translate(-50%, -50%);
-        padding: 12px 48px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 60px;
-        text-decoration: none;
-        white-space: nowrap;
-    }
+      position: absolute;
+      top: 50%;
+      left: 38%;
+      transform: translate(-50%, -50%);
+      padding: 12px 48px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 60px;
+      text-decoration: none;
+      white-space: nowrap;
+  }
+
 
     .box_we {
         width: 90%;
@@ -875,7 +865,7 @@
         align-items: center;
         text-align: center;
     }
-
+    
     .container-menu {
         display: flex;
         justify-content: space-between;
@@ -897,12 +887,12 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-
+        
     }
 
     .container-menu input {
         width: 150px;
-
+        /* ปรับขนาด input ตามที่ต้องการ */
     }
 
 
@@ -1015,50 +1005,48 @@
         border-radius: 5px;
         margin-bottom: -25px;
     }
-
+    
     .button-container {
         display: grid;
         grid-template-columns: repeat(3, auto);
         justify-content: center;
-        gap: 30px;
+        gap: 30px; 
         margin-bottom: 60px;
-    }
-
+      }
+    
     .custom-btn {
         /* รายละเอียดของ .custom-btn คงเดิม */
-        margin-left: 0px;
-        /* ระยะห่างด้านซ้าย */
-        margin-right: 0px;
-        /* ระยะห่างด้านขวา */
+        margin-left: 0px; /* ระยะห่างด้านซ้าย */
+        margin-right: 0px; /* ระยะห่างด้านขวา */
     }
+    
+    
+    
 
+    
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
 
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
 
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+  }
 
-
-    /* 1 */
-    .btn-1 {
-        border: none;
-        background-color: #333;
-        box-shadow: 0 0 5px #333;
-    }
-
-    .btn-1:hover {
-        box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-        transform: translateY(-4px);
-    }
-
-    /* 1 */
-    .btn-2 {
-        border: none;
-        background-color: #4caf50;
-        box-shadow: 0 0 5px #4caf50;
-    }
-
-    .btn-2:hover {
-        box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
-        transform: translateY(-4px);
-    }
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
 
     #region_dropdown {
         width: 200px;
@@ -1117,20 +1105,24 @@
         align-items: center;
         text-align: center;
     }
+    
+
 </style>
 
 <body>
-
     <header class="top-bar">
-        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (ASGS)</a>
+
+        <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+            alt="PTT Public Company Limited Logo">
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR)</a>
         <div class="back-button">
             <a href="javascript:history.back()" style="text-decoration: none;">
-                <i class="fas fa-arrow-circle-left" style="margin-right: 27%;"></i> Back
+                <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
             </a>
         </div>
         <div class="forward-button">
             <a href="javascript:history.forward()" style="text-decoration: none;">
-                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 11%;"></i>
+                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 10%;"></i>
             </a>
         </div>
         </div>
@@ -1138,10 +1130,6 @@
     <div class="container">
         <nav>
             <ul class="mcd-menu">
-                <li>
-                    <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                        alt="PTT Public Company Limited Logo">
-                </li>
                 <li>
                     <a class="active" href="{{ url_for('home_amr') }}">
                         <i class="fa fa-home"></i>
@@ -1194,7 +1182,7 @@
                         <strong>Polling Setting</strong>
                         <small>Setting</small>
                     </a>
-                    <ul style="margin-top: -60%;">
+                    <ul>
                         <li><a href="#"><i></i>- EVC Management</a></li>
                         <li><a><i></i>- Polling Range Setting</a>
                             <ul>
