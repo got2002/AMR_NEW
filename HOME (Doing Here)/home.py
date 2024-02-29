@@ -1450,24 +1450,24 @@ def read_data():
     evc_type = evc_type
     for i, value in enumerate(values_1):
         address = starting_address_1 + i * 2
-        print(address)
+        
        
-        address_from_db = get_address_from_database(evc_type,address)
         
         
-        if address_from_db is not None:
+        
+        if address is not None:
             
-            type_value = get_type_value_from_database(address_from_db, evc_type)
+            type_value = get_type_value_from_database(address, evc_type)
            
             if type_value is not None:
                 hex_value = hex(value)
                 binary_value = convert_to_binary_string(value, bytes_per_value)
                 ulong_value = value
                 float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-                description = get_description_from_database(address_from_db)
+                description = get_description_from_database(address)
                 if description is None:
-                    description = f"Address {address_from_db}"
-                    address_from_db += 0
+                    description = f"Address {address}"
+                    address += 0
 
                 if is_16bit:
                     signed_value = value - 2**16 if value >= 2**15 else value
@@ -1498,7 +1498,7 @@ def read_data():
                 data_list_1.append(
                     {
                         "description": description,
-                        "address": address_from_db,
+                        "address": address,
                         "value": value,
                         "hex_value": hex_value,
                         "binary_value": binary_value,
@@ -1510,15 +1510,15 @@ def read_data():
                     }
                 )
                 
-                print(data_list_1)
-            if i == len(values_1) - 1:
-                for float_display_value in data_list_1:
-                        formatted_data.append(float_display_value['address'] )
+            #     print(data_list_1)
+            # if i == len(values_1) - 1:
+            #     for float_display_value in data_list_1:
+            #             formatted_data.append(float_display_value['address'] )
 
-                for item in formatted_data:
+            #     for item in formatted_data:
                     
-                    # print(item)
-                    test = get_address_test_from_database(evc_type,item)
+            #         # print(item)
+            #         test = get_address_test_from_database(evc_type,item)
                     # break
                     # print(test)
                     
@@ -2741,9 +2741,9 @@ def get_type_value_from_database_billing(address,evc_type):
 
 
 
-def get_description_from_database(address_from_db):
-    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address_from_db order by address DESC"
-    params = {"address_from_db": address_from_db}
+def get_description_from_database(address):
+    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address order by address DESC"
+    params = {"address": address}
     result = fetch_data(query, params)
     return result[0][0] if result else None
 
@@ -2770,9 +2770,9 @@ def get_address_test_from_database(evc_type,item):
 
     return result[0][0] if result else None
 
-def get_type_value_from_database(address_from_db,evc_type):
-    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address_from_db AND evc_type = :evc_type ORDER BY or_der" 
-    result = fetch_data(query, params={"address_from_db": address_from_db , "evc_type" :evc_type })
+def get_type_value_from_database(address,evc_type):
+    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type = :evc_type ORDER BY or_der" 
+    result = fetch_data(query, params={"address": address , "evc_type" :evc_type })
     
     
     if result:
