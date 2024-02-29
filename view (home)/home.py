@@ -303,7 +303,9 @@ def get_tags():
 @app.route("/billing_data")
 def billing_data():
     print("Active Connection:", active_connection)
-    with connect_to_amr_db() as amr_connection:
+    # with connect_to_amr_db() as amr_connection:
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+    #with connect_to_ptt_pivot as 
         query_type = request.args.get("query_type")
 
 
@@ -320,8 +322,9 @@ def billing_data():
         """
 
         # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(ptt_pivot_connection,region_query)
         region_options = [str(region[0]) for region in region_results]
+        
 
         query = ""
         print(query)
@@ -358,7 +361,7 @@ def billing_data():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
+                TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
                 
                 amr_configured_data.amr_config1,
                 amr_configured_data.amr_config2,
@@ -428,11 +431,11 @@ def billing_data():
         selected_region = request.args.get("region_dropdown")
 
         # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(ptt_pivot_connection,region_query)
         region_options = [str(region[0]) for region in region_results]
 
         # Fetch tag options based on the selected region
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_id": selected_region})
+        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
         tag_options = [str(tag[0]) for tag in tag_results]
 
         if selected_date:
@@ -458,7 +461,7 @@ def billing_data():
 
         if selected_region:
             # Use fetch_data function to retrieve data
-            results = fetch_data(amr_connection,query)
+            results = fetch_data(ptt_pivot_connection,query)
 
             if query_type == "daily_data":
                 # Use pandas to create a DataFrame for daily_data
@@ -478,6 +481,7 @@ def billing_data():
                 )
                 # Get the selected Meter ID before removing it from the DataFrame
                 selected_meter_id = df["METER_ID"].iloc[0]
+                
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -720,9 +724,10 @@ def billing_data():
                 dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
                 df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-                print(df.columns)
+                
+                
                 # Get the selected Meter ID before removing it from the DataFrame
+                ##!!!! Detact if empty 
                 selected_meter_id = df["METER_ID"].iloc[0]
 
                 # Now, remove the "METER_ID" column from the DataFrame
@@ -732,7 +737,8 @@ def billing_data():
                 df = df.apply(
                     lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
                 )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+                #df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+                
 
                 df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
                 # Sort DataFrame by 'DATA_DATE'
@@ -750,7 +756,20 @@ def billing_data():
                     "daily_data": None,
                     
                 }
-
+                
+                query_day = """
+                SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-01-01', 'YYYY-MM-DD')) AS Date1
+                FROM DUAL
+                CONNECT BY LEVEL <= (TO_DATE('2024-01-31', 'YYYY-MM-DD') - TO_DATE('2024-01-01', 'YYYY-MM-DD')+1)
+                """
+                query_day_result = fetch_data(ptt_pivot_connection,query_day)
+                df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+                #print("query_day97", df_month_list)
+                #print(df_run1)
+                #df22 = FillFullMonth(df_run1, 1)
+                merged_df = pd.merge(df_month_list, df_run1, on='DATA_DATE', how='outer')
+                print(merged_df)
+                df_run1 = merged_df
                 common_table_properties = {"classes": "data", "index": False,"header":None}
 
                 if not df_run1.empty:
@@ -4071,3 +4090,15 @@ def page_not_found(e):
 #     session.clear()       # remove the user and auth token from the session if it exists
 #     flash('You were logged out', 'info')
 #     return redirect(url_for('login'))   # send them back to the sign in page
+
+# def FillFullMonth(df, run_no):
+#     pass
+    #Get month
+    # for 1 to today
+    #   if ddf.log['datadate'] ไม่มีข้อมูลวันที่นี้ 
+    #       สร้าง series ["DATE", N/A, N/A ,....., runno]
+    #       ใส่ เข้าไป 
+    #  sort
+    #  return df
+    #
+    
