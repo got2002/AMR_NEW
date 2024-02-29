@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .login-button {
+        background-color: #4caf50;
+        /* Green */
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        /* font-size: 16px;
+        margin: 4px 2px; */
+        cursor: pointer;
+    }
+
+    /* Define your styles for the Clear button */
+    .clear-button {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        /* font-size: 16px;
+        margin: 4px 2px; */
+        cursor: pointer;
+    }
+
+    /* Define your styles for the Clear button when hovered over */
+    .clear-button:hover {
+        background-color: #d32f2f;
+    }
+
+    .logo {
+        display: grid;
+        place-items: center;
+        /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
+        /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
+        height: center;
+        /* ตัวอย่างเท่านี้โลโก้จะปรับขนาดเพื่อแสดงในความสูง 100px */
+    }
+</style>
+
+<body>
+
+
+    <form method="post" action="{{ url_for('login') }}">
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit" class="login-button">Login</button>
+        <button type="reset" class="clear-button">Clear</button>
+    </form>
+</body>
+
+</html>
