@@ -1,30 +1,39 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
 import cx_Oracle
+import sqlite3
 
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Database connection parameters
-# username = 'AMR_DB'
-# password = 'AMR_DB'
-# hostname = '10.104.240.26'
-# port = '1521'
-# sid = "AMR"
+######################### connection AMR_DB ###############################
+amr_db_params = {
+    "username": 'AMR_DB',
+    "password": 'AMR_DB',
+    "hostname": '10.104.240.26',
+    "port": '1521',
+    "sid": "AMR"
+}
 
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
-port = "1521"
-service_name = "orcl"
+# root_params = {
+#     "username": 'root',
+#     "password": 'root',
+#     "hostname": '192.168.102.192',
+#     "port": '1521',
+#     "service_name": "orcl"
+# }
 
-dsn = cx_Oracle.makedsn(hostname, port, service_name)
+# Choose the database connection parameters based on your requirements
+selected_params = amr_db_params  # Change this to switch between databases
+print("aaaa", selected_params)
+
+dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
 
 try:
     connection_info = {
-        "user": username,
-        "password": password,
+        "user": selected_params["username"],
+        "password": selected_params["password"],
         "dsn": dsn,
         "min": 1,
         "max": 5,
@@ -34,10 +43,44 @@ try:
 
     connection_pool = cx_Oracle.SessionPool(**connection_info)
     connection = connection_pool.acquire()
-    print("Success")
+    print("Connection to AMR_DB successful.")
 except cx_Oracle.Error as e:
     (error,) = e.args
     print("Oracle Error:", error)
+######################### connection AMR_DB ###############################
+
+
+######################### connection PTT_PIVOT ###############################
+# ptt_pivot_params = {
+#     "username": "PTT_PIVOT",
+#     "password": "PTT_PIVOT",
+#     "hostname": "10.100.56.3",
+#     "port": "1521",
+#     "service_name": "PTTAMR_MST"
+# }
+
+# dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+
+# try:
+#     connection_info = {
+#         "user": ptt_pivot_params["username"],
+#         "password": ptt_pivot_params["password"],
+#         "dsn": dsn,
+#         "min": 1,
+#         "max": 5,
+#         "increment": 1,
+#         "threaded": True
+#     }
+
+#     connection_pool = cx_Oracle.SessionPool(**connection_info)
+#     connection = connection_pool.acquire()
+#     print("Connection to PTT_PIVOT successful.")
+    
+# except cx_Oracle.Error as e:
+#     (error,) = e.args
+#     print("Oracle Error:", error)
+
+######################### connection PTT_PIVOT ###############################
 
 def fetch_data(query, params=None):
     try:
@@ -49,14 +92,14 @@ def fetch_data(query, params=None):
             results = cursor.fetchall()
         return results
     except cx_Oracle.Error as e:
-        error, = e.args
+        (error,) = e.args
         print("Oracle Error:", error)
         return []
 
 def fetch_user_data(username):
     query = """
         SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL"
-        FROM "ROOT"."AMR_USER_TESTS"
+        FROM AMR_USER
         WHERE "USER_NAME" = :username
     """
     params = {'username': username}
@@ -82,9 +125,9 @@ def login():
         # Query to fetch user data from the database
         query = """
             SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL"
-            FROM "ROOT"."AMR_USER_TESTS"
+            FROM AMR_USER
             WHERE "USER_NAME" = :entered_username
-            AND amr_user_tests.user_enable like '1'
+            AND amr_user.user_enable like '1'
         """
         params = {'entered_username': entered_username}
         user_data = fetch_data(query, params)
