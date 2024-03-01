@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASGS HOME</title>
 
-    <!-- Stylesheet -->
-    <!-- <link rel="stylesheet" href="/HOME (Doing Here)/templates/Css/home.css"> -->
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write EVC</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Bootstrap Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Stylesheet -->
+  <!-- <link rel="stylesheet" href="write_config.css"> -->
 
-    <!-- Bootstrap Datepicker Stylesheet and Script -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Bootstrap Datepicker Stylesheet and Script -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
 <style>
   @font-face {
@@ -31,271 +33,91 @@
     font-weight: bold;
     font-style: normal;
   }
-  
+
   body {
-    background-image: linear-gradient(to right, #5b707e, #abb2b9);
+    background: #909090;
     font-family: "PTT45Pride-Bold", sans-serif;
-    font-weight: 600;
-    max-width: 100vw;
-  }
-  
-  
-  h1 {
-    color: #333;
-    padding: 3%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -55px;
-  }
-  
-  
-  .text-box-group {
-    width: 90%;
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: auto;
-    margin-top: -30%;
-    margin-bottom: 20px;
-    z-index: 5;
-    margin-left: 23%;
-  }
-  
-  label {
-    display:  inline;
-    text-align: left;
-    font-size:  14pt/1.5;
-    line-height: 1.5em;
-    color: #333;
-    margin-bottom: 30px;
     font-weight: bold;
-    font-size: small;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  select {
+
+  .form-group label {
+    margin-bottom: 100px;
+
+  }
+
+  .container-fluid {
+    margin-top: -50px;
+  }
+
+  .table-responsive {
+    margin-top: auto;
+  }
+
+
+
+  form {
+    margin: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+    width: 100%;
+    padding: 3px;
+  }
+
+  input {
+    width: 20%;
     padding: 5px;
+    margin-top: 0px;
+    margin-bottom: 30px;
     box-sizing: border-box;
-    width: 8.2%;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-  
-  input[type="checkbox"] {
-    margin-right: 5px;
-  }
-
-  input[type="text"],textarea {
-    width: 95px;
-    height: 30px;
-    padding: 7px 9px;
-    outline: none;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    transition: all .3s ease;
-    padding: 5px;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-  }
-  
-  /* テキストエリアは高さを自動で調整する */
-  textarea{
-    resize: vertical;
-  }
-  
-  /* フォーカス時の境界線色と文字色 */
-  input:focus,textarea:focus {
-    border-color: #aaa;
+    border-radius: 4px;
     color: #555;
   }
-  
-  /* エラー時のスタイル */
-  .error {
-    border-color: red;
+
+  .mcd-menu li:hover>a i,
+  .mcd-menu li:hover a strong,
+  .mcd-menu li:hover a small {
+    animation: moveFromTop 500ms ease-in-out;
   }
 
-
-::-webkit-input-placeholder,
-:-moz-placeholder,
-::-ms-input-placeholder,
-:focus::-webkit-input-placeholder {
-  /* Chrome/Eira, Firefox */
-  display: inline-block;
-  margin-bottom: 30px;
-  font-weight: bold;
-  
-}
-
-::-moz-placeholder {
-  /* Older Firefox */
-  display: inline-block;
-  margin-bottom: 30px;
-  font-weight: bold;
-}
-
-:-ms-input-placeholder {
-  /* IE10+ */
-  display: inline-block;
-  margin-bottom: 30px;
-  font-weight: bold;
-  
-}
-
-  h2 {
-    color: #333;
-    padding: 3%;
+  .nav-links {
     display: flex;
-    align-items: left;
-    justify-content: left;
-    margin-top: -20px;
+    gap: 20px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: -30%;
+    }
+
+    .nav-links {
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 
 
-  #run_dropdown,
-  #region_dropdown,
-  #tag_dropdown {
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #3498db; /* Updated border color */
-      border-radius: 5px; /* Slightly increased border-radius for a softer look */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added a subtle box shadow */
-      width: 200px;
-      background-color: #fff; /* Set background color to white */
-      color: #333; /* Set text color */
-      transition: border-color 0.3s, box-shadow 0.3s; /* Added smooth transition */
-  }
-  
-  #run_dropdown:hover,
-  #region_dropdown:hover,
-  #tag_dropdown:hover {
-      border-color: #2980b9; /* Change border color on hover */
-  }
-  
-  #run_dropdown:focus,
-  #region_dropdown:focus,
-  #tag_dropdown:focus {
-      outline: none; /* Remove the default outline on focus */
-      border-color: #3498db; /* Change border color on focus */
-      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Add a subtle box shadow on focus */
-  }
-  
-  #statusMessage {
-    margin-top: 15px;
-    color: #4caf50;
-    font-weight: bold;
-  }
-  
-  .link-button {
-    display: inline-block;
-    margin-top: 15px;
-    text-decoration: none;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    border-radius: 5px;
-  }
-  
-
-  
-
-  
-  .custom-btn {
-    margin: auto;
-    color: #fff;
-    width: 140px;
-    height: 40px;
-    padding: 10px 25px;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
+  nav {
+    padding: 20px;
+    max-width: min-content;
+    margin-top: 9%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    border-radius: 5px;
   }
-  
-  /* 1 */
-  .btn-1 {
-    border: none;
-    background-color: #333;
-    box-shadow: 0 0 5px #333;
-  }
-  
-  .btn-1:hover {
-    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
-  }
-  
-  /* 1 */
-  .btn-2 {
-    border: none;
-    background-color: #4caf50;
-    box-shadow: 0 0 5px #4caf50;
-  }
-  
-  .btn-2:hover {
-    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
-  }
-  
-  .clearfix:before,
-  .clearfix:after {
-    content: " ";
-    display: table;
-  }
-  
-  .clearfix:after {
-    clear: both;
-  }
-  
-  .clearfix {
-    zoom: 1px;
-  }
-  
-  .container {
-    position: relative;
-    margin: 0px 0px 0px left;
-    padding: 0;
-    clear: both;
-    margin-top: 150px;
-  }
-  
-  @media only screen and (min-width: 1200px) {
-    .container {
-      width: 1210px;
-    }
-  }
-  
-  @media only screen and (min-width: 960px) and (max-width: 1199px) {
-    .container {
-      width: 1030px;
-    }
-  }
-  
-  @media only screen and (min-width: 768px) and (max-width: 959px) {
-    .container {
-      width: 682px;
-    }
-  }
-  
-  @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .container {
-      width: 428px;
-      margin: 0 auto;
-    }
-  }
-  
-  @media only screen and (max-width: 479px) {
-    .container {
-      width: 320px;
-      margin: 0 auto;
-    }
-  }
-  
+
   .mcd-menu {
+    font-size: large;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -305,73 +127,81 @@
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     /* == */
-    width: 250px;
+    width: 260px;
     /* == */
     max-width: 1880px;
-
+    border-radius: 5%;
+    border-top: #0055ff solid 5px;
+    border-bottom: #0055ff solid 5px;
+    filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244));
+    z-index: 999;
   }
-  
+
   .mcd-menu li {
     position: relative;
     /*float:left;*/
+    width: 260px;
   }
-  
+
   .mcd-menu li a {
     display: block;
     text-decoration: none;
     padding: 12px 20px;
     color: #777;
-    /*text-align: center;
-    border-right: 1px solid #E7E7E7;*/
+    text-align: center;
+
+
     /* == */
     text-align: left;
     height: 36px;
     position: relative;
-    border-bottom: 1px solid #eee;
+
     /* == */
   }
-  
+
   .mcd-menu li a i {
     /*display: block;
-    font-size: 30px;
-    margin-bottom: 10px;*/
-  
+          font-size: 30px;
+          margin-bottom: 10px;*/
+
     /* == */
     float: left;
     font-size: 20px;
     margin: 0 10px 0 0;
     /* == */
   }
-  
+
   /* == */
   .mcd-menu li a p {
     float: left;
     margin: 0;
   }
+
   /* == */
-  
+
   .mcd-menu li a strong {
     display: block;
     text-transform: uppercase;
+    padding: 2%;
   }
-  
+
   .mcd-menu li a small {
     display: block;
     font-size: 10px;
   }
-  
+
   .mcd-menu li a i,
   .mcd-menu li a strong,
   .mcd-menu li a small {
     position: relative;
-  
     transition: all 300ms linear;
     -o-transition: all 300ms linear;
     -ms-transition: all 300ms linear;
     -moz-transition: all 300ms linear;
     -webkit-transition: all 300ms linear;
   }
-  .mcd-menu li:hover > a i {
+
+  .mcd-menu li:hover>a i {
     opacity: 1;
     -webkit-animation: moveFromTop 300ms ease-in-out;
     -moz-animation: moveFromTop 300ms ease-in-out;
@@ -379,6 +209,7 @@
     -o-animation: moveFromTop 300ms ease-in-out;
     animation: moveFromTop 300ms ease-in-out;
   }
+
   .mcd-menu li:hover a strong {
     opacity: 1;
     -webkit-animation: moveFromLeft 300ms ease-in-out;
@@ -387,6 +218,7 @@
     -o-animation: moveFromLeft 300ms ease-in-out;
     animation: moveFromLeft 300ms ease-in-out;
   }
+
   .mcd-menu li:hover a small {
     opacity: 1;
     -webkit-animation: moveFromRight 300ms ease-in-out;
@@ -395,36 +227,38 @@
     -o-animation: moveFromRight 300ms ease-in-out;
     animation: moveFromRight 300ms ease-in-out;
   }
-  
-  .mcd-menu li:hover > a {
+
+  .mcd-menu li:hover>a {
     color: #2e6ff2;
   }
+
   .mcd-menu li a.active {
     position: relative;
     color: #2e6ff2;
     border: 0;
     /*border-top: 4px solid #e67e22;
-    border-bottom: 4px solid #e67e22;
-    margin-top: -4px;*/
+          border-bottom: 4px solid #e67e22;
+          margin-top: -4px;*/
     box-shadow: 0 0 5px #ddd;
     -moz-box-shadow: 0 0 5px #ddd;
     -webkit-box-shadow: 0 0 5px #ddd;
-  
+
     /* == */
     border-left: 4px solid #2e6ff2;
     border-right: 4px solid #2e6ff2;
     margin: 0 -4px;
     /* == */
   }
+
   .mcd-menu li a.active:before {
     content: "";
     position: absolute;
     /*top: 0;
-    left: 45%;
-    border-top: 5px solid #e67e22;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;*/
-  
+        left: 45%;
+        border-top: 5px solid #e67e22;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;*/
+
     /* == */
     top: 42%;
     left: 0;
@@ -433,7 +267,7 @@
     border-bottom: 5px solid transparent;
     /* == */
   }
-  
+
   /* == */
   .mcd-menu li a.active:after {
     content: "";
@@ -444,8 +278,9 @@
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
   }
+
   /* == */
-  
+
   @keyframes moveFromTop {
     from {
       opacity: 0;
@@ -455,6 +290,7 @@
       -o-transform: translateY(200%);
       transform: translateY(200%);
     }
+
     to {
       opacity: 1;
       -webkit-transform: translateY(0%);
@@ -464,6 +300,7 @@
       transform: translateY(0%);
     }
   }
+
   @keyframes moveFromLeft {
     from {
       opacity: 0;
@@ -473,6 +310,7 @@
       -o-transform: translateX(200%);
       transform: translateX(200%);
     }
+
     to {
       opacity: 1;
       -webkit-transform: translateX(0%);
@@ -482,6 +320,7 @@
       transform: translateX(0%);
     }
   }
+
   @keyframes moveFromRight {
     from {
       opacity: 0;
@@ -491,6 +330,7 @@
       -o-transform: translateX(-200%);
       transform: translateX(-200%);
     }
+
     to {
       opacity: 1;
       -webkit-transform: translateX(0%);
@@ -500,7 +340,7 @@
       transform: translateX(0%);
     }
   }
-  
+
   .mcd-menu li ul,
   .mcd-menu li ul li ul {
     position: absolute;
@@ -519,22 +359,24 @@
     -webkit-transition: all 300ms linear;
     /*top: 130px;*/
     z-index: 1000;
-  
+
     /* == */
     left: 280px;
     top: 0px;
     border-left: 4px solid #2e6ff2;
     /* == */
   }
+
+
   .mcd-menu li ul:before {
     content: "";
     position: absolute;
     /*top: -8px;
-    left: 23%;
-    border-bottom: 5px solid #e67e22;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;*/
-  
+        left: 23%;
+        border-bottom: 5px solid #e67e22;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;*/
+
     /* == */
     top: 25px;
     left: -9px;
@@ -543,20 +385,22 @@
     border-top: 5px solid transparent;
     /* == */
   }
-  .mcd-menu li:hover > ul,
-  .mcd-menu li ul li:hover > ul {
+
+  .mcd-menu li:hover>ul,
+  .mcd-menu li ul li:hover>ul {
     display: block;
     opacity: 1;
     visibility: visible;
     /*top: 100px;*/
-  
+
     /* == */
-    left: 250px;
+    left: 260px;
     /* == */
   }
+
   /*.mcd-menu li ul li {
-    float: none;
-  }*/
+        float: none;
+      }*/
   .mcd-menu li ul li a {
     padding: 10px;
     text-align: left;
@@ -569,17 +413,21 @@
     height: auto;
     /* == */
   }
+
   .mcd-menu li ul li a i {
     font-size: 16px;
     display: inline-block;
     margin: 0 10px 0 0;
+
   }
+
   .mcd-menu li ul li ul {
-    left: 230px;
+    left: 290px;
     top: 0;
     border: 0;
     border-left: 4px solid #2e6ff2;
   }
+
   .mcd-menu li ul li ul:before {
     content: "";
     position: absolute;
@@ -592,135 +440,121 @@
     border-bottom: 5px solid transparent;
     border-top: 5px solid transparent;
   }
-  .mcd-menu li ul li:hover > ul {
+
+  .mcd-menu li ul li:hover>ul {
     top: 0px;
-    left: 200px;
+    left: 260px;
   }
-  
+
   /*.mcd-menu li.float {
-    float: right;
-  }*/
-  .mcd-menu li a.search {
-    /*padding: 29px 20px 30px 10px;*/
-    padding: 10px 10px 15px 10px;
-    clear: both;
+        float: right;
+      }*/
+
+
+  .mcd-menu li a i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
-  .mcd-menu li a.search i {
-    margin: 0;
-    display: inline-block;
-    font-size: 18px;
+
+  .mcd-menu li a:focus i,
+  .mcd-menu li a:hover i,
+  .mcd-menu li.active a i {
+    color: #3498db;
+    font-size: 1.5em;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
-  .mcd-menu li a.search input {
-    border: 1px solid #eee;
-    padding: 10px;
-    background: #fff;
-    outline: none;
-    color: #777;
-  
-    /* == */
-    width: 170px;
-    float: left;
-    /* == */
-  }
-  .mcd-menu li a.search button {
-    border: 1px solid #2e6ff2;
-    /*padding: 10px;*/
-    background: #2e6ff2;
-    outline: none;
-    color: #fff;
-    margin-left: -4px;
-  
-    /* == */
-    float: left;
-    padding: 10px 10px 11px 10px;
-    /* == */
-  }
-  .mcd-menu li a.search input:focus {
-    border: 1px solid #2e6ff2;
-  }
-  
-  .search-mobile {
-    display: none !important;
-    background: #2e6ff2;
-    border-left: 1px solid #2e6ff2;
-    border-radius: 0 3px 3px 0;
-  }
-  .search-mobile i {
-    color: #fff;
-    margin: 0 !important;
-  }
-  
+
+
   @media only screen and (min-width: 960px) and (max-width: 1199px) {
     .mcd-menu {
       margin-left: 10px;
     }
   }
-  
+
   @media only screen and (min-width: 768px) and (max-width: 959px) {
     .mcd-menu {
       width: 200px;
     }
+
     .mcd-menu li a {
       height: 30px;
     }
+
     .mcd-menu li a i {
       font-size: 22px;
     }
+
     .mcd-menu li a strong {
       font-size: 12px;
     }
+
     .mcd-menu li a small {
       font-size: 10px;
     }
+
     .mcd-menu li a.search input {
       width: 120px;
       font-size: 12px;
     }
+
     .mcd-menu li a.search button {
       padding: 8px 10px 9px 10px;
     }
-    .mcd-menu li > ul {
+
+    .mcd-menu li>ul {
       min-width: 180px;
     }
-    .mcd-menu li:hover > ul {
+
+    .mcd-menu li:hover>ul {
       min-width: 180px;
       left: 200px;
     }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
+
+    .mcd-menu li ul li>ul,
+    .mcd-menu li ul li ul li>ul {
       min-width: 150px;
     }
-    .mcd-menu li ul li:hover > ul {
+
+    .mcd-menu li ul li:hover>ul {
       left: 180px;
       min-width: 150px;
     }
-    .mcd-menu li ul li ul li:hover > ul {
+
+    .mcd-menu li ul li ul li:hover>ul {
       left: 150px;
       min-width: 150px;
     }
+
     .mcd-menu li ul a {
       font-size: 12px;
     }
+
     .mcd-menu li ul a i {
       font-size: 14px;
     }
   }
-  
+
   @media only screen and (min-width: 480px) and (max-width: 767px) {
     .mcd-menu {
       width: 50px;
     }
+
     .mcd-menu li a {
       position: relative;
       padding: 12px 16px;
       height: 20px;
     }
+
     .mcd-menu li a small {
       display: none;
     }
+
     .mcd-menu li a strong {
       display: none;
     }
+
     .mcd-menu li a:hover strong,
     .mcd-menu li a.active strong {
       display: block;
@@ -736,33 +570,39 @@
       font-weight: normal;
       text-align: center;
     }
+
     .mcd-menu li .search {
       display: none;
     }
-  
-    .mcd-menu li > ul {
+
+    .mcd-menu li>ul {
       min-width: 180px;
       left: 70px;
     }
-    .mcd-menu li:hover > ul {
+
+    .mcd-menu li:hover>ul {
       min-width: 180px;
       left: 50px;
     }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
+
+    .mcd-menu li ul li>ul,
+    .mcd-menu li ul li ul li>ul {
       min-width: 150px;
     }
-    .mcd-menu li ul li:hover > ul {
+
+    .mcd-menu li ul li:hover>ul {
       left: 180px;
       min-width: 150px;
     }
-    .mcd-menu li ul li ul li > ul {
+
+    .mcd-menu li ul li ul li>ul {
       left: 35px;
       top: 45px;
       border: 0;
       border-top: 4px solid #2e6ff2;
     }
-    .mcd-menu li ul li ul li > ul:before {
+
+    .mcd-menu li ul li ul li>ul:before {
       left: 30px;
       top: -9px;
       border: 0;
@@ -770,34 +610,41 @@
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
     }
-    .mcd-menu li ul li ul li:hover > ul {
+
+    .mcd-menu li ul li ul li:hover>ul {
       left: 30px;
       min-width: 150px;
       top: 35px;
     }
+
     .mcd-menu li ul a {
       font-size: 12px;
     }
+
     .mcd-menu li ul a i {
       font-size: 14px;
     }
   }
-  
+
   @media only screen and (max-width: 479px) {
     .mcd-menu {
       width: 50px;
     }
+
     .mcd-menu li a {
       position: relative;
       padding: 12px 16px;
       height: 20px;
     }
+
     .mcd-menu li a small {
       display: none;
     }
+
     .mcd-menu li a strong {
       display: none;
     }
+
     .mcd-menu li a:hover strong,
     .mcd-menu li a.active strong {
       display: block;
@@ -813,33 +660,39 @@
       font-weight: normal;
       text-align: center;
     }
+
     .mcd-menu li .search {
       display: none;
     }
-  
-    .mcd-menu li > ul {
+
+    .mcd-menu li>ul {
       min-width: 180px;
       left: 70px;
     }
-    .mcd-menu li:hover > ul {
+
+    .mcd-menu li:hover>ul {
       min-width: 180px;
       left: 50px;
     }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
+
+    .mcd-menu li ul li>ul,
+    .mcd-menu li ul li ul li>ul {
       min-width: 150px;
     }
-    .mcd-menu li ul li:hover > ul {
+
+    .mcd-menu li ul li:hover>ul {
       left: 180px;
       min-width: 150px;
     }
-    .mcd-menu li ul li ul li > ul {
+
+    .mcd-menu li ul li ul li>ul {
       left: 35px;
       top: 45px;
       border: 0;
       border-top: 4px solid #2e6ff2;
     }
-    .mcd-menu li ul li ul li > ul:before {
+
+    .mcd-menu li ul li ul li>ul:before {
       left: 30px;
       top: -9px;
       border: 0;
@@ -847,35 +700,24 @@
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
     }
-    .mcd-menu li ul li ul li:hover > ul {
+
+    .mcd-menu li ul li ul li:hover>ul {
       left: 30px;
       min-width: 150px;
       top: 35px;
     }
+
     .mcd-menu li ul a {
       font-size: 12px;
     }
+
     .mcd-menu li ul a i {
       font-size: 14px;
     }
   }
-  
-  footer {
-    background-color: #2e6ff2;
-    color: white;
-    text-align: left;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    box-shadow: 0 0 5px #ddd;
-    -moz-box-shadow: 0 0 5px #ddd;
-    -webkit-box-shadow: 0 0 5px #ddd;
-  }
-  
+
   .top-bar {
-    background-color: #2e6ff2;
+    background-image: linear-gradient(0deg, #0055ff, #469ff7, #0055ff);
     color: #fff;
     padding: 10px 10px;
     width: 100%;
@@ -886,411 +728,882 @@
     box-shadow: 0 0 5px #ddd;
     -moz-box-shadow: 0 0 5px #ddd;
     -webkit-box-shadow: 0 0 5px #ddd;
-    z-index: 2;
+    z-index: 99999;
+    border-bottom: #ddd solid 3px;
   }
-  
-  .container-top {
-    max-width: 1880px;
+
+
+  footer {
+    align-items: right;
+    background-color: #2e6ff2;
+    color: white;
+    text-align: right;
+    padding: 8px;
+    position: fixed;
+    bottom: 0;
+    left: -13px;
     width: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: 0 0 5px #ddd;
+    -moz-box-shadow: 0 0 5px #ddd;
+    -webkit-box-shadow: 0 0 5px #ddd;
+    font-size: small;
+    border-top: #ddd solid 3px;
+    z-index: 6;
   }
-  
+
+  th,
+  td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  .disabled {
+    color: red;
+  }
+
   .logo {
     width: 95px;
     padding: 0px;
     margin: 0px;
     display: flex;
-    margin-top: -25px;
+    margin-top: 0px;
+    margin-left: 30%;
+    filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255))
   }
-  .Automatic {
-    font-size: 35px;
-    font-weight: bold;
-    font-family: "IBM Plex Sans Thai Looped", sans-serif;
-    padding: 0px;
-    margin-top: -25px;
+
+  .logout,
+  .back-button,
+  .forward-button {
+
+    position: fixed;
+    top: 110px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 10px;
+    outline: none;
+    z-index: 999;
+    filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
   }
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
+
+  .back-button {
+    right: 110px;
   }
-  
-  .navbar li {
-    margin-right: 20px;
+
+  .forward-button {
+    right: 5px;
   }
-  
-  .navbar a {
+
+  .logout {
+    right: 5px;
+    margin-top: -7%;
+    font-size: large;
+  }
+
+  .logout a,
+  .back-button a,
+  .forward-button a {
+    width: 61px;
+    color: white;
     text-decoration: none;
-    color: #fff;
+    padding: 4px 16px;
     font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease-in-out;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    display: inline-block;
+    background: linear-gradient(to bottom, #2e6ff2, #4571a0);
+    box-shadow: 0 4px 8px rgba(120, 190, 244);
+    transform-style: preserve-3d;
   }
-  
-  .navbar a:hover {
-    color: #8f8f8f;
+
+  .logout a:hover,
+  .back-button a:hover,
+  .forward-button a:hover {
+    background: linear-gradient(to bottom, #2e6ff2, #4571a0);
+    transform: translateY(-2px) rotateX(10deg);
+    /* เพิ่ม rotateX */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
-  
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
+
+  .logout a::before,
+  .back-button a::before,
+  .forward-button a::before {
+    font-size: smaller;
+    margin-right: 4px;
   }
-  
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
+
+  .logout i,
+  .back-button i,
+  .forward-button i {
+    font-size: larger;
+    transition: transform 0.3s;
   }
-  
 
-.form-group label {
-    margin-bottom: 20px;
-}
+  .logout i {
+    margin-right: 10%;
+  }
 
-.container-fluid {
-    margin-top: -50px;
-}
+  .back-button i {
+    margin-right: 10%;
+  }
 
-.table-responsive {
-    margin-top: auto;
-}
+  .forward-button i {
+    margin-left: 10%;
+  }
 
-table {
-    text-align: center;
+  .btn-shine {
+    position: relative;
+    left: 0;
+    padding: 12px 50px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 60px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .container {
+    position: relative;
+    margin: 0px 0px 0px left;
+    padding: 0;
+    clear: both;
+    margin-top: -40px;
+    margin-left: -1%;
+  }
+
+  .box_we {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
 
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
+    margin: auto;
+    z-index: 5;
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .container-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .container-menu label {
+    color: #333;
+    margin-right: 10px;
+    width: 120px;
+  }
+
+  .container-menu select,
+  .container-menu input {
+    background-color: #fff;
+    color: #333;
     padding: 8px;
-}
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
 
-th {
-    background-color: #f2f2f2;
-}
 
-input[type="checkbox"] {
-    margin-right: 5px;
-}
+  }
 
-.disabled {
-    color: red;
-}
+  .textbox-container {
+    position: relative;
+    width: 70%;
+    margin: auto;
+    margin-top: -540px;
+    margin-bottom: 20px;
+    margin-left: 22%;
+    height: 100%;
+    background-color: #FFFFFF;
+    border: 2px solid #b7b7b7;
+    box-shadow: 0 5px 15px rgba(29, 89, 251, 0.3);
+    color: #040506;
+    border-radius: 15px;
+    overflow: hidden;
+    z-index: 1;
+  }
 
-.communication-traffic {
+  .outer {
+    background: #b4b4b4;
+    opacity: 0.9;
+    width: 999.5px;
+    margin: 0px auto;
+    padding: 10px;
+    border-radius: 7px 7px 0px 0px;
+  }
+
+  .outer.dark {
+    background: #273138;
+  }
+
+  .outer.dark .dot {
+    background: #4a5c66;
+  }
+
+  .outer.yosemite {
+    background: #f6f6f6;
+    background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
+    background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
+    background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
+    border: 1px solid #d8d8d8;
+    border-bottom: 1px solid #b4b4b4;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #f9f9f9;
+    border-radius: 50%;
+    margin: 0 4px 0 0;
+  }
+
+  .dot.red {
+    background: #FF6057;
+    border: 1px solid #E14640;
+  }
+
+  .dot.amber {
+    background: #FFBD2E;
+    border: 1px solid #DFA123;
+  }
+
+  .dot.green {
+    background: #27C93F;
+    border: 1px solid #1DAD2B;
+  }
+
+  .custom-btn {
+
+    color: #fff;
+    width: 130px;
+    height: 40px;
+    padding: 10px 25px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-bottom: -25px;
+  }
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .custom-btn {
+    /* รายละเอียดของ .custom-btn คงเดิม */
+    margin-left: 0px;
+    /* ระยะห่างด้านซ้าย */
+    margin-right: 0px;
+    /* ระยะห่างด้านขวา */
+  }
+
+
+
+
+
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
+
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+  }
+
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  /* 1 */
+  .btn-3 {
+    border: none;
+    background-color: #e1cd1c;
+    box-shadow: 0 0 5px #e1961c;
+  }
+
+  .btn-3:hover {
+    box-shadow: 0 0 10px #f0b350, 0 0 20px #e9a436, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  .container-menu input {
+    width: 100px;
+    /* ปรับขนาด input ตามที่ต้องการ */
+  }
+
+  .communication-traffic {
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
-}
+  }
 
-.communication-traffic div {
+  .communication-traffic div {
     width: 18%;
-}
+  }
 
-.table {
-    table-layout: fixed;
-    height: 100px; /* Set your desired height */
-}
-
-.table th, .table td {
+  td {
+    background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
+    height: 20px;
+    width: 55px;
+    align-items: center;
     text-align: center;
-}
+    font-size: small;
+    padding: 3px;
+    word-wrap: break-word;
+  }
 
-.form-group {
+  th {
+    background-color: #bcb9b9;
+    border: 2px solid #171717;
+    height: 40px;
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size: xx-small;
+    word-wrap: break-word;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: large;
+    table-layout: fixed;
+    margin-top: -10px;
+  }
+
+
+  th,
+  td {
+    font-size: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 60px;
+    padding: 3px;
+  }
+
+  .container-fluid {
+    margin-top: 100px;
+  }
+
+  .form-group {
     margin-bottom: 20px;
-}
+  }
 
+  label {
+    font-weight: bold;
+  }
 
-
-input[type="number"],
-select,
-input[type="text"] {
+  input[type="number"],
+  select,
+  input[type="text"] {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
+  }
 
-select {
+  select {
     height: 38px;
-}
+  }
 
-.row {
+  .row {
     display: flex;
     justify-content: center;
-}
+  }
 
-.col-sm-3 {
+  .col-sm-3 {
     flex: 0 0 25%;
     max-width: 25%;
-}
+  }
 
-.t {
+  .t {
     text-align: center;
-}
+  }
 
-.pt-4 {
+  .pt-4 {
     padding-top: 1.5rem !important;
-}
-.text-box-group {
-  width: 90%;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: auto;
-  margin-top: -30%;
-  margin-bottom: 10%;
-  z-index: 5;
-  margin-left: 23%;
-  
-}
+  }
 
-.container-fluid{
-    border: solid 1px #ddd;
-    background: #f9f9f9;
-    padding: 30px;
-    margin-top: 10px;
-    margin-bottom: 80px;
-}
+  #region_dropdown {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+  }
 
-form#filterForm {
+  #region_dropdown:hover {
+    border-color: #666;
+  }
 
-    flex-direction: line;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin: 0 auto;
+  #region_dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
 
-}
+  #region_dropdown option:hover {
+    background-color: #f2f2f2;
+  }
 
+
+  #tag_dropdown {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #tag_dropdown:hover {
+    border-color: #666;
+  }
+
+  #tag_dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  #tag_dropdown option:hover {
+    background-color: #f2f2f2;
+  }
+
+
+  #run_dropdown {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #run_dropdown:hover {
+    border-color: #666;
+  }
+
+  #run_dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  #run_dropdown option:hover {
+    background-color: #f2f2f2;
+  }
+
+  #starting_address {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #starting_address:hover {
+    border-color: #666;
+  }
+
+  #starting_address option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  #starting_address option:hover {
+    background-color: #f2f2f2;
+  }
+
+  #quantity {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  #quantity:hover {
+    border-color: #666;
+  }
+
+  #quantity option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  #quantity option:hover {
+    background-color: #f2f2f2;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+
+    width: 100%;
+  }
+
+  .communication-traffic h3 {
+    color: #6a6b6c;
+    /* Bootstrap primary color */
+  }
 </style>
+
 <body>
   <header class="top-bar">
-    <div class="container-top">
-        <div style="display: flex; align-items: center;">
-            <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                alt="PTT Public Company Limited Logo">
-            <span class="Automatic" style="margin-left: 10px;" alt="logo">Automatic Meter Reading (ASGS)</span>
-        </div>
-        <a href="" class="fas fa-sign-out-alt" style="margin-right:20px; margin-top: -95px; font-size: 15px;"
-            alt="logo">LOGOUT</a>
+    <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading</a>
+    <div class="back-button">
+      <a href="javascript:history.back()" style="text-decoration: none;">
+        <i class="fas fa-arrow-circle-left" style="margin-right: 27%;"></i> Back
+      </a>
     </div>
-</header>
-<div class="container">
+    <div class="forward-button">
+      <a href="javascript:history.forward()" style="text-decoration: none;">
+        Forward <i class="fas fa-arrow-circle-right" style="margin-left: 11%;"></i>
+      </a>
+    </div>
+    <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </header>
+  <div class="container">
     <nav>
-        <ul class="mcd-menu">
-          <ul class="mcd-menu">
-            <li>
-                <a href="{{ url_for('homeasgs') }}" class="active">
-                    <i class="fa fa-home"></i>
-                    <strong>Home</strong>
-                    <small>Back to Homepage</small>
-                </a>
-            </li>
-            <li>
-                <a>
-                    <i class="fa fa-database"></i>
-                    <strong>Reports</strong>
-                    <small>View </small>
-                </a>
-                <ul>
-                    <li><a href="{{ url_for('billing_data_asgs') }}"><i class="far fa-eye"></i>View Monthly Data</a></li>
-                    <li><a href="#"><i class="far fa-eye"></i>View EVC Status</a></li>
-                    <li><a href="Daily_summary"><i class="fas fa-file-alt"></i>Daily Summary</a></li>
-                    <li><a href="#"><i class="fas fa-file-alt"></i>Monthly Summery</a></li>
-                    <li><a href="sitedetail_data"><i class="far fa-file-alt"></i>Site Detail</a></li>
-                </ul>
-            </li>
-
-          <li>
-              <a>
-                  <i class="fas fa-clipboard-list"></i>
-                  <strong>Manage Users</strong>
-                  <small>Users</small>
-              </a>
-              <ul>
-                  <li><a href="{{ url_for('add_user_route') }}"><i class="fas fa-plus"></i>Add User</a></li>
-                  <li><a href="{{ url_for('edit_user_route') }}"><i class="fas fa-cogs"></i>Edit User</a></li>
-                  <li><a href="{{ url_for('remove_user_route') }}"><i class="fas fa-minus"></i>Remove User</a></li>
-              </ul>
-          </li>
-          <li>
-            <a>
-                <i class="fas fa-file-alt"></i>
-                <strong>Manage Sites</strong>
-                <small>Sites</small>
-            </a>
-            <ul>
-                <li><a href="#"><i class="fas fa-plus"></i>Add Site</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i>Edit Site</a></li>
-                <li><a href="#"><i class="fas fa-minus"></i>Remove Site</a></li>
-            </ul>
+      <ul class="mcd-menu">
+        <li>
+          <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+            alt="PTT Public Company Limited Logo">
         </li>
-          <li>
-            <a>
-                <i class="fas fa-wrench"></i>
-                <strong>Polling Setting</strong>
-                <small>Setting</small>
-            </a>
-            <ul>
-                <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>EVC Management</a></li>
-                <li><a href="#"><i class="fas fa-plus"></i>Polling Range Setting</a>
-                <ul>
-                  <li><a href="{{ url_for('polling_route') }}"><i class="fas fa-plus"></i>Polling</a></li>
-                  <li><a href="{{ url_for('add_polling_route') }}"><i class="fas fa-plus"></i>Add Polling</a></li>
-
-                  </ul>
-                  <li><a><i class="fas fa-plus"></i>Mapping Config</a>
-                    <ul>
-                        <li><a href="{{ url_for('add_mapping_route') }}"><i class="fas fa-plus"></i>Configuration Mapping</a></li>
-                        <li><a href="{{ url_for('update_mapping_billing') }}"><i class="fas fa-plus"></i>Daily Billing Mapping</a></li>
-                    </ul>
-                    <li><a href="{{ url_for('add_actraris_route') }}"><i class="fas fa-plus"></i>Hourly Billing Mapping</a></li>
-            </ul>
+        <li>
+          <a href="{{ url_for('home_amr') }}">
+            <i class="fa fa-home"></i>
+            <strong>Home</strong>
+            <small>Back to Homepage</small>
+          </a>
         </li>
-            <li>
-              <a>
-                  <i class="fas fa-search"></i>
-                  <strong>Polling Actions</strong>
-                  <small>Polling</small>
-              </a>
-              <ul>
-                  <li><a href="{{ url_for('read_data_write') }}"><i class="fa fa-globe"></i>Write Config</a></li>
-                  <li><a href=""><i class="fas fa-plus"></i>Write EVC (By Profile)</a></li>
-              </ul>
-          </li>
+        <li>
+          <a class="active">
+            <i class="fa fa-database"></i>
+            <strong>Reports</strong>
+            <small>View Data</small>
+          </a>
+          <ul>
+            <li><a href="{{ url_for('billing_data') }}"><i></i>- View Monthly Data</a></li>
+            <li><a href="#"><i></i>- View EVC Status</a></li>
+            <li><a href="#"><i></i>- Daily Summary</a></li>
+            <li><a href="#"><i></i>- Monthly Summery</a></li>
+            <li><a href="#"><i></i>- Site Detail</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            <i class="fas fa-clipboard-list"></i>
+            <strong>Manage Users</strong>
+            <small>Users</small>
+          </a>
+          <ul>
+            <li><a href="#"><i></i>- Add User</a></li>
+            <li><a href="#"><i></i>- Edit User</a></li>
+            <li><a href="#"><i></i>- Remove User</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            <i class="fas fa-file-alt"></i>
+            <strong>Manage Sites</strong>
+            <small>Sites</small>
+          </a>
+          <ul>
+            <li><a href="#"><i></i>- Add Site</a></li>
+            <li><a href="#"><i></i>- Edit Site</a></li>
+            <li><a href="#"><i></i>- Remove Site</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            <i class="fas fa-wrench"></i>
+            <strong>Polling Setting</strong>
+            <small>Setting</small>
+          </a>
+          <ul style="margin-top: -60%;">
+            <li><a href="#"><i></i>- EVC Management</a></li>
+            <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling Range Setting</a>
+
+            <li><a href="mapping_config"><i></i>- Configuration Mapping</a>
+
+            <li><a href="mapping_billing"><i></i>- Daily Billing Mapping</a>
+
+            <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            <i class="fas fa-search"></i>
+            <strong>Polling Actions</strong>
+            <small>Polling</small>
+          </a>
+          <ul>
+            <li><a href="Manualpoll_data"><i></i>- Manual poll (EVC Profile)</a></li>
+            <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
+          </ul>
+        </li>
+        <li style="margin-bottom: -5%;">
+          <a>
+          </a>
+        </li>
       </ul>
-  </nav>
-  <div class="text-box-group">
-    <form  class="container-fluid" id="filterForm" action="write_evc" method="get">
-        <label for="region_dropdown">Select Region:</label>
-        <select id="region_dropdown" name="region_dropdown">
+    </nav>
+  </div>
+  <div class="textbox-container">
+    <div class="outer yosemite" style="width: 100%;">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="box_we" style="margin-top: 3%;">
+      <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
+        <div class="container-menu">
+          <label for="region_dropdown">Select Region:</label>
+          <select id="region_dropdown" name="region_dropdown">
             <option value="">All Regions</option>
             {% for region_option in region_options %}
-            <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
+            <option value="{{ region_option }}" {% if region_option==selected_region %}selected{% endif %}>{{
+              region_option
+              }}</option>
             {% endfor %}
-        </select>
-        
-        <label for="tag_dropdown">Select Tag:</label>
-        <select id="tag_dropdown" name="tag_dropdown">
+          </select>
+
+          <label for="tag_dropdown">Select Tag:</label>
+          <select id="tag_dropdown" name="tag_dropdown">
             <option value="">All Tags</option>
             {% for tag_option in tag_options %}
-            <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
+            <option value="{{ tag_option }}" {% if tag_option==selected_tag %}selected{% endif %}>{{ tag_option }}
+            </option>
             {% endfor %}
-        </select>
-        
-        <label for="run_dropdown">Select Run:</label>
-        <select id="run_dropdown" name="run_dropdown">
+          </select>
+
+          <label for="run_dropdown">Select Run:</label>
+          <select id="run_dropdown" name="run_dropdown">
             <option value="">All Runs</option>
             {% for run_option in run_options %}
-                <option value="{{ run_option }}" {% if run_option == selected_run %}selected{% endif %}>{{ run_option }}</option>
+            <option value="{{ run_option }}" {% if run_option==selected_run %}selected{% endif %}>{{ run_option }}
+            </option>
             {% endfor %}
-        </select>
+          </select>
+        </div>
+        <div class="button-container">
+          <input class="custom-btn btn-1" type="submit" value="Submit">
+        </div>
+      </form>
+    </div>
 
-        <input class="custom-btn btn-2 "  type="submit" value="Submit">
-    </form>
+    <form method="POST" action="/process_selected_rows">
 
-
-<form method="POST" action="/process_selected_rows">
-    {% if not df.empty %}
-    <table border="1" class="dataframe data" style="text-align: center;">
+      {% if not df.empty %}
+      <table border="1" class="dataframe data" style="text-align: center;">
         <thead style="position:relative;">
-            <tr style="text-align: right;">
-                <th>RUN</th>
-                <th>Region</th>
-                <th>Sitename</th>
-                <th>NoRun</th>
-                <th>METERID</th>
-                <th>VCtype</th>
-                <th>IPAddress</th>
-                <th>Port</th>
-            </tr>
+          <tr style="text-align: right;">
+
+
+            <th>RUN</th>
+            <th>Region</th>
+            <th>Sitename</th>
+            <th>NoRun</th>
+            <th>METERID</th>
+            <th>VCtype</th>
+            <th>IPAddress</th>
+            <th>Port</th>
+
+
+
+
+          </tr>
         </thead>
         <tbody style="background-color: #ffffff; position: relative;">
-            {% for _, row in df.iterrows() %}
-            <tr>
-                <td>{{ row['RUN'] }}</td>
-                <td>{{ row['Region'] }}</td>
-                <td>{{ row['Sitename'] }}</td>
-                <td>{{ row['NoRun'] }}</td>
-                <td>{{ row['METERID'] }}</td>
-                <td>{{ row['VCtype'] }}</td>
-                <td>{{ row['IPAddress'] }}</td>
-                <td>{{ row['Port'] }}</td>
-            </tr>
-            {% endfor %}
+          {% for _, row in df.iterrows() %}
+          <tr>
+
+
+            <td>{{ row['RUN'] }}</td>
+            <td>{{ row['Region'] }}</td>
+            <td>{{ row['Sitename'] }}</td>
+            <td>{{ row['NoRun'] }}</td>
+            <td>{{ row['METERID'] }}</td>
+            <td>{{ row['VCtype'] }}</td>
+            <!-- <td>{{ '127.0.0.1' }}</td> -->
+            <td>{{ row['IPAddress'] }}</td>
+            <td>{{ row['Port'] }}</td>
+
+          </tr>
+          {% endfor %}
         </tbody>
+      </table>
+      {% endif %}
+    </form>
+  </div>
+  </div>
+  <div class="textbox-container" style="margin-top: 1%; margin-bottom: 5%;">
+    <div class="outer yosemite" style="width: 100%;">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="box_we" style="margin-top: 1%;">
+
+
+      <div class="col-sm-3 t pt-4">
+
+        <form method="POST">
+          <div class="form-group" style="display: none;">
+            <label for="slave_id">Slave ID</label>
+            <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
+          </div>
+
+          <div class="form-group" style="display: none;">
+            <label for="function_code">Function Code</label>
+            <input type="number" class="form-control" id="function_code" name="function_code" value="16" required>
+          </div>
+
+          <div class="form-group">
+            <label style="margin-bottom: 5px;" for="starting_address">Starting Address</label>
+            <input type="number" class="form-control" id="starting_address" name="starting_address"
+              value="{{starting_address}}" required>
+          </div>
+          <div class="form-group">
+            <label style="margin-bottom: 5px;" for="quantity">Quantity</label>
+            <select type="number" class="form-control" id="quantity" name="quantity" required>
+              <option value="">Select</option>
+
+              <option value="2">1</option>
+              <option value="4">2</option>
+              <option value="6">3</option>
+              <option value="8">4</option>
+
+            </select>
+          </div>
+          <!-- <div class="form-group">
+            <label for="tcp_ip">TCP IP</label>
+            <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="tcp_port">TCP Port</label>
+            <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
+          </div> -->
+
+
+          <div class="form-group">
+
+            <input type="number" class="form-control" id="data_0" name="data_0" step="any" value="0" required>
+          </div>
+
+          <div class="form-group">
+            <input type="number" class="form-control" id="data_1" name="data_1" step="any" value="0" required>
+          </div>
+
+          <div class="form-group">
+            <input type="number" class="form-control" id="data_2" name="data_2" step="any" value="0" required>
+          </div>
+
+          <div class="form-group">
+            <input type="number" class="form-control" id="data_3" name="data_3" step="any" value="0" required>
+          </div>
+          <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
+
+          <button style="margin-bottom: 1%;" class="custom-btn btn-2" type="submit"  name="is_16bit" value="true">Read
+            Data</button>
+
+          <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 32-bit -->
+          <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to
+            32-bit</button>
+          <input type="hidden" style="display: none;" name="is_quantity_multiplied"
+            value="{{ is_quantity_multiplied }}">
+
+          <div  class="text-center" style="display: none;">
+            <button type="submit" class="btn btn-success">Read Data</button>
+            <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  <div class="box_we" style="width: 40%;" >
+    {% if communication_traffic %}
+
+
+
+    <h3>Communication Traffic</h3>
+
+    <table class="table table-bordered">
+
+      <thead>
+        <tr>
+          <th>Direction</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in communication_traffic %}
+        <tr>
+          <td>{{ data['direction'] }}</td>
+          <td>{{ data['data'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    {% endif %}
-</form>
-
-<div class="container-fluid" >
-    <div class="row">
-        <div class="col-sm-3 t pt-4" >
-            <form method="POST" >
-                <h3>Confirm for Read Data</h3>
-                <button type="submit" class="custom-btn btn-2" name="is_16bit" value="true">Read Data</button>
-                <button type="submit" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false">Change to 32-bit</button>
-                <input type="hidden" style="display: none;" name="is_quantity_multiplied" value="{{ is_quantity_multiplied }}">
-            </form>
-        </div>
-    </div>
-</div>
-
-{% if communication_traffic %}
-    <div class="communication-traffic" >
-        <h3>Communication Traffic</h3>
-        <table class="table table-bordered">
-            <thead >
-                <tr>
-                    <th>Direction</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody >
-                {% for data in communication_traffic %}
-                <tr>
-                    <td>{{ data['direction'] }}</td>
-                    <td>{{ data['data'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% else %}
-    <p>Communication Traffic is not available</p>
-{% endif %}
-    </div>
-
-<footer class="footer">POWERED BY ATOS - ASGS</footer>
-
-
-
-
-
-
-
-
-
-
-
-
+  </div>
+  {% else %}
+  <p style="display: none;">Communication Traffic is not available</p>
+  {% endif %}
+  </div>
+  </div>
+  </div>
+  </div>
+  <footer class="footer">POWERED BY ATOS - ASGS</footer>
+</body>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // เลือก element ของ dropdown "Quantity"
     var quantitySelect = document.getElementById("quantity");
     // เลือก element ของช่องข้อมูลทั้งหมด
@@ -1298,13 +1611,13 @@ form#filterForm {
 
     // ฟังก์ชันเพื่อซ่อนช่องข้อมูลทั้งหมด
     function hideAllDataInputs() {
-      dataInputs.forEach(function(input) {
+      dataInputs.forEach(function (input) {
         input.style.display = "none";
       });
     }
 
     // เมื่อมีการเลือกค่าใน dropdown "Quantity"
-    quantitySelect.addEventListener("change", function() {
+    quantitySelect.addEventListener("change", function () {
       // ซ่อนช่องข้อมูลทั้งหมดก่อน
       hideAllDataInputs();
 
@@ -1338,36 +1651,36 @@ form#filterForm {
 </script>
 
 
-      
-  <script>
 
-    function clearForm() {
-      document.getElementById("slave_id").value = "";
-      document.getElementById("function_code").value = "";
-      document.getElementById("starting_address").value = "";
-      document.getElementById("quantity").value = "";
+<script>
+
+  function clearForm() {
+    document.getElementById("slave_id").value = "";
+    document.getElementById("function_code").value = "";
+    document.getElementById("starting_address").value = "";
+    document.getElementById("quantity").value = "";
 
 
-var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
+    var communicationTrafficTable = document.querySelector(".communication-traffic table tbody");
     communicationTrafficTable.innerHTML = "";
 
     // Clear the response data
     var responseDataTable = document.querySelector(".table.table-hover tbody");
     responseDataTable.innerHTML = "";
-    }
+  }
 
-    // เพิ่มฟังก์ชันสำหรับเปลี่ยนเป็น 16-bit
-    function changeTo16Bit() {
-        document.getElementById("is_16bit").value = "true";
-      const startingAddressInput = document.getElementById("starting_address");
-      const quantityInput = document.getElementById("quantity");
+  // เพิ่มฟังก์ชันสำหรับเปลี่ยนเป็น 16-bit
+  function changeTo16Bit() {
+    document.getElementById("is_16bit").value = "true";
+    const startingAddressInput = document.getElementById("starting_address");
+    const quantityInput = document.getElementById("quantity");
 
-      startingAddressInput.max = 65535;
-      quantityInput.max = 65535;
+    startingAddressInput.max = 65535;
+    quantityInput.max = 65535;
 
-    }
+  }
 
-    function changeTo32Bit() {
+  function changeTo32Bit() {
     document.getElementById("is_16bit").value = "false";
     const startingAddressInput = document.getElementById("starting_address");
     const quantityInput = document.getElementById("quantity");
@@ -1379,103 +1692,98 @@ var communicationTrafficTable = document.querySelector(".communication-traffic t
 
 
 </script>
+<script>
+  $(document).ready(function () {
+    // Event listener for region dropdown change
+    $('#region_dropdown').change(function () {
+      var selectedRegion = $(this).val();
+
+      // Make an AJAX request to update the tag dropdown based on the selected region
+      $.ajax({
+        type: 'GET',
+        url: '/get_tags',
+        data: { 'selected_region': selectedRegion },
+        success: function (response) {
+          // Sort tag options alphabetically
+          response.tag_options.sort();
+
+          // Update tag dropdown options based on the sorted response
+          var tagDropdown = $('#tag_dropdown');
+          tagDropdown.empty(); // Clear existing options
+
+          // Add new options based on the sorted response
+          for (var i = 0; i < response.tag_options.length; i++) {
+            var tagOption = response.tag_options[i];
+            tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+          }
+
+          // Load the previously selected tag option from local storage
+          var selectedTag = localStorage.getItem('selectedTag');
+          if (selectedTag) {
+            tagDropdown.val(selectedTag);
+          }
+
+          // Trigger a change in the tag dropdown to fetch and update run options
+          tagDropdown.change();
+        },
+        error: function (error) {
+          console.log('Error fetching tag options:', error);
+        }
+      });
+    });
+
+    // Event listener for tag dropdown change
+    $('#tag_dropdown').change(function () {
+      var selectedTag = $(this).val();
+
+      // Save the selected tag option to local storage
+      localStorage.setItem('selectedTag', selectedTag);
+
+      // Make an AJAX request to update the run dropdown based on the selected tag
+      $.ajax({
+        type: 'GET',
+        url: '/get_runs',
+        data: { 'selected_tag': selectedTag },
+        success: function (response) {
+          // Sort run options alphabetically
+          response.run_options.sort();
+
+          // Update run dropdown options based on the sorted response
+          var runDropdown = $('#run_dropdown');
+          runDropdown.empty(); // Clear existing options
+
+          // Add new options based on the sorted response
+          for (var i = 0; i < response.run_options.length; i++) {
+            var runOption = response.run_options[i];
+            runDropdown.append('<option value="' + runOption + '">' + runOption + '</option>');
+          }
+
+          // Load the previously selected run option from local storage
+          var selectedRun = localStorage.getItem('selectedRun');
+          if (selectedRun) {
+            runDropdown.val(selectedRun);
+          }
+        },
+        error: function (error) {
+          console.log('Error fetching run options:', error);
+        }
+      });
+    });
+
+    // Event listener for run dropdown change
+    $('#run_dropdown').change(function () {
+      // Save the selected run option to local storage
+      var selectedRun = $(this).val();
+      localStorage.setItem('selectedRun', selectedRun);
+    });
+
+    // Trigger a change in the region dropdown on page load (optional)
+    $('#region_dropdown').change();
+  });
+</script>
 
 
-        <script>
-            $(document).ready(function () {
-                // Event listener for region dropdown change
-                $('#region_dropdown').change(function () {
-                    var selectedRegion = $(this).val();
-        
-                    // Make an AJAX request to update the tag dropdown based on the selected region
-                    $.ajax({
-                        type: 'GET',
-                        url: '/get_tags',
-                        data: { 'selected_region': selectedRegion },
-                        success: function (response) {
-                            // Sort tag options alphabetically
-                            response.tag_options.sort();
-        
-                            // Update tag dropdown options based on the sorted response
-                            var tagDropdown = $('#tag_dropdown');
-                            tagDropdown.empty(); // Clear existing options
-        
-                            // Add new options based on the sorted response
-                            for (var i = 0; i < response.tag_options.length; i++) {
-                                var tagOption = response.tag_options[i];
-                                tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                            }
-        
-                            // Load the previously selected tag option from local storage
-                            var selectedTag = localStorage.getItem('selectedTag');
-                            if (selectedTag) {
-                                tagDropdown.val(selectedTag);
-                            }
-        
-                            // Trigger a change in the tag dropdown to fetch and update run options
-                            tagDropdown.change();
-                        },
-                        error: function (error) {
-                            console.log('Error fetching tag options:', error);
-                        }
-                    });
-                });
-        
-                // Event listener for tag dropdown change
-                $('#tag_dropdown').change(function () {
-                    var selectedTag = $(this).val();
-        
-                    // Save the selected tag option to local storage
-                    localStorage.setItem('selectedTag', selectedTag);
-        
-                    // Make an AJAX request to update the run dropdown based on the selected tag
-                    $.ajax({
-                        type: 'GET',
-                        url: '/get_runs',
-                        data: { 'selected_tag': selectedTag },
-                        success: function (response) {
-                            // Sort run options alphabetically
-                            response.run_options.sort();
-        
-                            // Update run dropdown options based on the sorted response
-                            var runDropdown = $('#run_dropdown');
-                            runDropdown.empty(); // Clear existing options
-        
-                            // Add new options based on the sorted response
-                            for (var i = 0; i < response.run_options.length; i++) {
-                                var runOption = response.run_options[i];
-                                runDropdown.append('<option value="' + runOption + '">' + runOption + '</option>');
-                            }
-        
-                            // Load the previously selected run option from local storage
-                            var selectedRun = localStorage.getItem('selectedRun');
-                            if (selectedRun) {
-                                runDropdown.val(selectedRun);
-                            }
-                        },
-                        error: function (error) {
-                            console.log('Error fetching run options:', error);
-                        }
-                    });
-                });
-        
-                // Event listener for run dropdown change
-                $('#run_dropdown').change(function () {
-                    // Save the selected run option to local storage
-                    var selectedRun = $(this).val();
-                    localStorage.setItem('selectedRun', selectedRun);
-                });
-        
-                // Trigger a change in the region dropdown on page load (optional)
-                $('#region_dropdown').change();
-            });
-        </script>
-        
-        
-        
-       
-        
-</body>
+
 
 
 </html>
