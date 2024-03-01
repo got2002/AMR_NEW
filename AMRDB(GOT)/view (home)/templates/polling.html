@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #eee;
+            padding: 10px;
+        }
+
+        nav a {
+            display: inline-block;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        nav a:hover {
+            background-color: #dd2d;
+        }
+
+            .hidden {
+            display: none;
+        
+        }
+
+        /* textbox */
+
+    /* General styling for all textboxes */
+.textbox-container {
+  margin-bottom: 10px;
+
+}
+
+.textbox-pair {
+  margin-bottom: 3px;
+}
+
+input[type="text"] {
+  width: 200px; /* Adjust the width as needed */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+@keyframes oscillate {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(0px); }
+            100% { transform: translateX(0); }
+        }
+
+        .enable-container {
+            margin-bottom: 10px; /* Add some space between containers */
+            animation: alternate-reverse; /* Apply the oscillation animation */
+        }
+
+        /* Additional styling for labels and checkboxes */
+        label {
+            margin-right: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 5px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+    
+    <nav>
+        <a href="{{ url_for('home_amr') }}">Home</a>
+    </nav>
+
+
+    <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
+       <label for="type_dropdown">Select Type:</label>
+        <select id="type_dropdown" name="type_dropdown">
+            <option value="" {% if selected_type == "" %}selected{% endif %}>-- Select Type --</option>
+            {% for type in type_options %}
+                <option value="{{ type }}" {% if selected_type == type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
+
+
+        <!-- Button to submit the form -->
+        <button type="button" onclick="submitForm()">View Information</button>
+    </form>
+
+    <!-- {{ tables[0]|safe }} -->
+
+        <h2>Poll Configure</h2>
+    <form action="/update_polling_data" method="post">
+        <input type="hidden" name="selected_type" value="{{ selected_type }}">
+        <div class="textbox-container">
+            {% for i in range(0, list_config|length, 2) %}
+                <div class="textbox-pair">
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
+                    <input type="text" id="start{{ i//2 + 1 }}" name="start_config{{ i//2 + 1 }}" value="{{ list_config[i] }}">
+
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
+                    <input type="text" id="end{{ i//2 + 1 }}" name="end_config{{ i//2 + 1 }}" value="{{ list_config[i+1] }}">
+
+                    <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable_config[{{ i//2 }}]" {% if list_enable_config[i//2] == '1' %}checked{% endif %}>
+                   
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>Poll Billing</h2>
+        <div class="textbox-container">
+            {% for i in range(0, list_billing|length, 2) %}
+                <div class="textbox-pair">
+                    <label for="start{{ i//2 + 1 }}">{{ 'Start{:02d}'.format(i//2 + 1) }}</label>
+                    <input type="text" id="start{{ i//2 + 1 }}" name="start{{ i//2 + 1 }}" value="{{ list_billing[i] }}">
+
+                    <label for="end{{ i//2 + 1 }}">{{ 'END'}}</label>
+                    <input type="text" id="end{{ i//2 + 1 }}" name="end{{ i//2 + 1 }}" value="{{ list_billing[i+1] }}">
+
+                    <label for="enable{{ i//2 + 1 }}"> {{ 'enable' }}</label>
+                    <input type="checkbox" id="enable{{ i//2 + 1 }}" name="enable[{{ i//2 }}]" {% if list_enable_billing[i//2] == '1' %}checked{% endif %}>
+                   
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit">Save Edit Data</button>
+    </form>
+    
+
+    <script>
+        function saveToOracle() {
+    // Collect data from the Poll Configure form
+    var configureData = collectFormData('start_config', 'end_config', 'enable_config');
+
+    // Collect data from the Poll Billing form
+    var billingData = collectFormData('billing_start', 'billing_end', 'enable_billing');
+
+    // You can now send the data to your backend or perform any other necessary actions
+    console.log('Configure Data:', configureData);
+    console.log('Billing Data:', billingData);
+
+    // Add your logic to save data to Oracle here
+        }
+
+        function collectFormData(startName, endName, enableName) {
+            var data = {
+                list: [],
+                enableList: []
+            };
+
+            // Collect data from the form
+            $('input[name^=' + startName + ']').each(function (index, element) {
+                var startValue = $(element).val();
+                var endValue = $('input[name=' + endName + ']').eq(index).val();
+                data.list.push({ start: startValue, end: endValue });
+            });
+
+            // Collect enable data from the form
+            $('input[name^=' + enableName + ']').each(function (index, element) {
+                data.enableList.push($(element).prop('checked') ? '1' : '0');
+            });
+
+            return data;
+        }
+
+
+    function submitForm() {
+        // Trigger the form submission
+        document.getElementById("pollingForm").submit();
+    }
+
+    // Add an event listener to dynamically update the dropdown options
+    document.getElementById("type_dropdown").addEventListener("change", function () {
+        // Get the selected value
+        var selectedtype = this.value;
+
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
+        }
+    });
+    </script>
+
+</body>
+
+</html>
