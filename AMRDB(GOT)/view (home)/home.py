@@ -36,7 +36,11 @@ import time
 from flask import g
 app = Flask(__name__)
 
-
+#### Global Variable 
+#For specific configuration data per day 
+QUANTITY_CONFIG_DATA = 20  #ค่า config มี 20 ค่า
+#For specific quantity of poll range 
+QUANTITY_RANGE_CONFIG_LIST = 10  # poll range ทำเป็น list จะมี 10 element
 
 app.secret_key = "your_secret_key_here"
 
@@ -198,56 +202,24 @@ def fetch_data(query, params=None):
 
 ######################### connection AMR_NEW ###############################
 
-# root_params = {
-#     "username": 'root',
-#     "password": 'root',
-#     "hostname": '192.168.102.192',
-#     "port": '1521',
-#     "service_name": "orcl"
-# }
-
-# # Choose the database connection parameters based on your requirements
-# selected_params = root_params  # Change this to switch between databases
-# print("aaaa", selected_params)
-
-# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
-
-# try:
-#     connection_info = {
-#         "user": selected_params["username"],
-#         "password": selected_params["password"],
-#         "dsn": dsn,
-#         "min": 1,
-#         "max": 5,
-#         "increment": 1,
-#         "threaded": True
-#     }
-
-#     connection_pool = cx_Oracle.SessionPool(**connection_info)
-#     connection = connection_pool.acquire()
-#     print("Connection to AMR_NEW successful.")
-# except cx_Oracle.Error as e:
-#     (error,) = e.args
-#     print("Oracle Error:", error)
-
-######################### connection AMR_NEW ###############################
-
-
-######################### connection PTT_PIVOT ###############################
-ptt_pivot_params = {
-    "username": "PTT_PIVOT",
-    "password": "PTT_PIVOT",
-    "hostname": "10.100.56.3",
-    "port": "1521",
-    "service_name": "PTTAMR_MST"
+root_params = {
+    "username": 'root',
+    "password": 'root',
+    "hostname": '192.168.102.192',
+    "port": '1521',
+    "service_name": "orcl"
 }
 
-dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+# Choose the database connection parameters based on your requirements
+selected_params = root_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
 
 try:
     connection_info = {
-        "user": ptt_pivot_params["username"],
-        "password": ptt_pivot_params["password"],
+        "user": selected_params["username"],
+        "password": selected_params["password"],
         "dsn": dsn,
         "min": 1,
         "max": 5,
@@ -257,18 +229,50 @@ try:
 
     connection_pool = cx_Oracle.SessionPool(**connection_info)
     connection = connection_pool.acquire()
-    print("Connection to PTT_PIVOT successful.")
-    
+    print("Connection to AMR_NEW successful.")
 except cx_Oracle.Error as e:
     (error,) = e.args
     print("Oracle Error:", error)
+
+######################### connection AMR_ ###############################
+
+
+######################### connection PTT_PIVOT ###############################
+# ptt_pivot_params = {
+#     "username": "PTT_PIVOT",
+#     "password": "PTT_PIVOT",
+#     "hostname": "10.100.56.3",
+#     "port": "1521",
+#     "service_name": "PTTAMR_MST"
+# }
+
+# dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+
+# try:
+#     connection_info = {
+#         "user": ptt_pivot_params["username"],
+#         "password": ptt_pivot_params["password"],
+#         "dsn": dsn,
+#         "min": 1,
+#         "max": 5,
+#         "increment": 1,
+#         "threaded": True
+#     }
+
+#     connection_pool = cx_Oracle.SessionPool(**connection_info)
+#     connection = connection_pool.acquire()
+#     print("Connection to PTT_PIVOT successful.")
+    
+# except cx_Oracle.Error as e:
+#     (error,) = e.args
+#     print("Oracle Error:", error)
 
 ######################### connection PTT_PIVOT ###############################
 
 def fetch_user_data(username):
     query = """
         SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL", "USER_GROUP"
-        FROM AMR_USER
+        FROM AMR_USER_TESTS
         WHERE "USER_NAME" = :username
     """
     params = {'username': username}
@@ -295,9 +299,9 @@ def login():
         # Query to fetch user data from the database
         query = """
             SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL", "USER_GROUP"
-            FROM AMR_USER
+            FROM AMR_USER_TESTS
             WHERE "USER_NAME" = :entered_username
-            AND AMR_USER.user_enable like '1'
+            AND AMR_USER_TESTS.user_enable like '1'
         """
 
         params = {'entered_username': entered_username}
@@ -576,7 +580,14 @@ def billing_data():
                 ],
             )
             # Get the selected Meter ID before removing it from the DataFrame
-            selected_meter_id = df["METER_ID"].iloc[0]
+            # selected_meter_id = df["METER_ID"].iloc[0]
+            
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
+
             
 
             # Now, remove the "METER_ID" column from the DataFrame
@@ -589,12 +600,12 @@ def billing_data():
             df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
             # Assuming 'df' is the DataFrame created from the query results
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
@@ -608,29 +619,12 @@ def billing_data():
                 "temperature": None
             }
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                            
 
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -723,7 +717,7 @@ def billing_data():
                     selected_region=selected_region,
                     region_options=region_options,
                     tag_options=tag_options,
-                    selected_meter_id=selected_meter_id,
+                    # selected_meter_id=selected_meter_id,
                     graph_corrected=graph_corrected,
                     graph_uncorrected=graph_uncorrected,
                     graph_pressure=graph_pressure,
@@ -821,10 +815,15 @@ def billing_data():
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
             
+            # selected_meter_id = df["METER_ID"].iloc[0]
             
             # Get the selected Meter ID before removing it from the DataFrame
             ##!!!! Detact if empty 
-            selected_meter_id = df["METER_ID"].iloc[0]
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -839,13 +838,14 @@ def billing_data():
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-            # Send the DataFrame to the HTML template
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+            
+
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
             # Create Full table of selectedMonth
@@ -854,42 +854,35 @@ def billing_data():
                 
             }
             
-            query_day = """
-            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-01-01', 'YYYY-MM-DD')) AS Date1
-            FROM DUAL
-            CONNECT BY LEVEL <= (TO_DATE('2024-01-31', 'YYYY-MM-DD') - TO_DATE('2024-01-01', 'YYYY-MM-DD')+1)
-            """
-            query_day_result = fetch_data(query_day)
-            df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
-            #print("query_day97", df_month_list)
-            #print(df_run1)
-            #df22 = FillFullMonth(df_run1, 1)
-            merged_df = pd.merge(df_month_list, df_run1, on='DATA_DATE', how='outer')
-            print(merged_df)
-            df_run1 = merged_df
+            # query_day = """
+            # SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-02-01', 'YYYY-MM-DD')) AS Date1
+            # FROM DUAL
+            # CONNECT BY LEVEL <= (TO_DATE('2024-02-29', 'YYYY-MM-DD') - TO_DATE('2024-02-01', 'YYYY-MM-DD')+1)
+            # """
+            # # Fetch data for the month list
+            # query_day_result = fetch_data(query_day)
+            # df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+            
+
+            # # Merge DataFrames using a loop
+            # for i in range(1, num_streams + 1):
+            #     df_run = df_runs[f'df_run{i}']
+                
+            #     if not df_run.empty:
+            #         merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+            #         df_runs[f'df_run{i}'] = merged_df
+                
             common_table_properties = {"classes": "data", "index": False,"header":None}
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
+
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
+        
             return render_template(
                 "billingdata.html",
-                
                 tables=tables,
                 titles=df.columns.values,
                 selected_date=selected_date,
@@ -898,7 +891,7 @@ def billing_data():
                 region_options=region_options,
                 tag_options=tag_options, 
                 dropped_columns_data=dropped_columns_data,
-                selected_meter_id=selected_meter_id,
+                # selected_meter_id=selected_meter_id,
             )
     else:
         # Render the template without executing the query
@@ -1010,7 +1003,7 @@ def billing_data_user_group():
             AMR_PL_GROUP.PL_REGION_ID,
             AMR_FIELD_ID.TAG_ID,
             amr_field_id.meter_id,
-            AMR_CONFIGURED_DATA.DATA_DATE,
+            TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
             
             amr_configured_data.amr_config1,
             amr_configured_data.amr_config2,
@@ -1123,7 +1116,14 @@ def billing_data_user_group():
                 ],
             )
             # Get the selected Meter ID before removing it from the DataFrame
-            selected_meter_id = df["METER_ID"].iloc[0]
+            # selected_meter_id = df["METER_ID"].iloc[0]
+            
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
+
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -1135,12 +1135,12 @@ def billing_data_user_group():
             df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
             # Assuming 'df' is the DataFrame created from the query results
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
@@ -1154,29 +1154,12 @@ def billing_data_user_group():
                 "temperature": None
             }
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                            
 
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -1261,7 +1244,7 @@ def billing_data_user_group():
                 df = df.sort_values(by="DATA_DATE", ascending=True)
                 # ส่ง graph_html ไปยัง HTML template ของ Flask
                 return render_template(
-                    "billingdata_user_group.html",
+                    "billingdata.html",
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
@@ -1269,7 +1252,7 @@ def billing_data_user_group():
                     selected_region=selected_region,
                     region_options=region_options,
                     tag_options=tag_options,
-                    selected_meter_id=selected_meter_id,
+                    # selected_meter_id=selected_meter_id,
                     graph_corrected=graph_corrected,
                     graph_uncorrected=graph_uncorrected,
                     graph_pressure=graph_pressure,
@@ -1366,10 +1349,18 @@ def billing_data_user_group():
             dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-            print(df.columns)
+            
+            
             # Get the selected Meter ID before removing it from the DataFrame
-            selected_meter_id = df["METER_ID"].iloc[0]
+            ##!!!! Detact if empty 
+            # selected_meter_id = df["METER_ID"].iloc[0]
+            
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
+
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -1378,45 +1369,52 @@ def billing_data_user_group():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            #df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            
 
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-            # Send the DataFrame to the HTML template
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
+            # Create Full table of selectedMonth
             tables = {
                 "daily_data": None,
                 
             }
+            
+            query_day = """
+            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-02-01', 'YYYY-MM-DD')) AS Date1
+            FROM DUAL
+            CONNECT BY LEVEL <= (TO_DATE('2024-02-29', 'YYYY-MM-DD') - TO_DATE('2024-02-01', 'YYYY-MM-DD')+1)
+            """
+            # Fetch data for the month list
+            query_day_result = fetch_data(query_day)
+            df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
 
+            # Merge DataFrames using a loop
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                
+                if not df_run.empty:
+                    merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                    df_runs[f'df_run{i}'] = merged_df
+                
             common_table_properties = {"classes": "data", "index": False,"header":None}
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
+
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
             return render_template(
                 "billingdata_user_group.html",
                 
@@ -1428,7 +1426,7 @@ def billing_data_user_group():
                 region_options=region_options,
                 tag_options=tag_options, 
                 dropped_columns_data=dropped_columns_data,
-                selected_meter_id=selected_meter_id,
+                # selected_meter_id=selected_meter_id,
                 username=logged_in_user,  
                 description=description,
                 user_level=user_level
@@ -1532,7 +1530,7 @@ def billing_data_user():
             AMR_PL_GROUP.PL_REGION_ID,
             AMR_FIELD_ID.TAG_ID,
             amr_field_id.meter_id,
-            AMR_CONFIGURED_DATA.DATA_DATE,
+            TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
             
             amr_configured_data.amr_config1,
             amr_configured_data.amr_config2,
@@ -1656,7 +1654,14 @@ def billing_data_user():
                 ],
             )
             # Get the selected Meter ID before removing it from the DataFrame
-            selected_meter_id = df["METER_ID"].iloc[0]
+            # selected_meter_id = df["METER_ID"].iloc[0]
+            
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
+
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -1668,12 +1673,12 @@ def billing_data_user():
             df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
             # Assuming 'df' is the DataFrame created from the query results
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
             tables = {
@@ -1687,29 +1692,12 @@ def billing_data_user():
                 "temperature": None
             }
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                            
 
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -1794,7 +1782,7 @@ def billing_data_user():
                 df = df.sort_values(by="DATA_DATE", ascending=True)
                 # ส่ง graph_html ไปยัง HTML template ของ Flask
                 return render_template(
-                    "billingdata_user.html",
+                    "billingdata.html",
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
@@ -1802,7 +1790,7 @@ def billing_data_user():
                     selected_region=selected_region,
                     region_options=region_options,
                     tag_options=tag_options,
-                    selected_meter_id=selected_meter_id,
+                    # selected_meter_id=selected_meter_id,
                     graph_corrected=graph_corrected,
                     graph_uncorrected=graph_uncorrected,
                     graph_pressure=graph_pressure,
@@ -1899,10 +1887,18 @@ def billing_data_user():
             dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-            print(df.columns)
+            
+            
             # Get the selected Meter ID before removing it from the DataFrame
-            selected_meter_id = df["METER_ID"].iloc[0]
+            ##!!!! Detact if empty 
+            # selected_meter_id = df["METER_ID"].iloc[0]
+            
+            if not df.empty and "METER_ID" in df.columns:
+                selected_meter_id = df["METER_ID"].iloc[0]
+                print(f"Selected Meter ID: {selected_meter_id}")
+            else:
+                print("DataFrame is empty or 'METER_ID' column doesn't exist.")
+
 
             # Now, remove the "METER_ID" column from the DataFrame
             df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
@@ -1911,48 +1907,55 @@ def billing_data_user():
             df = df.apply(
                 lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
             )
-            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            #df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            
 
             df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
             # Sort DataFrame by 'DATA_DATE'
             df = df.sort_values(by="DATA_DATE")
-            # Send the DataFrame to the HTML template
-            df_run1 = df[df['METER_STREAM_NO'] == '1']
-            df_run2 = df[df['METER_STREAM_NO'] == '2']
-            df_run3 = df[df['METER_STREAM_NO'] == '3']
-            df_run4 = df[df['METER_STREAM_NO'] == '4']
-            df_run5 = df[df['METER_STREAM_NO'] == '5']
-            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            num_streams = 6
+            df_runs = {}
+
+            # Loop to create DataFrames for each METER_STREAM_NO
+            for i in range(1, num_streams + 1):
+                df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
             # Check if each DataFrame has data before including in the tables dictionary
+            # Create Full table of selectedMonth
             tables = {
                 "daily_data": None,
                 
             }
+            
+            query_day = """
+            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-02-01', 'YYYY-MM-DD')) AS Date1
+            FROM DUAL
+            CONNECT BY LEVEL <= (TO_DATE('2024-01-29', 'YYYY-MM-DD') - TO_DATE('2024-02-01', 'YYYY-MM-DD')+1)
+            """
+            # Fetch data for the month list
+            query_day_result = fetch_data(query_day)
+            df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
 
+            # Merge DataFrames using a loop
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                
+                if not df_run.empty:
+                    merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                    df_runs[f'df_run{i}'] = merged_df
+                
             common_table_properties = {"classes": "data", "index": False,"header":None}
 
-            if not df_run1.empty:
-                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-            if not df_run2.empty:
-                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-            if not df_run3.empty:
-                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-            if not df_run4.empty:
-                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-            if not df_run5.empty:
-                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-            if not df_run6.empty:
-                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
+
+            for i in range(1, num_streams + 1):
+                df_run = df_runs[f'df_run{i}']
+                if not df_run.empty:
+                    df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
+                    
             return render_template(
-                "billingdata_user.html",
-                
+                "billingdata_user.html",               
                 tables=tables,
                 titles=df.columns.values,
                 selected_date=selected_date,
@@ -1960,7 +1963,7 @@ def billing_data_user():
                 selected_region=selected_region,
                 region_options=region_options,
                 tag_options=tag_options, dropped_columns_data=dropped_columns_data,
-                selected_meter_id=selected_meter_id,
+                # selected_meter_id=selected_meter_id,
                 username=logged_in_user,  
                 description=description,
                 user_level=user_level
@@ -3700,87 +3703,149 @@ def checkStrNone(stringcheck):
     if stringcheck == "None": return ""
     return stringcheck
     
+def checkStrNone(stringcheck):
+    if stringcheck == "None": return ""
+    return stringcheck
+    
 @app.route('/update_mapping_config_route', methods=['POST'])
 def update_mapping_config():
+    selected_type = request.form.get('selected_type')
+
+    # Fetch type_id from the database
+    type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
+    results = fetch_data(type_id_query)
+    type_id = str(results[0]).strip("',()")
+    print("type:", type_id)
     
-        
-        selected_type = request.form.get('selected_type')
-
-        # Fetch type_id from the database
-        type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
-        results = fetch_data(type_id_query)
-        type_id = str(results[0]).strip("',()")
-        print("type:", type_id)
-
-        description_VC_TYPE = []
-        
-        for j in range(0, 20):  # Start from 1 and end at 20
-            i = f"{j:02d}"
-            address_key = f"list_address{i}"
-            description_key = f"list_description{i}"
-            data_type_key = f"list_data_type{i}"
-            evc_type_key = f"list_evc_type{i}"
-            or_der_key = f"list_or_der{i}"
-            
-            address_value = checkStrNone(request.form.get(address_key))
-            description_value = checkStrNone(request.form.get(description_key))
-            data_type_value = checkStrNone(request.form.get(data_type_key))
-            evc_type_value = request.form.get(evc_type_key)
-            or_der_value = request.form.get(or_der_key)
-            
-            # if description_value == "None":
-            #     description_value = ""
-            
-            description_VC_TYPE.append(checkStrNone(description_value))
-            # print("---", description_value)
+    query = """
+        SELECT
+            apr.evc_type,
+            apr.poll_config
 
 
-            # Update SQL query based on your table structure
-            update_query = f"""
-            UPDATE AMR_MAPPING_CONFIG
-            SET
-                ADDRESS = '{address_value}',
-                DESCRIPTION = '{description_value}',
-                DATA_TYPE = '{data_type_value}',
-                OR_DER = '{or_der_value}'        
-            WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
-            """
-            # print("Update Query##################", update_query)
-            update_sql( update_query)
-            
-        update_vc_info_query = f"""
-        UPDATE AMR_VC_CONFIGURED_INFO
-        SET
-            CONFIG1 = '{description_VC_TYPE[0]}',
-            CONFIG2 = '{description_VC_TYPE[1]}',
-            CONFIG3 = '{description_VC_TYPE[2]}',
-            CONFIG4 = '{description_VC_TYPE[3]}',
-            CONFIG5 = '{description_VC_TYPE[4]}',
-            CONFIG6 = '{description_VC_TYPE[5]}',
-            CONFIG7 = '{description_VC_TYPE[6]}',
-            CONFIG8 = '{description_VC_TYPE[7]}',
-            CONFIG9 = '{description_VC_TYPE[8]}',
-            CONFIG10 = '{description_VC_TYPE[9]}',
-            CONFIG11 = '{description_VC_TYPE[10]}',
-            CONFIG12 = '{description_VC_TYPE[11]}',
-            CONFIG13 = '{description_VC_TYPE[12]}',
-            CONFIG14 = '{description_VC_TYPE[13]}',
-            CONFIG15 = '{description_VC_TYPE[14]}',
-            CONFIG16 = '{description_VC_TYPE[15]}',
-            CONFIG17 = '{description_VC_TYPE[16]}',
-            CONFIG18 = '{description_VC_TYPE[17]}',
-            CONFIG19 = '{description_VC_TYPE[18]}',
-            CONFIG20 = '{description_VC_TYPE[19]}'
-        
-        WHERE 
-            VC_TYPE = '{evc_type_value}'
-            
+        FROM
+            amr_poll_range apr
+        JOIN
+        amr_vc_type avt ON apr.evc_type = avt.id
+        {type_condition}
         """
-        
-        update_sql( update_vc_info_query)
-        print(update_vc_info_query)
+    type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
+    
+    # Check if a type is selected before executing the query
+    if type_condition:
+        query = query.format(type_condition=type_condition)
+        results = fetch_data(query)
+        # print(results)
 
-        return redirect("/mapping_config")
+        columns = [
+            "evc_type",
+            "poll_config",
+            
+        ]
+        df = pd.DataFrame(results, columns=columns)
+
+        
+        poll_config_list = df.get(["poll_config"]).values.tolist()
+        list_config = str(poll_config_list[0]).strip("[]'").split(",")
+        print("start:", list_config)     
+
+    description_VC_TYPE = [] 
+
+    for j in range(0,QUANTITY_CONFIG_DATA):  
+        i = f"{j:02d}"
+        address_key = f"list_address{i}"
+        description_key = f"list_description{i}"
+        data_type_key = f"list_data_type{i}"
+        evc_type_key = f"list_evc_type{i}"
+        or_der_key = f"list_or_der{i}"
+
+        address_value = checkStrNone(request.form.get(address_key))
+        description_value = checkStrNone(request.form.get(description_key))
+        data_type_value = checkStrNone(request.form.get(data_type_key))
+        evc_type_value = request.form.get(evc_type_key)
+        or_der_value = request.form.get(or_der_key)
+
+        valid = False
+        
+        #check config
+        print(address_value)
+        # if textbox = None ไม่ต้อง check address แต่ต้องappend array ด้วย blank เพราะเดี๋ยวจะไม่ครบใน sql command
+        if address_value == "": 
+            description_VC_TYPE.append("")
+            continue
+        k = 0
+        for k in range(0,QUANTITY_RANGE_CONFIG_LIST,2):
+           
+            address_value_int = int(address_value)
+            address_check_low = int(list_config[k])
+            address_check_high = int(list_config[k+1])
+            k+=2
+            print("low = ", address_check_low, ", high = ", address_check_high, "; value = ", address_value_int)
+            if address_check_low  <= address_value_int :
+                if address_value_int <= address_check_high:
+                    valid = True; print("Result = True"); break
+            print("Result = False")
+        
+        
+        if valid == False:
+            print("Error : invalid address ; alert หน้าจอ และ ออกจาก function นี้ได้เลย ")
+            
+            #error
+            return ""
+             
+    
+        description_VC_TYPE.append(checkStrNone(description_value))
+        # print("---", description_value)
+
+
+        # Update SQL query based on your table structure
+        update_query = f"""
+        UPDATE AMR_MAPPING_CONFIG
+        SET
+            ADDRESS = '{address_value}',
+            DESCRIPTION = '{description_value}',
+            DATA_TYPE = '{data_type_value}',
+            OR_DER = '{or_der_value}'        
+        WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
+        """
+        # print("Update Query##################", update_query)
+        update_sql(update_query)
+        
+        
+    
+    update_vc_info_query = f"""
+    UPDATE AMR_VC_CONFIGURED_INFO
+    SET
+        CONFIG1 = '{description_VC_TYPE[0]}',
+        CONFIG2 = '{description_VC_TYPE[1]}',
+        CONFIG3 = '{description_VC_TYPE[2]}',
+        CONFIG4 = '{description_VC_TYPE[3]}',
+        CONFIG5 = '{description_VC_TYPE[4]}',
+        CONFIG6 = '{description_VC_TYPE[5]}',
+        CONFIG7 = '{description_VC_TYPE[6]}',
+        CONFIG8 = '{description_VC_TYPE[7]}',
+        CONFIG9 = '{description_VC_TYPE[8]}',
+        CONFIG10 = '{description_VC_TYPE[9]}',
+        CONFIG11 = '{description_VC_TYPE[10]}',
+        CONFIG12 = '{description_VC_TYPE[11]}',
+        CONFIG13 = '{description_VC_TYPE[12]}',
+        CONFIG14 = '{description_VC_TYPE[13]}',
+        CONFIG15 = '{description_VC_TYPE[14]}',
+        CONFIG16 = '{description_VC_TYPE[15]}',
+        CONFIG17 = '{description_VC_TYPE[16]}',
+        CONFIG18 = '{description_VC_TYPE[17]}',
+        CONFIG19 = '{description_VC_TYPE[18]}',
+        CONFIG20 = '{description_VC_TYPE[19]}'
+    
+    WHERE 
+        VC_TYPE = '{evc_type_value}'
+        
+    """
+    
+    update_sql(update_vc_info_query)
+    # print(update_vc_info_query)
+
+    return redirect("/mapping_config")
 
 
 @app.route('/mapping_billing')  
