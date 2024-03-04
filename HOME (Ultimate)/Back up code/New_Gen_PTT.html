@@ -229,6 +229,16 @@
     .forward-button i {
         margin-left: 10%;
     }
+    .glass-panel {
+        color: #fff;
+        margin: 40px auto;
+        background-color: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
+        border-radius: 15px;
+        padding: 32px;
+        backdrop-filter: blur(10px);
+      }
 </style>
 <header>
     
@@ -250,6 +260,6 @@
     <a class="logout"  href="{{ url_for('logout') }}">Logout</a>
     </div>
 </header>
-
+<div class="glass-panel">HI</div>
   <footer style="text-align: right;">All rights reserved copyright © 2024</footer>
 <footer style="text-align: left;">Powered By ATOS - ASGS</footer>
