@@ -1,31 +1,56 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - youtube.com/codingnepal -->
 <html lang="en">
 
 <head>
+    <!-- meta -->
     <meta charset="UTF-8">
+    <meta name="description" content="NO Description">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Prompt">
+    <meta name="copyright" content="Copyright © 2025">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <!-- Bootstrap Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker Stylesheet and Script -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
+    @font-face {
+        font-family: "PTT45Pride-Bold";
+        src: url("PTT45Pride-Bold.otf") format("truetype");
+    }
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
+        font-family: "PTT45Pride-Bold", sans-serif;
     }
 
     body {
-        background: #282537;
-        background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-        background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-        background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-        background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+        background: rgb(35, 50, 70);
+        background: -moz-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -webkit-gradient(radial, top left, 0px, top left, 100%, color-stop(0%, rgba(35, 50, 70, 1)), color-stop(57%, rgba(90, 113, 132, 1)));
+        background: -webkit-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -o-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -ms-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: radial-gradient(ellipse at top left, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#233246', endColorstr='#5a7184', GradientType=1);
     }
+    
 
     body {
         margin: 0;
@@ -37,6 +62,15 @@
         justify-content: center;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #333;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
     ::selection {
         color: #fff;
         background: #5372F0;
@@ -104,10 +138,10 @@
         background: none;
         caret-color: #5372F0;
         border-radius: 5px;
-        border: 1px solid #bfbfbf;
+        border: 2px solid #bfbfbf;
         border-bottom-width: 2px;
         transition: all 0.2s ease;
-
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
     }
 
     form button {
@@ -126,7 +160,7 @@
 
     form .field input:focus,
     form .field.valid input {
-        border-color: #5372F0;
+        border-color: #ffffff;
     }
 
     form .field.shake input,
@@ -155,7 +189,7 @@
 
     form input:focus~.icon,
     form .field.valid .icon {
-        color: #5372F0;
+        color: #ffffff;
     }
 
     form .field.shake input:focus~.icon,
@@ -223,6 +257,7 @@
         cursor: pointer;
         border-bottom: 2px solid rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
     }
 
     form button:hover {
@@ -325,7 +360,7 @@
         margin-top: -15%;
         width: 150px;
         padding: 8px;
-        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.663));
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
     }
 
     footer {
@@ -333,7 +368,7 @@
         color: #fff; 
         padding: 7px; 
         text-align: center; 
-        font-size: 14px; 
+        font-size: 10px; 
         position: fixed; 
         bottom: 0; 
         width: 100%;
@@ -376,7 +411,7 @@
         color: #ffd700;
       }
       h1 {
-        font-size: 1.5em; 
+        font-size: 3em; 
         color: #ffffff; 
         text-align: center; 
         margin-bottom: 20px; 
@@ -388,18 +423,18 @@
     <header>
         <nav>
           <ul>
-            <li><a href="#">Welcome to ASGS - AMR</a></li>
+            <li><a href="#">Welcome to Automatic Meter Reading </a></li>
           </ul>
         </nav>
       </header>
     <div class="wrapper">
         <img src="https://www.pttplc.com/uploads/About/about-logo.png" alt="PTT Public Company Limited" class="logo">
-        <h1 style="margin-top: -10%;">Automatic Meter Reading</h1>
+        <h1 style="margin-top: -6%;">ASGS - AMR</h1>
         <form id="loginForm" action="#">
             <div class="field email">
                 <div class="input-area">
-                    <input type="text" placeholder="Email Address">
-                    <i class="icon fas fa-envelope"></i>
+                    <input type="text" placeholder="Username">
+                    <i class="icon fas fa-user"></i>
                     <i class="error error-icon fas fa-exclamation-circle"></i>
                 </div>
                 <div class="error error-txt">Email can't be blank</div>
@@ -426,7 +461,8 @@
         </form>
         <!-- <div class="sign-txt">Not yet member? <a href="#">Signup now</a></div> -->
     </div>
-<footer>copyright © 2025. POWERED BY ATOS - ASGS</footer>
+<footer style="text-align: right;">All rights reserved copyright © 2024</footer>
+<footer style="text-align: left;">Powered By ATOS - ASGS</footer>
     <!-- <script src="script.js"></script> -->
     <script>
         const form = document.querySelector("form");
