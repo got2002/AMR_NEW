@@ -338,7 +338,7 @@ def save_to_oracle():
 @app.route('/mapping_config')  
 def mapping_config_route():
     # SQL query to fetch options for the dropdown
-    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
+    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
     type_results = fetch_data(type_query)
     type_options = [str(type[0]) for type in type_results]
 

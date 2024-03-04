@@ -104,47 +104,47 @@ def md5_hash(input_string):
 
 
 ############  connect database  #####################
-active_connection = None  # Global variable to track the active connection
+# active_connection = None  # Global variable to track the active connection
 
-def connect_to_amr_db():
-    global active_connection
-    username = "AMR_DB"
-    password = "AMR_DB"
-    hostname = "10.104.240.26"
-    port = "1521"
-    sid = "AMR"
+# def connect_to_amr_db():
+#     global active_connection
+#     username = "AMR_DB"
+#     password = "AMR_DB"
+#     hostname = "10.104.240.26"
+#     port = "1521"
+#     sid = "AMR"
 
-    try:
-        dsn = cx_Oracle.makedsn(hostname, port, sid)
-        connection = cx_Oracle.connect(username, password, dsn)
-        active_connection = "AMR_DB"
-        print("Connected to AMR database")
-        return connection
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return None
+#     try:
+#         dsn = cx_Oracle.makedsn(hostname, port, sid)
+#         connection = cx_Oracle.connect(username, password, dsn)
+#         active_connection = "AMR_DB"
+#         print("Connected to AMR database")
+#         return connection
+#     except cx_Oracle.Error as e:
+#         (error,) = e.args
+#         print("Oracle Error:", error)
+#         return None
 
-def connect_to_ptt_pivot_db():
-    global active_connection
-    username = "PTT_PIVOT"
-    password = "PTT_PIVOT"
-    hostname = "10.100.56.3"
-    port = "1521"
-    service_name = "PTTAMR_MST"
+# def connect_to_ptt_pivot_db():
+#     global active_connection
+#     username = "PTT_PIVOT"
+#     password = "PTT_PIVOT"
+#     hostname = "10.100.56.3"
+#     port = "1521"
+#     service_name = "PTTAMR_MST"
 
-    try:
-        dsn = cx_Oracle.makedsn(hostname, port, service_name=service_name)
-        connection = cx_Oracle.connect(username, password, dsn)
-        active_connection = "PTT_PIVOT"
-        print("Connected to PTT PIVOT database")
-        return connection
-    except cx_Oracle.Error as e:
-        (error,) = e.args
-        print("Oracle Error:", error)
-        return None
+#     try:
+#         dsn = cx_Oracle.makedsn(hostname, port, service_name=service_name)
+#         connection = cx_Oracle.connect(username, password, dsn)
+#         active_connection = "PTT_PIVOT"
+#         print("Connected to PTT PIVOT database")
+#         return connection
+#     except cx_Oracle.Error as e:
+#         (error,) = e.args
+#         print("Oracle Error:", error)
+#         return None
 
-def fetch_data(connection, query, params=None):
+def fetch_data(query, params=None):
     try:
         with connection.cursor() as cursor:
             if params:
@@ -157,11 +157,113 @@ def fetch_data(connection, query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
-
-
-
+    
 
 ############  /connect database  #####################
+
+######################### connection AMR_DB ###############################
+# amr_db_params = {
+#     "username": 'AMR_DB',
+#     "password": 'AMR_DB',
+#     "hostname": '10.104.240.26',
+#     "port": '1521',
+#     "sid": "AMR"
+# }
+
+# # Choose the database connection parameters based on your requirements
+# selected_params = amr_db_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
+
+# try:
+#     connection_info = {
+#         "user": selected_params["username"],
+#         "password": selected_params["password"],
+#         "dsn": dsn,
+#         "min": 1,
+#         "max": 5,
+#         "increment": 1,
+#         "threaded": True
+#     }
+
+#     connection_pool = cx_Oracle.SessionPool(**connection_info)
+#     connection = connection_pool.acquire()
+#     print("Connection to AMR_DB successful.")
+# except cx_Oracle.Error as e:
+#     (error,) = e.args
+#     print("Oracle Error:", error)
+
+######################### connection AMR_DB ###############################
+
+######################### connection AMR_NEW ###############################
+
+# root_params = {
+#     "username": 'root',
+#     "password": 'root',
+#     "hostname": '192.168.102.192',
+#     "port": '1521',
+#     "service_name": "orcl"
+# }
+
+# # Choose the database connection parameters based on your requirements
+# selected_params = root_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+
+# try:
+#     connection_info = {
+#         "user": selected_params["username"],
+#         "password": selected_params["password"],
+#         "dsn": dsn,
+#         "min": 1,
+#         "max": 5,
+#         "increment": 1,
+#         "threaded": True
+#     }
+
+#     connection_pool = cx_Oracle.SessionPool(**connection_info)
+#     connection = connection_pool.acquire()
+#     print("Connection to AMR_NEW successful.")
+# except cx_Oracle.Error as e:
+#     (error,) = e.args
+#     print("Oracle Error:", error)
+
+######################### connection AMR_NEW ###############################
+
+
+######################### connection PTT_PIVOT ###############################
+ptt_pivot_params = {
+    "username": "PTT_PIVOT",
+    "password": "PTT_PIVOT",
+    "hostname": "10.100.56.3",
+    "port": "1521",
+    "service_name": "PTTAMR_MST"
+}
+
+dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+
+try:
+    connection_info = {
+        "user": ptt_pivot_params["username"],
+        "password": ptt_pivot_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to PTT_PIVOT successful.")
+    
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
+
+######################### connection PTT_PIVOT ###############################
 
 def fetch_user_data(username):
     query = """
@@ -170,7 +272,7 @@ def fetch_user_data(username):
         WHERE "USER_NAME" = :username
     """
     params = {'username': username}
-    user_data = fetch_data(amr_connection, query, params)
+    user_data = fetch_data( query, params)
     
     if user_data:
         username, password, description, user_level, user_group = user_data[0]
@@ -183,90 +285,89 @@ users = {}
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
-        error_message = None  
-        
-        if request.method == 'POST':
-            entered_username = request.form['username']
-            entered_password = request.form['password']
+    
+    error_message = None  
+    
+    if request.method == 'POST':
+        entered_username = request.form['username']
+        entered_password = request.form['password']
 
-            # Query to fetch user data from the database
-            query = """
-                SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL", "USER_GROUP"
-                FROM AMR_USER
-                WHERE "USER_NAME" = :entered_username
-                AND AMR_USER.user_enable like '1'
-            """
+        # Query to fetch user data from the database
+        query = """
+            SELECT "USER_NAME", "PASSWORD", "DESCRIPTION", "USER_LEVEL", "USER_GROUP"
+            FROM AMR_USER
+            WHERE "USER_NAME" = :entered_username
+            AND AMR_USER.user_enable like '1'
+        """
 
-            params = {'entered_username': entered_username}
-            user_data = fetch_data(amr_connection, query, params)
-            # print("login:", user_data)
+        params = {'entered_username': entered_username}
+        user_data = fetch_data( query, params)
+        # print("login:", user_data)
 
-            if user_data:
-                stored_password, description, user_level, user_group = user_data[0][1:]
+        if user_data:
+            stored_password, description, user_level, user_group = user_data[0][1:]
 
-                if entered_password == stored_password:
-                    session['username'] = entered_username
-                    users[entered_username] = {'password': stored_password, 'description': description, 'user_level': user_level, 'user_group': user_group}
-                    if user_level == '1' or user_level == '4' or user_level == '5':
-                        return redirect(url_for('home_amr'))
-                    elif user_level == '2':
-                        return redirect(url_for('home_user_group'))
-                    elif user_level == '3':
-                        return redirect(url_for('home_user'))
-                else:
-                    error_message = 'Incorrect password'
+            if entered_password == stored_password:
+                session['username'] = entered_username
+                users[entered_username] = {'password': stored_password, 'description': description, 'user_level': user_level, 'user_group': user_group}
+                if user_level == '1' or user_level == '4' or user_level == '5':
+                    return redirect(url_for('home_amr'))
+                elif user_level == '2':
+                    return redirect(url_for('home_user_group'))
+                elif user_level == '3':
+                    return redirect(url_for('home_user'))
             else:
-                error_message = 'User not found'
+                error_message = 'Incorrect password'
+        else:
+            error_message = 'User not found'
 
-        return render_template('login.html', error_message=error_message)
+    return render_template('login.html', error_message=error_message)
 
 
 @app.route('/')
 def home_amr():  
-        if 'username' in session:
-            username = session['username']
-            user = users.get(username)  # Using get method to handle KeyError
-            if user:
-                return render_template('home.html', username=username, description=user['description'], user_level=user['user_level'])
-            else:
-                # Handle the case where the user is not in the users dictionary
-                flash('User information not found. Please log in again.', 'error')
-                return redirect(url_for('login'))
+    if 'username' in session:
+        username = session['username']
+        user = users.get(username)  # Using get method to handle KeyError
+        if user:
+            return render_template('home.html', username=username, description=user['description'], user_level=user['user_level'])
         else:
-            flash('Please log in to access this page.', 'error')
+            # Handle the case where the user is not in the users dictionary
+            flash('User information not found. Please log in again.', 'error')
             return redirect(url_for('login'))
+    else:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login'))
 
 @app.route('/home_user_group')
 def home_user_group():  
-        if 'username' in session:
-            username = session['username']
-            user = users.get(username)  # Using get method to handle KeyError
-            if user:
-                return render_template('home_user_group.html', username=username, description=user['description'], user_level=user['user_level'])
-            else:
-                # Handle the case where the user is not in the users dictionary
-                flash('User information not found. Please log in again.', 'error')
-                return redirect(url_for('login'))
+    if 'username' in session:
+        username = session['username']
+        user = users.get(username)  # Using get method to handle KeyError
+        if user:
+            return render_template('home_user_group.html', username=username, description=user['description'], user_level=user['user_level'])
         else:
-            flash('Please log in to access this page.', 'error')
+            # Handle the case where the user is not in the users dictionary
+            flash('User information not found. Please log in again.', 'error')
             return redirect(url_for('login'))
+    else:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login'))
         
 @app.route('/home_user')
 def home_user():  
-        if 'username' in session:
-            username = session['username']
-            user = users.get(username)  # Using get method to handle KeyError
-            if user:
-                return render_template('home_user.html', username=username, description=user['description'], user_level=user['user_level'])
-            else:
-                # Handle the case where the user is not in the users dictionary
-                flash('User information not found. Please log in again.', 'error')
-                return redirect(url_for('login'))
+    if 'username' in session:
+        username = session['username']
+        user = users.get(username)  # Using get method to handle KeyError
+        if user:
+            return render_template('home_user.html', username=username, description=user['description'], user_level=user['user_level'])
         else:
-            flash('Please log in to access this page.', 'error')
+            # Handle the case where the user is not in the users dictionary
+            flash('User information not found. Please log in again.', 'error')
             return redirect(url_for('login'))
+    else:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login'))
 ############  Home page  #####################
 # @app.route("/")
 # def home_amr():
@@ -283,411 +384,383 @@ def ASGS():
 
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
-        selected_region = request.args.get("selected_region")
+       
+    selected_region = request.args.get("selected_region")
 
-        tag_query = """
-        SELECT DISTINCT TAG_ID
-        FROM AMR_FIELD_ID
-        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-        WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
-        """
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
 
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-        tag_options.sort()
-        return jsonify({"tag_options": tag_options})
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+    tag_options.sort()
+    return jsonify({"tag_options": tag_options})
 
 
 @app.route("/billing_data")
-def billing_data():
-    print("Active Connection:", active_connection)
-    with connect_to_amr_db() as amr_connection:
-        query_type = request.args.get("query_type")
+def billing_data(): 
+    query_type = request.args.get("query_type")
 
 
-        # SQL query to fetch unique PL_REGION_ID values
-        region_query = """
-        SELECT * FROM AMR_REGION 
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+    
+
+    query = ""
+    print(query)
+    if query_type == "daily_data":
+        # SQL query for main data
+        query = """
+        SELECT DISTINCT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            AMR_FIELD_ID.METER_ID,
+            AMR_BILLING_DATA.DATA_DATE,
+            AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
+            AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
+            AMR_BILLING_DATA.AVR_PF as Pressure,
+            AMR_BILLING_DATA.AVR_TF as Temperature,
+            AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
+            {billing_date_condition}
+            {tag_condition}
+            {region_condition}
         """
+        print(query)
 
-        tag_query = """
-        SELECT DISTINCT TAG_ID
-        FROM AMR_FIELD_ID
-        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-        WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        # Return the template with the DataFrame
+
+    elif query_type == "config_data":
+        query = """
+        SELECT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            amr_field_id.meter_id,
+            TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
+            
+            amr_configured_data.amr_config1,
+            amr_configured_data.amr_config2,
+            amr_configured_data.amr_config3,
+            amr_configured_data.amr_config4,
+            amr_configured_data.amr_config5,
+            amr_configured_data.amr_config6,
+            amr_configured_data.amr_config7,
+            amr_configured_data.amr_config8,
+            amr_configured_data.amr_config9,
+            amr_configured_data.amr_config10,
+            amr_configured_data.amr_config11,
+            amr_configured_data.amr_config12,
+            amr_configured_data.amr_config13,
+            amr_configured_data.amr_config14,
+            amr_configured_data.amr_config15,
+            amr_configured_data.amr_config16,
+            amr_configured_data.amr_config17,
+            amr_configured_data.amr_config18,
+            amr_configured_data.amr_config19,
+            amr_configured_data.amr_config20,
+            
+            
+            AMR_VC_CONFIGURED_INFO.config1,
+            AMR_VC_CONFIGURED_INFO.config2,
+            AMR_VC_CONFIGURED_INFO.config3,
+            AMR_VC_CONFIGURED_INFO.config4,
+            AMR_VC_CONFIGURED_INFO.config5,
+            AMR_VC_CONFIGURED_INFO.config6,
+            AMR_VC_CONFIGURED_INFO.config7,
+            AMR_VC_CONFIGURED_INFO.config8,
+            AMR_VC_CONFIGURED_INFO.config9,
+            AMR_VC_CONFIGURED_INFO.config10,
+            AMR_VC_CONFIGURED_INFO.config11,
+            AMR_VC_CONFIGURED_INFO.config12,
+            AMR_VC_CONFIGURED_INFO.config13,
+            AMR_VC_CONFIGURED_INFO.config14,
+            AMR_VC_CONFIGURED_INFO.config15,
+            AMR_VC_CONFIGURED_INFO.config16,
+            AMR_VC_CONFIGURED_INFO.config17,
+            AMR_VC_CONFIGURED_INFO.config18,
+            AMR_VC_CONFIGURED_INFO.config19,
+            AMR_VC_CONFIGURED_INFO.config20,
+            AMR_CONFIGURED_DATA.METER_STREAM_NO
+            
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
+            
+            {configured_date_condition}
+            {tag_condition}
+            {region_condition}
         """
+        print(query)
+    # Get selected values from the dropdowns
+    billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
+    configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
 
-        # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
+    selected_date = request.args.get("date_dropdown")
+    selected_tag = request.args.get("tag_dropdown")
+    selected_region = request.args.get("region_dropdown")
 
-        query = ""
-        # print(query)
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    # Fetch tag options based on the selected region
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+
+    if selected_date:
+        billing_date_condition = (
+            f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+        configured_date_condition = (
+            f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+    if selected_tag:
+        tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(
+        billing_date_condition=billing_date_condition,
+        configured_date_condition=configured_date_condition,
+        tag_condition=tag_condition,
+        region_condition=region_condition,
+    )
+
+    if selected_region:
+        # Use fetch_data function to retrieve data
+        results = fetch_data(query)
+
         if query_type == "daily_data":
-            # SQL query for main data
-            query = """
-            SELECT DISTINCT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
-                AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
-                AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
-                AMR_BILLING_DATA.AVR_PF as Pressure,
-                AMR_BILLING_DATA.AVR_TF as Temperature,
-                AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
-                {billing_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            # print(query)
+            # Use pandas to create a DataFrame for daily_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "CORRECTED",
+                    "UNCORRECTED",
+                    "Pressure",
+                    "Temperature",
+                    "METER_STREAM_NO",
+                ],
+            )
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
+            
 
-            # Return the template with the DataFrame
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+
+            # Continue with the rest of your DataFrame processing
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
+
+            # Assuming 'df' is the DataFrame created from the query results
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "config_data": None,
+            }
+
+            graphs = {
+                "corrected": None,
+                "uncorrected": None,
+                "pressure": None,
+                "temperature": None
+            }
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
+
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+
+            # Create graphs for each METER_STREAM_NO
+            for i in range(1, 7):
+                df_run = df[df['METER_STREAM_NO'] == str(i)]
+
+                # Create traces for each graph
+                trace_corrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["CORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Corrected",
+                    line=dict(color="blue", width=2),
+                )
+
+                trace_uncorrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["UNCORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Uncorrected",
+                    line=dict(color="red", width=2),
+                )
+
+                trace_pressure = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Pressure"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Pressure",
+                    line=dict(color="orange", width=2),
+                )
+
+                trace_temperature = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Temperature"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Temperature",
+                    line=dict(color="green", width=2),
+                )
+
+                # Create subplot for each graph
+                fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
+                fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
+                fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
+                fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
+
+                # Add traces to subplots
+                fig_corrected.add_trace(trace_corrected)
+                fig_uncorrected.add_trace(trace_uncorrected)
+                fig_pressure.add_trace(trace_pressure)
+                fig_temperature.add_trace(trace_temperature)
+
+                # Update subplot and layout properties
+                for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                    fig.update_traces(
+                        line_shape="linear",
+                        marker=dict(symbol="circle", size=6),
+                        hoverinfo="text+x+y",
+                        hovertext=df_run["DATA_DATE"],
+                    )
+                    fig.update_layout(
+                        legend=dict(x=0.6, y=1.25, orientation="h"),
+                        yaxis_title="Values",
+                        xaxis_title="Date",
+                        hovermode="x unified",
+                        yaxis=dict(type="linear", title="Values"),
+                    )
+                    fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+
+                # Get HTML for each graph
+                graph_corrected = fig_corrected.to_html(full_html=False)
+                graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+                graph_pressure = fig_pressure.to_html(full_html=False)
+                graph_temperature = fig_temperature.to_html(full_html=False)
+
+                # Store HTML in the graphs dictionary
+                graphs[f"corrected_run{i}"] = graph_corrected
+                graphs[f"uncorrected_run{i}"] = graph_uncorrected
+                graphs[f"pressure_run{i}"] = graph_pressure
+                graphs[f"temperature_run{i}"] = graph_temperature
+
+
+                # เพิ่มเนื้อหา HTML สำหรับกราฟ
+                df = df.sort_values(by="DATA_DATE", ascending=True)
+                # ส่ง graph_html ไปยัง HTML template ของ Flask
+                return render_template(
+                    "billingdata.html",
+                    tables=tables,
+                    titles=df.columns.values,
+                    selected_date=selected_date,
+                    selected_tag=selected_tag,
+                    selected_region=selected_region,
+                    region_options=region_options,
+                    tag_options=tag_options,
+                    selected_meter_id=selected_meter_id,
+                    graph_corrected=graph_corrected,
+                    graph_uncorrected=graph_uncorrected,
+                    graph_pressure=graph_pressure,
+                    graph_temperature=graph_temperature,
+
+                )
+
 
         elif query_type == "config_data":
-            query = """
-            SELECT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
-                
-                amr_configured_data.amr_config1,
-                amr_configured_data.amr_config2,
-                amr_configured_data.amr_config3,
-                amr_configured_data.amr_config4,
-                amr_configured_data.amr_config5,
-                amr_configured_data.amr_config6,
-                amr_configured_data.amr_config7,
-                amr_configured_data.amr_config8,
-                amr_configured_data.amr_config9,
-                amr_configured_data.amr_config10,
-                amr_configured_data.amr_config11,
-                amr_configured_data.amr_config12,
-                amr_configured_data.amr_config13,
-                amr_configured_data.amr_config14,
-                amr_configured_data.amr_config15,
-                amr_configured_data.amr_config16,
-                amr_configured_data.amr_config17,
-                amr_configured_data.amr_config18,
-                amr_configured_data.amr_config19,
-                amr_configured_data.amr_config20,
-                
-                
-                AMR_VC_CONFIGURED_INFO.config1,
-                AMR_VC_CONFIGURED_INFO.config2,
-                AMR_VC_CONFIGURED_INFO.config3,
-                AMR_VC_CONFIGURED_INFO.config4,
-                AMR_VC_CONFIGURED_INFO.config5,
-                AMR_VC_CONFIGURED_INFO.config6,
-                AMR_VC_CONFIGURED_INFO.config7,
-                AMR_VC_CONFIGURED_INFO.config8,
-                AMR_VC_CONFIGURED_INFO.config9,
-                AMR_VC_CONFIGURED_INFO.config10,
-                AMR_VC_CONFIGURED_INFO.config11,
-                AMR_VC_CONFIGURED_INFO.config12,
-                AMR_VC_CONFIGURED_INFO.config13,
-                AMR_VC_CONFIGURED_INFO.config14,
-                AMR_VC_CONFIGURED_INFO.config15,
-                AMR_VC_CONFIGURED_INFO.config16,
-                AMR_VC_CONFIGURED_INFO.config17,
-                AMR_VC_CONFIGURED_INFO.config18,
-                AMR_VC_CONFIGURED_INFO.config19,
-                AMR_VC_CONFIGURED_INFO.config20,
-                AMR_CONFIGURED_DATA.METER_STREAM_NO
-                
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-            JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null     
-                {configured_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            # print(query)
-        # Get selected values from the dropdowns
-        billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
-        configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-
-        selected_date = request.args.get("date_dropdown")
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-
-        # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
-
-        # Fetch tag options based on the selected region
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-
-
-        if selected_date:
-            billing_date_condition = (
-                f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-            configured_date_condition = (
-                f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-  
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-
-        # Modify the query with the selected conditions
-        query = query.format(
-            billing_date_condition=billing_date_condition,
-            configured_date_condition=configured_date_condition,
-            tag_condition=tag_condition,
-            region_condition=region_condition,
-        )
-
-        if selected_region:
-            # Use fetch_data function to retrieve data
-            results = fetch_data(amr_connection,query)
-            print("d1", results)
-
-            if query_type == "daily_data":
-                # Use pandas to create a DataFrame for daily_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "CORRECTED",
-                        "UNCORRECTED",
-                        "Pressure",
-                        "Temperature",
-                        "METER_STREAM_NO",
-                    ],
-                )
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
-
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
-
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                print("d2", df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
-
-                # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
-
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "config_data": None,
-                }
-
-                graphs = {
-                    "corrected": None,
-                    "uncorrected": None,
-                    "pressure": None,
-                    "temperature": None
-                }
-
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
-
-                # Create graphs for each METER_STREAM_NO
-                for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
-
-                    # Create traces for each graph
-                    trace_corrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["CORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Corrected",
-                        line=dict(color="blue", width=2),
-                    )
-
-                    trace_uncorrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["UNCORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Uncorrected",
-                        line=dict(color="red", width=2),
-                    )
-
-                    trace_pressure = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Pressure"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Pressure",
-                        line=dict(color="orange", width=2),
-                    )
-
-                    trace_temperature = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Temperature"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Temperature",
-                        line=dict(color="green", width=2),
-                    )
-
-                    # Create subplot for each graph
-                    fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
-                    fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
-                    fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
-                    fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
-
-                    # Add traces to subplots
-                    fig_corrected.add_trace(trace_corrected)
-                    fig_uncorrected.add_trace(trace_uncorrected)
-                    fig_pressure.add_trace(trace_pressure)
-                    fig_temperature.add_trace(trace_temperature)
-
-                    # Update subplot and layout properties
-                    for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
-                        fig.update_traces(
-                            line_shape="linear",
-                            marker=dict(symbol="circle", size=6),
-                            hoverinfo="text+x+y",
-                            hovertext=df_run["DATA_DATE"],
-                        )
-                        fig.update_layout(
-                            legend=dict(x=0.6, y=1.25, orientation="h"),
-                            yaxis_title="Values",
-                            xaxis_title="Date",
-                            hovermode="x unified",
-                            yaxis=dict(type="linear", title="Values"),
-                        )
-                        fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
-
-                    # Get HTML for each graph
-                    graph_corrected = fig_corrected.to_html(full_html=False)
-                    graph_uncorrected = fig_uncorrected.to_html(full_html=False)
-                    graph_pressure = fig_pressure.to_html(full_html=False)
-                    graph_temperature = fig_temperature.to_html(full_html=False)
-
-                    # Store HTML in the graphs dictionary
-                    graphs[f"corrected_run{i}"] = graph_corrected
-                    graphs[f"uncorrected_run{i}"] = graph_uncorrected
-                    graphs[f"pressure_run{i}"] = graph_pressure
-                    graphs[f"temperature_run{i}"] = graph_temperature
-
-
-                    # เพิ่มเนื้อหา HTML สำหรับกราฟ
-                    df = df.sort_values(by="DATA_DATE", ascending=True)
-                    # ส่ง graph_html ไปยัง HTML template ของ Flask
-                    return render_template(
-                        "billingdata.html",
-                        tables=tables,
-                        titles=df.columns.values,
-                        selected_date=selected_date,
-                        selected_tag=selected_tag,
-                        selected_region=selected_region,
-                        region_options=region_options,
-                        tag_options=tag_options,
-                        selected_meter_id=selected_meter_id,
-                        graph_corrected=graph_corrected,
-                        graph_uncorrected=graph_uncorrected,
-                        graph_pressure=graph_pressure,
-                        graph_temperature=graph_temperature,
-
-                    )
-
-
-            elif query_type == "config_data":
-                # Use pandas to create a DataFrame for config_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "AMR_CONFIG1",
-                        "AMR_CONFIG2",
-                        "AMR_CONFIG3",
-                        "AMR_CONFIG4",
-                        "AMR_CONFIG5",
-                        "AMR_CONFIG6",
-                        "AMR_CONFIG7",
-                        "AMR_CONFIG8",
-                        "AMR_CONFIG9",
-                        "AMR_CONFIG10",
-                        "AMR_CONFIG11",
-                        "AMR_CONFIG12",
-                        "AMR_CONFIG13",
-                        "AMR_CONFIG14",
-                        "AMR_CONFIG15",
-                        "AMR_CONFIG16",
-                        "AMR_CONFIG17",
-                        "AMR_CONFIG18",
-                        "AMR_CONFIG19",
-                        "AMR_CONFIG20",
-                        "CONFIG1",
-                        "CONFIG2",
-                        "CONFIG3",
-                        "CONFIG4",
-                        "CONFIG5",
-                        "CONFIG6",
-                        "CONFIG7",
-                        "CONFIG8",
-                        "CONFIG9",
-                        "CONFIG10",
-                        "CONFIG11",
-                        "CONFIG12",
-                        "CONFIG13",
-                        "CONFIG14",
-                        "CONFIG15",
-                        "CONFIG16",
-                        "CONFIG17",
-                        "CONFIG18",
-                        "CONFIG19",
-                        "CONFIG20",
-                        "METER_STREAM_NO",
-                    ]
-                )
-                columns_to_drop = [
+            # Use pandas to create a DataFrame for config_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "AMR_CONFIG1",
+                    "AMR_CONFIG2",
+                    "AMR_CONFIG3",
+                    "AMR_CONFIG4",
+                    "AMR_CONFIG5",
+                    "AMR_CONFIG6",
+                    "AMR_CONFIG7",
+                    "AMR_CONFIG8",
+                    "AMR_CONFIG9",
+                    "AMR_CONFIG10",
+                    "AMR_CONFIG11",
+                    "AMR_CONFIG12",
+                    "AMR_CONFIG13",
+                    "AMR_CONFIG14",
+                    "AMR_CONFIG15",
+                    "AMR_CONFIG16",
+                    "AMR_CONFIG17",
+                    "AMR_CONFIG18",
+                    "AMR_CONFIG19",
+                    "AMR_CONFIG20",
                     "CONFIG1",
                     "CONFIG2",
                     "CONFIG3",
@@ -708,517 +781,532 @@ def billing_data():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
+                    "METER_STREAM_NO",
                 ]
-                dropped_columns_data = pd.concat(
-                    [
-                        pd.DataFrame(columns=df.columns),
-                        pd.DataFrame(columns=columns_to_drop),
-                    ],
-                    axis=1,
-                )
-                dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
-                dropped_columns_data[
-                    "DATA_DATE"
-                ] = "DATA.DATE"  # Replace actual values with the column name
-                dropped_columns_data = dropped_columns_data.to_dict(orient="records")
+            )
+            columns_to_drop = [
+                "CONFIG1",
+                "CONFIG2",
+                "CONFIG3",
+                "CONFIG4",
+                "CONFIG5",
+                "CONFIG6",
+                "CONFIG7",
+                "CONFIG8",
+                "CONFIG9",
+                "CONFIG10",
+                "CONFIG11",
+                "CONFIG12",
+                "CONFIG13",
+                "CONFIG14",
+                "CONFIG15",
+                "CONFIG16",
+                "CONFIG17",
+                "CONFIG18",
+                "CONFIG19",
+                "CONFIG20",
+            ]
+            dropped_columns_data = pd.concat(
+                [
+                    pd.DataFrame(columns=df.columns),
+                    pd.DataFrame(columns=columns_to_drop),
+                ],
+                axis=1,
+            )
+            dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
+            dropped_columns_data[
+                "DATA_DATE"
+            ] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
-                df = df.drop(columns=columns_to_drop)  # Drop specified columns
+            df = df.drop(columns=columns_to_drop)  # Drop specified columns
+            
+            
+            # Get the selected Meter ID before removing it from the DataFrame
+            ##!!!! Detact if empty 
+            selected_meter_id = df["METER_ID"].iloc[0]
 
-                print(df.columns)
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+            # Remove newline characters
+            df = df.apply(
+                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
+            )
+            #df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            
 
-                # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE")
+            # Send the DataFrame to the HTML template
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                # Sort DataFrame by 'DATA_DATE'
-                df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+            # Check if each DataFrame has data before including in the tables dictionary
+            # Create Full table of selectedMonth
+            tables = {
+                "daily_data": None,
+                
+            }
+            
+            query_day = """
+            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('2024-01-01', 'YYYY-MM-DD')) AS Date1
+            FROM DUAL
+            CONNECT BY LEVEL <= (TO_DATE('2024-01-31', 'YYYY-MM-DD') - TO_DATE('2024-01-01', 'YYYY-MM-DD')+1)
+            """
+            query_day_result = fetch_data(query_day)
+            df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+            #print("query_day97", df_month_list)
+            #print(df_run1)
+            #df22 = FillFullMonth(df_run1, 1)
+            merged_df = pd.merge(df_month_list, df_run1, on='DATA_DATE', how='outer')
+            print(merged_df)
+            df_run1 = merged_df
+            common_table_properties = {"classes": "data", "index": False,"header":None}
 
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "daily_data": None,
-                    
-                }
-
-                common_table_properties = {"classes": "data", "index": False,"header":None}
-
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-                return render_template(
-                    "billingdata.html",
-                    
-                    tables=tables,
-                    titles=df.columns.values,
-                    selected_date=selected_date,
-                    selected_tag=selected_tag,
-                    selected_region=selected_region,
-                    region_options=region_options,
-                    tag_options=tag_options, 
-                    dropped_columns_data=dropped_columns_data,
-                    selected_meter_id=selected_meter_id,
-                )
-        else:
-            # Render the template without executing the query
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
             return render_template(
                 "billingdata.html",
+                
+                tables=tables,
+                titles=df.columns.values,
                 selected_date=selected_date,
-                selected_region=selected_region,
                 selected_tag=selected_tag,
+                selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options,
-                tables={},
+                tag_options=tag_options, 
+                dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
             )
+    else:
+        # Render the template without executing the query
+        return render_template(
+            "billingdata.html",
+            selected_date=selected_date,
+            selected_region=selected_region,
+            selected_tag=selected_tag,
+            region_options=region_options,
+            tag_options=tag_options,
+            tables={},
+        )
             
 
 @app.route("/billing_data_user_group")
 def billing_data_user_group():
-    print("Active Connection:", active_connection)
-    with connect_to_amr_db() as amr_connection:
-        query_type = request.args.get("query_type")
-        
-        if 'username' not in session:
-            return redirect(url_for('login'))
 
-        # Fetch user information from the session
-        logged_in_user = session['username']
-        if logged_in_user not in users:
-            return redirect(url_for('login'))
-        
-        user_info = users[logged_in_user]
-        user_level = user_info.get('user_level')
-        description = user_info.get('description')
-        print("description", description)
-        
-        logged_in_user = logged_in_user
-        print("user:", logged_in_user)
+    query_type = request.args.get("query_type")
+    
+    if 'username' not in session:
+        return redirect(url_for('login'))
 
-
-        # SQL query to fetch unique PL_REGION_ID values
-        region_query = """
-        SELECT amr_user.user_group 
-        FROM AMR_user 
-        WHERE user_name = :logged_in_user
-        AND amr_user.user_enable like '1' 
-        """
-        print("ree", region_query)
-        # Fetch unique region values
-        region_results = fetch_data(amr_connection, region_query, params={'logged_in_user': logged_in_user})
-        
-        
-        region_options_tmp = [str(region[0]) for region in region_results]
-        # print("des", region_options)
-        
-        region_options = region_options_tmp[0]
+    # Fetch user information from the session
+    logged_in_user = session['username']
+    if logged_in_user not in users:
+        return redirect(url_for('login'))
+    
+    user_info = users[logged_in_user]
+    user_level = user_info.get('user_level')
+    description = user_info.get('description')
+    print("description", description)
+    
+    logged_in_user = logged_in_user
+    print("user:", logged_in_user)
 
 
-        # tag_query = """
-        # SELECT DISTINCT TAG_ID
-        # FROM AMR_FIELD_ID
-        # JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-        # WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
-        # """
-        
-        tag_query = """
-        SELECT DISTINCT AMR_FIELD_ID.TAG_ID
-        FROM AMR_FIELD_ID, amr_user, amr_pl_group 
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT amr_user.user_group 
+    FROM AMR_user 
+    WHERE user_name = :logged_in_user
+    AND amr_user.user_enable like '1' 
+    """
+    print("ree", region_query)
+    # Fetch unique region values
+    region_results = fetch_data( region_query, params={'logged_in_user': logged_in_user})
+    
+    
+    region_options_tmp = [str(region[0]) for region in region_results]
+    # print("des", region_options)
+    
+    region_options = region_options_tmp[0]
+
+
+    # tag_query = """
+    # SELECT DISTINCT TAG_ID
+    # FROM AMR_FIELD_ID
+    # JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    # WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    # """
+    
+    tag_query = """
+    SELECT DISTINCT AMR_FIELD_ID.TAG_ID
+    FROM AMR_FIELD_ID, amr_user, amr_pl_group 
+    WHERE
+        amr_user.user_group = amr_pl_group.pl_region_id
+        and AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+        and AMR_FIELD_ID.tag_id NOT like '%.remove%'
+        and amr_pl_group.pl_region_id = :region_options
+    """
+    
+    print(tag_query)
+    tag_results = fetch_data(tag_query, params={"region_options": region_options})
+    tag_options = [str(tag[0]) for tag in tag_results]
+    print("tag:", tag_options)
+    
+    query = ""
+    print(query)
+    if query_type == "daily_data":
+        # SQL query for main data
+        query = """
+        SELECT DISTINCT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            AMR_FIELD_ID.METER_ID,
+            AMR_BILLING_DATA.DATA_DATE,
+            AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
+            AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
+            AMR_BILLING_DATA.AVR_PF as Pressure,
+            AMR_BILLING_DATA.AVR_TF as Temperature,
+            AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
         WHERE
-            amr_user.user_group = amr_pl_group.pl_region_id
-            and AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
-            and AMR_FIELD_ID.tag_id NOT like '%.remove%'
-            and amr_pl_group.pl_region_id = :region_options
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
+            {billing_date_condition}
+            {tag_condition}
+            {region_condition}
         """
-        
-        print(tag_query)
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_options": region_options})
-        tag_options = [str(tag[0]) for tag in tag_results]
-        print("tag:", tag_options)
-        
-        query = ""
         print(query)
-        if query_type == "daily_data":
-            # SQL query for main data
-            query = """
-            SELECT DISTINCT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
-                AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
-                AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
-                AMR_BILLING_DATA.AVR_PF as Pressure,
-                AMR_BILLING_DATA.AVR_TF as Temperature,
-                AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
-                {billing_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            print(query)
 
-            # Return the template with the DataFrame
+        # Return the template with the DataFrame
+
+    elif query_type == "config_data":
+        query = """
+        SELECT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            amr_field_id.meter_id,
+            AMR_CONFIGURED_DATA.DATA_DATE,
+            
+            amr_configured_data.amr_config1,
+            amr_configured_data.amr_config2,
+            amr_configured_data.amr_config3,
+            amr_configured_data.amr_config4,
+            amr_configured_data.amr_config5,
+            amr_configured_data.amr_config6,
+            amr_configured_data.amr_config7,
+            amr_configured_data.amr_config8,
+            amr_configured_data.amr_config9,
+            amr_configured_data.amr_config10,
+            amr_configured_data.amr_config11,
+            amr_configured_data.amr_config12,
+            amr_configured_data.amr_config13,
+            amr_configured_data.amr_config14,
+            amr_configured_data.amr_config15,
+            amr_configured_data.amr_config16,
+            amr_configured_data.amr_config17,
+            amr_configured_data.amr_config18,
+            amr_configured_data.amr_config19,
+            amr_configured_data.amr_config20,
+            
+            
+            AMR_VC_CONFIGURED_INFO.config1,
+            AMR_VC_CONFIGURED_INFO.config2,
+            AMR_VC_CONFIGURED_INFO.config3,
+            AMR_VC_CONFIGURED_INFO.config4,
+            AMR_VC_CONFIGURED_INFO.config5,
+            AMR_VC_CONFIGURED_INFO.config6,
+            AMR_VC_CONFIGURED_INFO.config7,
+            AMR_VC_CONFIGURED_INFO.config8,
+            AMR_VC_CONFIGURED_INFO.config9,
+            AMR_VC_CONFIGURED_INFO.config10,
+            AMR_VC_CONFIGURED_INFO.config11,
+            AMR_VC_CONFIGURED_INFO.config12,
+            AMR_VC_CONFIGURED_INFO.config13,
+            AMR_VC_CONFIGURED_INFO.config14,
+            AMR_VC_CONFIGURED_INFO.config15,
+            AMR_VC_CONFIGURED_INFO.config16,
+            AMR_VC_CONFIGURED_INFO.config17,
+            AMR_VC_CONFIGURED_INFO.config18,
+            AMR_VC_CONFIGURED_INFO.config19,
+            AMR_VC_CONFIGURED_INFO.config20,
+            AMR_CONFIGURED_DATA.METER_STREAM_NO
+            
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
+            
+            {configured_date_condition}
+            {tag_condition}
+            {region_condition}
+        """
+        print(query)
+    # Get selected values from the dropdowns
+    billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
+    configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
+
+    selected_date = request.args.get("date_dropdown")
+    selected_tag = request.args.get("tag_dropdown")
+    selected_region = request.args.get("region_dropdown")
+
+    
+
+    if selected_date:
+        billing_date_condition = (
+            f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+        configured_date_condition = (
+            f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+    if selected_tag:
+        tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(
+        billing_date_condition=billing_date_condition,
+        configured_date_condition=configured_date_condition,
+        tag_condition=tag_condition,
+        region_condition=region_condition,
+    )
+
+    if selected_region:
+        # Use fetch_data function to retrieve data
+        results = fetch_data(query)
+
+        if query_type == "daily_data":
+            # Use pandas to create a DataFrame for daily_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "CORRECTED",
+                    "UNCORRECTED",
+                    "Pressure",
+                    "Temperature",
+                    "METER_STREAM_NO",
+                ],
+            )
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
+
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+
+            # Continue with the rest of your DataFrame processing
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
+
+            # Assuming 'df' is the DataFrame created from the query results
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "config_data": None,
+            }
+
+            graphs = {
+                "corrected": None,
+                "uncorrected": None,
+                "pressure": None,
+                "temperature": None
+            }
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
+
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+
+            # Create graphs for each METER_STREAM_NO
+            for i in range(1, 7):
+                df_run = df[df['METER_STREAM_NO'] == str(i)]
+
+                # Create traces for each graph
+                trace_corrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["CORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Corrected",
+                    line=dict(color="blue", width=2),
+                )
+
+                trace_uncorrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["UNCORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Uncorrected",
+                    line=dict(color="red", width=2),
+                )
+
+                trace_pressure = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Pressure"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Pressure",
+                    line=dict(color="orange", width=2),
+                )
+
+                trace_temperature = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Temperature"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Temperature",
+                    line=dict(color="green", width=2),
+                )
+
+                # Create subplot for each graph
+                fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
+                fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
+                fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
+                fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
+
+                # Add traces to subplots
+                fig_corrected.add_trace(trace_corrected)
+                fig_uncorrected.add_trace(trace_uncorrected)
+                fig_pressure.add_trace(trace_pressure)
+                fig_temperature.add_trace(trace_temperature)
+
+                # Update subplot and layout properties
+                for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                    fig.update_traces(
+                        line_shape="linear",
+                        marker=dict(symbol="circle", size=6),
+                        hoverinfo="text+x+y",
+                        hovertext=df_run["DATA_DATE"],
+                    )
+                    fig.update_layout(
+                        legend=dict(x=0.6, y=1.25, orientation="h"),
+                        yaxis_title="Values",
+                        xaxis_title="Date",
+                        hovermode="x unified",
+                        yaxis=dict(type="linear", title="Values"),
+                    )
+                    fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+
+                # Get HTML for each graph
+                graph_corrected = fig_corrected.to_html(full_html=False)
+                graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+                graph_pressure = fig_pressure.to_html(full_html=False)
+                graph_temperature = fig_temperature.to_html(full_html=False)
+
+                # Store HTML in the graphs dictionary
+                graphs[f"corrected_run{i}"] = graph_corrected
+                graphs[f"uncorrected_run{i}"] = graph_uncorrected
+                graphs[f"pressure_run{i}"] = graph_pressure
+                graphs[f"temperature_run{i}"] = graph_temperature
+
+
+                # เพิ่มเนื้อหา HTML สำหรับกราฟ
+                df = df.sort_values(by="DATA_DATE", ascending=True)
+                # ส่ง graph_html ไปยัง HTML template ของ Flask
+                return render_template(
+                    "billingdata_user_group.html",
+                    tables=tables,
+                    titles=df.columns.values,
+                    selected_date=selected_date,
+                    selected_tag=selected_tag,
+                    selected_region=selected_region,
+                    region_options=region_options,
+                    tag_options=tag_options,
+                    selected_meter_id=selected_meter_id,
+                    graph_corrected=graph_corrected,
+                    graph_uncorrected=graph_uncorrected,
+                    graph_pressure=graph_pressure,
+                    graph_temperature=graph_temperature,
+
+                )
+
 
         elif query_type == "config_data":
-            query = """
-            SELECT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
-                
-                amr_configured_data.amr_config1,
-                amr_configured_data.amr_config2,
-                amr_configured_data.amr_config3,
-                amr_configured_data.amr_config4,
-                amr_configured_data.amr_config5,
-                amr_configured_data.amr_config6,
-                amr_configured_data.amr_config7,
-                amr_configured_data.amr_config8,
-                amr_configured_data.amr_config9,
-                amr_configured_data.amr_config10,
-                amr_configured_data.amr_config11,
-                amr_configured_data.amr_config12,
-                amr_configured_data.amr_config13,
-                amr_configured_data.amr_config14,
-                amr_configured_data.amr_config15,
-                amr_configured_data.amr_config16,
-                amr_configured_data.amr_config17,
-                amr_configured_data.amr_config18,
-                amr_configured_data.amr_config19,
-                amr_configured_data.amr_config20,
-                
-                
-                AMR_VC_CONFIGURED_INFO.config1,
-                AMR_VC_CONFIGURED_INFO.config2,
-                AMR_VC_CONFIGURED_INFO.config3,
-                AMR_VC_CONFIGURED_INFO.config4,
-                AMR_VC_CONFIGURED_INFO.config5,
-                AMR_VC_CONFIGURED_INFO.config6,
-                AMR_VC_CONFIGURED_INFO.config7,
-                AMR_VC_CONFIGURED_INFO.config8,
-                AMR_VC_CONFIGURED_INFO.config9,
-                AMR_VC_CONFIGURED_INFO.config10,
-                AMR_VC_CONFIGURED_INFO.config11,
-                AMR_VC_CONFIGURED_INFO.config12,
-                AMR_VC_CONFIGURED_INFO.config13,
-                AMR_VC_CONFIGURED_INFO.config14,
-                AMR_VC_CONFIGURED_INFO.config15,
-                AMR_VC_CONFIGURED_INFO.config16,
-                AMR_VC_CONFIGURED_INFO.config17,
-                AMR_VC_CONFIGURED_INFO.config18,
-                AMR_VC_CONFIGURED_INFO.config19,
-                AMR_VC_CONFIGURED_INFO.config20,
-                AMR_CONFIGURED_DATA.METER_STREAM_NO
-                
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-            JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
-                
-                {configured_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            print(query)
-        # Get selected values from the dropdowns
-        billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
-        configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-
-        selected_date = request.args.get("date_dropdown")
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-
-        
-
-        if selected_date:
-            billing_date_condition = (
-                f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-            configured_date_condition = (
-                f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-
-        # Modify the query with the selected conditions
-        query = query.format(
-            billing_date_condition=billing_date_condition,
-            configured_date_condition=configured_date_condition,
-            tag_condition=tag_condition,
-            region_condition=region_condition,
-        )
-
-        if selected_region:
-            # Use fetch_data function to retrieve data
-            results = fetch_data(amr_connection,query)
-
-            if query_type == "daily_data":
-                # Use pandas to create a DataFrame for daily_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "CORRECTED",
-                        "UNCORRECTED",
-                        "Pressure",
-                        "Temperature",
-                        "METER_STREAM_NO",
-                    ],
-                )
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
-
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
-
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
-
-                # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
-
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "config_data": None,
-                }
-
-                graphs = {
-                    "corrected": None,
-                    "uncorrected": None,
-                    "pressure": None,
-                    "temperature": None
-                }
-
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
-
-                # Create graphs for each METER_STREAM_NO
-                for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
-
-                    # Create traces for each graph
-                    trace_corrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["CORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Corrected",
-                        line=dict(color="blue", width=2),
-                    )
-
-                    trace_uncorrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["UNCORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Uncorrected",
-                        line=dict(color="red", width=2),
-                    )
-
-                    trace_pressure = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Pressure"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Pressure",
-                        line=dict(color="orange", width=2),
-                    )
-
-                    trace_temperature = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Temperature"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Temperature",
-                        line=dict(color="green", width=2),
-                    )
-
-                    # Create subplot for each graph
-                    fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
-                    fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
-                    fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
-                    fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
-
-                    # Add traces to subplots
-                    fig_corrected.add_trace(trace_corrected)
-                    fig_uncorrected.add_trace(trace_uncorrected)
-                    fig_pressure.add_trace(trace_pressure)
-                    fig_temperature.add_trace(trace_temperature)
-
-                    # Update subplot and layout properties
-                    for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
-                        fig.update_traces(
-                            line_shape="linear",
-                            marker=dict(symbol="circle", size=6),
-                            hoverinfo="text+x+y",
-                            hovertext=df_run["DATA_DATE"],
-                        )
-                        fig.update_layout(
-                            legend=dict(x=0.6, y=1.25, orientation="h"),
-                            yaxis_title="Values",
-                            xaxis_title="Date",
-                            hovermode="x unified",
-                            yaxis=dict(type="linear", title="Values"),
-                        )
-                        fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
-
-                    # Get HTML for each graph
-                    graph_corrected = fig_corrected.to_html(full_html=False)
-                    graph_uncorrected = fig_uncorrected.to_html(full_html=False)
-                    graph_pressure = fig_pressure.to_html(full_html=False)
-                    graph_temperature = fig_temperature.to_html(full_html=False)
-
-                    # Store HTML in the graphs dictionary
-                    graphs[f"corrected_run{i}"] = graph_corrected
-                    graphs[f"uncorrected_run{i}"] = graph_uncorrected
-                    graphs[f"pressure_run{i}"] = graph_pressure
-                    graphs[f"temperature_run{i}"] = graph_temperature
-
-
-                    # เพิ่มเนื้อหา HTML สำหรับกราฟ
-                    df = df.sort_values(by="DATA_DATE", ascending=True)
-                    # ส่ง graph_html ไปยัง HTML template ของ Flask
-                    return render_template(
-                        "billingdata_user_group.html",
-                        tables=tables,
-                        titles=df.columns.values,
-                        selected_date=selected_date,
-                        selected_tag=selected_tag,
-                        selected_region=selected_region,
-                        region_options=region_options,
-                        tag_options=tag_options,
-                        selected_meter_id=selected_meter_id,
-                        graph_corrected=graph_corrected,
-                        graph_uncorrected=graph_uncorrected,
-                        graph_pressure=graph_pressure,
-                        graph_temperature=graph_temperature,
-
-                    )
-
-
-            elif query_type == "config_data":
-                # Use pandas to create a DataFrame for config_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "AMR_CONFIG1",
-                        "AMR_CONFIG2",
-                        "AMR_CONFIG3",
-                        "AMR_CONFIG4",
-                        "AMR_CONFIG5",
-                        "AMR_CONFIG6",
-                        "AMR_CONFIG7",
-                        "AMR_CONFIG8",
-                        "AMR_CONFIG9",
-                        "AMR_CONFIG10",
-                        "AMR_CONFIG11",
-                        "AMR_CONFIG12",
-                        "AMR_CONFIG13",
-                        "AMR_CONFIG14",
-                        "AMR_CONFIG15",
-                        "AMR_CONFIG16",
-                        "AMR_CONFIG17",
-                        "AMR_CONFIG18",
-                        "AMR_CONFIG19",
-                        "AMR_CONFIG20",
-                        "CONFIG1",
-                        "CONFIG2",
-                        "CONFIG3",
-                        "CONFIG4",
-                        "CONFIG5",
-                        "CONFIG6",
-                        "CONFIG7",
-                        "CONFIG8",
-                        "CONFIG9",
-                        "CONFIG10",
-                        "CONFIG11",
-                        "CONFIG12",
-                        "CONFIG13",
-                        "CONFIG14",
-                        "CONFIG15",
-                        "CONFIG16",
-                        "CONFIG17",
-                        "CONFIG18",
-                        "CONFIG19",
-                        "CONFIG20",
-                        "METER_STREAM_NO",
-                    ]
-                )
-                columns_to_drop = [
+            # Use pandas to create a DataFrame for config_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "AMR_CONFIG1",
+                    "AMR_CONFIG2",
+                    "AMR_CONFIG3",
+                    "AMR_CONFIG4",
+                    "AMR_CONFIG5",
+                    "AMR_CONFIG6",
+                    "AMR_CONFIG7",
+                    "AMR_CONFIG8",
+                    "AMR_CONFIG9",
+                    "AMR_CONFIG10",
+                    "AMR_CONFIG11",
+                    "AMR_CONFIG12",
+                    "AMR_CONFIG13",
+                    "AMR_CONFIG14",
+                    "AMR_CONFIG15",
+                    "AMR_CONFIG16",
+                    "AMR_CONFIG17",
+                    "AMR_CONFIG18",
+                    "AMR_CONFIG19",
+                    "AMR_CONFIG20",
                     "CONFIG1",
                     "CONFIG2",
                     "CONFIG3",
@@ -1239,520 +1327,519 @@ def billing_data_user_group():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
+                    "METER_STREAM_NO",
                 ]
-                dropped_columns_data = pd.concat(
-                    [
-                        pd.DataFrame(columns=df.columns),
-                        pd.DataFrame(columns=columns_to_drop),
-                    ],
-                    axis=1,
-                )
-                dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
-                dropped_columns_data[
-                    "DATA_DATE"
-                ] = "DATA.DATE"  # Replace actual values with the column name
-                dropped_columns_data = dropped_columns_data.to_dict(orient="records")
+            )
+            columns_to_drop = [
+                "CONFIG1",
+                "CONFIG2",
+                "CONFIG3",
+                "CONFIG4",
+                "CONFIG5",
+                "CONFIG6",
+                "CONFIG7",
+                "CONFIG8",
+                "CONFIG9",
+                "CONFIG10",
+                "CONFIG11",
+                "CONFIG12",
+                "CONFIG13",
+                "CONFIG14",
+                "CONFIG15",
+                "CONFIG16",
+                "CONFIG17",
+                "CONFIG18",
+                "CONFIG19",
+                "CONFIG20",
+            ]
+            dropped_columns_data = pd.concat(
+                [
+                    pd.DataFrame(columns=df.columns),
+                    pd.DataFrame(columns=columns_to_drop),
+                ],
+                axis=1,
+            )
+            dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
+            dropped_columns_data[
+                "DATA_DATE"
+            ] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
-                df = df.drop(columns=columns_to_drop)  # Drop specified columns
+            df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
-                print(df.columns)
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+            print(df.columns)
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
 
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            # Remove newline characters
+            df = df.apply(
+                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
+            )
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                # Sort DataFrame by 'DATA_DATE'
-                df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE")
+            # Send the DataFrame to the HTML template
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "daily_data": None,
-                    
-                }
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "daily_data": None,
+                
+            }
 
-                common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False,"header":None}
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-                return render_template(
-                    "billingdata_user_group.html",
-                    
-                    tables=tables,
-                    titles=df.columns.values,
-                    selected_date=selected_date,
-                    selected_tag=selected_tag,
-                    selected_region=selected_region,
-                    region_options=region_options,
-                    tag_options=tag_options, 
-                    dropped_columns_data=dropped_columns_data,
-                    selected_meter_id=selected_meter_id,
-                    username=logged_in_user,  
-                    description=description,
-                    user_level=user_level
-                )
-        else:
-            # Render the template without executing the query
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
             return render_template(
                 "billingdata_user_group.html",
+                
+                tables=tables,
+                titles=df.columns.values,
                 selected_date=selected_date,
-                selected_region=selected_region,
                 selected_tag=selected_tag,
+                selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options,
-                tables={},
+                tag_options=tag_options, 
+                dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
                 username=logged_in_user,  
                 description=description,
                 user_level=user_level
             )
+    else:
+        # Render the template without executing the query
+        return render_template(
+            "billingdata_user_group.html",
+            selected_date=selected_date,
+            selected_region=selected_region,
+            selected_tag=selected_tag,
+            region_options=region_options,
+            tag_options=tag_options,
+            tables={},
+            username=logged_in_user,  
+            description=description,
+            user_level=user_level
+        )
             
             
 
 @app.route("/billing_data_user")
 def billing_data_user():
-    print("Active Connection:", active_connection)
-    with connect_to_amr_db() as amr_connection:
-        if 'username' not in session:
-            return redirect(url_for('login'))
-
-        # Fetch user information from the session
-        logged_in_user = session['username']
-        if logged_in_user not in users:
-            return redirect(url_for('login'))
-        
-        user_info = users[logged_in_user]
-        user_level = user_info.get('user_level')
-        description = user_info.get('description')
-        print("description", description)
-        
-        logged_in_user = logged_in_user
-        print("user:", logged_in_user)
     
-        query_type = request.args.get("query_type")
+    if 'username' not in session:
+        return redirect(url_for('login'))
 
+    # Fetch user information from the session
+    logged_in_user = session['username']
+    if logged_in_user not in users:
+        return redirect(url_for('login'))
     
-        # SQL query to fetch unique PL_REGION_ID values
-        region_query = """
-        SELECT amr_region.id
-        FROM AMR_REGION,AMR_user,amr_field_id,amr_pl_group
-        WHERE amr_user.user_group = amr_field_id.meter_id
-            AND amr_field_id.field_id = amr_pl_group.field_id
-            AND amr_pl_group.pl_region_id = amr_region.id
-            AND user_name = :logged_in_user
-            AND amr_user.user_enable like '1'
+    user_info = users[logged_in_user]
+    user_level = user_info.get('user_level')
+    description = user_info.get('description')
+    print("description", description)
+    
+    logged_in_user = logged_in_user
+    print("user:", logged_in_user)
+
+    query_type = request.args.get("query_type")
+
+
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT amr_region.id
+    FROM AMR_REGION,AMR_user,amr_field_id,amr_pl_group
+    WHERE amr_user.user_group = amr_field_id.meter_id
+        AND amr_field_id.field_id = amr_pl_group.field_id
+        AND amr_pl_group.pl_region_id = amr_region.id
+        AND user_name = :logged_in_user
+        AND amr_user.user_enable like '1'
+    """
+
+    tag_query = """
+    SELECT amr_field_id.tag_id
+    FROM AMR_REGION,AMR_user,amr_field_id,amr_pl_group
+    WHERE amr_user.user_group = amr_field_id.meter_id
+        AND amr_field_id.field_id = amr_pl_group.field_id
+        AND amr_pl_group.pl_region_id = amr_region.id
+        AND user_name = :logged_in_user
+        AND amr_user.user_enable like '1'
+    """
+
+    # Fetch unique region values
+    region_results = fetch_data( region_query, params={'logged_in_user': logged_in_user})
+    region_options = [str(region[0]) for region in region_results]
+
+    query = ""
+    print(query)
+    if query_type == "daily_data":
+        # SQL query for main data
+        query = """
+        SELECT DISTINCT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            AMR_FIELD_ID.METER_ID,
+            AMR_BILLING_DATA.DATA_DATE,
+            AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
+            AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
+            AMR_BILLING_DATA.AVR_PF as Pressure,
+            AMR_BILLING_DATA.AVR_TF as Temperature,
+            AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
+            {billing_date_condition}
+            {tag_condition}
+            {region_condition}
         """
-
-        tag_query = """
-        SELECT amr_field_id.tag_id
-        FROM AMR_REGION,AMR_user,amr_field_id,amr_pl_group
-        WHERE amr_user.user_group = amr_field_id.meter_id
-            AND amr_field_id.field_id = amr_pl_group.field_id
-            AND amr_pl_group.pl_region_id = amr_region.id
-            AND user_name = :logged_in_user
-            AND amr_user.user_enable like '1'
-        """
-
-        # Fetch unique region values
-        region_results = fetch_data(amr_connection, region_query, params={'logged_in_user': logged_in_user})
-        region_options = [str(region[0]) for region in region_results]
-
-        query = ""
         print(query)
-        if query_type == "daily_data":
-            # SQL query for main data
-            query = """
-            SELECT DISTINCT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
-                AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
-                AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
-                AMR_BILLING_DATA.AVR_PF as Pressure,
-                AMR_BILLING_DATA.AVR_TF as Temperature,
-                AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_BILLING_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_BILLING_DATA.METER_STREAM_NO IS NOT NULL
-                {billing_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            print(query)
 
-            # Return the template with the DataFrame
+        # Return the template with the DataFrame
+
+    elif query_type == "config_data":
+        query = """
+        SELECT
+            AMR_PL_GROUP.PL_REGION_ID,
+            AMR_FIELD_ID.TAG_ID,
+            amr_field_id.meter_id,
+            AMR_CONFIGURED_DATA.DATA_DATE,
+            
+            amr_configured_data.amr_config1,
+            amr_configured_data.amr_config2,
+            amr_configured_data.amr_config3,
+            amr_configured_data.amr_config4,
+            amr_configured_data.amr_config5,
+            amr_configured_data.amr_config6,
+            amr_configured_data.amr_config7,
+            amr_configured_data.amr_config8,
+            amr_configured_data.amr_config9,
+            amr_configured_data.amr_config10,
+            amr_configured_data.amr_config11,
+            amr_configured_data.amr_config12,
+            amr_configured_data.amr_config13,
+            amr_configured_data.amr_config14,
+            amr_configured_data.amr_config15,
+            amr_configured_data.amr_config16,
+            amr_configured_data.amr_config17,
+            amr_configured_data.amr_config18,
+            amr_configured_data.amr_config19,
+            amr_configured_data.amr_config20,
+            
+            
+            AMR_VC_CONFIGURED_INFO.config1,
+            AMR_VC_CONFIGURED_INFO.config2,
+            AMR_VC_CONFIGURED_INFO.config3,
+            AMR_VC_CONFIGURED_INFO.config4,
+            AMR_VC_CONFIGURED_INFO.config5,
+            AMR_VC_CONFIGURED_INFO.config6,
+            AMR_VC_CONFIGURED_INFO.config7,
+            AMR_VC_CONFIGURED_INFO.config8,
+            AMR_VC_CONFIGURED_INFO.config9,
+            AMR_VC_CONFIGURED_INFO.config10,
+            AMR_VC_CONFIGURED_INFO.config11,
+            AMR_VC_CONFIGURED_INFO.config12,
+            AMR_VC_CONFIGURED_INFO.config13,
+            AMR_VC_CONFIGURED_INFO.config14,
+            AMR_VC_CONFIGURED_INFO.config15,
+            AMR_VC_CONFIGURED_INFO.config16,
+            AMR_VC_CONFIGURED_INFO.config17,
+            AMR_VC_CONFIGURED_INFO.config18,
+            AMR_VC_CONFIGURED_INFO.config19,
+            AMR_VC_CONFIGURED_INFO.config20,
+            AMR_CONFIGURED_DATA.METER_STREAM_NO
+            
+        FROM
+            AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
+        JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
+        WHERE
+            AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
+            AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
+            AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
+            
+            {configured_date_condition}
+            {tag_condition}
+            {region_condition}
+        """
+        print(query)
+    # Get selected values from the dropdowns
+    billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
+    configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
+
+    selected_date = request.args.get("date_dropdown")
+    selected_tag = request.args.get("tag_dropdown")
+    selected_region = request.args.get("region_dropdown")
+
+    # Fetch unique region values
+    for region in region_results:
+        region_results = fetch_data( region_query, params={'logged_in_user': logged_in_user})
+        region_options = str(region[0]) 
+        print("region:", region_options)
+
+    # # Fetch tag options based on the selected region
+    tag_options = None
+    tag_results = fetch_data( tag_query, params={'logged_in_user': logged_in_user})
+    for tag in tag_results:
+        tag_options = str(tag[0])
+        print("site:", tag_options)
+
+    if selected_date:
+        billing_date_condition = (
+            f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+        configured_date_condition = (
+            f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
+        )
+    if selected_tag:
+        tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+
+    # Modify the query with the selected conditions
+    query = query.format(
+        billing_date_condition=billing_date_condition,
+        configured_date_condition=configured_date_condition,
+        tag_condition=tag_condition,
+        region_condition=region_condition,
+    )
+
+    if selected_region:
+        # Use fetch_data function to retrieve data
+        results = fetch_data(query)
+
+        if query_type == "daily_data":
+            # Use pandas to create a DataFrame for daily_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "CORRECTED",
+                    "UNCORRECTED",
+                    "Pressure",
+                    "Temperature",
+                    "METER_STREAM_NO",
+                ],
+            )
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
+
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+
+            # Continue with the rest of your DataFrame processing
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            df = df.sort_values(by="DATA_DATE")
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
+
+            # Assuming 'df' is the DataFrame created from the query results
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
+
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "config_data": None,
+            }
+
+            graphs = {
+                "corrected": None,
+                "uncorrected": None,
+                "pressure": None,
+                "temperature": None
+            }
+
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
+
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+
+            # Create graphs for each METER_STREAM_NO
+            for i in range(1, 7):
+                df_run = df[df['METER_STREAM_NO'] == str(i)]
+
+                # Create traces for each graph
+                trace_corrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["CORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Corrected",
+                    line=dict(color="blue", width=2),
+                )
+
+                trace_uncorrected = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["UNCORRECTED"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Uncorrected",
+                    line=dict(color="red", width=2),
+                )
+
+                trace_pressure = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Pressure"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Pressure",
+                    line=dict(color="orange", width=2),
+                )
+
+                trace_temperature = go.Scatter(
+                    x=df_run["DATA_DATE"],
+                    y=df_run["Temperature"],
+                    mode="lines+markers",
+                    name=f"Run {i} - Temperature",
+                    line=dict(color="green", width=2),
+                )
+
+                # Create subplot for each graph
+                fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
+                fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
+                fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
+                fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
+
+                # Add traces to subplots
+                fig_corrected.add_trace(trace_corrected)
+                fig_uncorrected.add_trace(trace_uncorrected)
+                fig_pressure.add_trace(trace_pressure)
+                fig_temperature.add_trace(trace_temperature)
+
+                # Update subplot and layout properties
+                for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
+                    fig.update_traces(
+                        line_shape="linear",
+                        marker=dict(symbol="circle", size=6),
+                        hoverinfo="text+x+y",
+                        hovertext=df_run["DATA_DATE"],
+                    )
+                    fig.update_layout(
+                        legend=dict(x=0.6, y=1.25, orientation="h"),
+                        yaxis_title="Values",
+                        xaxis_title="Date",
+                        hovermode="x unified",
+                        yaxis=dict(type="linear", title="Values"),
+                    )
+                    fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
+
+                # Get HTML for each graph
+                graph_corrected = fig_corrected.to_html(full_html=False)
+                graph_uncorrected = fig_uncorrected.to_html(full_html=False)
+                graph_pressure = fig_pressure.to_html(full_html=False)
+                graph_temperature = fig_temperature.to_html(full_html=False)
+
+                # Store HTML in the graphs dictionary
+                graphs[f"corrected_run{i}"] = graph_corrected
+                graphs[f"uncorrected_run{i}"] = graph_uncorrected
+                graphs[f"pressure_run{i}"] = graph_pressure
+                graphs[f"temperature_run{i}"] = graph_temperature
+
+
+                # เพิ่มเนื้อหา HTML สำหรับกราฟ
+                df = df.sort_values(by="DATA_DATE", ascending=True)
+                # ส่ง graph_html ไปยัง HTML template ของ Flask
+                return render_template(
+                    "billingdata_user.html",
+                    tables=tables,
+                    titles=df.columns.values,
+                    selected_date=selected_date,
+                    selected_tag=selected_tag,
+                    selected_region=selected_region,
+                    region_options=region_options,
+                    tag_options=tag_options,
+                    selected_meter_id=selected_meter_id,
+                    graph_corrected=graph_corrected,
+                    graph_uncorrected=graph_uncorrected,
+                    graph_pressure=graph_pressure,
+                    graph_temperature=graph_temperature,
+
+                )
+
 
         elif query_type == "config_data":
-            query = """
-            SELECT
-                AMR_PL_GROUP.PL_REGION_ID,
-                AMR_FIELD_ID.TAG_ID,
-                amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
-                
-                amr_configured_data.amr_config1,
-                amr_configured_data.amr_config2,
-                amr_configured_data.amr_config3,
-                amr_configured_data.amr_config4,
-                amr_configured_data.amr_config5,
-                amr_configured_data.amr_config6,
-                amr_configured_data.amr_config7,
-                amr_configured_data.amr_config8,
-                amr_configured_data.amr_config9,
-                amr_configured_data.amr_config10,
-                amr_configured_data.amr_config11,
-                amr_configured_data.amr_config12,
-                amr_configured_data.amr_config13,
-                amr_configured_data.amr_config14,
-                amr_configured_data.amr_config15,
-                amr_configured_data.amr_config16,
-                amr_configured_data.amr_config17,
-                amr_configured_data.amr_config18,
-                amr_configured_data.amr_config19,
-                amr_configured_data.amr_config20,
-                
-                
-                AMR_VC_CONFIGURED_INFO.config1,
-                AMR_VC_CONFIGURED_INFO.config2,
-                AMR_VC_CONFIGURED_INFO.config3,
-                AMR_VC_CONFIGURED_INFO.config4,
-                AMR_VC_CONFIGURED_INFO.config5,
-                AMR_VC_CONFIGURED_INFO.config6,
-                AMR_VC_CONFIGURED_INFO.config7,
-                AMR_VC_CONFIGURED_INFO.config8,
-                AMR_VC_CONFIGURED_INFO.config9,
-                AMR_VC_CONFIGURED_INFO.config10,
-                AMR_VC_CONFIGURED_INFO.config11,
-                AMR_VC_CONFIGURED_INFO.config12,
-                AMR_VC_CONFIGURED_INFO.config13,
-                AMR_VC_CONFIGURED_INFO.config14,
-                AMR_VC_CONFIGURED_INFO.config15,
-                AMR_VC_CONFIGURED_INFO.config16,
-                AMR_VC_CONFIGURED_INFO.config17,
-                AMR_VC_CONFIGURED_INFO.config18,
-                AMR_VC_CONFIGURED_INFO.config19,
-                AMR_VC_CONFIGURED_INFO.config20,
-                AMR_CONFIGURED_DATA.METER_STREAM_NO
-                
-            FROM
-                AMR_FIELD_ID, AMR_PL_group, AMR_CONFIGURED_DATA
-            JOIN AMR_VC_CONFIGURED_INFO ON amr_configured_data.amr_vc_type = AMR_VC_CONFIGURED_INFO.vc_type
-            WHERE
-                AMR_PL_GROUP.FIELD_ID = AMR_FIELD_ID.FIELD_ID 
-                AND AMR_CONFIGURED_DATA.METER_ID = AMR_FIELD_ID.METER_ID
-                AND AMR_CONFIGURED_DATA.METER_STREAM_NO is not null
-                
-                {configured_date_condition}
-                {tag_condition}
-                {region_condition}
-            """
-            print(query)
-        # Get selected values from the dropdowns
-        billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
-        configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-
-        selected_date = request.args.get("date_dropdown")
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-
-        # Fetch unique region values
-        for region in region_results:
-            region_results = fetch_data(amr_connection, region_query, params={'logged_in_user': logged_in_user})
-            region_options = str(region[0]) 
-            print("region:", region_options)
-
-        # # Fetch tag options based on the selected region
-        tag_options = None
-        tag_results = fetch_data(amr_connection, tag_query, params={'logged_in_user': logged_in_user})
-        for tag in tag_results:
-            tag_options = str(tag[0])
-            print("site:", tag_options)
-
-        if selected_date:
-            billing_date_condition = (
-                f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-            configured_date_condition = (
-                f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
-            )
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-
-        # Modify the query with the selected conditions
-        query = query.format(
-            billing_date_condition=billing_date_condition,
-            configured_date_condition=configured_date_condition,
-            tag_condition=tag_condition,
-            region_condition=region_condition,
-        )
-
-        if selected_region:
-            # Use fetch_data function to retrieve data
-            results = fetch_data(amr_connection,query)
-
-            if query_type == "daily_data":
-                # Use pandas to create a DataFrame for daily_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "CORRECTED",
-                        "UNCORRECTED",
-                        "Pressure",
-                        "Temperature",
-                        "METER_STREAM_NO",
-                    ],
-                )
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
-
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
-
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
-
-                # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
-
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "config_data": None,
-                }
-
-                graphs = {
-                    "corrected": None,
-                    "uncorrected": None,
-                    "pressure": None,
-                    "temperature": None
-                }
-
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
-
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
-
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
-
-                # Create graphs for each METER_STREAM_NO
-                for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
-
-                    # Create traces for each graph
-                    trace_corrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["CORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Corrected",
-                        line=dict(color="blue", width=2),
-                    )
-
-                    trace_uncorrected = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["UNCORRECTED"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Uncorrected",
-                        line=dict(color="red", width=2),
-                    )
-
-                    trace_pressure = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Pressure"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Pressure",
-                        line=dict(color="orange", width=2),
-                    )
-
-                    trace_temperature = go.Scatter(
-                        x=df_run["DATA_DATE"],
-                        y=df_run["Temperature"],
-                        mode="lines+markers",
-                        name=f"Run {i} - Temperature",
-                        line=dict(color="green", width=2),
-                    )
-
-                    # Create subplot for each graph
-                    fig_corrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Corrected"])
-                    fig_uncorrected = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Uncorrected"])
-                    fig_pressure = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Pressure"])
-                    fig_temperature = sp.make_subplots(rows=1, cols=1, subplot_titles=[f"Run {i} - Temperature"])
-
-                    # Add traces to subplots
-                    fig_corrected.add_trace(trace_corrected)
-                    fig_uncorrected.add_trace(trace_uncorrected)
-                    fig_pressure.add_trace(trace_pressure)
-                    fig_temperature.add_trace(trace_temperature)
-
-                    # Update subplot and layout properties
-                    for fig in [fig_corrected, fig_uncorrected, fig_pressure, fig_temperature]:
-                        fig.update_traces(
-                            line_shape="linear",
-                            marker=dict(symbol="circle", size=6),
-                            hoverinfo="text+x+y",
-                            hovertext=df_run["DATA_DATE"],
-                        )
-                        fig.update_layout(
-                            legend=dict(x=0.6, y=1.25, orientation="h"),
-                            yaxis_title="Values",
-                            xaxis_title="Date",
-                            hovermode="x unified",
-                            yaxis=dict(type="linear", title="Values"),
-                        )
-                        fig.update_xaxes(title_text="Date", tickformat="%Y-%m-%d")
-
-                    # Get HTML for each graph
-                    graph_corrected = fig_corrected.to_html(full_html=False)
-                    graph_uncorrected = fig_uncorrected.to_html(full_html=False)
-                    graph_pressure = fig_pressure.to_html(full_html=False)
-                    graph_temperature = fig_temperature.to_html(full_html=False)
-
-                    # Store HTML in the graphs dictionary
-                    graphs[f"corrected_run{i}"] = graph_corrected
-                    graphs[f"uncorrected_run{i}"] = graph_uncorrected
-                    graphs[f"pressure_run{i}"] = graph_pressure
-                    graphs[f"temperature_run{i}"] = graph_temperature
-
-
-                    # เพิ่มเนื้อหา HTML สำหรับกราฟ
-                    df = df.sort_values(by="DATA_DATE", ascending=True)
-                    # ส่ง graph_html ไปยัง HTML template ของ Flask
-                    return render_template(
-                        "billingdata_user.html",
-                        tables=tables,
-                        titles=df.columns.values,
-                        selected_date=selected_date,
-                        selected_tag=selected_tag,
-                        selected_region=selected_region,
-                        region_options=region_options,
-                        tag_options=tag_options,
-                        selected_meter_id=selected_meter_id,
-                        graph_corrected=graph_corrected,
-                        graph_uncorrected=graph_uncorrected,
-                        graph_pressure=graph_pressure,
-                        graph_temperature=graph_temperature,
-
-                    )
-
-
-            elif query_type == "config_data":
-                # Use pandas to create a DataFrame for config_data
-                df = pd.DataFrame(
-                    results,
-                    columns=[
-                        "PL_REGION_ID",
-                        "TAG_ID",
-                        "METER_ID",
-                        "DATA_DATE",
-                        "AMR_CONFIG1",
-                        "AMR_CONFIG2",
-                        "AMR_CONFIG3",
-                        "AMR_CONFIG4",
-                        "AMR_CONFIG5",
-                        "AMR_CONFIG6",
-                        "AMR_CONFIG7",
-                        "AMR_CONFIG8",
-                        "AMR_CONFIG9",
-                        "AMR_CONFIG10",
-                        "AMR_CONFIG11",
-                        "AMR_CONFIG12",
-                        "AMR_CONFIG13",
-                        "AMR_CONFIG14",
-                        "AMR_CONFIG15",
-                        "AMR_CONFIG16",
-                        "AMR_CONFIG17",
-                        "AMR_CONFIG18",
-                        "AMR_CONFIG19",
-                        "AMR_CONFIG20",
-                        "CONFIG1",
-                        "CONFIG2",
-                        "CONFIG3",
-                        "CONFIG4",
-                        "CONFIG5",
-                        "CONFIG6",
-                        "CONFIG7",
-                        "CONFIG8",
-                        "CONFIG9",
-                        "CONFIG10",
-                        "CONFIG11",
-                        "CONFIG12",
-                        "CONFIG13",
-                        "CONFIG14",
-                        "CONFIG15",
-                        "CONFIG16",
-                        "CONFIG17",
-                        "CONFIG18",
-                        "CONFIG19",
-                        "CONFIG20",
-                        "METER_STREAM_NO",
-                    ]
-                )
-                columns_to_drop = [
+            # Use pandas to create a DataFrame for config_data
+            df = pd.DataFrame(
+                results,
+                columns=[
+                    "PL_REGION_ID",
+                    "TAG_ID",
+                    "METER_ID",
+                    "DATA_DATE",
+                    "AMR_CONFIG1",
+                    "AMR_CONFIG2",
+                    "AMR_CONFIG3",
+                    "AMR_CONFIG4",
+                    "AMR_CONFIG5",
+                    "AMR_CONFIG6",
+                    "AMR_CONFIG7",
+                    "AMR_CONFIG8",
+                    "AMR_CONFIG9",
+                    "AMR_CONFIG10",
+                    "AMR_CONFIG11",
+                    "AMR_CONFIG12",
+                    "AMR_CONFIG13",
+                    "AMR_CONFIG14",
+                    "AMR_CONFIG15",
+                    "AMR_CONFIG16",
+                    "AMR_CONFIG17",
+                    "AMR_CONFIG18",
+                    "AMR_CONFIG19",
+                    "AMR_CONFIG20",
                     "CONFIG1",
                     "CONFIG2",
                     "CONFIG3",
@@ -1773,116 +1860,140 @@ def billing_data_user():
                     "CONFIG18",
                     "CONFIG19",
                     "CONFIG20",
+                    "METER_STREAM_NO",
                 ]
-                dropped_columns_data = pd.concat(
-                    [
-                        pd.DataFrame(columns=df.columns),
-                        pd.DataFrame(columns=columns_to_drop),
-                    ],
-                    axis=1,
-                )
-                dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
-                dropped_columns_data[
-                    "DATA_DATE"
-                ] = "DATA.DATE"  # Replace actual values with the column name
-                dropped_columns_data = dropped_columns_data.to_dict(orient="records")
+            )
+            columns_to_drop = [
+                "CONFIG1",
+                "CONFIG2",
+                "CONFIG3",
+                "CONFIG4",
+                "CONFIG5",
+                "CONFIG6",
+                "CONFIG7",
+                "CONFIG8",
+                "CONFIG9",
+                "CONFIG10",
+                "CONFIG11",
+                "CONFIG12",
+                "CONFIG13",
+                "CONFIG14",
+                "CONFIG15",
+                "CONFIG16",
+                "CONFIG17",
+                "CONFIG18",
+                "CONFIG19",
+                "CONFIG20",
+            ]
+            dropped_columns_data = pd.concat(
+                [
+                    pd.DataFrame(columns=df.columns),
+                    pd.DataFrame(columns=columns_to_drop),
+                ],
+                axis=1,
+            )
+            dropped_columns_data = df[["DATA_DATE"] + columns_to_drop].head(1)
+            dropped_columns_data[
+                "DATA_DATE"
+            ] = "DATA.DATE"  # Replace actual values with the column name
+            dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
-                df = df.drop(columns=columns_to_drop)  # Drop specified columns
+            df = df.drop(columns=columns_to_drop)  # Drop specified columns
 
-                print(df.columns)
-                # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+            print(df.columns)
+            # Get the selected Meter ID before removing it from the DataFrame
+            selected_meter_id = df["METER_ID"].iloc[0]
 
-                # Now, remove the "METER_ID" column from the DataFrame
-                df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
+            # Now, remove the "METER_ID" column from the DataFrame
+            df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+            # Remove newline characters
+            df = df.apply(
+                lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
+            )
+            df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
 
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
-                # Sort DataFrame by 'DATA_DATE'
-                df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+            df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+            # Sort DataFrame by 'DATA_DATE'
+            df = df.sort_values(by="DATA_DATE")
+            # Send the DataFrame to the HTML template
+            df_run1 = df[df['METER_STREAM_NO'] == '1']
+            df_run2 = df[df['METER_STREAM_NO'] == '2']
+            df_run3 = df[df['METER_STREAM_NO'] == '3']
+            df_run4 = df[df['METER_STREAM_NO'] == '4']
+            df_run5 = df[df['METER_STREAM_NO'] == '5']
+            df_run6 = df[df['METER_STREAM_NO'] == '6']
 
-                # Check if each DataFrame has data before including in the tables dictionary
-                tables = {
-                    "daily_data": None,
-                    
-                }
+            # Check if each DataFrame has data before including in the tables dictionary
+            tables = {
+                "daily_data": None,
+                
+            }
 
-                common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False,"header":None}
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-                return render_template(
-                    "billingdata_user.html",
-                    
-                    tables=tables,
-                    titles=df.columns.values,
-                    selected_date=selected_date,
-                    selected_tag=selected_tag,
-                    selected_region=selected_region,
-                    region_options=region_options,
-                    tag_options=tag_options, dropped_columns_data=dropped_columns_data,
-                    selected_meter_id=selected_meter_id,
-                    username=logged_in_user,  
-                    description=description,
-                    user_level=user_level
-                )
-        else:
-            # Render the template without executing the query
+            if not df_run1.empty:
+                df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
+            if not df_run2.empty:
+                df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
+            if not df_run3.empty:
+                df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
+            if not df_run4.empty:
+                df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
+            if not df_run5.empty:
+                df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
+            if not df_run6.empty:
+                df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
             return render_template(
                 "billingdata_user.html",
+                
+                tables=tables,
+                titles=df.columns.values,
                 selected_date=selected_date,
-                selected_region=selected_region,
                 selected_tag=selected_tag,
+                selected_region=selected_region,
                 region_options=region_options,
-                tag_options=tag_options,
-                tables={},
+                tag_options=tag_options, dropped_columns_data=dropped_columns_data,
+                selected_meter_id=selected_meter_id,
                 username=logged_in_user,  
                 description=description,
                 user_level=user_level
-            )  
+            )
+    else:
+        # Render the template without executing the query
+        return render_template(
+            "billingdata_user.html",
+            selected_date=selected_date,
+            selected_region=selected_region,
+            selected_tag=selected_tag,
+            region_options=region_options,
+            tag_options=tag_options,
+            tables={},
+            username=logged_in_user,  
+            description=description,
+            user_level=user_level
+        )  
 ############ / View Billing Data  #####################
 
 
 ############ Daily summary #####################
 @app.route("/Daily_summary")
 def Daily_summary():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+       
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
         SELECT * FROM AMR_REGION 
         """
 
         # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
         # SQL query for main data
@@ -1918,7 +2029,7 @@ def Daily_summary():
         # Check if a region is selected before executing the query
         if selected_region:
             # ใช้ fetch_data function ในการดึงข้อมูล
-            results = fetch_data(amr_connection,query)
+            results = fetch_data(query)
 
             # ใช้ pandas ในการสร้าง DataFrame
             df = pd.DataFrame(results, columns=["SITE"])
@@ -1954,15 +2065,15 @@ def Daily_summary():
 
 @app.route("/sitedetail_data")
 def sitedetail_data():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+        
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
         SELECT * FROM AMR_REGION 
         """
 
         # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
         # SQL query for main data
@@ -1986,7 +2097,7 @@ def sitedetail_data():
         selected_region = request.args.get("region_dropdown")
 
         # Fetch unique region values
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
         # Initialize the query with a condition that is always true
@@ -2002,7 +2113,7 @@ def sitedetail_data():
         # Check if a region is selected before executing the query
         if selected_region:
             # ใช้ fetch_data function ในการดึงข้อมูล
-            results = fetch_data(amr_connection,query)
+            results = fetch_data(query)
 
             # ใช้ pandas ในการสร้าง DataFrame
             df = pd.DataFrame(
@@ -2038,8 +2149,8 @@ def sitedetail_data():
 ############ Manualpoll_data  #####################
 @app.route("/Manualpoll_data")
 def Manualpoll_data():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+        
         region_query = """
             SELECT * FROM AMR_REGION 
             """
@@ -2050,7 +2161,7 @@ def Manualpoll_data():
             WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
             """
 
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
         query = """
@@ -2099,10 +2210,10 @@ def Manualpoll_data():
         selected_tag = request.args.get("tag_dropdown")
         selected_region = request.args.get("region_dropdown")
 
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_id": selected_region})
+        tag_results = fetch_data(tag_query, params={"region_id": selected_region})
         tag_options = [str(tag[0]) for tag in tag_results]
 
         # Sort the tag options alphabetically
@@ -2115,7 +2226,7 @@ def Manualpoll_data():
 
         query = query.format(tag_condition=tag_condition, region_condition=region_condition)
 
-        results = fetch_data(amr_connection,query)
+        results = fetch_data(query)
         df = pd.DataFrame(
             results,
             columns=[
@@ -2150,8 +2261,8 @@ def Manualpoll_data():
 
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+        
         global change_to_32bit_counter  # Use the global variable
 
         slave_id = int(request.form["slave_id"])
@@ -2313,7 +2424,7 @@ def read_data():
             WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
             """
 
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
         query = """
@@ -2362,10 +2473,10 @@ def read_data():
         selected_tag = request.args.get("tag_dropdown")
         selected_region = request.args.get("region_dropdown")
 
-        region_results = fetch_data(amr_connection,region_query)
+        region_results = fetch_data(region_query)
         region_options = [str(region[0]) for region in region_results]
 
-        tag_results = fetch_data(amr_connection,tag_query, params={"region_id": selected_region})
+        tag_results = fetch_data(tag_query, params={"region_id": selected_region})
         tag_options = [str(tag[0]) for tag in tag_results]
 
         # Sort the tag options alphabetically
@@ -2396,7 +2507,7 @@ def read_data():
             ]
         )
         if selected_region:
-            results = fetch_data(amr_connection,query)
+            results = fetch_data(query)
             df = pd.DataFrame(
                 results,
                 columns=[
@@ -2447,11 +2558,11 @@ def handle_action_configuration(i, value, address):
 
 
 def get_description_from_database(address):
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+        
         query = "SELECT DESCRIPTION FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
         params = {"address": address}
-        result = fetch_data(amr_connection,query, params)
+        result = fetch_data(query, params)
         return result[0][0] if result else None
 
 
@@ -2462,10 +2573,10 @@ def process_selected_rows():
 
 
 def get_type_value_from_database(address):
-    with connect_to_amr_db() as amr_connection:
-        print("Active Connection:", active_connection)
+    
+        
         query = "SELECT TYPE_VALUE FROM AMR_ADDRESS_MAPPING1 WHERE ADDRESS = :address"
-        result = fetch_data(amr_connection,query, params={"address": address})
+        result = fetch_data(query, params={"address": address})
         if result:
             return result[0][0]  # Assuming TYPE_VALUE is the first column in the result
         return None
@@ -2487,8 +2598,8 @@ def get_type_value_from_database(address):
 @app.route("/billing_data_asgs")
 def billing_data_asgs():
    
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         selected_region = request.args.get('region')
         selected_tag = request.args.get('tag')
         selected_month_year = request.args.get('monthYear')
@@ -2501,7 +2612,7 @@ def billing_data_asgs():
         ORDER BY REGION_NAME
         """
         # Fetch REGION_NAME data using your fetch_data function
-        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_results = fetch_data(region_query)
 
         # Define your Oracle query to fetch tag_id based on the selected REGION_NAME
         tag_query = """
@@ -2511,7 +2622,7 @@ def billing_data_asgs():
         ORDER BY tag_id
         """
         # Fetch tag_id data using your fetch_data function
-        tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region': selected_region})
+        tag_results = fetch_data( tag_query, {'selected_region': selected_region})
 
         # Define your Oracle query to fetch data based on selected criteria
         billing_query = """
@@ -2526,22 +2637,22 @@ def billing_data_asgs():
         # Fetch data using your fetch_data function
         
 
-        results = fetch_data(ptt_pivot_connection, billing_query, {'selected_region': selected_region, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
+        results = fetch_data( billing_query, {'selected_region': selected_region, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
         print(results)
     # Render the template with the fetched data and selected region
-    return render_template(
-        "billingdataasgs.html",
-        region_results=region_results,
-        tag_results=tag_results,
-        results=results,
-        selected_region=selected_region,
-    )
+        return render_template(
+            "billingdataasgs.html",
+            region_results=region_results,
+            tag_results=tag_results,
+            results=results,
+            selected_region=selected_region,
+        )
 
 
 @app.route('/get_tag')
 def get_tag():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
     region_name = request.args.get('region')
 
     # Use the selected REGION_NAME to fetch associated tag_id values
@@ -2551,7 +2662,7 @@ def get_tag():
     WHERE REGION_NAME = :region_name
     ORDER BY tag_id
     """
-    tag_results = fetch_data(ptt_pivot_connection,tag_query, {'region_name': region_name})
+    tag_results = fetch_data(tag_query, {'region_name': region_name})
 
     # Return the tag_id values as JSON
     return jsonify(tag_results)
@@ -2706,105 +2817,105 @@ def read_data_old():
 
 @app.route("/write_evc",methods=["GET"])
 def Manualpoll_data_write_evc():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
        
-        region_query = """
-            SELECT * FROM AMR_REGION 
-        """
-        tag_query = """
-            SELECT DISTINCT TAG_ID
-            FROM AMR_FIELD_ID, AMR_PL_GROUP
-            WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
-            AND AMR_PL_GROUP.PL_REGION_ID = :region_id
-        """
-        run_query = """
-            SELECT DISTINCT METER_STREAM_NO
-            FROM AMR_FIELD_ID , amr_field_meter
-            WHERE amr_field_id.meter_id = amr_field_meter.meter_id
-            AND amr_field_id.tag_id = :tag_id
-        """
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
+    region_query = """
+        SELECT * FROM AMR_REGION 
+    """
+    tag_query = """
+        SELECT DISTINCT TAG_ID
+        FROM AMR_FIELD_ID, AMR_PL_GROUP
+        WHERE AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
+        AND AMR_PL_GROUP.PL_REGION_ID = :region_id
+    """
+    run_query = """
+        SELECT DISTINCT METER_STREAM_NO
+        FROM AMR_FIELD_ID , amr_field_meter
+        WHERE amr_field_id.meter_id = amr_field_meter.meter_id
+        AND amr_field_id.tag_id = :tag_id
+    """
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
 
-        query = """
-            SELECT
-                AMR_FIELD_METER.METER_STREAM_NO as RunNo,
-                AMR_PL_GROUP.PL_REGION_ID as region,
-                AMR_FIELD_ID.TAG_ID as Sitename,
-                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
-                AMR_FIELD_METER.METER_ID as METERID,
-                AMR_VC_TYPE.VC_NAME as VCtype,
-                AMR_FIELD_ID.SIM_IP as IPAddress,
-                AMR_PORT_INFO.PORT_NO as port
-            FROM
-                AMR_FIELD_ID,
-                AMR_USER,
-                AMR_FIELD_CUSTOMER,
-                AMR_FIELD_METER,
-                AMR_PL_GROUP,
-                AMR_VC_TYPE,
-                AMR_PORT_INFO
-            WHERE
-                AMR_USER.USER_ENABLE=1 AND
-                AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
-                AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
-                AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
-                AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
-                {tag_condition}
-                {region_condition}
-                {run_condition}
-        """
+    query = """
+        SELECT
+            AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+            AMR_PL_GROUP.PL_REGION_ID as region,
+            AMR_FIELD_ID.TAG_ID as Sitename,
+            AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+            AMR_FIELD_METER.METER_ID as METERID,
+            AMR_VC_TYPE.VC_NAME as VCtype,
+            AMR_FIELD_ID.SIM_IP as IPAddress,
+            AMR_PORT_INFO.PORT_NO as port
+        FROM
+            AMR_FIELD_ID,
+            AMR_USER,
+            AMR_FIELD_CUSTOMER,
+            AMR_FIELD_METER,
+            AMR_PL_GROUP,
+            AMR_VC_TYPE,
+            AMR_PORT_INFO
+        WHERE
+            AMR_USER.USER_ENABLE=1 AND
+            AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+            AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+            AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+            AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+            AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+            {tag_condition}
+            {region_condition}
+            {run_condition}
+    """
 
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
-        run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
+    tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+    region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
+    run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
 
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-        selected_run = request.args.get("run_dropdown")
+    selected_tag = request.args.get("tag_dropdown")
+    selected_region = request.args.get("region_dropdown")
+    selected_run = request.args.get("run_dropdown")
 
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
 
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
 
-        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
-        run_options = [str(run[0]) for run in run_results]
+    run_results = fetch_data(run_query, params={"tag_id": selected_tag})
+    run_options = [str(run[0]) for run in run_results]
 
-        # Sort the tag options alphabetically
-        tag_options.sort()
+    # Sort the tag options alphabetically
+    tag_options.sort()
 
-        
+    
 
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-        if selected_run:
-            run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
+    if selected_tag:
+        tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+    if selected_region:
+        region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+    if selected_run:
+        run_condition = f"AND AMR_FIELD_METER.METER_STREAM_NO = {selected_run}"
 
 
-        query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
+    query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
 
-        results = fetch_data(ptt_pivot_connection,query)
-        
-        df = pd.DataFrame(
-            results,
-            columns=[
-                "RUN",
-                "Region",
-                "Sitename",
-                "NoRun",
-                "METERID",
-                "VCtype",
-                "IPAddress",
-                "Port",
-            ],
-        )
+    results = fetch_data(query)
+    
+    df = pd.DataFrame(
+        results,
+        columns=[
+            "RUN",
+            "Region",
+            "Sitename",
+            "NoRun",
+            "METERID",
+            "VCtype",
+            "IPAddress",
+            "Port",
+        ],
+    )
     tcp_ip = df.get(["IPAddress"]).values.tolist()
     if tcp_ip:
         ip_str = str(tcp_ip).strip("['']")
@@ -2882,8 +2993,8 @@ def read_data_write_evc():
             session['tcp_port'] = tcp_port
 
     
-        with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-            print("Active Connection:", active_connection)
+        
+            
         
             region_query = """
                 SELECT * FROM AMR_REGION 
@@ -2900,7 +3011,7 @@ def read_data_write_evc():
                 WHERE amr_field_id.meter_id = amr_field_meter.meter_id
                 AND amr_field_id.tag_id = :tag_id
             """
-            region_results = fetch_data(ptt_pivot_connection,region_query)
+            region_results = fetch_data(region_query)
             region_options = [str(region[0]) for region in region_results]
 
             query = """
@@ -2942,13 +3053,13 @@ def read_data_write_evc():
             selected_region = request.args.get("region_dropdown")
             selected_run = request.args.get("run_dropdown")
 
-            region_results = fetch_data(ptt_pivot_connection,region_query)
+            region_results = fetch_data(region_query)
             region_options = [str(region[0]) for region in region_results]
 
-            tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+            tag_results = fetch_data(tag_query, params={"region_id": selected_region})
             tag_options = [str(tag[0]) for tag in tag_results]
 
-            run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+            run_results = fetch_data(run_query, params={"tag_id": selected_tag})
             run_options = [str(run[0]) for run in run_results]
 
             # Sort the tag options alphabetically
@@ -2966,7 +3077,7 @@ def read_data_write_evc():
 
             query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
 
-            results = fetch_data(ptt_pivot_connection,query)
+            results = fetch_data(query)
             
             df = pd.DataFrame(
                 results,
@@ -3042,45 +3153,45 @@ def after_request(response):
 @app.route("/billing_asgs")
 def billing_asgs():
    
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        selected_region1 = request.args.get('region')
-        selected_tag = request.args.get('tag')
-        selected_month_year = request.args.get('monthYear')
+
+    
+    selected_region1 = request.args.get('region')
+    selected_tag = request.args.get('tag')
+    selected_month_year = request.args.get('monthYear')
 
 
-        # Define your Oracle query to fetch REGION_NAME
-        region_query = """
-        SELECT DISTINCT REGION_NAME
-        FROM VW_AMR_BILLING_DATA
-        ORDER BY REGION_NAME
+    # Define your Oracle query to fetch REGION_NAME
+    region_query = """
+    SELECT DISTINCT REGION_NAME
+    FROM VW_AMR_BILLING_DATA
+    ORDER BY REGION_NAME
+    """
+    # Fetch REGION_NAME data using your fetch_data function
+    region_results1 = fetch_data(region_query)
+
+    # Define your Oracle query to fetch tag_id based on the selected REGION_NAME
+    tag_query = """
+    SELECT DISTINCT tag_id
+    FROM VW_AMR_BILLING_DATA
+    WHERE REGION_NAME = :selected_region1
+    ORDER BY tag_id
+    """
+    # Fetch tag_id data using your fetch_data function
+    tag_results = fetch_data( tag_query, {'selected_region1': selected_region1})
+    
+    
+        # Define your Oracle query to fetch data based on selected criteria
+    billing_query = """
+            SELECT *
+            FROM VW_AMR_BILLING_DATA
+            WHERE 
+                VW_AMR_BILLING_DATA.region_name = :selected_region1
+                AND VW_AMR_BILLING_DATA.tag_id = :selected_tag
+                AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
+                ORDER BY VW_AMR_BILLING_DATA.data_date
         """
-        # Fetch REGION_NAME data using your fetch_data function
-        region_results1 = fetch_data(ptt_pivot_connection,region_query)
-
-        # Define your Oracle query to fetch tag_id based on the selected REGION_NAME
-        tag_query = """
-        SELECT DISTINCT tag_id
-        FROM VW_AMR_BILLING_DATA
-        WHERE REGION_NAME = :selected_region1
-        ORDER BY tag_id
-        """
-        # Fetch tag_id data using your fetch_data function
-        tag_results = fetch_data(ptt_pivot_connection, tag_query, {'selected_region1': selected_region1})
-        
-        
-            # Define your Oracle query to fetch data based on selected criteria
-        billing_query = """
-                SELECT *
-                FROM VW_AMR_BILLING_DATA
-                WHERE 
-                    VW_AMR_BILLING_DATA.region_name = :selected_region1
-                    AND VW_AMR_BILLING_DATA.tag_id = :selected_tag
-                    AND TO_CHAR(VW_AMR_BILLING_DATA.data_date, 'MM/YYYY') = :selected_month_year
-                    ORDER BY VW_AMR_BILLING_DATA.data_date
-            """
-        # Fetch data using your fetch_data function
-        results = fetch_data(ptt_pivot_connection, billing_query, {'selected_region1': selected_region1, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
+    # Fetch data using your fetch_data function
+    results = fetch_data( billing_query, {'selected_region1': selected_region1, 'selected_tag': selected_tag, 'selected_month_year': selected_month_year})
         
     # Render the template with the fetched data and selected region
     return render_template(
@@ -3095,8 +3206,8 @@ def billing_asgs():
 
 @app.route('/get_tag_asgs')
 def get_tags_asgs():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         region_name = request.args.get('region')
 
         # Use the selected REGION_NAME to fetch associated tag_id values
@@ -3106,14 +3217,14 @@ def get_tags_asgs():
         WHERE REGION_NAME = :region_name
         ORDER BY tag_id
         """
-        tag = fetch_data(ptt_pivot_connection, tag_query, {'region_name': region_name})
+        tag = fetch_data( tag_query, {'region_name': region_name})
 
         # Return the tag_id values as JSON
         return jsonify(tag)
 # @app.route("/get_tags", methods=["GET"])
 # def get_tags():
-#     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-#         print("Active Connection:", active_connection)
+#     
+#         
 #         selected_region = request.args.get("selected_region")
 
 #         tag_query = """
@@ -3123,7 +3234,7 @@ def get_tags_asgs():
 #                 AND AMR_PL_GROUP.PL_REGION_ID = :region_id
 #             """
 
-#         tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+#         tag_results = fetch_data(tag_query, params={"region_id": selected_region})
 #         tag_options = [str(tag[0]) for tag in tag_results]
 #         tag_options.sort()
 #         return jsonify({"tag_options": tag_options})
@@ -3131,8 +3242,8 @@ def get_tags_asgs():
 
 @app.route("/get_runs", methods=["GET"])
 def get_runs():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         selected_tag = request.args.get("selected_tag")
 
         run_query = """
@@ -3142,7 +3253,7 @@ def get_runs():
             AND amr_field_id.tag_id = :tag_id
         """
 
-        run_results = fetch_data(ptt_pivot_connection,run_query, params={"tag_id": selected_tag})
+        run_results = fetch_data(run_query, params={"tag_id": selected_tag})
         run_options = [str(run[0]) for run in run_results]
         run_options.sort()
         return jsonify({"run_options": run_options})
@@ -3229,14 +3340,15 @@ def read_data_write():
 
 
 # update polling
-def update_sql(connection, sql_statement):
+
+def update_sql(sql_statement):
     with connection.cursor() as cursor:
         
         cursor.execute(sql_statement)
     connection.commit()
 
 def insert_address_range_to_oracle(
-    connection, poll_config, poll_billing, enable_config, enable_billing, evc_type
+    poll_config, poll_billing, enable_config, enable_billing, evc_type
 ):
     
     with connection.cursor() as cursor:
@@ -3257,179 +3369,171 @@ def insert_address_range_to_oracle(
             evc_type,
         )
 
-        cursor.execute(ptt_pivot_connection, sql_insert, data_to_insert)
+        cursor.execute( sql_insert, data_to_insert)
 
     connection.commit()
 
 @app.route("/polling_route")
 def polling_route():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        # Fetch type options for the dropdown
-        type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
-        type_results = fetch_data(ptt_pivot_connection,type_query)
-        type_options = [str(type[0]) for type in type_results]
-        # print(type_results)
+    # Fetch type options for the dropdown
+    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
+    type_results = fetch_data(type_query)
+    type_options = [str(type[0]) for type in type_results]
+    # print(type_results)
 
-        # Define the base query for fetching polling data
-        base_query = """
-        SELECT
-            apr.evc_type,
-            apr.poll_config,
-            apr.poll_billing,
-            apr.poll_config_enable,
-            apr.poll_billing_enable
-        FROM
-            amr_poll_range apr
-        JOIN
-            amr_vc_type avt ON apr.evc_type = avt.id
-        {type_condition}
-        """
+    # Define the base query for fetching polling data
+    base_query = """
+    SELECT
+        apr.evc_type,
+        apr.poll_config,
+        apr.poll_billing,
+        apr.poll_config_enable,
+        apr.poll_billing_enable
+    FROM
+        amr_poll_range apr
+    JOIN
+        amr_vc_type avt ON apr.evc_type = avt.id
+    {type_condition}
+    """
 
-        # Get selected type from the dropdown
-        selected_type = request.args.get("type_dropdown")
+    # Get selected type from the dropdown
+    selected_type = request.args.get("type_dropdown")
 
-        # Define type condition based on the selected type
-        type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
+    # Define type condition based on the selected type
+    type_condition = f"AND avt.VC_NAME = '{selected_type}'" if selected_type else ""
 
-        # Check if a type is selected before executing the query
-        if selected_type:
-            # Modify the base query with the selected conditions
-            query = base_query.format(type_condition=type_condition)
-            print("Query : ", query)
-            # Fetch data using the modified query
-            results = fetch_data(ptt_pivot_connection,query)
-            # print(results)
+    # Check if a type is selected before executing the query
+    if selected_type:
+        # Modify the base query with the selected conditions
+        query = base_query.format(type_condition=type_condition)
 
-            columns = [
-                "evc_type",
-                "poll_config",
-                "poll_billing",
-                "poll_config_enable",
-                "poll_billing_enable",
-            ]
-            df = pd.DataFrame(results, columns=columns)
+        # Fetch data using the modified query
+        results = fetch_data(query)
+        # print(results)
 
-            print(results)
-            poll_config_list = df.get(["poll_config"]).values.tolist()
-            list_config = str(poll_config_list[0]).strip("[]'").split(",")
-            
-            poll_billing_list = df.get(["poll_billing"]).values.tolist()
-            list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
-            
-            poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-            list_enable_config = str(poll_config_enable_list[0]).strip("[]'").split(",")
+        columns = [
+            "evc_type",
+            "poll_config",
+            "poll_billing",
+            "poll_config_enable",
+            "poll_billing_enable",
+        ]
+        df = pd.DataFrame(results, columns=columns)
+
         
-            poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
-            list_enable_billing = str(poll_billing_enable_list[0]).strip("[]'").split(",")
-            
-            return render_template(
-                "polling.html",
-                tables=[df.to_html(classes="data", index=False)],
-                titles=columns,
-                selected_type=selected_type,
-                type_options=type_options,
-                list_config=list_config,
-                list_billing=list_billing,
-                list_enable_config=list_enable_config,
-                list_enable_billing=list_enable_billing,
-            )
-        else:
-        # Render the HTML template without the table if no type is selected
-            return render_template(
-                "polling.html",
-                tables=[],
-                titles=[],
-                selected_type=None,
-                type_options=type_options,
-                list_config=[],
-                list_billing=[],
-                list_enable_config=[],
-                list_enable_billing=[],
-            )
+        poll_config_list = df.get(["poll_config"]).values.tolist()
+        list_config = str(poll_config_list[0]).strip("[]'").split(",")
+        # print("===", poll_config_list)
+        
+        poll_billing_list = df.get(["poll_billing"]).values.tolist()
+        list_billing = str(poll_billing_list[0]).strip("[]'").split(",")
+        
+        poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+        list_enable_config = str(poll_config_enable_list[0]).strip("[]'").split(",")
+     
+        poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
+        list_enable_billing = str(poll_billing_enable_list[0]).strip("[]'").split(",")
+        
+        return render_template(
+            "polling.html",
+            tables=[df.to_html(classes="data", index=False)],
+            titles=columns,
+            selected_type=selected_type,
+            type_options=type_options,
+            list_config=list_config,
+            list_billing=list_billing,
+            list_enable_config=list_enable_config,
+            list_enable_billing=list_enable_billing,
+        )
+    else:
+    # Render the HTML template without the table if no type is selected
+        return render_template(
+            "polling.html",
+            tables=[],
+            titles=[],
+            selected_type=None,
+            type_options=type_options,
+            list_config=[],
+            list_billing=[],
+            list_enable_config=[],
+            list_enable_billing=[],
+        )
     
 MAX_ADDRESS_LENGTH = 249
 
 @app.route("/update_polling_data", methods=["POST"])
 def update_polling_data(): 
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        selected_type = request.form.get("selected_type")
+    selected_type = request.form.get("selected_type")
 
-        type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
-        results = fetch_data(ptt_pivot_connection,type_id_query)
-        type_id = str(results[0]).strip("',()")
-        print(type_id)
+    type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
+    results = fetch_data(type_id_query)
+    type_id = str(results[0]).strip("',()")
+    print(type_id)
+    
+    # Update configuration data
+    poll_config_all = ""
+    enable_config = ""
+    for i in range(0, 5):
+        start_key = f"start_config{i + 1}"
+        end_key = f"end_config{i + 1}"
+        enable_key = f"enable_config[{i}]"
         
-        # Update configuration data
-        poll_config_all = ""
-        enable_config = ""
-        for i in range(0, 5):
-            start_key = f"start_config{i + 1}"
-            end_key = f"end_config{i + 1}"
-            enable_key = f"enable_config[{i}]"
+        start_value = request.form.get(start_key)
+        end_value = request.form.get(end_key)
+        enable_value = 1 if request.form.get(enable_key) == "on" else 0
+
+        address_range = f"{start_value},{end_value}"
+        if len(poll_config_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_config_all += ","
+            poll_config_all += address_range
+
+        if i == 0:
+            enable_config = str(enable_value)
+        else:
+            enable_config +=  "," + str(enable_value)
             
-            start_value = request.form.get(start_key)
-            end_value = request.form.get(end_key)
-            enable_value = 1 if request.form.get(enable_key) == "on" else 0
-
-            address_range = f"{start_value},{end_value}"
-            if len(poll_config_all + address_range) <= MAX_ADDRESS_LENGTH:
-                if i > 0:
-                    poll_config_all += ","
-                poll_config_all += address_range
-
-            if i == 0:
-                enable_config = str(enable_value)
-            else:
-                enable_config +=  "," + str(enable_value)
-                
-        print("poll_config:", poll_config_all)
-        print("poll_config_enable:", enable_config)
+    print("poll_config:", poll_config_all)
+    print("poll_config_enable:", enable_config)
+    
+    # Update billing data
+    poll_billing_all = ""
+    enable_billing = ""
+    for i in range(0, 10):
+        start_key = f"start{i + 1}"
+        end_key = f"end{i + 1}"
+        enable_key = f"enable[{i}]"
         
-        # Update billing data
-        poll_billing_all = ""
-        enable_billing = ""
-        for i in range(0, 10):
-            start_key = f"start{i + 1}"
-            end_key = f"end{i + 1}"
-            enable_key = f"enable[{i}]"
-            
-            start_value = request.form.get(start_key)
-            end_value = request.form.get(end_key)
-            enable_value = 1 if request.form.get(enable_key) == "on" else 0
-            
-            address_range = f"{start_value},{end_value}"
-            if len(poll_billing_all + address_range) <= MAX_ADDRESS_LENGTH:
-                if i > 0:
-                    poll_billing_all += ","
-                poll_billing_all += address_range
+        start_value = request.form.get(start_key)
+        end_value = request.form.get(end_key)
+        enable_value = 1 if request.form.get(enable_key) == "on" else 0
+        
+        address_range = f"{start_value},{end_value}"
+        if len(poll_billing_all + address_range) <= MAX_ADDRESS_LENGTH:
+            if i > 0:
+                poll_billing_all += ","
+            poll_billing_all += address_range
 
-            if i == 0:
-                enable_billing = str(enable_value)
-            else:
-                enable_billing += "," + str(enable_value)
-        
-        print("poll_billing:", poll_billing_all)
-        print("poll_config_enable:", enable_billing)
+        if i == 0:
+            enable_billing = str(enable_value)
+        else:
+            enable_billing += "," + str(enable_value)
+    
+    print("poll_billing:", poll_billing_all)
+    print("poll_config_enable:", enable_billing)
 
-        update_query = f"""
-        UPDATE amr_poll_range
-        SET 
-            poll_config = '{poll_config_all}',
-            poll_billing = '{poll_billing_all}',
-            poll_config_enable = '{enable_config}',
-            poll_billing_enable = '{enable_billing}'
-        WHERE evc_type = '{type_id}'
-        """
-        print("Update Query:", update_query)
-        
-        update_sql(ptt_pivot_connection, update_query)
-        # with connection.cursor() as cursor:
-        
-        #     cursor.execute(update_query)
-        # connection.commit()
-        # After updating the data, you may redirect to the polling route or perform any other necessary actions
+    update_query = f"""
+    UPDATE amr_poll_range
+    SET 
+        poll_config = '{poll_config_all}',
+        poll_billing = '{poll_billing_all}',
+        poll_config_enable = '{enable_config}',
+        poll_billing_enable = '{enable_billing}'
+    WHERE evc_type = '{type_id}'
+    """
+    update_sql(update_query)
+    print("Update Query:", update_query)
+    # After updating the data, you may redirect to the polling route or perform any other necessary actions
     
     return redirect("/polling_route")
 
@@ -3441,8 +3545,8 @@ MAX_ADDRESS_LENGTH = 249
 
 @app.route("/save_to_oracle", methods=["POST"])
 def save_to_oracle():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
     try:
         data = request.get_json()
 
@@ -3519,11 +3623,11 @@ def save_to_oracle():
 
 @app.route('/mapping_config')  
 def mapping_config_route():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         # SQL query to fetch options for the dropdown
         type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
-        type_results = fetch_data(ptt_pivot_connection,type_query)
+        type_results = fetch_data(type_query)
         type_options = [str(type[0]) for type in type_results]
 
         # SQL query to fetch data based on selected type
@@ -3547,7 +3651,7 @@ def mapping_config_route():
 
         if selected_type:
             query = base_query.format(selected_type=selected_type)
-            results = fetch_data(ptt_pivot_connection,query)
+            results = fetch_data(query)
 
             columns = [
                 "address",
@@ -3598,13 +3702,13 @@ def checkStrNone(stringcheck):
     
 @app.route('/update_mapping_config_route', methods=['POST'])
 def update_mapping_config():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         selected_type = request.form.get('selected_type')
 
         # Fetch type_id from the database
         type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE '{selected_type}'"
-        results = fetch_data(ptt_pivot_connection,type_id_query)
+        results = fetch_data(type_id_query)
         type_id = str(results[0]).strip("',()")
         print("type:", type_id)
 
@@ -3642,7 +3746,7 @@ def update_mapping_config():
             WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
             """
             # print("Update Query##################", update_query)
-            update_sql(ptt_pivot_connection, update_query)
+            update_sql( update_query)
             
         update_vc_info_query = f"""
         UPDATE AMR_VC_CONFIGURED_INFO
@@ -3673,7 +3777,7 @@ def update_mapping_config():
             
         """
         
-        update_sql(ptt_pivot_connection, update_vc_info_query)
+        update_sql( update_vc_info_query)
         print(update_vc_info_query)
 
         return redirect("/mapping_config")
@@ -3681,11 +3785,11 @@ def update_mapping_config():
 
 @app.route('/mapping_billing')  
 def mapping_billing_route():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         # SQL query to fetch options for the dropdown
         type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
-        type_results = fetch_data(ptt_pivot_connection,type_query)
+        type_results = fetch_data(type_query)
         type_options = [str(type[0]) for type in type_results]
 
         # SQL query to fetch data based on selected type
@@ -3709,7 +3813,7 @@ def mapping_billing_route():
         selected_type = request.args.get("type_dropdown") or ""
         if selected_type:
             type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
-            results = fetch_data(ptt_pivot_connection,type_id_query, (selected_type,))
+            results = fetch_data(type_id_query, (selected_type,))
             
             interval = request.args.get("interval") or "10"
             
@@ -3717,11 +3821,11 @@ def mapping_billing_route():
                 type_id = str(results[0][0])
 
                 query = base_query
-                results = fetch_data(ptt_pivot_connection,query, (selected_type,))
+                results = fetch_data(query, (selected_type,))
                 
                 print("type:", type_id)
                 max_daily_query = "SELECT MAX(daily) FROM amr_mapping_billing WHERE evc_type LIKE :1"
-                max_daily_result = fetch_data(ptt_pivot_connection,max_daily_query, (type_id,))
+                max_daily_result = fetch_data(max_daily_query, (type_id,))
                 max_daily_value = str(max_daily_result[0][0]) if max_daily_result and max_daily_result[0][0] else ""
                 print("max_day:", max_daily_value)
 
@@ -3765,19 +3869,19 @@ def mapping_billing_route():
     
 @app.route('/update_mapping_billing_route', methods=['POST'])
 def update_mapping_billing():
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
         type_name_value = ["Time Stamp","Converted Index (VbA)","Unconverted Index (VmA)","Pressure Daily Average","Temperature Daily Average"]
         unit_type_name_value = ["Ulong","Ulong","Ulong","float","float"]
         selected_type = request.form.get('selected_type')
 
         # Fetch type_id from the database
         type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME = '{selected_type}'"
-        results = fetch_data(ptt_pivot_connection,type_id_query)
+        results = fetch_data(type_id_query)
         type_id = str(results[0]).strip("',()")
         
         max_daily_query = "SELECT MAX(daily),MAX(id),MAX(address),MAX(or_der)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
-        max_daily_result = fetch_data(ptt_pivot_connection,max_daily_query)
+        max_daily_result = fetch_data(max_daily_query)
         current_id = 0
         current_address = 0
         current_order = 0
@@ -3802,7 +3906,7 @@ def update_mapping_billing():
                 DELETE FROM AMR_MAPPING_BILLING
                 WHERE evc_type = '{type_id}' AND DAILY = {i}
                 """
-                update_sql(ptt_pivot_connection, delete_query)
+                update_sql( delete_query)
 
         elif max_daily_new > max_daily_value:
             # Update existing rows from 1 to max_daily_value
@@ -3821,7 +3925,7 @@ def update_mapping_billing():
                     VALUES ('{new_address}', '{new_description}', '{new_data_type}',  '{new_evc_type}', '{new_or_der}', '{new_daily}')
                     """
 
-                    update_sql(ptt_pivot_connection, insert_query)
+                    update_sql( insert_query)
                     # print(insert_query)
         
         # Update SQL query based on your table structure
@@ -3854,7 +3958,7 @@ def update_mapping_billing():
             WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
         """
 
-            update_sql(ptt_pivot_connection, update_query)
+            update_sql( update_query)
             print(update_query)
 
         return redirect("/mapping_billing")
@@ -3869,8 +3973,8 @@ def add_mapping_route():
 def submit_form():
     cursor = None
     connection = None
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
     try:
         data_list = []
         for i in range(1, 21):
@@ -3955,8 +4059,8 @@ def add_actraris_route():
 def submit_new_form():
     cursor = None
     connection = None
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
+    
+        
     try:
         data_list = []
         for i in range(1, 18):
@@ -4074,3 +4178,15 @@ def page_not_found(e):
 #     session.clear()       # remove the user and auth token from the session if it exists
 #     flash('You were logged out', 'info')
 #     return redirect(url_for('login'))   # send them back to the sign in page
+
+# def FillFullMonth(df, run_no):
+#     pass
+    #Get month
+    # for 1 to today
+    #   if ddf.log['datadate'] ไม่มีข้อมูลวันที่นี้ 
+    #       สร้าง series ["DATE", N/A, N/A ,....., runno]
+    #       ใส่ เข้าไป 
+    #  sort
+    #  return df
+    #
+    
