@@ -35,7 +35,7 @@ import matplotlib as mpt
 import time
 import datetime
 import pytz
-
+import traceback
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -55,6 +55,7 @@ def md5_hash(input_string):
     # เข้ารหัสรหัสผ่านโดยใช้ MD5
     return hashlib.md5(input_string.encode()).hexdigest()
 ############  connect database  #####################
+
 username = "root"
 password = "root"
 hostname = "192.168.102.192"
@@ -78,6 +79,10 @@ def fetch_data(query, params=None):
         print("Oracle Error:", error)
         return []
 
+
+
+
+
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
     selected_region = request.args.get("selected_region")
@@ -99,7 +104,9 @@ def get_tags():
 
 
 @app.route("/Manualpoll_data")
+
 def Manualpoll_data():
+    
     region_query = """
         SELECT * FROM AMR_REGION 
     """
@@ -112,7 +119,7 @@ def Manualpoll_data():
         AND TAG_ID NOT LIKE '%remove%
         """
     region_results = fetch_data(region_query)
-    
+    # print(region_results)
     region_options = [str(region[0]) for region in region_results]
     query = """
         SELECT
@@ -232,6 +239,8 @@ def Manualpoll_data():
     
     zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
     
+    
+        #print(df_mapping)
     return render_template(
         "Manual poll.html",
         tables=[df.to_html(classes="data")],
@@ -248,10 +257,11 @@ def Manualpoll_data():
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
 
-    
-    
+
+
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
+    
     global change_to_32bit_counter  # Use the global variable
     slave_id = int(request.form["slave_id"])
     function_code = int(request.form["function_code"])
@@ -259,178 +269,371 @@ def read_data():
     tcp_ip = request.form["tcp_ip"]
     tcp_port = int(request.form["tcp_port"])
     evc_type = int(request.form["evc_type"])
+    
+
     run = int(request.form["run"])
     run = run
     METERID = str(request.form["METERID"])
     
     poll_config_enable_list = str(request.form["poll_config_enable_list"])
-    print(poll_config_enable_list)
+    # print(poll_config_enable_list)
+    poll_billing_enable_list = str(request.form["poll_billing_enable_list"])
+    # print(poll_billing_enable_list)
     
-
+    #query Pollrange
     ##### config #####
     
-    data= {'starting_address_i': [0], 
-           'quantity_i': [0], 
-           'adjusted_quantity_i': [7]}
-    df = pd.DataFrame(data)
-    print(df)
-    df = df.append(data, ignore_index=True)
-    for i in range(1, 6):
+    data= {'starting_address_i': [], 
+           'quantity_i': [], 
+           'adjusted_quantity_i': []}
+    df_pollRange = pd.DataFrame(data)
+    df_pollBilling = pd.DataFrame(data)
     
+    for i in range(1, 6):
+        # print(i)
+        # print(poll_config_enable_list[i-1])
         if poll_config_enable_list[i-1] == '1':
-            print(poll_config_enable_list)
+            # print(poll_config_enable_list[i-1])
+            
+            
             starting_address_i = int(request.form[f'starting_address_{i}'])
+            # print(starting_address_i)
+            
             quantity_i = int(request.form[f'quantity_{i}'])
+            
             adjusted_quantity_i = quantity_i - starting_address_i + 1
             data= {'starting_address_i': [starting_address_i], 
                    'quantity_i': [quantity_i], 
                    'adjusted_quantity_i': [adjusted_quantity_i]}
-            # df = df.append(data, ignore_index=True)
+            df_2 = pd.DataFrame(data)
             
-                    
-            #print(df)
-            #print(data)
+            df_pollRange = pd.concat([df_pollRange,df_2] , ignore_index=True)
+            # print(df_pollRange)
+            
+    for i in range(7, 17): 
         
+        if poll_billing_enable_list[i-7] == '1': 
+            # print("i",i)
+            # print(poll_billing_enable_list[i-7])
+            starting_address_i = int(request.form[f'starting_address_{i-1}'])
+            # print(starting_address_i)
+            quantity_i = int(request.form[f'quantity_{i-1}'])
+            # print(quantity_i)
+            adjusted_quantity_i = quantity_i - starting_address_i + 1
+            data= {'starting_address_i': [starting_address_i], 
+                   'quantity_i': [quantity_i], 
+                   'adjusted_quantity_i': [adjusted_quantity_i]}
+            # print(data)
+            df_2 = pd.DataFrame(data)
+            
+            df_pollBilling = pd.concat([df_pollBilling,df_2] , ignore_index=True)
+    # print(df_pollBilling)
+    # poll to EVC
         
+    dataframes = {
+            'address_start': [],
+            'finish': [],
+            'TX': [],
+            'RX': []
+        }
+    df_Modbus = pd.DataFrame(dataframes)
+    df_Modbusbilling = pd.DataFrame(dataframes)
+    # print(df_data)
+    for i in range(0, len(df_pollRange)):
         
-    
-    
-    
-    
+        # print(i)
+        start_address = int(df_pollRange.loc[i,'starting_address_i'])
+        # print(start_address)
+        adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity_i'])
+        
+
         is_16bit = request.form.get("is_16bit") == "true"
         if is_16bit:
             bytes_per_value = 2
         else:
             bytes_per_value = 4
             if change_to_32bit_counter > 0:
-                adjusted_quantity_i *= 2
+                adjusted_quantity *= 2
                 change_to_32bit_counter -= 1
-    
+        
         request_message_i = bytearray(
-        [slave_id, function_code, starting_address_i >> 8, starting_address_i & 0xFF, adjusted_quantity_i >> 8, adjusted_quantity_i & 0xFF]
-    )
+        [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
         crc_i = computeCRC(request_message_i)
         request_message_i += crc_i.to_bytes(2, byteorder="big")
-
+        
+        
         sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock_i.connect((tcp_ip, tcp_port))
         communication_traffic_i = []
     
-        # Store the TX message in communication_traffic_1
-        communication_traffic_i.append({"direction": "TX", "data": request_message_i.hex()})
+        
+        communication_traffic_i.append(request_message_i.hex())
         sock_i.send(request_message_i)
         response_i = sock_i.recv(1024)
-        # Store the RX message in communication_traffic_1
-        communication_traffic_i.append({"direction": "RX", "data": response_i.hex()})
-        # print(communication_traffic_i)
-        dataframes = {
-            'direction': [item['direction'] for item in communication_traffic_i],
-            'data': [item['data'] for item in communication_traffic_i]
-        }
-
-        # สร้าง DataFrame จากลิสต์ของดิกชันนารี dataframes
-        communication_traffic_df = pd.DataFrame(dataframes)
-        # print(communication_traffic_df)
-        sock_i.close()
-        data_i = response_i[3:]
+        # print(response_i)
         
-        values_i = [
-            int.from_bytes(data_i[i: i + bytes_per_value], byteorder="big", signed=False)
-            for i in range(0, len(data_i), bytes_per_value)
-        ]
+        
+        
+        
+        communication_traffic_i.append(response_i.hex())
+        
+        if response_i[1:2] != b'\x03':
+            # print("config",response_i[1:2] )
+            return render_template("error.html", message="Error: Unexpected response code from device (config).")
+        else:
+            
+            
+            pass  
+        
+        data = {
+            'address_start': [int(start_address)],
+            'finish': [int(start_address+adjusted_quantity)],
+            'TX': [communication_traffic_i[0]],
+            'RX': [communication_traffic_i[1]]
+        }
+        # print(data)
+        df_2 = pd.DataFrame(data)
+        df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)
+
+        
+        # print(df_Modbus)
+        
+        
+        sock_i.close()
+        
+        
+    
+    ##############   billing
+    for i in range(0, len(df_pollBilling)):
+        
+        
+        # print(i)
+        start_address = int(df_pollBilling.loc[i,'starting_address_i'])
+        # print(start_address)
+        adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity_i'])
+        # print(adjusted_quantity)
+        
+
+        is_16bit = request.form.get("is_16bit") == "true"
+        if is_16bit:
+            bytes_per_value = 2
+        else:
+            bytes_per_value = 4
+            if change_to_32bit_counter > 0:
+                adjusted_quantity *= 2
+                change_to_32bit_counter -= 1
+        
+        request_message_i = bytearray(
+        [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
+        crc_i = computeCRC(request_message_i)
+        request_message_i += crc_i.to_bytes(2, byteorder="big")
+        
+        
+        sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock_i.connect((tcp_ip, tcp_port))
+        communication_traffic_i = []
+    
+        
+        communication_traffic_i.append(request_message_i.hex())
+        
+        sock_i.send(request_message_i)
+        response_i = sock_i.recv(1024)
+        
+        
+
+        
+        communication_traffic_i.append(response_i.hex())
+        if response_i[1:2] != b'\x03':
+            # print("billing", response_i[1:2])
+            return render_template("error.html", message="Error: Unexpected response code from device (billing).")
+        else:
+            
+            
+            pass  
+        
+        
+        # print(communication_traffic_i)
+        data = {
+            'address_start': [int(start_address)],
+            'finish': [int(start_address+adjusted_quantity)],
+            'TX': [communication_traffic_i[0]],
+            'RX': [communication_traffic_i[1]]
+        }
+        # print(data)
+        df_2 = pd.DataFrame(data)
+        df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
+
+        
+        # print(df_Modbusbilling)
+        
+        
+        sock_i.close()
+    
+       
+        encode_data_dict = {} 
+        
+    # query Mapping and encode data
+    # fetch mapping    
+        evc_type = evc_type
+        query = """
+        select amc.or_der as order1 , amc.address as address1, amc.description as desc1, amc.data_type as dtype1
+        from amr_mapping_config amc
+        where amc.evc_type = :evc_type AND address is not null 
+        order by order1
+        """
+        poll_results = fetch_data(query, params={"evc_type": evc_type})
+        df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
+        #print(df_mapping)
+             
+        list_of_values_configured = []
+        for i in range(0, len(df_mapping)):
+            
+            address = int(df_mapping.iloc[i,1])
+            
+            data_type = str(df_mapping.iloc[i,3])
+            
+            
+            for j in range(0,len(df_Modbus)):
+                address_start = int(df_Modbus.iloc[j,0])
+                address_finish = int(df_Modbus.iloc[j,1])
+                #print(address)
+                if address >= address_start and address <= address_finish:
+                    # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                    location_data = (address - address_start)*int(8/2)
+                    frameRx = (df_Modbus.iloc[j,3])
+                    #
+                    raw_data = frameRx[location_data + 6: location_data + 14]
+                  
+                    list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
+                    break
+                    # if data_type == 'Date':
+                    #     list_of_values_final.append("EEEEE")
+                    # elif data_type == 'Float':
+                    #     float_value = struct.unpack("!f", struct.pack("!I", int(raw_data, 16)))[0]
+                    #     list_of_values_final.append 
+                    # else:
+                    #     list_of_values_final.append("LLLLL")
+                    
+        # print(list_of_values_configured)
+    
+    
+    ###
+    ### list_of_balue_billing
+        evc_type = evc_type
+        query = """
+        SELECT amb.daily ,amb.or_der ,amb.address,amb.description,amb.data_type  FROM amr_mapping_billing amb WHERE amb.evc_type = :evc_type AND address is not null order by amb.daily
+        ,amb.or_der
+        """
+        poll_resultsbilling = fetch_data(query, params={"evc_type": evc_type})
+        # print(poll_resultsbilling)
+        df_mappingbilling = pd.DataFrame(poll_resultsbilling, columns=['daily','or_der', 'address', 'description', 'data_type'])
+        # print(df_mappingbilling)
+        
+        # print(df_Modbusbilling)   
+        list_of_values_billing = []
+        for i in range(0, len(df_mappingbilling)):
+            
+            address = int(df_mappingbilling.iloc[i,2])
+            
+            data_type = str(df_mappingbilling.iloc[i,4])
+            
+            
+            for j in range(0,len(df_Modbusbilling)):
+                address_start = int(df_Modbusbilling.iloc[j,0])
+                address_finish = int(df_Modbusbilling.iloc[j,1])
+               
+                if address >= address_start and address <= address_finish:
+                    # print(address)
+                    # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                    location_data = (address - address_start)*int(8/2)
+                    frameRx = (df_Modbusbilling.iloc[j,3])
+                    
+                    raw_data = frameRx[location_data + 6: location_data + 14]
+                    #print(data_type)
+                    
+                    list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
+                    
+                    break
+        # print(list_of_values_billing)    
+        
+            
+            
+            
+            
+            
+    # ## Wtire Configured Data
+    date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
+    
+    
     
    
+                    
     
-        if "32bit" in request.form and request.form["32bit"] == "true":
-            is_32bit = True
-        else:
-            is_32bit = False
-        data_list_i = []
-        
-        
-        value = 0
-        values_i = values_i[:-1]
-        address = starting_address_i
-        formatted_data = []
-        evc_type = evc_type
-        data_list_i = []
-        for i, value in enumerate(values_i):
-            address = starting_address_i + i * 2
-            
-        
-            
-            
-            
-            if address is not None:
-                
-                type_value = get_type_value_from_database(address, evc_type)
-            
-                if type_value is not None:
-                    hex_value = hex(value)
-                    binary_value = convert_to_binary_string(value, bytes_per_value)
-                    ulong_value = value
-                    float_value = struct.unpack("!f", struct.pack("!I", value))[0]
-                    description = get_description_from_database(address)
-                    if description is None:
-                        description = f"Address {address}"
-                        address += 0
-
-                    if is_16bit:
-                        signed_value = value - 2**16 if value >= 2**15 else value
-                        is_16bit_value = True
-                        float_display_value = f"16-bit signed: {signed_value}, float: {float_value}, ulong: {ulong_value}"
-                    else:
-                        signed_value = value - 2**32 if value >= 2**31 else value
-                        is_16bit_value = False
-                        float_value = (
-                            float_value
-                            if is_16bit_value
-                            else struct.unpack("!f", struct.pack("!I", value))[0]
-                        )
-                        if type_value == "Float":
-                            float_display_value = float_value
-                        elif type_value == "signed":
-                            float_display_value = signed_value
-                        elif type_value == "Ulong":
-                            float_display_value = ulong_value
-                        elif type_value == "Date":
-                            date_value_utc = datetime.datetime.utcfromtimestamp(value)
-                            local_timezone = pytz.timezone('Asia/Bangkok')
-                            date_value_local = date_value_utc.replace(tzinfo=datetime.timezone.utc).astimezone(local_timezone)
-                            float_display_value = date_value_local.strftime("%d-%b-%y")
-                        else:
-                            float_display_value = "Undefined"
-               
-                    data_list_i.append(
-                        {
-                            "description": description,
-                            "address": address,
-                            "value": value,
-                            # "hex_value": hex_value,
-                            # "binary_value": binary_value,
-                            
-                            "float_value": float_display_value,
-                        
-                        }
-                    )
-
-                    # if i == len(values_i) - 1:
-                    #     for float_display_value in data_list_i:
-                    #         print(float_display_value)
-    test = pd.DataFrame(data_list_i)
-    # print(test)
-    # test_2 = pd.DataFrame(data_list[1])
-    # result = pd.concat([test, test_2])
-    # print(result)
-            
-
     
+    
+    sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+    
+    sql_text_config_insert = "insert into AMR_CONFIGURED_DATA (DATA_DATE, METER_ID,METER_STREAM_NO, AMR_VC_TYPE, "
+    for i in range(0, len(df_mapping)):  
+        
+        sql_text_config_insert+=f" AMR_CONFIG{i+1},"
+    sql_text_config_insert+=" CREATED_BY) values ("
+    
+    sql_text_config_insert+=f"TO_DATE('{date_system}', 'DD-MM-YYYY'), '{METERID}','{run}','{evc_type}',"
+   
+    
+    for i in range(0, len(df_mapping)):
+       
+        sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
+        
+    sql_text_config_insert+="'')"
+    
+    # print(sql_text_config_insert)
+    
+    
+    
+    
+    ### Write Billing 
+    sql_text_bolling_delete = f"""delete from AMR_BILLING_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+    # print(sql_text_bolling_delete)
+    
+    
+    
+    sql_texts = []
+    for i in range(0, len(df_mappingbilling), 5):
+        
+        values_subset = list_of_values_billing[i:i+5]
+        # print(values_subset)
+        
+        sql_text_billing_insert = f"insert into AMR_BILLING_DATA (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF) values ('{METERID}', '{run}', TO_DATE('{values_subset[0]}', 'DD-MM-YYYY')"
+        
+        for value in values_subset[1:]:
+            sql_text_billing_insert += f", '{value}'"
+        
+        sql_text_billing_insert += ");"
+    
+        sql_text_billing_insert = sql_text_billing_insert.rstrip(',')
+        
+        sql_texts.append(sql_text_billing_insert)
+
+    full_sql_text = "\n".join(sql_texts)
+    # print(full_sql_text)
+    
+    
+    
+    # delete_data(sql_text_config_delete,sql_text_bolling_delete)     
+    # insert_data(sql_text_config_insert,full_sql_text)   
+    
+        
+    
+        
+        
         
     combined_data = {
-        "data_i": data_i,
+        
         "communication_traffic_i": communication_traffic_i, 
     }
-    
+    data_list_i = []
     session["tcp_ip"] = tcp_ip
     session["tcp_port"] = tcp_port
     
@@ -626,7 +829,7 @@ def read_data():
         
     return render_template(
         "Manual poll.html",
-        df=df,METERID=METERID,test=test,
+        df=df,METERID=METERID,df_mapping=df_mapping,df_mappingbilling=df_mappingbilling,
         
         slave_id=slave_id,
         function_code=function_code,
@@ -647,87 +850,453 @@ def read_data():
         tag_options=tag_options,combined_data=combined_data
     )
     
+def convert_raw_to_value(data_type, raw_data):
     
+
+    if data_type == "Date":
+        raw_data_as_int = int(raw_data, 16)
+        date_object = datetime.datetime.fromtimestamp(raw_data_as_int).date()
+        formatted_date = date_object.strftime('%d-%m-%Y') 
+        
+        return formatted_date
+    elif data_type == "Float":
+        
+        return struct.unpack('!f', bytes.fromhex(raw_data))[0]
+    elif data_type == "Ulong":
+        return int(raw_data, 16)
+    else:
+       
+        return raw_data 
+
+def delete_data(sql_text_config_delete, sql_text_bolling_delete):
+    # print(sql_text_config_delete, sql_text_bolling_delete)
+    try:
+        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql_text_config_delete)
+                connection.commit()
+                print("delete data config successful")  
+                
+                cursor.execute(sql_text_bolling_delete)
+                connection.commit()
+                print("delete data billing successful")  
+                
+    except cx_Oracle.Error as error:
+        print("Oracle Error:", error)
+
+def insert_data(sql_text_config_insert, full_sql_text):
+    
+    try:
+        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+            with connection.cursor() as cursor:
+              
+                cursor.execute(sql_text_config_insert)
+                connection.commit()
+                print("Insert data config successful")  
+
+               
+                
+                for sql_statement in full_sql_text.split(";"):
+                    if sql_statement.strip():
+                        cursor.execute(sql_statement.strip())
+                connection.commit()
+                print("Insert data billing successful")
+    except cx_Oracle.Error as error:
+        print("Oracle Error:", error)
+
+
+
+
+@app.route("/save_to_oracle", methods=["POST"])
+def save_to_oracle():
+    global change_to_32bit_counter
+    try:
+        
+        data = request.get_json()
+        # slave_id = data["slave_id"]
+        # print(slave_id)
+        evc_type = data["evc_type"]
+        # print(evc_type)
+        slave_id = int(data.get("slave_id"))
+        # print(slave_id)
+        function_code= int(data.get("function_code"))
+        # print(function_code)
+        tcp_ip = data.get("tcp_ip")
+        # print(tcp_ip)
+        tcp_port = int(data.get("tcp_port"))
+        # print(tcp_port)
+        run = int(data.get("run"))
+        # print(run)
+        METERID = str(data.get("METERID"))
+        # print(METERID)
+        poll_config_enable_list = str(data.get("poll_config_enable_list"))
+        # print(poll_config_enable_list)
+        poll_billing_enable_list = str(data.get("poll_billing_enable_list"))
+        # print(poll_billing_enable_list)
+    
+        starting_address_values = data["starting_address_values"]
+        quantity_values = data["quantity_values"]
+        data= {'starting_address': [], 
+           'quantity': [], 
+           'adjusted_quantity': []}
+        df_pollRange = pd.DataFrame(data)
+        df_pollBilling = pd.DataFrame(data)
+        for i in range(1, 6):  
+            if poll_config_enable_list[i-1] == '1':
+                starting_address_key = "starting_address_" + str(i)
+                quantity_key = "quantity_" + str(i)
+                if starting_address_key in starting_address_values and quantity_key in quantity_values:
+                    starting_address = starting_address_values[starting_address_key]
+                    quantity = quantity_values[quantity_key]
+                    adjusted_quantity = int(quantity) - int(starting_address) + 1
+                    data= {'starting_address': [starting_address], 
+                   'quantity': [quantity], 
+                   'adjusted_quantity': [adjusted_quantity]}
+                    df_2 = pd.DataFrame(data)
+            
+                df_pollRange = pd.concat([df_pollRange,df_2] , ignore_index=True)
+                # print(df_pollRange)
+        
+        for i in range(7, 17): 
+        
+            if poll_billing_enable_list[i-7] == '1': 
+                # print("i",i)
+                # print(poll_billing_enable_list[i-7])
+                starting_address_key = "starting_address_" + str(i-1)
+                quantity_key = "quantity_" + str(i-1)
+                # print(quantity_i)
+                if starting_address_key in starting_address_values and quantity_key in quantity_values:
+                    starting_address = starting_address_values[starting_address_key]
+                    quantity = quantity_values[quantity_key]
+                    adjusted_quantity = int(quantity) - int(starting_address) + 1
+                    data= {'starting_address': [starting_address], 
+                   'quantity': [quantity], 
+                   'adjusted_quantity': [adjusted_quantity]}
+                    df_2 = pd.DataFrame(data)
+                
+                df_pollBilling = pd.concat([df_pollBilling,df_2] , ignore_index=True)        
+        
+                # print(df_pollBilling)
+        
+        dataframes = {
+            'address_start': [],
+            'finish': [],
+            'TX': [],
+            'RX': []
+        }
+        df_Modbus = pd.DataFrame(dataframes)
+        df_Modbusbilling = pd.DataFrame(dataframes)
+        
+        for i in range(0, len(df_pollRange)):
+        
+            # print(i)
+            start_address = int(df_pollRange.loc[i,'starting_address'])
+            # print(start_address)
+            adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity'])
+            
+
+            is_16bit = request.form.get("is_16bit") == "true"
+            if is_16bit:
+                bytes_per_value = 2
+            else:
+                bytes_per_value = 4
+                if change_to_32bit_counter > 0:
+                    adjusted_quantity *= 2
+                    change_to_32bit_counter -= 1
+            
+            request_message_i = bytearray(
+            [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
+            crc_i = computeCRC(request_message_i)
+            request_message_i += crc_i.to_bytes(2, byteorder="big")
+            
+            
+            sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock_i.connect((tcp_ip, tcp_port))
+            communication_traffic_i = []
+        
+            
+            communication_traffic_i.append(request_message_i.hex())
+            sock_i.send(request_message_i)
+            response_i = sock_i.recv(1024)
+            # print(response_i)
+            
+            
+            
+            
+            communication_traffic_i.append(response_i.hex())
+            
+            if response_i[1:2] != b'\x03':
+                # print("config",response_i[1:2] )
+                return render_template("error.html", message="Error: Unexpected response code from device (config).")
+            else:
+                
+                
+                pass  
+            
+            data = {
+                'address_start': [int(start_address)],
+                'finish': [int(start_address+adjusted_quantity)],
+                'TX': [communication_traffic_i[0]],
+                'RX': [communication_traffic_i[1]]
+            }
+            # print(data)
+            df_2 = pd.DataFrame(data)
+            df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)
+
+            
+            # print(df_Modbus)
+            
+            
+            sock_i.close()
+        
+        for i in range(0, len(df_pollBilling)):
+        
+            
+            # print(i)
+            start_address = int(df_pollBilling.loc[i,'starting_address'])
+            # print(start_address)
+            adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity'])
+            # print(adjusted_quantity)
+            
+
+            is_16bit = request.form.get("is_16bit") == "true"
+            if is_16bit:
+                bytes_per_value = 2
+            else:
+                bytes_per_value = 4
+                if change_to_32bit_counter > 0:
+                    adjusted_quantity *= 2
+                    change_to_32bit_counter -= 1
+            
+            request_message_i = bytearray(
+            [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
+            crc_i = computeCRC(request_message_i)
+            request_message_i += crc_i.to_bytes(2, byteorder="big")
+            
+            
+            sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock_i.connect((tcp_ip, tcp_port))
+            communication_traffic_i = []
+        
+            
+            communication_traffic_i.append(request_message_i.hex())
+            
+            sock_i.send(request_message_i)
+            response_i = sock_i.recv(1024)
+            
+            
+
+            
+            communication_traffic_i.append(response_i.hex())
+            if response_i[1:2] != b'\x03':
+                # print("billing", response_i[1:2])
+                return render_template("error.html", message="Error: Unexpected response code from device (billing).")
+            else:
+                
+                
+                pass  
+            
+            
+            # print(communication_traffic_i)
+            data = {
+                'address_start': [int(start_address)],
+                'finish': [int(start_address+adjusted_quantity)],
+                'TX': [communication_traffic_i[0]],
+                'RX': [communication_traffic_i[1]]
+            }
+            # print(data)
+            df_2 = pd.DataFrame(data)
+            df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
+
+            
+            # print(df_Modbusbilling)
+            
+            
+            sock_i.close()
+        
+        
+            encode_data_dict = {} 
+            
+        
+            evc_type = evc_type
+            query = """
+            select amc.or_der as order1 , amc.address as address1, amc.description as desc1, amc.data_type as dtype1
+            from amr_mapping_config amc
+            where amc.evc_type = :evc_type AND address is not null 
+            order by order1
+            """
+            poll_results = fetch_data(query, params={"evc_type": evc_type})
+            df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
+            #print(df_mapping)
+                
+            list_of_values_configured = []
+            for i in range(0, len(df_mapping)):
+                
+                address = int(df_mapping.iloc[i,1])
+                
+                data_type = str(df_mapping.iloc[i,3])
+                
+                
+                for j in range(0,len(df_Modbus)):
+                    address_start = int(df_Modbus.iloc[j,0])
+                    address_finish = int(df_Modbus.iloc[j,1])
+                    #print(address)
+                    if address >= address_start and address <= address_finish:
+                        # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                        location_data = (address - address_start)*int(8/2)
+                        frameRx = (df_Modbus.iloc[j,3])
+                        #
+                        raw_data = frameRx[location_data + 6: location_data + 14]
+                    
+                        list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
+                        break
+                
+            evc_type = evc_type
+            query = """
+            SELECT amb.daily ,amb.or_der ,amb.address,amb.description,amb.data_type  FROM amr_mapping_billing amb WHERE amb.evc_type = :evc_type AND address is not null order by amb.daily
+            ,amb.or_der
+            """
+            poll_resultsbilling = fetch_data(query, params={"evc_type": evc_type})
+            # print(poll_resultsbilling)
+            df_mappingbilling = pd.DataFrame(poll_resultsbilling, columns=['daily','or_der', 'address', 'description', 'data_type'])
+            # print(df_mappingbilling)
+            
+            # print(df_Modbusbilling)   
+            list_of_values_billing = []
+            for i in range(0, len(df_mappingbilling)):
+                
+                address = int(df_mappingbilling.iloc[i,2])
+                
+                data_type = str(df_mappingbilling.iloc[i,4])
+                
+                
+                for j in range(0,len(df_Modbusbilling)):
+                    address_start = int(df_Modbusbilling.iloc[j,0])
+                    address_finish = int(df_Modbusbilling.iloc[j,1])
+                
+                    if address >= address_start and address <= address_finish:
+                        # print(address)
+                        # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                        location_data = (address - address_start)*int(8/2)
+                        frameRx = (df_Modbusbilling.iloc[j,3])
+                        
+                        raw_data = frameRx[location_data + 6: location_data + 14]
+                        #print(data_type)
+                        
+                        list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
+                        
+                        break
+            # print(list_of_values_billing)    
+        
+        date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
+        sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+    
+        sql_text_config_insert = "insert into AMR_CONFIGURED_DATA (DATA_DATE, METER_ID,METER_STREAM_NO, AMR_VC_TYPE, "
+        for i in range(0, len(df_mapping)):  
+            
+            sql_text_config_insert+=f" AMR_CONFIG{i+1},"
+        sql_text_config_insert+=" CREATED_BY) values ("
+        
+        sql_text_config_insert+=f"TO_DATE('{date_system}', 'DD-MM-YYYY'), '{METERID}','{run}','{evc_type}',"
+    
+        
+        for i in range(0, len(df_mapping)):
+        
+            sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
+            
+        sql_text_config_insert+="'')" 
+        
+        
+        
+        
+        sql_text_bolling_delete = f"""delete from AMR_BILLING_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+        sql_texts = []
+        for i in range(0, len(df_mappingbilling), 5):
+            
+            values_subset = list_of_values_billing[i:i+5]
+            # print(values_subset)
+            
+            sql_text_billing_insert = f"insert into AMR_BILLING_DATA (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF) values ('{METERID}', '{run}', TO_DATE('{values_subset[0]}', 'DD-MM-YYYY')"
+            
+            for value in values_subset[1:]:
+                sql_text_billing_insert += f", '{value}'"
+            
+            sql_text_billing_insert += ");"
+        
+            sql_text_billing_insert = sql_text_billing_insert.rstrip(',')
+            
+            sql_texts.append(sql_text_billing_insert)
+
+        full_sql_text = "\n".join(sql_texts)
+        # print(full_sql_text)
+        
+        
+        delete_data(sql_text_config_delete,sql_text_bolling_delete)     
+        insert_data(sql_text_config_insert,full_sql_text)
+        
+        
+        
+        
+   
+        response = {"status": "success", "message": "Data updated successfully"}
+    except ValueError as ve:
+        response = {"status": "error", "message": str(ve)}
+    except cx_Oracle.DatabaseError as e:
+        (error,) = e.args
+        print(f"Oracle Database Error {error.code}: {error.message}")
+        traceback.print_exc() 
+        response = {
+            "status": "error",
+            "message": f"Database Error: {error.code} - {error.message}",
+        }
+    except Exception as e:
+        print(f"Error: {e}")
+        traceback.print_exc()  
+        response = {
+            "status": "error",
+            "message": f"An error occurred while updating data: {str(e)}",
+        }
+
+    return jsonify(response)
+        
+# def delete_data_billing(sql_text_bolling_delete):
+    
+#     try:
+#         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+#             with connection.cursor() as cursor:
+#                 sql = sql_text_bolling_delete  
+#                 cursor.execute(sql)
+#                 connection.commit()
+#                 print("delete data billing successful")  
+#     except cx_Oracle.Error as error:
+#         print("Oracle Error:", error)
+        
+# def insert_data_billing():
+#     # print(full_sql_text)
+#     try:
+#         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+#             with connection.cursor() as cursor:
+#                 sql = """insert into AMR_BILLING_DATA (DATA_DATE, METER_ID,METER_STREAM_NO,TIME_CREATE, CORRECTED_VOL , UNCORRECTED_VOL , AVR_PF , AVR_TF) values (TO_DATE('04-03-2024', 'DD-MM-YYYY'), 'MET0138','1','03-02-1970','350290355','2824482','5.989999771118164','1.1020259538958945e-37'); """ 
+#                 cursor.execute(sql)
+                
+#                 connection.commit()
+#                 print("Insert data billing successful")  
+#     except cx_Oracle.Error as error:
+#         print("Oracle Error:", error)
+
+
+
+
 def handle_actaris_action(i, address):
     return address
 def handle_action_configuration(i, value, address):
     return value, address
-
-
-
-
-    
+ 
 @app.route("/process_selected_rows", methods=["POST"])
 def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
-
-
-def get_description_from_database_billing(address):
-    query = "SELECT DESCRIPTION FROM amr_mapping_billing WHERE ADDRESS = :address"
-    params = {"address": address}
-    result = fetch_data(query, params)
-    
-    return result[0][0] if result else None
-def get_type_value_from_database_billing(address,evc_type):
-    query = "SELECT data_type FROM amr_mapping_billing WHERE ADDRESS = :address AND evc_type = :evc_type "
-    result = fetch_data(query, params={"address": address, "evc_type" :evc_type})
-    
-    if result:
-        return result[0][0]  
-    return None
-
-
-
-def get_description_from_database(address):
-    query = "SELECT DESCRIPTION FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address order by address DESC"
-    params = {"address": address}
-    result = fetch_data(query, params)
-    return result[0][0] if result else None
-
-
-# def get_address_from_database(evc_type, address):
-#     query = "SELECT address, or_der FROM AMR_MAPPING_CONFIG WHERE evc_type = :evc_type AND ADDRESS = :address  ORDER BY or_der "
-#     params = {"evc_type": evc_type, "address": address}
-    
-#     result = fetch_data(query, params)
-    
-#     return result[0][0] if result else None
-
-
-# def get_address_test_from_database(te,evc_type):
-    
-#     query = "SELECT address FROM AMR_MAPPING_CONFIG WHERE  ADDRESS = :te AND evc_type = :evc_type  ORDER BY or_der "
-#     params = {"te": te,"evc_type": evc_type}
-    
-#     result = fetch_data(query, params)
-#     # print(result)
-    
-#     return result[0][0] if result else None
-
-def get_type_value_from_database(address,evc_type):
-    query = "SELECT data_type FROM AMR_MAPPING_CONFIG WHERE ADDRESS = :address AND evc_type = :evc_type ORDER BY or_der" 
-    result = fetch_data(query, params={"address": address , "evc_type" :evc_type })
-    if result:
-        return result[0][0] 
-    return None
-
-
-def insert_data(data_0,run, evc_type, METERID):
-    try:
-        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
-            with connection.cursor() as cursor:
-                sql = """
-                    INSERT INTO AMR_CONFIGURED_DATA (DATA_DATE, METER_STREAM_NO, AMR_VC_TYPE, METER_ID) 
-                    VALUES (TO_DATE(:data_0, 'DD-MON-YY'), :run, :evc_type, :METERID)
-                    """
-                cursor.execute(sql, {'data_0': data_0, 'run': run, 'evc_type': evc_type, 'METERID': METERID})
-                connection.commit()
-                print("insert_data_ek successful")  
-    except cx_Oracle.Error as error:
-        print("Oracle Error:", error)
-
-        
+     
 
 
 
