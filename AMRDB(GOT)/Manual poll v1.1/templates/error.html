@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .error-container {
+            text-align: center;
+        }
+        .error-message {
+            color: red;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            border: 2px solid #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Error</h1>
+        <p class="error-message">{{ message }}</p>
+        <a href="/Manualpoll_data" class="back-link">Go Back</a>
+    </div>
+</body>
+</html>
