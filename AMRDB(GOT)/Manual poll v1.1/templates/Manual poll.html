@@ -247,9 +247,10 @@
                 {% endfor %}
             </select>
 
-            <input type="submit" value="Submit">
+            <input type="submit" class="DB" value="Submit">
         </form>
     </div>
+    
     <form method="POST" action="/process_selected_rows">
         
         {% if not df.empty %}
@@ -359,7 +360,10 @@
                         
                         var poll_config_enable_list = pollConfigListParts.slice(32, 37).map(function(item) {
                             return item.replace(/[\[\]']/g, '');
-                        }).join(',');
+                        }).join('');
+                        var poll_billing_enable_list = pollConfigListParts.slice(37, 47).map(function(item) {
+                            return item.replace(/[\[\]']/g, '');
+                        }).join('');
                         // Set the value of tcp_ip, tcp_port, and evc_type input fields
                         document.getElementById('tcp_ip').value = tcp_ip;
                         document.getElementById('tcp_port').value = tcp_port;
@@ -367,6 +371,7 @@
                         document.getElementById('run').value = run;
                         document.getElementById('METERID').value = METERID;
                         document.getElementById('poll_config_enable_list').value = poll_config_enable_list;
+                        document.getElementById('poll_billing_enable_list').value = poll_billing_enable_list;
 
                     }
                 });
@@ -498,8 +503,7 @@
         
     </script>
    
-   
-
+    
 
  <canvas id="orbcanvas" class="orb-canvas"></canvas>
  
@@ -522,7 +526,7 @@
              <div class="row">
                  <div class="col-sm-6 offset-sm-3 pt-4" >
 
-                     <form method="POST" id="modbusForm" >
+                     <form method="POST" id="modbusForm" > 
                          <div class="form-group" style="display: none;  ">
                              <label for="slave_id" style="margin-bottom: 100px;">Slave ID</label>
                              <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -100px; border-radius: 0.5rem; border: none; padding-left: 10px;">
@@ -536,17 +540,19 @@
                         
                         
                          
-                         {% for i in range(1, 6) %}
+                         {% for i in range(1, 16) %}
                          <div class="form-group"  >
                              <label  for="starting_address_{{ i }}">Starting Address ({{ i }})</label>
                              <input type="text" class="form-control" id="starting_address_{{ i }}" name="starting_address_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                          </div>
-                     
+                         
                          <div class="form-group" >
                              <label for="quantity_{{ i }}">Quantity ({{ i }})</label>
                              <input type="text" class="form-control" id="quantity_{{ i }}" name="quantity_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
                          </div>
                         {% endfor %}
+                        
+
                         
                         
                          
@@ -581,15 +587,18 @@
                             <label for="poll_config_enable_list">poll_config_list</label>
                             <input type="text" class="form-control" id="poll_config_enable_list" name="poll_config_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="">
                         </div>
+                        <div class="form-group">
+                            <label for="poll_billing_enable_list">poll_billing_enable_list</label>
+                            <input type="text" class="form-control" id="poll_billing_enable_list" name="poll_billing_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="">
+                        </div>
                         
                         <div class="btn-container" id="showDataButton">
                            
 
-                             <button type="submit" style="display: none;" id="changeTo16BitButton" class="btn btn-primary" name="is_16bit" value="true" data-state="data" style="height: 34px; width: 45%; font-size: x-small;border-radius: 0.5rem;border: none;">Change to 16-bit</button >
-
-              
-                        <button type="submit" id="changeTo32BitButton" style="display: none;" class="btn btn-secondary" name="is_16bit" value="false"style="height: 34px; width: 45%; font-size: x-small;border: none;border-radius: 0.5rem;">Change to 32-bit</button>
-                             <!-- <div class="btn-button1">
+                            
+                        
+                        
+                        <!-- <div class="btn-button1">
                                  <p>Elster:</p>
                              </div> -->
                              <!-- <div class="btn-buttonElster"> -->
@@ -610,8 +619,8 @@
                             </div> -->
                             {% if not df.empty %}
                                 <div class="btn-buttonActaris" style="margin-top: -60px; margin-left: -480px;">
-                                    <form method="POST" action="/process_selected_rows">
-                                        <button type="submit" name="action_configuration" value="configuration" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
+                                    <form method="POST" >
+                                        <button type="submit" name="action_configuration"  value="configuration" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
                                     </form>
                                 </div>
                             {% endif %}
@@ -638,10 +647,71 @@
 
      </div>
  </div>
+ 
+ <button id="fetchDataButton">save_to_oracle</button>
+
+ <script>
+    document.getElementById("fetchDataButton").onclick = function() {
+        
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/save_to_oracle");
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function() {
+            if (xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message); 
+            } else {
+                alert("Error: " + xhr.status);
+            }
+        };
+
+        var evcTypeValue = document.getElementById("evc_type").value;
+        var slaveIdValue = document.getElementById("slave_id").value; 
+        var functioncodeValue = document.getElementById("function_code").value;
+        var tcpipValue = document.getElementById("tcp_ip").value;
+        var tcpportValue = document.getElementById("tcp_port").value;
+        var runValue = document.getElementById("run").value;
+        var METERIDValue = document.getElementById("METERID").value;
+        var pollconfigenablelistValue = document.getElementById("poll_config_enable_list").value;
+        var pollbillingenablelistValue = document.getElementById("poll_billing_enable_list").value;
+        
+        // Add starting address and quantity values
+        var startingAddressValues = {};
+        var quantityValues = {};
+        for (var i = 1; i <= 15; i++) {
+            startingAddressValues["starting_address_" + i] = document.getElementById("starting_address_" + i).value;
+            quantityValues["quantity_" + i] = document.getElementById("quantity_" + i).value;
+        }
+       
+        var data = JSON.stringify({ 
+            "evc_type": evcTypeValue, 
+            "slave_id": slaveIdValue , 
+            "function_code": functioncodeValue,
+            "tcp_ip": tcpipValue, 
+            "tcp_port": tcpportValue, 
+            "run": runValue, 
+            "METERID": METERIDValue, 
+            "poll_config_enable_list": pollconfigenablelistValue, 
+            "poll_billing_enable_list": pollbillingenablelistValue,
+            "starting_address_values": startingAddressValues,
+            "quantity_values": quantityValues
+        }); 
+
+        xhr.send(data);
+    };
+</script>
+
+
+
+
 
  </div>
-
-
+ 
+</div>
+</div>
 </body>
 
 </html>
