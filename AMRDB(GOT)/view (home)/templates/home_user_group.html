@@ -9,7 +9,7 @@
     <meta name="author" content="Prompt">
     <meta name="copyright" content="Copyright © 2024">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration Mapping</title>
+    <title>HOME AMR</title>
 
     <!-- Stylesheet -->
     <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
@@ -46,8 +46,7 @@
     }
 
     body {
-        overflow: hidden;
-        background: #909090;
+        background-image: linear-gradient(to right, #848282, #abb2b9);
         font-family: "PTT45Pride-Bold", sans-serif;
         font-weight: bold;
         height: 100%;
@@ -65,7 +64,7 @@
     }
 
     label {
-
+        display: block;
         margin-bottom: 10px;
         font-weight: bold;
         color: #333;
@@ -74,10 +73,10 @@
     }
 
     input {
-        width: 18%;
+        width: 20%;
         padding: 5px;
-        margin-top: 1px;
-        margin-bottom: 1px;
+        margin-top: 0px;
+        margin-bottom: 30px;
         box-sizing: border-box;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -132,11 +131,6 @@
         width: 260px;
         /* == */
         max-width: 1880px;
-        border-radius: 5%;
-        border-top: #0055ff solid 5px;
-        border-bottom: #0055ff solid 5px;
-        filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244));
-        z-index: 999;
     }
 
     .mcd-menu li {
@@ -150,14 +144,14 @@
         text-decoration: none;
         padding: 12px 20px;
         color: #777;
-        text-align: center;
-
+        /*text-align: center;
+        border-right: 1px solid #E7E7E7;*/
 
         /* == */
         text-align: left;
         height: 36px;
         position: relative;
-
+        border-bottom: 1px solid #eee;
         /* == */
     }
 
@@ -368,7 +362,6 @@
         border-left: 4px solid #2e6ff2;
         /* == */
     }
-
 
     .mcd-menu li ul:before {
         content: "";
@@ -718,11 +711,10 @@
         }
     }
 
-
     .top-bar {
-        background-image: linear-gradient(0deg, #0055ff, #469ff7, #0055ff);
+        background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
         color: #fff;
-        padding: 10px 0px;
+        padding: 10px 10px;
         width: 100%;
         position: fixed;
         top: 0;
@@ -731,10 +723,8 @@
         box-shadow: 0 0 5px #ddd;
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
-        z-index: 99999;
-        border-bottom: #ddd solid 3px;
+        z-index: 2;
     }
-
 
     footer {
         align-items: right;
@@ -750,8 +740,6 @@
         -moz-box-shadow: 0 0 5px #ddd;
         -webkit-box-shadow: 0 0 5px #ddd;
         font-size: small;
-        border-top: #ddd solid 3px;
-        z-index: 6;
     }
 
 
@@ -764,52 +752,45 @@
         align-items: center;
     }
 
-
     .logo {
         width: 95px;
         padding: 0px;
         margin: 0px;
         display: flex;
-        margin-top: 0px;
-        margin-left: 30%;
+        margin-top: -25px;
         filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255))
     }
 
-    .logout,
+
+
     .back-button,
     .forward-button {
-
         position: fixed;
         top: 110px;
         background-color: transparent;
         border: none;
         cursor: pointer;
         color: white;
-        font-size: 10px;
+        font-size: medium;
         outline: none;
         z-index: 999;
         filter: drop-shadow(0 0 0.75rem rgb(120, 190, 244))
     }
 
     .back-button {
-        right: 110px;
+        right: 180px;
     }
 
     .forward-button {
-        right: 5px;
+        right: 20px;
     }
-    .logout{
-        right: 5px;
-        margin-top: -7%;
-        font-size: large;
-    }
-    .logout a,
+
     .back-button a,
     .forward-button a {
-        width: 61px;
+        width: 100px;
         color: white;
         text-decoration: none;
-        padding: 4px 16px;
+        padding: 8px 16px;
         font-weight: bold;
         border: none;
         border-radius: 5px;
@@ -819,7 +800,7 @@
         box-shadow: 0 4px 8px rgba(120, 190, 244);
         transform-style: preserve-3d;
     }
-    .logout a:hover,
+
     .back-button a:hover,
     .forward-button a:hover {
         background: linear-gradient(to bottom, #2e6ff2, #4571a0);
@@ -827,21 +808,19 @@
         /* เพิ่ม rotateX */
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
-    .logout a::before,
+
     .back-button a::before,
     .forward-button a::before {
         font-size: smaller;
         margin-right: 4px;
     }
-    .logout i,
+
     .back-button i,
     .forward-button i {
         font-size: larger;
         transition: transform 0.3s;
     }
-    .logout i {
-        margin-right: 10%;
-    }
+
     .back-button i {
         margin-right: 10%;
     }
@@ -855,26 +834,28 @@
         margin: 0px 0px 0px left;
         padding: 0;
         clear: both;
-        margin-top: -40px;
+        margin-top: 100px;
         margin-left: -1%;
     }
+
 
     .btn-shine {
         position: absolute;
         top: 50%;
-        transform: translate(0%, -50%);
-        padding: 12px 10px;
+        left: 38%;
+        transform: translate(-50%, -50%);
+        padding: 12px 48px;
         color: #ffffff;
         font-weight: 600;
         font-size: 60px;
         text-decoration: none;
         white-space: nowrap;
-
     }
 
+
     .box_we {
-        width: 100%;
-        font-size: small;
+        width: 90%;
+        background-color: #fff;
         padding: 20px;
         margin: auto;
         z-index: 5;
@@ -883,17 +864,45 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+    }
+
+    .container-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 20px;
+    }
+
+    .container-menu label {
+        color: #333;
+        margin-right: 10px;
+        width: 60px;
+    }
+
+    .container-menu select,
+    .container-menu input {
+        background-color: #fff;
+        color: #333;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+
+    }
+
+    .container-menu input {
+        width: 150px;
+        /* ปรับขนาด input ตามที่ต้องการ */
     }
 
 
     .textbox-container {
         position: relative;
-        width: 70%;
+        width: 60%;
         margin: auto;
-        margin-top: -530px;
+        margin-top: -370px;
         margin-bottom: 20px;
-        margin-left: 22%;
+        margin-left: 27%;
         height: 100%;
         background-color: #FFFFFF;
         border: 2px solid #b7b7b7;
@@ -901,7 +910,6 @@
         color: #040506;
         border-radius: 15px;
         overflow: hidden;
-        z-index: 1;
     }
 
 
@@ -989,12 +997,13 @@
         background: transparent;
         cursor: pointer;
         transition: all 0.3s ease;
-
+        position: relative;
+        display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 10px;
+        margin-top: 20px;
         border-radius: 5px;
-        margin-bottom: 5px;
+        margin-bottom: -25px;
     }
 
     .button-container {
@@ -1041,7 +1050,7 @@
         transform: translateY(-4px);
     }
 
-    #type_dropdown {
+    #region_dropdown {
         width: 200px;
         padding: 8px;
         border: 1px solid #ccc;
@@ -1050,39 +1059,39 @@
         color: #333;
     }
 
-    #type_dropdown:hover {
+    #region_dropdown:hover {
         border-color: #666;
     }
 
-    #type_dropdown option {
+    #region_dropdown option {
         background-color: #fff;
         color: #333;
     }
 
-    #type_dropdown option:hover {
+    #region_dropdown option:hover {
         background-color: #f2f2f2;
     }
 
 
-    select {
-        width: 100px;
-        padding: 5px;
+    #tag_dropdown {
+        width: 200px;
+        padding: 8px;
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: #fff;
         color: #333;
     }
 
-    select:hover {
+    #tag_dropdown:hover {
         border-color: #666;
     }
 
-    select option {
+    #tag_dropdown option {
         background-color: #fff;
         color: #333;
     }
 
-    select option:hover {
+    #tag_dropdown option:hover {
         background-color: #f2f2f2;
     }
 
@@ -1098,101 +1107,34 @@
         align-items: center;
         text-align: center;
     }
-
-    td {
-        background-color: rgb(255, 255, 255);
-        border: 1.5px solid #171717;
-        height: 20px;
-        width: 55px;
-        align-items: center;
-        text-align: center;
-        font-size: small;
-        padding: 3px;
-        word-wrap: break-word;
-    }
-
-    th {
-        background-color: #bcb9b9;
-        border: 2px solid #171717;
-        height: 40px;
-        width: 55px;
-        text-align: center;
-        align-items: center;
-        padding: 2px;
-        font-size: xx-small;
-        word-wrap: break-word;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: large;
-        table-layout: fixed;
-        margin-top: -10px;
-    }
-
-
-    th,
-    td {
-        font-size: 10px;
-        border: 1px solid #000000;
-        text-align: center;
-        width: 60px;
-        padding: 3px;
-    }
-
-    .table1 {
-        table-layout: fixed;
-        border-collapse: collapse;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 30px;
-        margin: 10px auto;
-        word-wrap: break-word;
-
-    }
-
-    .table1 th,
-    .table1 td {
-        font-size: small;
-        text-align: center;
-        word-wrap: break-word;
-    }
-
 </style>
-
 
 <body>
     <header class="top-bar">
-        <span class="btn-shine">Automatic Meter Reading</span>
+
+        <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
+            alt="PTT Public Company Limited Logo">
+        <a href="#" class="btn-shine" target="_blank">Automatic Meter Reading (AMR) : {{ username }}</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <!-- <h2>Welcome {{ username }}</h2>
+            <p>User: {{ description }}</p>
+            <p>Level: {{ user_level }}</p> -->
         <div class="back-button">
-            
             <a href="javascript:history.back()" style="text-decoration: none;">
-                <i class="fas fa-arrow-circle-left" style="margin-right: 27%;"></i> Back
+                <i class="fas fa-arrow-circle-left" style="margin-right: 10%;"></i> Back
             </a>
         </div>
         <div class="forward-button">
             <a href="javascript:history.forward()" style="text-decoration: none;">
-                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 11%;"></i>
+                Forward <i class="fas fa-arrow-circle-right" style="margin-left: 10%;"></i>
             </a>
         </div>
-        <a class="logout"  href="{{ url_for('logout') }}">Logout</a>
         </div>
     </header>
     <div class="container">
         <nav>
             <ul class="mcd-menu">
-                <li>
-                    <img class="logo" src="https://www.pttplc.com/uploads/About/about-logo.png"
-                        alt="PTT Public Company Limited Logo">
-                </li>
-                <li>
-                    <a href="{{ url_for('home_amr') }}">
-                        <i class="fa fa-home"></i>
-                        <strong>Home</strong>
-                        <small>Back to Homepage</small>
-                    </a>
-                </li>
+                <a class="active" href="{{ url_for('home_user_group') }}"></a>
                 <li>
                     <a>
                         <i class="fa fa-database"></i>
@@ -1200,172 +1142,10 @@
                         <small>View Data</small>
                     </a>
                     <ul>
-                        <li><a href="{{ url_for('billing_data') }}"><i></i>- View Monthly Data</a></li>
-                        <li><a href="#"><i></i>- View EVC Status</a></li>
-                        <li><a href="#"><i></i>- Daily Summary</a></li>
-                        <li><a href="#"><i></i>- Monthly Summery</a></li>
-                        <li><a href="#"><i></i>- Site Detail</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-clipboard-list"></i>
-                        <strong>Manage Users</strong>
-                        <small>Users</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i></i>- Add User</a></li>
-                        <li><a href="#"><i></i>- Edit User</a></li>
-                        <li><a href="#"><i></i>- Remove User</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-file-alt"></i>
-                        <strong>Manage Sites</strong>
-                        <small>Sites</small>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i></i>- Add Site</a></li>
-                        <li><a href="#"><i></i>- Edit Site</a></li>
-                        <li><a href="#"><i></i>- Remove Site</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="active">
-                        <i class="fas fa-wrench"></i>
-                        <strong>Polling Setting</strong>
-                        <small>Setting</small>
-                    </a>
-                    <ul style="margin-top: -60%;">
-                        <li><a href="#"><i></i>- EVC Management</a></li>
-                        <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling Range Setting</a>
+                        <li><a href="{{ url_for('billing_data_user_group') }}"><i></i>- View Monthly Data</a></li>
 
-                        <li><a href="mapping_config"><i></i>- Configuration Mapping</a>
-
-                        <li><a href="mapping_billing"><i></i>- Daily Billing Mapping</a>
-
-                        <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fas fa-search"></i>
-                        <strong>Polling Actions</strong>
-                        <small>Polling</small>
-                    </a>
-                    <ul>
-                        <li><a href="Manualpoll_data"><i></i>- Manual poll (EVC Profile)</a></li>
-                        <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
-                    </ul>
-                </li>
-                <li style="margin-bottom: -5%;">
-                    <a>
-                    </a>
-                </li> 
-            </ul>
         </nav>
-        <div class="textbox-container" style="margin-bottom: 5%;">
-            <div class="outer yosemite" style="width: 100%;">
-                <div class="dot red"></div>
-                <div class="dot amber"></div>
-                <div class="dot green"></div>
-            </div>
-            <div class="box_we">
-                <h3 style="font-size: large;">Mapping Billing</h3>
-                <form id="mapping_configForm" method="get" action="{{ url_for('mapping_billing_route') }}">
-                    <label style="font-size: large;" for="type_dropdown">Select Type:</label>
-                    <select id="type_dropdown" name="type_dropdown">
-                        <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --</option>
-                        {% for type in type_options %}
-                        <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}</option>
-                        {% endfor %}
-                    </select>
+    </div>
 
-                    <button style="height: fit-content;margin-left: 20px;" class="custom-btn btn-1" type="submit">View</button>
-
-                </form>
-
-                <!-- {% if table %}
-        {{ table | safe }}
-    {% else %}
-        <p>No data available.</p>
-    {% endif %} -->
-
-                <form method="POST" action="/update_mapping_billing_route">
-                    <input type="hidden" name="selected_type" value="{{ selected_type }}">
-                    <!-- <div class="textbox-container"> -->
-                    <label for="max_day">Max day:</label>
-                    <input style="width: 7%; margin-bottom: 1%; margin-top: 2%;" type="text" id="max_day" name="max_day" value="{{ max_daily_value }}">
-                    {% for i in range(0, list_address|length) %}
-                    <div class="textbox-pair">
-                        <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
-                        <input type="text" id="list_address{{ '{:02d}'.format(i) }}"
-                            name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
-
-                        <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1)
-                            }}</label>
-                        <input type="text" id="list_description{{ '{:02d}'.format(i) }}"
-                            name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
-
-                        <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
-                        <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
-                            <option value="ARRAY6" {% if list_data_type[i]=='ARRAY6' %} selected {% endif %}>ARRAY6
-                            </option>
-                            <option value="Signed" {% if list_data_type[i]=='signed' %} selected {% endif %}>signed
-                            </option>
-                            <option value="Ulong" {% if list_data_type[i]=='Ulong' %} selected {% endif %}>Ulong
-                            </option>
-                            <option value="Float" {% if list_data_type[i]=='Float' %} selected {% endif %}>Float
-                            </option>
-                        </select>
-                        <!-- 
-                <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
-
-                <label for="or_der{{ '{:02d}'.format(i) }}">Order {{ '{:02d}'.format(i + 1) }}</label>
-                <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly> -->
-
-                        <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
-                        <input style="width: 7%;" type="text" id="list_daily{{ '{:02d}'.format(i) }}"
-                            name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}">
-
-                    </div>
-                    {% endfor %}
-
-
-                    <label for="interval">Interval:</label>
-                    <input style="width: 7%; margin-top: 1%; margin-bottom: 2%;" type="text" id="interval" name="interval" value="{{ interval }}"
-                        placeholder="Enter interval value">
-                    <br>
-                    <input  class="custom-btn btn-2" type="submit" value="Submit">
-                </form>
-
-
-                <footer class="footer">POWERED BY ATOS - ASGS</footer>
-
-     
-
+    <footer class="footer">POWERED BY ATOS - ASGS</footer>
 </body>
-<script>
-    function submitForm() {
-        // Trigger the form submission
-        document.getElementById("mapping_billingForm").submit();
-    }
-
-    // Add an event listener to dynamically update the dropdown options
-    document.getElementById("type_dropdown").addEventListener("change", function () {
-        // Get the selected value
-        var selectedtype = this.value;
-
-        // Hide the "All" option if no type is selected
-        var allOption = this.options[0];
-        if (selectedtype) {
-            allOption.style.display = "none";
-        } else {
-            allOption.style.display = "block";
-        }
-
-    });
-</script>
-</html>

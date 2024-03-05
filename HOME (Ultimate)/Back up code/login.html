@@ -2,332 +2,542 @@
 <html lang="en">
 
 <head>
+    <!-- meta -->
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="en">
+    <meta name="description" content="NO Description">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Prompt">
+    <meta name="copyright" content="Copyright © 2025">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Mapping Config</title>
-
-    <!-- Stylesheet
-    <link rel="stylesheet" href="/HOME (Doing Here)/templates/Css/home.css"> -->
-
+    <title>Login Form</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Bootstrap Scripts -->
+            <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Bootstrap Datepicker Stylesheet and Script -->
     <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
-    </style>
-    <style>
-        @font-face {
-            font-family: "PTT45Pride-Bold";
-            src: url("PTT45Pride-Bold.otf") format("truetype");
-            font-weight: bold;
-            font-style: normal;
-          }
-          
-          
-/* Default styles for non-responsive layout */
-body {
-    overflow: hidden;
-    height: 750px;
-    background-color: #5b707e;
-    background-image: linear-gradient(#5b707e, #abb2b9, #5b707e);
-}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    @font-face {
+        font-family: "PTT45Pride-Bold";
+        src: url("PTT45Pride-Bold.otf") format("truetype");
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "PTT45Pride-Bold", sans-serif;
+    }
 
-/* Responsive styles */
-@media screen and (max-width: 768px) {
     body {
-        height: auto;
-        overflow: auto;
+        background: rgb(35, 50, 70);
+        background: -moz-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -webkit-gradient(radial, top left, 0px, top left, 100%, color-stop(0%, rgba(35, 50, 70, 1)), color-stop(57%, rgba(90, 113, 132, 1)));
+        background: -webkit-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -o-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -ms-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: radial-gradient(ellipse at top left, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#233246', endColorstr='#5a7184', GradientType=1);
+    }
+    
+
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .login {
-        width: 90%;
-        padding: 20px;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #333;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
+    ::selection {
+        color: #fff;
+        background: #5372F0;
     }
 
-    .login::before,
-    .login::after {
+    .wrapper {
+        width: 380px;
+        padding: 40px 30px 50px 30px;
+
+        border-radius: 5px;
+        text-align: center;
+
+    }
+
+    .wrapper header {
+        font-size: 35px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .wrapper form {
+        margin: 40px 0;
+    }
+
+    form .field {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    form .field.shake {
+        animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            margin-left: 0px;
+        }
+
+        20%,
+        80% {
+            margin-left: -12px;
+        }
+
+        40%,
+        60% {
+            margin-left: 12px;
+        }
+    }
+
+    form .field .input-area {
+        height: 50px;
+        width: 100%;
+        position: relative;
+    }
+
+    form input {
+        color: #fff;
         width: 100%;
         height: 100%;
+        outline: none;
+        padding: 0 45px;
+        font-size: 18px;
+        background: none;
+        caret-color: #5372F0;
+        border-radius: 5px;
+        border: 2px solid #bfbfbf;
+        border-bottom-width: 2px;
+        transition: all 0.2s ease;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
     }
 
-    .login::before {
-        left: 50%;
-        bottom: -50%;
+    form button {
+        width: 100%;
+        height: 100%;
+        outline: none;
+        padding: 0 45px;
+        font-size: 18px;
+        background: none;
+        caret-color: #5372F0;
+        border-radius: 5px;
+        border: 1px solid #bfbfbf;
+        border-bottom-width: 2px;
+        transition: all 0.2s ease;
     }
 
-    .login::after {
-        left: 50%;
-        bottom: -85%;
+    form .field input:focus,
+    form .field.valid input {
+        border-color: #ffffff;
     }
-    
-    .logo img {
-        margin-left: -25%;
-        margin-top: -5%;
+
+    form .field.shake input,
+    form .field.error input {
+        border-color: #dc3545;
     }
-    
-    /* Add additional styles for smaller screens as needed */
-}
 
-        .login {
-            overflow: hidden;
-            background-color: white;
-            padding: 40px 30px 30px 30px;
-            border-radius: 10px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 400px;
-            transform: translate(-50%, -50%);
-            transition: transform 300ms, box-shadow 300ms;
-            box-shadow: 5px 10px 10px rgba(39, 40, 40, 0.2);
+    .field .input-area i {
+        position: absolute;
+        top: 50%;
+        font-size: 18px;
+        pointer-events: none;
+        transform: translateY(-50%);
+    }
+
+    .input-area .icon {
+        left: 15px;
+        color: #bfbfbf;
+        transition: color 0.2s ease;
+    }
+
+    .input-area .error-icon {
+        right: 15px;
+        color: #dc3545;
+    }
+
+    form input:focus~.icon,
+    form .field.valid .icon {
+        color: #ffffff;
+    }
+
+    form .field.shake input:focus~.icon,
+    form .field.error input:focus~.icon {
+        color: #bfbfbf;
+    }
+
+    form input::placeholder {
+        color: #bfbfbf;
+        font-size: 17px;
+    }
+
+    form .field .error-txt {
+        color: #dc3545;
+        text-align: left;
+        margin-top: 5px;
+    }
+
+    form .field .error {
+        display: none;
+    }
+
+    form .field.shake .error,
+    form .field.error .error {
+        display: block;
+    }
+
+    form .pass-txt {
+        text-align: left;
+        margin-top: -10px;
+    }
+
+    .wrapper a {
+        color: #5372F0;
+        text-decoration: none;
+    }
+
+    .wrapper a:hover {
+        text-decoration: underline;
+    }
+
+    form input[type="submit"] {
+        height: 50px;
+        margin-top: 30px;
+        color: #fff;
+        padding: 0;
+        border: none;
+        background: #5372F0;
+        cursor: pointer;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    form input[type="submit"]:hover {
+        background: #2c52ed;
+    }
+
+    form button {
+        height: 50px;
+        margin-top: 30px;
+        color: #fff;
+        padding: 0;
+        border: none;
+        background: #7c7c7d;
+        cursor: pointer;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
+
+    form button:hover {
+        background: #b6b6b7;
+    }
+
+
+    .checkbox-wrapper-46 input[type="checkbox"] {
+        display: none;
+        visibility: hidden;
+    }
+
+    .checkbox-wrapper-46 .cbx {
+        margin: auto;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .checkbox-wrapper-46 .cbx span {
+        display: inline-block;
+        vertical-align: middle;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        border-radius: 3px;
+        transform: scale(1);
+        vertical-align: middle;
+        border: 1px solid #9098A9;
+        transition: all 0.2s ease;
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child svg {
+        position: absolute;
+        top: 3px;
+        left: 2px;
+        fill: none;
+        stroke: #FFFFFF;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 16px;
+        stroke-dashoffset: 16px;
+        transition: all 0.3s ease;
+        transition-delay: 0.1s;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child:before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: #506EEC;
+        display: block;
+        transform: scale(0);
+        opacity: 1;
+        border-radius: 50%;
+    }
+
+    .checkbox-wrapper-46 .cbx span:last-child {
+        padding-left: 8px;
+    }
+
+    .checkbox-wrapper-46 .cbx:hover span:first-child {
+        border-color: #506EEC;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child {
+        background: #506EEC;
+        border-color: #506EEC;
+        animation: wave-46 0.4s ease;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child svg {
+        stroke-dashoffset: 0;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child:before {
+        transform: scale(3.5);
+        opacity: 0;
+        transition: all 0.6s ease;
+    }
+
+    @keyframes wave-46 {
+        50% {
+            transform: scale(0.9);
         }
+    }
 
-        .login::before,
-        .login::after {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-top-left-radius: 40%;
-            border-top-right-radius: 45%;
-            border-bottom-left-radius: 35%;
-            border-bottom-right-radius: 40%;
-            z-index: -1;
-        }
-
-        .login::before {
-            left: 70%;
-            bottom: -50%;
-            background-color: rgba(8, 0, 255, 0.788);
-            animation: wawes 6s infinite linear;
-        }
-
-        .login::after {
-            left: 48%;
-            bottom: -85%;
-            background-color: rgba(0, 223, 253, 0.2);
-            animation: wawes 7s infinite;
-        }
-
-        .login>input {
-            font-family: 'Asap', sans-serif;
-            display: block;
-            border-radius: 5px;
-            font-size: 16px;
-            background: white;
-            width: 100%;
-            border: 0;
-            padding: 10px 10px;
-            margin: 15px -10px;
-        }
-
-        .login>button {
-            font-family: 'Asap', sans-serif;
-            cursor: pointer;
-            color: #fff;
-            font-size: 16px;
-            text-transform: uppercase;
-            width: 80px;
-            border: 0;
-            padding: 10px 0;
-            margin-top: 10px;
-            margin-left: -5px;
-            border-radius: 5px;
-            background-color: rgb(7, 200, 46);
-            transition: background-color 300ms;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .login>button:hover {
-            background-color: rgb(4, 125, 26);
-        }
-
-        @keyframes wawes {
-            from {
-                transform: rotate(0);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            font-size: 12px;
-        }
-
-        .logo {
-            display: grid;
-            place-items: center;
-            height: 100px;
-
-        }
+    span {
+        color: #fff;
+    }
 
 
+    .logo {
+        margin-top: -15%;
+        width: 150px;
+        padding: 8px;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
 
+    footer {
+        background-color: #28253700; 
+        color: #fff; 
+        padding: 7px; 
+        text-align: center; 
+        font-size: 10px; 
+        position: fixed; 
+        bottom: 0; 
+        width: 100%;
+      }
 
-        /* Set a style for the submit button */
-        .btn {
-            background-color: dodgerblue;
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            opacity: 0.9;
-        }
-
-        .btn:hover {
-            opacity: 1;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* แนะนำให้เพิ่มความกว้างและความสูงเพื่อให้เห็นการจัดวาง */
-            width: 100%;
-            /* สำหรับตัวอย่างเท่านี้เท่าที่รู้จัก */
-        }
-
-        button {
-            padding: 14px 28px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-            text-transform: uppercase; /* ให้ข้อความในปุ่มเป็นตัวพิมพ์ใหญ่ทั้งหมด */
-        }
-        
-        button:hover {
-            background-color: #45a049;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-
-
-        /* Input label styles */
-        label {
-            margin-bottom: 6px;
-            display: block;
-            font-weight: bold;
-        }
-
-        /* Input field styles */
-        input[type=text],
-        input[type=password] {
-            width: calc(70% - 24px);
-            padding: 9px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input[type=text]:focus,
-        input[type=password]:focus {
-            border-color: #04AA6D;
-        }
-
-        /* Style the submit button */
-        input[type=submit] {
-            background-color: #04AA6D;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        input[type=submit]:hover {
-            background-color: #45a049;
-        }
-
-        .logo-container {
-            display: grid;
-            place-items: center;
-        }
-
-        img{
-            margin-left: -55%;
-            margin-top: -5%;
-            margin-bottom: 5%;
-        }
-    </style>
-
-
+      header {
+        background-color: #3f3e4700;
+        color: #fff;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+      }
+      
+      .logo img {
+        max-width: 100px;
+      }
+      
+      nav ul {
+        list-style: none;
+        display: flex;
+      }
+      
+      nav ul li {
+        margin-right: 20px;
+      }
+      
+      nav ul li a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        transition: color 0.3s ease;
+      }
+      
+      nav ul li a:hover {
+        color: #ffd700;
+      }
+      h1 {
+        font-size: 3em; 
+        color: #ffffff; 
+        text-align: center; 
+        margin-bottom: 20px; 
+      }
+      
+</style>
 
 <body>
-    <form class="login">
-        <div class="logo-container">
-            <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="Logo" class="logo">
-        </div>
-        <label for="usrname">Username</label>
-        <input type="text" id="usrname" name="usrname" required>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="#">Welcome to Automatic Meter Reading </a></li>
+          </ul>
+        </nav>
+      </header>
+    <div class="wrapper">
+        <img src="https://www.pttplc.com/uploads/About/about-logo.png" alt="PTT Public Company Limited" class="logo">
+        <h1 style="margin-top: -6%;">ASGS - AMR</h1>
+        <form id="loginForm" action="#">
+            <div class="field email">
+                <div class="input-area">
+                    <input type="text" placeholder="Username">
+                    <i class="icon fas fa-user"></i>
+                    <i class="error error-icon fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error error-txt">Email can't be blank</div>
+            </div>
+            <div class="field password">
+                <div class="input-area">
+                    <input type="password" placeholder="Password">
+                    <i class="icon fas fa-lock"></i>
+                    <i class="error error-icon fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error error-txt">Password can't be blank</div>
+            </div>
+            <div class="checkbox-wrapper-46">
+                <input class="inp-cbx" id="cbx-46" type="checkbox" />
+                <label class="cbx" for="cbx-46"><span>
+                        <svg width="12px" height="10px" viewbox="0 0 12 10">
+                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                        </svg></span><span style="font-size: x-small;">Remembered Password</span>
+                </label>
+            </div>
+            <!-- <div class="pass-txt"><a href="#">Forgot password?</a></div> -->
+            <input type="submit" value="Login">
+            <button style="margin-top: 4%;" type="button" onclick="clearForm()">Clear Fill</button>
+        </form>
+        <!-- <div class="sign-txt">Not yet member? <a href="#">Signup now</a></div> -->
+    </div>
+<footer style="text-align: right;">All rights reserved copyright © 2024</footer>
+<footer style="text-align: left;">Powered By ATOS - ASGS</footer>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        const form = document.querySelector("form");
+        eField = form.querySelector(".email"),
+            eInput = eField.querySelector("input"),
+            pField = form.querySelector(".password"),
+            pInput = pField.querySelector("input");
 
-        <label for="psw">Password</label>
-        <input type="password" id="psw" name="psw">
+        form.onsubmit = (e) => {
+            e.preventDefault(); //preventing from form submitting
+            //if email and password is blank then add shake class in it else call specified function
+            (eInput.value == "") ? eField.classList.add("shake", "error") : checkEmail();
+            (pInput.value == "") ? pField.classList.add("shake", "error") : checkPass();
+
+            setTimeout(() => { //remove shake class after 500ms
+                eField.classList.remove("shake");
+                pField.classList.remove("shake");
+            }, 500);
+
+            eInput.onkeyup = () => { checkEmail(); } //calling checkEmail function on email input keyup
+            pInput.onkeyup = () => { checkPass(); } //calling checkPassword function on pass input keyup
+
+            function checkEmail() { //checkEmail function
+                let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; //pattern for validate email
+                if (!eInput.value.match(pattern)) { //if pattern not matched then add error and remove valid class
+                    eField.classList.add("error");
+                    eField.classList.remove("valid");
+                    let errorTxt = eField.querySelector(".error-txt");
+                    //if email value is not empty then show please enter valid email else show Email can't be blank
+                    (eInput.value != "") ? errorTxt.innerText = "Enter a valid email address" : errorTxt.innerText = "Email can't be blank";
+                } else { //if pattern matched then remove error and add valid class
+                    eField.classList.remove("error");
+                    eField.classList.add("valid");
+                }
+            }
+
+            function checkPass() { //checkPass function
+                if (pInput.value == "") { //if pass is empty then add error and remove valid class
+                    pField.classList.add("error");
+                    pField.classList.remove("valid");
+                } else { //if pass is empty then remove error and add valid class
+                    pField.classList.remove("error");
+                    pField.classList.add("valid");
+                }
+            }
+
+            //if eField and pField doesn't contains error class that mean user filled details properly
+            if (!eField.classList.contains("error") && !pField.classList.contains("error")) {
+                window.location.href = form.getAttribute("action"); //redirecting user to the specified url which is inside action attribute of form tag
+            }
+        }
+
+        function clearForm() {
+            eInput.value = "";
+            pInput.value = "";
+            eField.classList.remove("error", "valid");
+            pField.classList.remove("error", "valid");
+        }
 
 
+        const rememberedCheckbox = document.getElementById("cbx-46");
+        const storedRememberedPassword = localStorage.getItem("rememberedPassword");
 
-        <div class="container" style="display: flex; justify-content: center; align-items: center;">
-            <button>Login</button>
-        </div>
+        if (storedRememberedPassword) {
+            rememberedCheckbox.checked = true;
+        }
 
-
-    </form>
-
+        rememberedCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                localStorage.setItem("rememberedPassword", "yourPasswordValueHere");
+            } else {
+                localStorage.removeItem("rememberedPassword");
+            }
+        });
+    </script>
 </body>
 
 </html>
-
-<script>
-    function togglePassword() {
-        const passwordField = document.getElementById('password');
-        passwordField.dataset.show = passwordField.dataset.show === 'true' ? 'false' : 'true';
-        passwordField.type = passwordField.dataset.show === 'true' ? 'text' : 'password';
-    }
-</script>
-
-<script>
-    var myInput = document.getElementById("psw");
-    var letter = document.getElementById("letter");
-    var capital = document.getElementById("capital");
-    var number = document.getElementById("number");
-    var length = document.getElementById("length");
-
-    var showPassword = document.getElementById("togglePassword");
-    showPassword.addEventListener("change", function () {
-        if (showPassword.checked) {
-            myInput.type = "text";
-        } else {
-            myInput.type = "password";
-        }
-    });
-
-</script>
