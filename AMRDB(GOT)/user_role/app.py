@@ -16,14 +16,6 @@ amr_db_params = {
     "sid": "AMR"
 }
 
-# root_params = {
-#     "username": 'root',
-#     "password": 'root',
-#     "hostname": '192.168.102.192',
-#     "port": '1521',
-#     "service_name": "orcl"
-# }
-
 # Choose the database connection parameters based on your requirements
 selected_params = amr_db_params  # Change this to switch between databases
 print("aaaa", selected_params)
@@ -47,7 +39,44 @@ try:
 except cx_Oracle.Error as e:
     (error,) = e.args
     print("Oracle Error:", error)
+
 ######################### connection AMR_DB ###############################
+
+######################### connection AMR_NEW ###############################
+
+# root_params = {
+#     "username": 'root',
+#     "password": 'root',
+#     "hostname": '192.168.102.192',
+#     "port": '1521',
+#     "service_name": "orcl"
+# }
+
+# # Choose the database connection parameters based on your requirements
+# selected_params = root_params  # Change this to switch between databases
+# # print("aaaa", selected_params)
+
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+
+# try:
+#     connection_info = {
+#         "user": selected_params["username"],
+#         "password": selected_params["password"],
+#         "dsn": dsn,
+#         "min": 1,
+#         "max": 5,
+#         "increment": 1,
+#         "threaded": True
+#     }
+
+#     connection_pool = cx_Oracle.SessionPool(**connection_info)
+#     connection = connection_pool.acquire()
+#     print("Connection to AMR_NEW successful.")
+# except cx_Oracle.Error as e:
+#     (error,) = e.args
+#     print("Oracle Error:", error)
+
+######################### connection AMR_ ###############################
 
 
 ######################### connection PTT_PIVOT ###############################
@@ -592,10 +621,59 @@ def billingdata_user():
                                user_level=user_level)  
 
 
+@app.route('/add_site', methods=['GET', 'POST'])
+def add_site():
+    if request.method == 'POST':
+        # This block will be executed when the form is submitted
+        id_value = request.form['id']
+        phase = request.form['phase']
+        site_name = request.form['site_name']
+        factory_name = request.form['factory_name']
+        region = request.form['region']
+        rmiu_type = request.form['rmiu_type']
+        power_indicator = request.form['power_indicator']
+        modbus_id = request.form['modbus_id']
+        ip_address = request.form['ip_address']
+        ready_to_billing = request.form.get('ready_to_billing')  # Check if the checkbox is checked
+        auto_ping = request.form.get('auto_ping')  # Check if the checkbox is checked
+        billing_date = request.form['billing_date']
+        show_sg_co2_n2 = request.form['show_sg_co2_n2']
+        amount_of_meter = request.form['amount_of_meter']
+        initial_username = request.form['initial_username']
+        initial_password = request.form['initial_password']
+        
+        print(f'ID: {id_value}')
+        print(f'Phase: {phase}')
+        print(f'Site Name: {site_name}')
+        print(f'Factory Name: {factory_name}')
+        print(f'Region: {region}')
+        print(f'RMIU Type: {rmiu_type}')
+        print(f'Power Indicator: {power_indicator}')
+        print(f'MODBUS ID: {modbus_id}')
+        print(f'IP Address: {ip_address}')
+        print(f'Ready to Billing: {ready_to_billing}')  # Will print '1' if checkbox is checked
+        print(f'Auto Ping: {auto_ping}')  # Will print '1' if checkbox is checked
+        print(f'Billing Date: {billing_date}')
+        print(f'Show SG CO2 N2: {show_sg_co2_n2}')
+        print(f'Amount of Meter: {amount_of_meter}')
+        print(f'Initial Username: {initial_username}')
+        print(f'Initial Password: {initial_password}')
+
+        # add_site_query = f"""
+        # INSERT INTO AMR_FIELD_ID (ID, TAG_ID, FIELD_ID, CUST_ID, METER_ID, PROTOCOL_ID, )
+        # """
+
+        return redirect(url_for('add_site'))  
+
+    # This block will be executed when the page is initially loaded
+    return render_template('add_site.html')
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
