@@ -34,6 +34,8 @@ import plotly.graph_objs as go
 import matplotlib as mpt
 import time 
 from flask import g
+import numpy as np
+
 app = Flask(__name__)
 
 #### Global Variable 
@@ -671,9 +673,10 @@ def billing_data():
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                    df_run = df_run.fillna("N/A")
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
                             
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            # common_table_properties = {"classes": "data", "index": False,"header":None}
             
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -947,13 +950,14 @@ def billing_data():
                     merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
                     df_runs[f'df_run{i}'] = merged_df
                 
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
 
 
             for i in range(1, num_streams + 1):
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    df_run = df_run.fillna("N/A")
                     tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
         
             return render_template(
@@ -1029,13 +1033,14 @@ def billing_data_user_group():
     # """
     
     tag_query = """
-    SELECT DISTINCT AMR_FIELD_ID.TAG_ID
-    FROM AMR_FIELD_ID, amr_user, amr_pl_group 
+    SELECT DISTINCT AMR_FIELD_ID.TAG_ID 
+    FROM AMR_FIELD_ID, amr_user, amr_pl_group
     WHERE
         amr_user.user_group = amr_pl_group.pl_region_id
         and AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
         and AMR_FIELD_ID.tag_id NOT like '%.remove%'
         and amr_pl_group.pl_region_id = :region_options
+        ORDER BY AMR_FIELD_ID.TAG_ID
     """
     
     print(tag_query)
@@ -1283,9 +1288,10 @@ def billing_data_user_group():
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                    df_run = df_run.fillna("N/A")
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
                             
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            # common_table_properties = {"classes": "data", "index": False,"header":None}
             
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -1476,9 +1482,10 @@ def billing_data_user_group():
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
             
-            
+            # selected_meter_id = df["METER_ID"].iloc[0]
             # Get the selected Meter ID before removing it from the DataFrame
             ##!!!! Detact if empty 
+            
             selected_meter_id = None
 
             # Check if 'METER_ID' column exists and the DataFrame is not empty
@@ -1558,13 +1565,14 @@ def billing_data_user_group():
                     merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
                     df_runs[f'df_run{i}'] = merged_df
                 
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
 
 
             for i in range(1, num_streams + 1):
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    df_run = df_run.fillna("N/A")
                     tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
                     
             return render_template(
@@ -1641,6 +1649,7 @@ def billing_data_user():
         AND amr_pl_group.pl_region_id = amr_region.id
         AND user_name = :logged_in_user
         AND amr_user.user_enable like '1'
+        ORDER BY AMR_FIELD_ID.TAG_ID
     """
 
     # Fetch unique region values
@@ -1898,9 +1907,10 @@ def billing_data_user():
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False)
+                    df_run = df_run.fillna("N/A")
+                    tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
                             
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            # common_table_properties = {"classes": "data", "index": False,"header":None}
             
             # Create graphs for each METER_STREAM_NO
             for i in range(1, 7):
@@ -2091,9 +2101,10 @@ def billing_data_user():
 
             df = df.drop(columns=columns_to_drop)  # Drop specified columns
             
-            
+            # selected_meter_id = df["METER_ID"].iloc[0]
             # Get the selected Meter ID before removing it from the DataFrame
             ##!!!! Detact if empty 
+            
             selected_meter_id = None
 
             # Check if 'METER_ID' column exists and the DataFrame is not empty
@@ -2173,13 +2184,14 @@ def billing_data_user():
                     merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
                     df_runs[f'df_run{i}'] = merged_df
                 
-            common_table_properties = {"classes": "data", "index": False,"header":None}
+            common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
 
 
             for i in range(1, num_streams + 1):
                 df_run = df_runs[f'df_run{i}']
                 if not df_run.empty:
                     df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                    df_run = df_run.fillna("N/A")
                     tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
                     
             return render_template(
