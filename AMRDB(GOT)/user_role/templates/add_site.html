@@ -105,14 +105,18 @@
         display: inline-block;
         width: 150px;
         /* Adjust the width as needed */
+        text-align: left;
+        /* Align label text to the right */
+        margin-right: 10px;
+        /* Add some margin between label and dropdown */
     }
 
-    .input-text,
-    .input-checkbox,
     .input-select {
         width: 200px;
         /* Adjust the width as needed */
     }
+
+    /* Adjust the width as needed */
 </style>
 
 <body>
@@ -127,7 +131,7 @@
     <form method="POST" action="{{ url_for('add_site') }}">
         <div class="form-group">
             <label class="label" for="id">ID:</label>
-            <input type="text" id="id" name="id" required value="0778" class="input-text">
+            <input type="text" id="id" name="id" required value="{{ max_id_value }}" readonly>
         </div>
 
         <div class="form-group">
@@ -194,7 +198,7 @@
 
         <div class="form-group">
             <label class="label" for="ready_to_billing">READY TO BILLING:</label>
-            <input type="checkbox" id="ready_to_billing" name="ready_to_billing" class="input-checkbox">
+            <input type="checkbox" id="ready_to_billing" name="ready_to_billing" value="1" class="input-checkbox">
         </div>
 
         <div class="form-group">
@@ -205,8 +209,8 @@
         <div class="form-group">
             <label class="label" for="billing_date">BILLING DATE:</label>
             <select id="billing_date" name="billing_date" class="input-select">
-                <option value="28">28</option>
-                <option value="Last month">Last month</option>
+                <option value="1">28</option>
+                <option value="0">Last month</option>
             </select>
         </div>
 
@@ -240,6 +244,19 @@
 
         <button type="submit">Submit</button>
     </form>
+    <script>
+        function updateBillingDate() {
+            var billingDateSelect = document.getElementById("billing_date");
+            var selectedValue = billingDateSelect.options[billingDateSelect.selectedIndex].value;
+
+            // Set the value based on the selected option
+            if (selectedValue === "28") {
+                billingDateSelect.value = "1";
+            } else if (selectedValue === "Last month") {
+                billingDateSelect.value = "0";
+            }
+        }
+    </script>
 
 </body>
 
