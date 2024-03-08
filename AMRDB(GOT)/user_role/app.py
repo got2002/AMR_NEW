@@ -8,55 +8,19 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 ######################### connection AMR_DB ###############################
-amr_db_params = {
-    "username": 'AMR_DB',
-    "password": 'AMR_DB',
-    "hostname": '10.104.240.26',
-    "port": '1521',
-    "sid": "AMR"
-}
-
-# Choose the database connection parameters based on your requirements
-selected_params = amr_db_params  # Change this to switch between databases
-print("aaaa", selected_params)
-
-dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
-
-try:
-    connection_info = {
-        "user": selected_params["username"],
-        "password": selected_params["password"],
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Connection to AMR_DB successful.")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-######################### connection AMR_DB ###############################
-
-######################### connection AMR_NEW ###############################
-
-# root_params = {
-#     "username": 'root',
-#     "password": 'root',
-#     "hostname": '192.168.102.192',
+# amr_db_params = {
+#     "username": 'AMR_DB',
+#     "password": 'AMR_DB',
+#     "hostname": '10.104.240.26',
 #     "port": '1521',
-#     "service_name": "orcl"
+#     "sid": "AMR"
 # }
 
 # # Choose the database connection parameters based on your requirements
-# selected_params = root_params  # Change this to switch between databases
-# # print("aaaa", selected_params)
+# selected_params = amr_db_params  # Change this to switch between databases
+# print("aaaa", selected_params)
 
-# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
 
 # try:
 #     connection_info = {
@@ -71,10 +35,46 @@ except cx_Oracle.Error as e:
 
 #     connection_pool = cx_Oracle.SessionPool(**connection_info)
 #     connection = connection_pool.acquire()
-#     print("Connection to AMR_NEW successful.")
+#     print("Connection to AMR_DB successful.")
 # except cx_Oracle.Error as e:
 #     (error,) = e.args
 #     print("Oracle Error:", error)
+
+######################### connection AMR_DB ###############################
+
+######################### connection AMR_NEW ###############################
+
+root_params = {
+    "username": 'root',
+    "password": 'root',
+    "hostname": '192.168.102.192',
+    "port": '1521',
+    "service_name": "orcl"
+}
+
+# Choose the database connection parameters based on your requirements
+selected_params = root_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+
+try:
+    connection_info = {
+        "user": selected_params["username"],
+        "password": selected_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to AMR_NEW successful.")
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
 
 ######################### connection AMR_ ###############################
 
@@ -124,6 +124,13 @@ def fetch_data(query, params=None):
         (error,) = e.args
         print("Oracle Error:", error)
         return []
+    
+# update polling
+def update_sql(sql_statement):
+    with connection.cursor() as cursor:
+
+        cursor.execute(sql_statement)
+    connection.commit()
 
 def fetch_user_data(username):
     query = """
@@ -623,9 +630,18 @@ def billingdata_user():
 
 @app.route('/add_site', methods=['GET', 'POST'])
 def add_site():
+    max_id_query = "SELECT MAX(ID) + 1 FROM amr_field_id"
+    max_id_result = fetch_data(max_id_query)
+    max_id_value = str(max_id_result[0][0]) if max_id_result and max_id_result[0][0] is not None else ""
+    
+    AMR0 = "AMR0"
+    CUST0 = "CUST0"
+    MET0 = "MET0"
+    PROT0 = "PROT0"
+    
+    RMIU_POLL_REPEAT1, RMIU_POLL_REPEAT2 = 0, 0
+    
     if request.method == 'POST':
-        # This block will be executed when the form is submitted
-        id_value = request.form['id']
         phase = request.form['phase']
         site_name = request.form['site_name']
         factory_name = request.form['factory_name']
@@ -642,7 +658,6 @@ def add_site():
         initial_username = request.form['initial_username']
         initial_password = request.form['initial_password']
         
-        print(f'ID: {id_value}')
         print(f'Phase: {phase}')
         print(f'Site Name: {site_name}')
         print(f'Factory Name: {factory_name}')
@@ -659,14 +674,65 @@ def add_site():
         print(f'Initial Username: {initial_username}')
         print(f'Initial Password: {initial_password}')
 
-        # add_site_query = f"""
-        # INSERT INTO AMR_FIELD_ID (ID, TAG_ID, FIELD_ID, CUST_ID, METER_ID, PROTOCOL_ID, )
-        # """
+        amr_user = f"""
+        INSERT INTO AMR_USER (ID, DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL, USER_GROUP, USER_ENABLE)
+        VALUES ({max_id_value}, '{site_name}', '{initial_username}', '{initial_password}', '3', '{MET0+max_id_value}', '1')
+        """
+        update_sql(amr_user)
+        
+        field_id = f"""
+        INSERT INTO AMR_FIELD_ID (
+                                ID, 
+                                TAG_ID, 
+                                FIELD_ID, 
+                                CUST_ID, 
+                                METER_ID, 
+                                PROTOCOL_ID, 
+                                RTU_MODBUS_ID, 
+                                SIM_IP,
+                                RMIU_POLL_REPEAT1,
+                                RMIU_POLL_REPEAT2,
+                                AMR_PHASE,
+                                BILLING_DATE
+                                )
+        VALUES ({max_id_value}, '{site_name}', 
+                                '{AMR0+max_id_value}', 
+                                '{CUST0+max_id_value}', 
+                                '{MET0+max_id_value}', 
+                                '{PROT0+max_id_value}', 
+                                '{modbus_id}', 
+                                '{ip_address}',
+                                '{RMIU_POLL_REPEAT1}',
+                                '{RMIU_POLL_REPEAT2}',
+                                '{phase}',
+                                '{billing_date}'
+                                )
+        """
+        update_sql(field_id)
+        
+        field_customer= f"""
+        INSERT INTO AMR_FIELD_CUSTOMER (
+                                        ID, 
+                                        CUST_ID,
+                                        CUST_NAME,
+                                        CUST_FACTORY_NAME
+                                        )
+        VALUES ({max_id_value}, '{CUST0+max_id_value}',
+                                '{site_name}',
+                                '{factory_name}'            
+                                )
+        """
+        update_sql(field_customer)
 
-        return redirect(url_for('add_site'))  
+       
 
-    # This block will be executed when the page is initially loaded
-    return render_template('add_site.html')
+        return "Data inserted successfully"
+    
+        
+        return render_template('add_site.html', max_id_value=max_id_value)
+
+    return render_template('add_site.html', max_id_value=max_id_value)
+
 
 @app.route('/logout')
 def logout():
