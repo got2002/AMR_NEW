@@ -541,16 +541,17 @@
                         
                          
                          {% for i in range(1, 16) %}
-                         <div class="form-group"  >
-                             <label  for="starting_address_{{ i }}">Starting Address ({{ i }})</label>
-                             <input type="text" class="form-control" id="starting_address_{{ i }}" name="starting_address_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
+                         <div class="form-group">
+                             <label for="starting_address_{{ i }}">Starting Address ({{ i }})</label>
+                             <input type="text" class="form-control" id="starting_address_{{ i }}" name="starting_address_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="{{ request.form['starting_address_' ~ i|string] if 'starting_address_' ~ i|string in request.form else '' }}">
                          </div>
-                         
-                         <div class="form-group" >
+                                              
+                         <div class="form-group">
                              <label for="quantity_{{ i }}">Quantity ({{ i }})</label>
-                             <input type="text" class="form-control" id="quantity_{{ i }}" name="quantity_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="">
+                             <input type="text" class="form-control" id="quantity_{{ i }}" name="quantity_{{ i }}" required style="height: 30px; width: 100%; font-size: x-small; margin-top: -7px; border-radius: 0.5rem; border: none; padding-left: 10px;" value="{{ request.form['quantity_' ~ i|string] if 'quantity_' ~ i|string in request.form else '' }}">
+
                          </div>
-                        {% endfor %}
+                     {% endfor %}
                         
 
                         
@@ -562,34 +563,34 @@
                         
                         
                     
-                         <div class="form-group">
-                             <label for="tcp_ip">TCP IP</label>
-                             <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
-                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
+                            <label for="tcp_ip">TCP IP</label>
+                            <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ request.form['tcp_ip'] if 'tcp_ip' in request.form else '' }}" required style="height: 30px;width: 100%; font-size: x-small;margin-top: -7px; border-radius: 0.5rem;border: none;padding-left: 10px;">
+                        </div>
+                        <div class="form-group">
                             <label for="tcp_port">TCP Port</label>
-                            <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ tcp_port }}">
+                            <input type="text" class="form-control" id="tcp_port" name="tcp_port" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['tcp_port'] if 'tcp_port' in request.form else '' }}">
                         </div>
                         <div class="form-group">
                             <label for="evc_type">EVC_TYPE</label>
-                            <input type="text" class="form-control" id="evc_type" name="evc_type" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{evc_type}}">
+                            <input type="text" class="form-control" id="evc_type" name="evc_type" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['evc_type'] if 'evc_type' in request.form else '' }}">
                         </div>
                         <div class="form-group">
                             <label for="run">RUN</label>
-                            <input type="text" class="form-control" id="run" name="run" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{RUN}}">
+                            <input type="text" class="form-control" id="run" name="run" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['run'] if 'run' in request.form else '' }}">
                         </div>
                         <div class="form-group">
                             <label for="METERID">METER_ID</label>
-                            <input type="text" class="form-control" id="METERID" name="METERID" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{METERID}}">
+                            <input type="text" class="form-control" id="METERID" name="METERID" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['METERID'] if 'METERID' in request.form else '' }}">
                         </div>
 
                         <div class="form-group">
                             <label for="poll_config_enable_list">poll_config_list</label>
-                            <input type="text" class="form-control" id="poll_config_enable_list" name="poll_config_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="">
+                            <input type="text" class="form-control" id="poll_config_enable_list" name="poll_config_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['poll_config_enable_list'] if 'poll_config_enable_list' in request.form else '' }}">
                         </div>
                         <div class="form-group">
                             <label for="poll_billing_enable_list">poll_billing_enable_list</label>
-                            <input type="text" class="form-control" id="poll_billing_enable_list" name="poll_billing_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="">
+                            <input type="text" class="form-control" id="poll_billing_enable_list" name="poll_billing_enable_list" required style="height: 30px;width: 100%; font-size:x-small;margin-top: -7px; border-radius: 0.5rem; border: none;padding-left: 10px;" value="{{ request.form['poll_billing_enable_list'] if 'poll_billing_enable_list' in request.form else '' }}">
                         </div>
                         
                         <div class="btn-container" id="showDataButton">
@@ -619,7 +620,7 @@
                             </div> -->
                             {% if not df.empty %}
                                 <div class="btn-buttonActaris" style="margin-top: -60px; margin-left: -480px;">
-                                    <form method="POST" >
+                                    <form method="POST">
                                         <button type="submit" name="action_configuration"  value="configuration" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
                                     </form>
                                 </div>
