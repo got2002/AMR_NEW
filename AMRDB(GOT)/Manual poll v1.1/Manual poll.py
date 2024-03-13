@@ -36,6 +36,9 @@ import time
 import datetime
 import pytz
 import traceback
+import numpy as np
+
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -376,7 +379,7 @@ def read_data():
         
         
         communication_traffic_i.append(response_i.hex())
-        
+        # print(communication_traffic_i)
         if response_i[1:2] != b'\x03':
             # print("config",response_i[1:2] )
             return render_template("error.html", message="Error: Unexpected response code from device (config).")
@@ -489,9 +492,9 @@ def read_data():
         for i in range(0, len(df_mapping)):
             
             address = int(df_mapping.iloc[i,1])
-            
+            print(address)
             data_type = str(df_mapping.iloc[i,3])
-            
+            print(data_type)
             
             for j in range(0,len(df_Modbus)):
                 address_start = int(df_Modbus.iloc[j,0])
@@ -503,21 +506,12 @@ def read_data():
                     frameRx = (df_Modbus.iloc[j,3])
                     #
                     raw_data = frameRx[location_data + 6: location_data + 14]
+                    
                   
                     list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
+                    # print(list_of_values_configured)
                     break
-                    # if data_type == 'Date':
-                    #     list_of_values_final.append("EEEEE")
-                    # elif data_type == 'Float':
-                    #     float_value = struct.unpack("!f", struct.pack("!I", int(raw_data, 16)))[0]
-                    #     list_of_values_final.append 
-                    # else:
-                    #     list_of_values_final.append("LLLLL")
                     
-        # print(list_of_values_configured)
-    
-    
-    ###
     ### list_of_balue_billing
         evc_type = evc_type
         query = """
@@ -544,25 +538,29 @@ def read_data():
                
                 if address >= address_start and address <= address_finish:
                     # print(address)
-                    # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                    # print(address_start, address_finish)
                     location_data = (address - address_start)*int(8/2)
+                    # print(location_data)
                     frameRx = (df_Modbusbilling.iloc[j,3])
-                    
+                   
                     raw_data = frameRx[location_data + 6: location_data + 14]
-                    #print(data_type)
+                    # print(raw_data)
                     
                     list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
                     
                     break
-        # print(list_of_values_billing)    
+        
+        # print(list_of_values_billing)
+                
+        
         
             
             
             
             
             
-    # ## Wtire Configured Data
-    date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
+    # # ## Wtire Configured Data
+    # date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
     
     
     
@@ -571,60 +569,60 @@ def read_data():
     
     
     
-    sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+    # sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
     
-    sql_text_config_insert = "insert into AMR_CONFIGURED_DATA (DATA_DATE, METER_ID,METER_STREAM_NO, AMR_VC_TYPE, "
-    for i in range(0, len(df_mapping)):  
+    # sql_text_config_insert = "insert into AMR_CONFIGURED_DATA (DATA_DATE, METER_ID,METER_STREAM_NO, AMR_VC_TYPE, "
+    # for i in range(0, len(df_mapping)):  
         
-        sql_text_config_insert+=f" AMR_CONFIG{i+1},"
-    sql_text_config_insert+=" CREATED_BY) values ("
+    #     sql_text_config_insert+=f" AMR_CONFIG{i+1},"
+    # sql_text_config_insert+=" CREATED_BY) values ("
     
-    sql_text_config_insert+=f"TO_DATE('{date_system}', 'DD-MM-YYYY'), '{METERID}','{run}','{evc_type}',"
+    # sql_text_config_insert+=f"TO_DATE('{date_system}', 'DD-MM-YYYY'), '{METERID}','{run}','{evc_type}',"
    
     
-    for i in range(0, len(df_mapping)):
+    # for i in range(0, len(df_mapping)):
        
-        sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
+    #     sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
         
-    sql_text_config_insert+="'')"
+    # sql_text_config_insert+="'')"
     
-    # print(sql_text_config_insert)
-    
-    
-    
-    
-    ### Write Billing 
-    sql_text_bolling_delete = f"""delete from AMR_BILLING_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
-    # print(sql_text_bolling_delete)
+    # # print(sql_text_config_insert)
     
     
     
-    sql_texts = []
-    for i in range(0, len(df_mappingbilling), 5):
+    
+    # ### Write Billing 
+    # sql_text_bolling_delete = f"""delete from AMR_BILLING_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+    # # print(sql_text_bolling_delete)
+    
+    
+    
+    # sql_texts = []
+    # for i in range(0, len(df_mappingbilling), 5):
         
-        values_subset = list_of_values_billing[i:i+5]
-        # print(values_subset)
+    #     values_subset = list_of_values_billing[i:i+5]
+    #     # print(values_subset)
         
-        sql_text_billing_insert = f"insert into AMR_BILLING_DATA (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF) values ('{METERID}', '{run}', TO_DATE('{values_subset[0]}', 'DD-MM-YYYY')"
+    #     sql_text_billing_insert = f"insert into AMR_BILLING_DATA (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF) values ('{METERID}', '{run}', TO_DATE('{values_subset[0]}', 'DD-MM-YYYY')"
         
-        for value in values_subset[1:]:
-            sql_text_billing_insert += f", '{value}'"
+    #     for value in values_subset[1:]:
+    #         sql_text_billing_insert += f", '{value}'"
         
-        sql_text_billing_insert += ");"
+    #     sql_text_billing_insert += ");"
     
-        sql_text_billing_insert = sql_text_billing_insert.rstrip(',')
+    #     sql_text_billing_insert = sql_text_billing_insert.rstrip(',')
         
-        sql_texts.append(sql_text_billing_insert)
+    #     sql_texts.append(sql_text_billing_insert)
 
-    full_sql_text = "\n".join(sql_texts)
-    # print(full_sql_text)
+    # full_sql_text = "\n".join(sql_texts)
+    # # print(full_sql_text)
     
     
     
-    # delete_data(sql_text_config_delete,sql_text_bolling_delete)     
-    # insert_data(sql_text_config_insert,full_sql_text)   
+    # # delete_data(sql_text_config_delete,sql_text_bolling_delete)     
+    # # insert_data(sql_text_config_insert,full_sql_text)   
     
-        
+    
     
         
         
@@ -851,12 +849,14 @@ def read_data():
     )
     
 def convert_raw_to_value(data_type, raw_data):
-    
-
     if data_type == "Date":
         raw_data_as_int = int(raw_data, 16)
         date_object = datetime.datetime.fromtimestamp(raw_data_as_int).date()
-        formatted_date = date_object.strftime('%d-%m-%Y') 
+        
+        
+        modified_date = date_object - datetime.timedelta(days=1)
+        
+        formatted_date = modified_date.strftime('%d-%m-%Y') 
         
         return formatted_date
     elif data_type == "Float":
@@ -868,7 +868,9 @@ def convert_raw_to_value(data_type, raw_data):
        
         return raw_data 
 
-def delete_data(sql_text_config_delete, sql_text_bolling_delete):
+
+
+def delete_data(sql_text_config_delete, sql_text_billing_delete):
     # print(sql_text_config_delete, sql_text_bolling_delete)
     try:
         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
@@ -877,25 +879,18 @@ def delete_data(sql_text_config_delete, sql_text_bolling_delete):
                 connection.commit()
                 print("delete data config successful")  
                 
-                cursor.execute(sql_text_bolling_delete)
+                cursor.execute(sql_text_billing_delete)
                 connection.commit()
                 print("delete data billing successful")  
                 
     except cx_Oracle.Error as error:
         print("Oracle Error:", error)
 
-def insert_data(sql_text_config_insert, full_sql_text):
-    
+
+def insert_data( full_sql_text):
     try:
         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
             with connection.cursor() as cursor:
-              
-                cursor.execute(sql_text_config_insert)
-                connection.commit()
-                print("Insert data config successful")  
-
-               
-                
                 for sql_statement in full_sql_text.split(";"):
                     if sql_statement.strip():
                         cursor.execute(sql_statement.strip())
@@ -913,26 +908,25 @@ def save_to_oracle():
     try:
         
         data = request.get_json()
-        # slave_id = data["slave_id"]
-        # print(slave_id)
+        
         evc_type = data["evc_type"]
-        # print(evc_type)
+        
         slave_id = int(data.get("slave_id"))
-        # print(slave_id)
+       
         function_code= int(data.get("function_code"))
-        # print(function_code)
+        
         tcp_ip = data.get("tcp_ip")
-        # print(tcp_ip)
+      
         tcp_port = int(data.get("tcp_port"))
-        # print(tcp_port)
+        
         run = int(data.get("run"))
-        # print(run)
+        
         METERID = str(data.get("METERID"))
-        # print(METERID)
+       
         poll_config_enable_list = str(data.get("poll_config_enable_list"))
-        # print(poll_config_enable_list)
+        
         poll_billing_enable_list = str(data.get("poll_billing_enable_list"))
-        # print(poll_billing_enable_list)
+        
     
         starting_address_values = data["starting_address_values"]
         quantity_values = data["quantity_values"]
@@ -1074,12 +1068,14 @@ def save_to_oracle():
             request_message_i += crc_i.to_bytes(2, byteorder="big")
             
             
+            
             sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock_i.connect((tcp_ip, tcp_port))
             communication_traffic_i = []
         
             
             communication_traffic_i.append(request_message_i.hex())
+            
             
             sock_i.send(request_message_i)
             response_i = sock_i.recv(1024)
@@ -1126,15 +1122,17 @@ def save_to_oracle():
             order by order1
             """
             poll_results = fetch_data(query, params={"evc_type": evc_type})
+            # print(poll_results)
             df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
-            #print(df_mapping)
+            
                 
             list_of_values_configured = []
             for i in range(0, len(df_mapping)):
                 
                 address = int(df_mapping.iloc[i,1])
-                
+                # print(address)
                 data_type = str(df_mapping.iloc[i,3])
+                # print(data_type)
                 
                 
                 for j in range(0,len(df_Modbus)):
@@ -1142,14 +1140,17 @@ def save_to_oracle():
                     address_finish = int(df_Modbus.iloc[j,1])
                     #print(address)
                     if address >= address_start and address <= address_finish:
-                        # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                        # print(df_Modbus.iloc[j,3])
                         location_data = (address - address_start)*int(8/2)
+                        # print(location_data)
                         frameRx = (df_Modbus.iloc[j,3])
-                        #
+                        
                         raw_data = frameRx[location_data + 6: location_data + 14]
-                    
+                        # print(raw_data)
                         list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
                         break
+            # print(list_of_values_configured)
+                
                 
             evc_type = evc_type
             query = """
@@ -1157,37 +1158,39 @@ def save_to_oracle():
             ,amb.or_der
             """
             poll_resultsbilling = fetch_data(query, params={"evc_type": evc_type})
-            # print(poll_resultsbilling)
+        
             df_mappingbilling = pd.DataFrame(poll_resultsbilling, columns=['daily','or_der', 'address', 'description', 'data_type'])
-            # print(df_mappingbilling)
             
-            # print(df_Modbusbilling)   
             list_of_values_billing = []
             for i in range(0, len(df_mappingbilling)):
-                
                 address = int(df_mappingbilling.iloc[i,2])
-                
                 data_type = str(df_mappingbilling.iloc[i,4])
-                
-                
                 for j in range(0,len(df_Modbusbilling)):
                     address_start = int(df_Modbusbilling.iloc[j,0])
                     address_finish = int(df_Modbusbilling.iloc[j,1])
-                
+                    
                     if address >= address_start and address <= address_finish:
                         # print(address)
-                        # print(address_start, address_finish, df_Modbus.iloc[j,3])
-                        location_data = (address - address_start)*int(8/2)
-                        frameRx = (df_Modbusbilling.iloc[j,3])
                         
+                        location_data = (address - address_start)*int(8/2)
+                        
+                        frameRx = (df_Modbusbilling.iloc[j,3])
+                        # print(frameRx)
                         raw_data = frameRx[location_data + 6: location_data + 14]
-                        #print(data_type)
+                        
                         
                         list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
                         
                         break
-            # print(list_of_values_billing)    
-        
+       
+        # for i in range(0, len(df_mappingbilling), 5):
+        #     values_subset = list_of_values_billing[i:i+5]
+        #     print(values_subset)
+                
+                
+                
+                
+                
         date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
         sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
     
@@ -1205,17 +1208,44 @@ def save_to_oracle():
             sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
             
         sql_text_config_insert+="'')" 
+        # print(sql_text_config_insert)
+        
+        get_maxdate =f"SELECT MAX(DATA_DATE) FROM amr_configured_data WHERE meter_id = '{METERID}' AND meter_stream_no = '{run}'"
+        results_maxdaily = fetch_data(get_maxdate)
+       
+        test = pd.DataFrame(results_maxdaily,columns=['DATA_DATE'])
+        
+        test['DATA_DATE'] = pd.to_datetime(test['DATA_DATE'])
+
+        # Access the first row and format the date
+        test_1 = test.iloc[0]['DATA_DATE'].strftime('%d-%m-%Y')
+        
+        if date_system == test_1:
+            print("config มีข้อมูลของวันนี้เเล้ว")
+    
+
+        else:
+                    
+            with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(sql_text_config_insert)  
+                connection.commit()  
+                print("Insert data config successful")
         
         
         
         
-        sql_text_bolling_delete = f"""delete from AMR_BILLING_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
+        
+        
+        
         sql_texts = []
         for i in range(0, len(df_mappingbilling), 5):
+           
             
             values_subset = list_of_values_billing[i:i+5]
             # print(values_subset)
             
+            # print(sql_text_billing_delete)
             sql_text_billing_insert = f"insert into AMR_BILLING_DATA (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF) values ('{METERID}', '{run}', TO_DATE('{values_subset[0]}', 'DD-MM-YYYY')"
             
             for value in values_subset[1:]:
@@ -1228,15 +1258,459 @@ def save_to_oracle():
             sql_texts.append(sql_text_billing_insert)
 
         full_sql_text = "\n".join(sql_texts)
+        # print()
         # print(full_sql_text)
+        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+            with connection.cursor() as cursor:
+                for sql_statement in full_sql_text.split(";"):
+                    if sql_statement.strip():
+                        cursor.execute(sql_statement.strip())
+                connection.commit()
+                print("Insert data billing successful")
         
         
-        delete_data(sql_text_config_delete,sql_text_bolling_delete)     
-        insert_data(sql_text_config_insert,full_sql_text)
+
+
+    # ############ billing #######################
+        query_maxdaily = f"""SELECT MAX(DAILY)FROM amr_mapping_billing WHERE evc_type = '{evc_type}'"""
+        results_maxdaily = fetch_data(query_maxdaily)
+        max_daily_value = results_maxdaily[0][0] 
+        # print("max_daily_value",":",max_daily_value)
+        
+        
+        query_maxdaily_1 = f"""SELECT MAX(DAILY)-1 FROM amr_mapping_billing WHERE evc_type = '{evc_type}'"""
+        results_maxdaily_1 = fetch_data(query_maxdaily_1)
+        max_daily_value_1 = results_maxdaily_1[0][0]
+        
+        
+        
+        query_maxdate = """SELECT DATA_DATE FROM (SELECT DATA_DATE, ROW_NUMBER() OVER (ORDER BY DATA_DATE DESC) AS rn FROM amr_billing_data WHERE DATA_DATE = (SELECT MAX(DATA_DATE) FROM amr_billing_data))WHERE rn = 2"""
+        maxdate_db = fetch_data(query_maxdate)
+        maxdate_billing_1 = pd.DataFrame(maxdate_db)
+        
+        if maxdate_billing_1.empty:
+            maxdate_billing_str_1 = "0-0-0"
+        else:
+            maxdate_billing_1 = maxdate_billing_1.iloc[0]
+        
+            maxdate_billing_str_1 = maxdate_billing_1.iloc[0].strftime('%d-%m-%Y')
+
+
+
+        query_maxdate = """SELECT MAX(DATA_DATE) - 1 FROM amr_billing_data"""
+        maxdate_db = fetch_data(query_maxdate)
+        maxdate_billing = pd.DataFrame(maxdate_db)
+        maxdate_billing = maxdate_billing.iloc[0]
+        maxdate_billing_str = maxdate_billing.iloc[0].strftime('%d-%m-%Y')
+        
+        
+        values_subset_1 = list_of_values_billing[0]
+        
+        values_subset = list_of_values_billing[5]
+        
+        
+        
+        ########### เช็คค่า poll ซ้ำ #####################
+        if values_subset_1 == maxdate_billing_str_1:
+                print(values_subset_1 ,":",maxdate_billing_str_1)
+                print("poll ซ้ำ")
+                
+                query = f"""SELECT  DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL 
+                            FROM amr_billing_data 
+                            WHERE DATA_DATE BETWEEN TO_DATE('{values_subset_1}', 'DD-MM-YYYY') - INTERVAL '{max_daily_value}' DAY AND TO_DATE('{values_subset_1}', 'DD-MM-YYYY') 
+                            AND meter_id = '{METERID}' 
+                            AND meter_stream_no = '{run}' 
+                            ORDER BY DATA_DATE DESC"""
+                # print(query)
+                results_billing = fetch_data(query)
+
+                df_billing = pd.DataFrame(results_billing , columns=['DATA_DATE','CORRECTED_VOL', 'UNCORRECTED_VOL'])
+                df_billing['DATA_DATE'] = df_billing['DATA_DATE'].dt.strftime('%d-%m-%Y')
+                # print(df_billing_1)
+                df_billing['DATA_DATE'] = pd.to_datetime(df_billing['DATA_DATE'], format='%d-%m-%Y')
+                date_counts = df_billing['DATA_DATE'].value_counts()
+
+                
+                single_dates = date_counts[date_counts == 1].index.tolist()
+
+                single_dates_formatted = pd.to_datetime(single_dates).strftime('%d-%m-%Y')
+                single_date_rows = df_billing[df_billing['DATA_DATE'].isin(single_dates)]
+
+            
+                df_billing = df_billing[~df_billing['DATA_DATE'].isin(single_dates)]
+        
+                if len(single_dates_formatted) > 0:
+                    print(single_dates_formatted)
+                    for date_formatted in single_dates_formatted:
+                    
+                        sql_text_billing_NotMatched = f"""SELECT DATA_DATE, METER_ID, METER_STREAM_NO FROM amr_billing_data_error
+                                                        WHERE DATA_DATE = TO_DATE('{date_formatted}', 'DD-MM-YYYY')
+                                                        AND METER_ID = '{METERID}' 
+                                                        AND METER_STREAM_NO = '{run}'"""
+                        billing_NotMatched = fetch_data(sql_text_billing_NotMatched)
+                        if len(billing_NotMatched) > 0:
+                                print("มีข้อมูล ใน error")
+                                sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                WHERE DATA_DATE = TO_DATE('{date_formatted}', 'DD-MM-YYYY') 
+                                                                AND METER_ID = '{METERID}' 
+                                                                AND METER_STREAM_NO = '{run}'"""
+                                print(sql_text_billing_NotMatched_delete)
+                                with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            cursor.execute(sql_text_billing_NotMatched_delete)
+                                            connection.commit()
+                                            print("Deleted 'Not' Matched data from billing successfully")
+                                
+                                
+                        else:
+                                print("ไม่มีข้อมูล ใน error ")
+                                print("insert poll เรียบร้อย")
+                                
+                                
+                    for i in range(0, len(df_billing), 2):
+                            db_test_matched = df_billing[i:i+2] 
+                                    # print(db_test_matched)
+                            db_test_matched['DATA_DATE'] = pd.to_datetime(db_test_matched['DATA_DATE']).dt.strftime('%d-%m-%Y')
+                            if db_test_matched['DATA_DATE'].nunique() == 1 and db_test_matched['CORRECTED_VOL'].nunique() == 1 and db_test_matched['UNCORRECTED_VOL'].nunique() == 1:
+                                                print("Matched:", db_test_matched)
+                                            
+                                                sql_text_billing_matched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                            WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                            AND CORRECTED_VOL = {db_test_matched['CORRECTED_VOL'].iloc[0]} 
+                                                                            AND UNCORRECTED_VOL = {db_test_matched['UNCORRECTED_VOL'].iloc[0]} 
+                                                                            AND METER_ID = '{METERID}' 
+                                                                            AND METER_STREAM_NO = '{run}'
+                                                                            AND ROWNUM = 1"""
+                                                # print(sql_text_billing_matched_delete)
+                                                with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                                    with connection.cursor() as cursor:
+                                                        cursor.execute(sql_text_billing_matched_delete)
+                                                        connection.commit()
+                                                        print("Deleted matched data from billing successfully")  
+                                            
+                                            
+                                            
+                            else:
+                                    print("Not Matched:", db_test_matched)
+                                    query = f"""SELECT   DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF 
+                                                FROM amr_billing_data 
+                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                AND meter_id = '{METERID}' 
+                                                AND meter_stream_no = '{run}' 
+                                                ORDER BY DATA_DATE DESC"""
+                                    
+                                    results_billing = fetch_data(query)
+                                    for row in results_billing:
+                                            print(row) 
+                                
+                                    sql_texts = []
+                                    
+                                    for row in results_billing:
+                                        formatted_date = row[0].strftime('%d-%m-%Y')  
+                                        sql_text_billing_insert = f"INSERT INTO AMR_BILLING_DATA_ERROR (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PE, AVR_TF) VALUES "
+                                        sql_text_billing_insert += f"('{METERID}', '{run}', TO_DATE('{formatted_date}', 'DD-MM-YYYY')"
+                                        sql_text_billing_insert += f", '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}');"
+                                        sql_texts.append(sql_text_billing_insert)
+
+                                    full_sql_text = "\n".join(sql_texts)
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            for sql_statement in full_sql_text.split(";"):
+                                                if sql_statement.strip():
+                                                    cursor.execute(sql_statement.strip())
+                                            connection.commit()
+                                            print("Insert data ERROR successful")
+                                    
+                                    sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                AND METER_ID = '{METERID}' 
+                                                                AND METER_STREAM_NO = '{run}'
+                                                                """
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            cursor.execute(sql_text_billing_NotMatched_delete)
+                                            connection.commit()
+                                            print("Deleted 'Not' Matched data from billing successfully")  
+                                    
+                else:
+                            for i in range(0, len(df_billing), 2):
+                                db_test_matched = df_billing[i:i+2] 
+                                        # print(db_test_matched)
+                                db_test_matched['DATA_DATE'] = pd.to_datetime(db_test_matched['DATA_DATE']).dt.strftime('%d-%m-%Y')
+                                if db_test_matched['DATA_DATE'].nunique() == 1 and db_test_matched['CORRECTED_VOL'].nunique() == 1 and db_test_matched['UNCORRECTED_VOL'].nunique() == 1:
+                                                    print("Matched:", db_test_matched)
+                                                
+                                                    sql_text_billing_matched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                                AND CORRECTED_VOL = {db_test_matched['CORRECTED_VOL'].iloc[0]} 
+                                                                                AND UNCORRECTED_VOL = {db_test_matched['UNCORRECTED_VOL'].iloc[0]} 
+                                                                                AND METER_ID = '{METERID}' 
+                                                                                AND METER_STREAM_NO = '{run}'
+                                                                                AND ROWNUM = 1"""
+                                                    # print(sql_text_billing_matched_delete)
+                                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                                        with connection.cursor() as cursor:
+                                                            cursor.execute(sql_text_billing_matched_delete)
+                                                            connection.commit()
+                                                            print("Deleted matched data from billing successfully")  
+                                                
+                                                
+                                                
+                                else:
+                                        print("Not Matched:", db_test_matched)
+                                        query = f"""SELECT   DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF 
+                                                    FROM amr_billing_data 
+                                                    WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                    AND meter_id = '{METERID}' 
+                                                    AND meter_stream_no = '{run}' 
+                                                    ORDER BY DATA_DATE DESC"""
+                                        
+                                        results_billing = fetch_data(query)
+                                        for row in results_billing:
+                                                print(row) 
+                                    
+                                        sql_texts = []
+                                        
+                                        for row in results_billing:
+                                            formatted_date = row[0].strftime('%d-%m-%Y')  
+                                            sql_text_billing_insert = f"INSERT INTO AMR_BILLING_DATA_ERROR (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PE, AVR_TF) VALUES "
+                                            sql_text_billing_insert += f"('{METERID}', '{run}', TO_DATE('{formatted_date}', 'DD-MM-YYYY')"
+                                            sql_text_billing_insert += f", '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}');"
+                                            sql_texts.append(sql_text_billing_insert)
+
+                                        full_sql_text = "\n".join(sql_texts)
+                                        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                            with connection.cursor() as cursor:
+                                                for sql_statement in full_sql_text.split(";"):
+                                                    if sql_statement.strip():
+                                                        cursor.execute(sql_statement.strip())
+                                                connection.commit()
+                                                print("Insert data ERROR successful")
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                    WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                    AND METER_ID = '{METERID}' 
+                                                                    AND METER_STREAM_NO = '{run}'
+                                                                    """
+                                        with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                            with connection.cursor() as cursor:
+                                                cursor.execute(sql_text_billing_NotMatched_delete)
+                                                connection.commit()
+                                                print("Deleted 'Not' Matched data from billing successfully")
+            
+            
+            
+            
         
         
         
         
+        
+        
+        
+        
+        
+        ########### เช็คค่า poll ปกติ #####################
+        else:
+                    
+            if values_subset == maxdate_billing_str:
+                print(values_subset ,":",maxdate_billing_str)
+                print("ปกติ")
+                
+                query = f"""SELECT  DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL 
+                            FROM amr_billing_data 
+                            WHERE DATA_DATE BETWEEN TO_DATE('{values_subset}', 'DD-MM-YYYY') - INTERVAL '{max_daily_value}' DAY AND TO_DATE('{values_subset}', 'DD-MM-YYYY') 
+                            AND meter_id = '{METERID}' 
+                            AND meter_stream_no = '{run}' 
+                            ORDER BY DATA_DATE DESC"""
+            
+                results_billing = fetch_data(query)
+
+                df_billing = pd.DataFrame(results_billing , columns=['DATA_DATE','CORRECTED_VOL', 'UNCORRECTED_VOL'])
+                df_billing['DATA_DATE'] = df_billing['DATA_DATE'].dt.strftime('%d-%m-%Y')
+                df_billing['DATA_DATE'] = pd.to_datetime(df_billing['DATA_DATE'], format='%d-%m-%Y')
+                date_counts = df_billing['DATA_DATE'].value_counts()
+
+                
+                single_dates = date_counts[date_counts == 1].index.tolist()
+
+                single_dates_formatted = pd.to_datetime(single_dates).strftime('%d-%m-%Y')
+                single_date_rows = df_billing[df_billing['DATA_DATE'].isin(single_dates)]
+
+            
+                df_billing = df_billing[~df_billing['DATA_DATE'].isin(single_dates)]
+                
+                if len(single_dates_formatted) > 0:
+                    print(single_dates_formatted)
+                    for date_formatted in single_dates_formatted:
+                    
+                        sql_text_billing_NotMatched = f"""SELECT DATA_DATE, METER_ID, METER_STREAM_NO FROM amr_billing_data_error
+                                                        WHERE DATA_DATE = TO_DATE('{date_formatted}', 'DD-MM-YYYY')
+                                                        AND METER_ID = '{METERID}' 
+                                                        AND METER_STREAM_NO = '{run}'"""
+                        billing_NotMatched = fetch_data(sql_text_billing_NotMatched)
+                        if len(billing_NotMatched) > 0:
+                                print("มีข้อมูล ใน error")
+                                sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                WHERE DATA_DATE = TO_DATE('{date_formatted}', 'DD-MM-YYYY') 
+                                                                AND METER_ID = '{METERID}' 
+                                                                AND METER_STREAM_NO = '{run}'"""
+                                print(sql_text_billing_NotMatched_delete)
+                                with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            cursor.execute(sql_text_billing_NotMatched_delete)
+                                            connection.commit()
+                                            print("Deleted 'Not' Matched data from billing successfully")
+                                
+                                
+                        else:
+                                print("ไม่มีข้อมูล ใน error ")
+                                print("insert poll เรียบร้อย")
+                                
+                                
+                    for i in range(0, len(df_billing), 2):
+                            db_test_matched = df_billing[i:i+2] 
+                                    # print(db_test_matched)
+                            db_test_matched['DATA_DATE'] = pd.to_datetime(db_test_matched['DATA_DATE']).dt.strftime('%d-%m-%Y')
+                            if db_test_matched['DATA_DATE'].nunique() == 1 and db_test_matched['CORRECTED_VOL'].nunique() == 1 and db_test_matched['UNCORRECTED_VOL'].nunique() == 1:
+                                                print("Matched:", db_test_matched)
+                                            
+                                                sql_text_billing_matched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                            WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                            AND CORRECTED_VOL = {db_test_matched['CORRECTED_VOL'].iloc[0]} 
+                                                                            AND UNCORRECTED_VOL = {db_test_matched['UNCORRECTED_VOL'].iloc[0]} 
+                                                                            AND METER_ID = '{METERID}' 
+                                                                            AND METER_STREAM_NO = '{run}'
+                                                                            AND ROWNUM = 1"""
+                                                # print(sql_text_billing_matched_delete)
+                                                with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                                    with connection.cursor() as cursor:
+                                                        cursor.execute(sql_text_billing_matched_delete)
+                                                        connection.commit()
+                                                        print("Deleted matched data from billing successfully")  
+                                            
+                                            
+                                            
+                            else:
+                                    print("Not Matched:", db_test_matched)
+                                    query = f"""SELECT   DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF 
+                                                FROM amr_billing_data 
+                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                AND meter_id = '{METERID}' 
+                                                AND meter_stream_no = '{run}' 
+                                                ORDER BY DATA_DATE DESC"""
+                                    
+                                    results_billing = fetch_data(query)
+                                    for row in results_billing:
+                                            print(row) 
+                                
+                                    sql_texts = []
+                                    
+                                    for row in results_billing:
+                                        formatted_date = row[0].strftime('%d-%m-%Y')  
+                                        sql_text_billing_insert = f"INSERT INTO AMR_BILLING_DATA_ERROR (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PE, AVR_TF) VALUES "
+                                        sql_text_billing_insert += f"('{METERID}', '{run}', TO_DATE('{formatted_date}', 'DD-MM-YYYY')"
+                                        sql_text_billing_insert += f", '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}');"
+                                        sql_texts.append(sql_text_billing_insert)
+
+                                    full_sql_text = "\n".join(sql_texts)
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            for sql_statement in full_sql_text.split(";"):
+                                                if sql_statement.strip():
+                                                    cursor.execute(sql_statement.strip())
+                                            connection.commit()
+                                            print("Insert data ERROR successful")
+                                    
+                                    sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                AND METER_ID = '{METERID}' 
+                                                                AND METER_STREAM_NO = '{run}'
+                                                                """
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            cursor.execute(sql_text_billing_NotMatched_delete)
+                                            connection.commit()
+                                            print("Deleted 'Not' Matched data from billing successfully")  
+                                    
+            else:
+                        for i in range(0, len(df_billing), 2):
+                            db_test_matched = df_billing[i:i+2] 
+                                    # print(db_test_matched)
+                            db_test_matched['DATA_DATE'] = pd.to_datetime(db_test_matched['DATA_DATE']).dt.strftime('%d-%m-%Y')
+                            if db_test_matched['DATA_DATE'].nunique() == 1 and db_test_matched['CORRECTED_VOL'].nunique() == 1 and db_test_matched['UNCORRECTED_VOL'].nunique() == 1:
+                                                print("Matched:", db_test_matched)
+                                            
+                                                sql_text_billing_matched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                            WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                            AND CORRECTED_VOL = {db_test_matched['CORRECTED_VOL'].iloc[0]} 
+                                                                            AND UNCORRECTED_VOL = {db_test_matched['UNCORRECTED_VOL'].iloc[0]} 
+                                                                            AND METER_ID = '{METERID}' 
+                                                                            AND METER_STREAM_NO = '{run}'
+                                                                            AND ROWNUM = 1"""
+                                                # print(sql_text_billing_matched_delete)
+                                                with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                                    with connection.cursor() as cursor:
+                                                        cursor.execute(sql_text_billing_matched_delete)
+                                                        connection.commit()
+                                                        print("Deleted matched data from billing successfully")  
+                                            
+                                            
+                                            
+                            else:
+                                    print("Not Matched:", db_test_matched)
+                                    query = f"""SELECT   DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF 
+                                                FROM amr_billing_data 
+                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                AND meter_id = '{METERID}' 
+                                                AND meter_stream_no = '{run}' 
+                                                ORDER BY DATA_DATE DESC"""
+                                    
+                                    results_billing = fetch_data(query)
+                                    for row in results_billing:
+                                            print(row) 
+                                
+                                    sql_texts = []
+                                    
+                                    for row in results_billing:
+                                        formatted_date = row[0].strftime('%d-%m-%Y')  
+                                        sql_text_billing_insert = f"INSERT INTO AMR_BILLING_DATA_ERROR (METER_ID, METER_STREAM_NO, DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PE, AVR_TF) VALUES "
+                                        sql_text_billing_insert += f"('{METERID}', '{run}', TO_DATE('{formatted_date}', 'DD-MM-YYYY')"
+                                        sql_text_billing_insert += f", '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}');"
+                                        sql_texts.append(sql_text_billing_insert)
+
+                                    full_sql_text = "\n".join(sql_texts)
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            for sql_statement in full_sql_text.split(";"):
+                                                if sql_statement.strip():
+                                                    cursor.execute(sql_statement.strip())
+                                            connection.commit()
+                                            print("Insert data ERROR successful")
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
+                                                                WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
+                                                                AND METER_ID = '{METERID}' 
+                                                                AND METER_STREAM_NO = '{run}'
+                                                                """
+                                    with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
+                                        with connection.cursor() as cursor:
+                                            cursor.execute(sql_text_billing_NotMatched_delete)
+                                            connection.commit()
+                                            print("Deleted 'Not' Matched data from billing successfully")
+
    
         response = {"status": "success", "message": "Data updated successfully"}
     except ValueError as ve:
@@ -1259,30 +1733,7 @@ def save_to_oracle():
 
     return jsonify(response)
         
-# def delete_data_billing(sql_text_bolling_delete):
-    
-#     try:
-#         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
-#             with connection.cursor() as cursor:
-#                 sql = sql_text_bolling_delete  
-#                 cursor.execute(sql)
-#                 connection.commit()
-#                 print("delete data billing successful")  
-#     except cx_Oracle.Error as error:
-#         print("Oracle Error:", error)
-        
-# def insert_data_billing():
-#     # print(full_sql_text)
-#     try:
-#         with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
-#             with connection.cursor() as cursor:
-#                 sql = """insert into AMR_BILLING_DATA (DATA_DATE, METER_ID,METER_STREAM_NO,TIME_CREATE, CORRECTED_VOL , UNCORRECTED_VOL , AVR_PF , AVR_TF) values (TO_DATE('04-03-2024', 'DD-MM-YYYY'), 'MET0138','1','03-02-1970','350290355','2824482','5.989999771118164','1.1020259538958945e-37'); """ 
-#                 cursor.execute(sql)
-                
-#                 connection.commit()
-#                 print("Insert data billing successful")  
-#     except cx_Oracle.Error as error:
-#         print("Oracle Error:", error)
+
 
 
 
