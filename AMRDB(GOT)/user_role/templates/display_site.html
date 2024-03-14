@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Details</title>
+
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #eee;
+        padding: 10px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin-right: 10px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    nav a:hover {
+        background-color: #dd2d;
+    }
+
+    .hidden {
+        display: none;
+
+    }
+
+    /* textbox */
+
+    /* General styling for all textboxes */
+    .container {
+        display: flex;
+        justify-content: center;
+
+        height: 100vh;
+        /* Optional: Center vertically within the viewport */
+    }
+
+    .textbox-pair {
+        margin-bottom: 3px;
+    }
+
+    input[type="text"] {
+        width: 200px;
+        /* Adjust the width as needed */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    @keyframes oscillate {
+        0% {
+            transform: translateX(0);
+        }
+
+        50% {
+            transform: translateX(0px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    .enable-container {
+        margin-bottom: 10px;
+        /* Add some space between containers */
+        animation: alternate-reverse;
+        /* Apply the oscillation animation */
+    }
+
+    /* Additional styling for labels and checkboxes */
+    label {
+        margin-right: 5px;
+    }
+
+    input[type="checkbox"] {
+        margin-left: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .label {
+        display: inline-block;
+        width: 150px;
+        /* Adjust the width as needed */
+        text-align: left;
+        /* Align label text to the right */
+        margin-right: 10px;
+        /* Add some margin between label and dropdown */
+    }
+
+    .input-select {
+        width: 200px;
+        /* Adjust the width as needed */
+    }
+
+    /* Adjust the width as needed */
+</style>
+
+<header>
+    <h1>AMR</h1>
+</header>
+<a href="{{ url_for('logout') }}">Logout</a>
+<br>
+<a href="{{ url_for('home') }}">home</a>
+
+<body>
+
+    <div class="container">
+        <div class="form-group">
+            <p>Phase: {{ phase }}</p>
+            <p>Region: {{ region }}</p>
+            <p>Site Name: {{ site_name }}</p>
+            <p>Factory Name: {{ factory_name }}</p>
+            <p>RMIU Type: {{ rmiu_type }}</p>
+            <p>Power Indicator: {{ power_indicator }}</p>
+            <p>RTU Modbus ID: {{ modbus_id }}</p>
+            <p>IP Address: {{ ip_address }}</p>
+            <p>Ready to Billing: {{ ready_to_billing }}</p>
+            <p>Show SG CO2 N2: {{ show_sg_co2_n2 }}</p>
+            <p>Initial Username: {{ initial_username }}</p>
+            <p>Initial Password: {{ initial_password }}</p>
+
+            <form method="POST" action="{{ url_for('display_site') }}"></form>
+            <table border="1">
+
+                <tbody>
+                    <tr>
+                        <td><b>NO.</b></td>
+                        <td><b>EVC TYPE</b></td>
+                        <td><b>PORT</b></td>
+                        <td><b>AUTO</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>0</td>
+                        <td>RMIU</td>
+                        <td>&nbsp;</td>
+
+                        <td>
+                            <input type="checkbox" name="enable0" value="1" disabled="disabled">
+
+
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td>1</td>
+                        <td><select name="meterType1" id="meter_Type">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <select name="port1" value="--SELECT--">
+
+                                <option value="1">1</option>
+
+                                <option value="2">2</option>
+
+                                <option value="3">3</option>
+
+                                <option value="4">4</option>
+
+                                <option value="5">5</option>
+
+                                <option value="6">6</option>
+
+                                <option value="7">7</option>
+
+                                <option value="8">8</option>
+
+                                <option value="9">9</option>
+
+                                <option value="10">10</option>
+
+                                <option value="11">11</option>
+
+                                <option value="12">12</option>
+
+                                <option value="13">13</option>
+
+                                <option value="14">14</option>
+
+                                <option value="15">15</option>
+
+                                <option value="16">16</option>
+
+                                <option value="17">17</option>
+
+                                <option value="18">18</option>
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <input type="checkbox" name="enable1" value="1" checked="checked">
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+            <input type="button" value="Back" onclick="history.go(-1);">
+            <input type="submit" value="Create">
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    function updateBillingDate() {
+        var billingDateSelect = document.getElementById("billing_date");
+        var selectedValue = billingDateSelect.options[billingDateSelect.selectedIndex].value;
+
+        // Set the value based on the selected option
+        if (selectedValue === "28") {
+            billingDateSelect.value = "1";
+        } else if (selectedValue === "Last month") {
+            billingDateSelect.value = "0";
+        }
+    }
+</script>
+
+</html>
