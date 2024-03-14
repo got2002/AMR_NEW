@@ -639,8 +639,8 @@ def add_site():
     MET0 = "MET0"
     PROT0 = "PROT0"
     
-    RMIU_POLL_REPEAT1, RMIU_POLL_REPEAT2 = 0, 0
-    
+    RMIU_POLL_REPEAT1 = 0
+        
     if request.method == 'POST':
         phase = request.form['phase']
         site_name = request.form['site_name']
@@ -678,9 +678,9 @@ def add_site():
         INSERT INTO AMR_USER (ID, DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL, USER_GROUP, USER_ENABLE)
         VALUES ({max_id_value}, '{site_name}', '{initial_username}', '{initial_password}', '3', '{MET0+max_id_value}', '1')
         """
-        update_sql(amr_user)
+        # update_sql(amr_user)
         
-        field_id = f"""
+        amr_field_id = f"""
         INSERT INTO AMR_FIELD_ID (
                                 ID, 
                                 TAG_ID, 
@@ -703,14 +703,14 @@ def add_site():
                                 '{modbus_id}', 
                                 '{ip_address}',
                                 '{RMIU_POLL_REPEAT1}',
-                                '{RMIU_POLL_REPEAT2}',
+                                '{RMIU_POLL_REPEAT1}',
                                 '{phase}',
                                 '{billing_date}'
                                 )
         """
-        update_sql(field_id)
+        # update_sql(amr_field_id)
         
-        field_customer= f"""
+        amr_field_customer= f"""
         INSERT INTO AMR_FIELD_CUSTOMER (
                                         ID, 
                                         CUST_ID,
@@ -722,18 +722,35 @@ def add_site():
                                 '{factory_name}'            
                                 )
         """
-        update_sql(field_customer)
-
-       
-
-        return "Data inserted successfully"
-    
+        # update_sql(amr_field_customer)
         
-        return render_template('add_site.html', max_id_value=max_id_value)
+        amr_field_meter = f"""
+        INSERT INTO AMR_FIELD_METER (METER_ID,
+                                    METER_NO_STREAM          
+                                    )
+        VALUES ('{MET0+max_id_value}', '{amount_of_meter}')
+        
+        """
+        # update_sql(amr_field_meter)
 
+
+        return render_template('display_site.html', 
+                            phase=phase, 
+                            site_name=site_name, 
+                            factory_name=factory_name, 
+                            region=region, 
+                            rmiu_type=rmiu_type, 
+                            power_indicator=power_indicator, 
+                            modbus_id=modbus_id, 
+                            ip_address=ip_address, 
+                            billing_date=billing_date, 
+                            show_sg_co2_n2=show_sg_co2_n2, 
+                            initial_username=initial_username, 
+                            initial_password=initial_password)
+        
+    
     return render_template('add_site.html', max_id_value=max_id_value)
-
-
+    
 @app.route('/logout')
 def logout():
     session.pop('username', None)
