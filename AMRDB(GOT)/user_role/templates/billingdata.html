@@ -28,6 +28,7 @@
             <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region }}</option>
             {% endfor %}
         </select>
+
         <label for="tag_dropdown">Site :</label>
         <select id="tag_dropdown" name="tag_dropdown">
             <option value="" {% if not selected_tag %}selected{% endif %}>All</option>
