@@ -637,7 +637,7 @@ def mapping_billing_route():
     
 @app.route('/update_mapping_billing_route', methods=['POST'])
 def update_mapping_billing():
-    type_name_value = ["Time Stamp","Converted Index (VbA)","Unconverted Index (VmA)","Pressure Daily Average","Temperature Daily Average"]
+    type_name_value = ["Time Stamp","Uncorrected Volume","Corrected Volume","Pressure Daily Average","Temperature Daily Average"]
     unit_type_name_value = ["Ulong","Ulong","Ulong","float","float"]
     selected_type = request.form.get('selected_type')
 
