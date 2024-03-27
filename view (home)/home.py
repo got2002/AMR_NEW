@@ -168,55 +168,19 @@ def fetch_data(query, params=None):
 ############  /connect database  #####################
 
 ######################### connection AMR_DB ###############################
-amr_db_params = {
-    "username": 'AMR_DB',
-    "password": 'AMR_DB',
-    "hostname": '10.104.240.26',
-    "port": '1521',
-    "sid": "AMR"
-}
-
-# Choose the database connection parameters based on your requirements
-selected_params = amr_db_params  # Change this to switch between databases
-print("aaaa", selected_params)
-
-dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
-
-try:
-    connection_info = {
-        "user": selected_params["username"],
-        "password": selected_params["password"],
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Connection to AMR_DB successful.")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-######################### connection AMR_DB ###############################
-
-######################### connection AMR_NEW ###############################
-
-# root_params = {
-#     "username": 'root',
-#     "password": 'root',
-#     "hostname": '192.168.102.192',
+# amr_db_params = {
+#     "username": 'AMR_DB',
+#     "password": 'AMR_DB',
+#     "hostname": '10.104.240.26',
 #     "port": '1521',
-#     "service_name": "orcl"
+#     "sid": "AMR"
 # }
 
 # # Choose the database connection parameters based on your requirements
-# selected_params = root_params  # Change this to switch between databases
+# selected_params = amr_db_params  # Change this to switch between databases
 # # print("aaaa", selected_params)
 
-# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
 
 # try:
 #     connection_info = {
@@ -231,10 +195,46 @@ except cx_Oracle.Error as e:
 
 #     connection_pool = cx_Oracle.SessionPool(**connection_info)
 #     connection = connection_pool.acquire()
-#     print("Connection to AMR_NEW successful.")
+#     print("Connection to AMR_DB successful.")
 # except cx_Oracle.Error as e:
 #     (error,) = e.args
 #     print("Oracle Error:", error)
+
+######################### connection AMR_DB ###############################
+
+######################### connection AMR_NEW ###############################
+
+root_params = {
+    "username": 'root',
+    "password": 'root',
+    "hostname": '192.168.102.192',
+    "port": '1521',
+    "service_name": "orcl"
+}
+
+# Choose the database connection parameters based on your requirements
+selected_params = root_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+
+try:
+    connection_info = {
+        "user": selected_params["username"],
+        "password": selected_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to AMR_NEW successful.")
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
 
 ######################### connection AMR_ ###############################
 
@@ -416,6 +416,7 @@ def billing_data():
     SELECT * FROM AMR_REGION 
     """
 
+
     tag_query = """
     SELECT DISTINCT TAG_ID
     FROM AMR_FIELD_ID
@@ -426,6 +427,7 @@ def billing_data():
     # Fetch unique region values
     region_results = fetch_data(region_query)
     region_options = [str(region[0]) for region in region_results]
+    
     
 
     query = ""
@@ -3942,11 +3944,7 @@ def mapping_config_route():
 def checkStrNone(stringcheck):
     if stringcheck == "None": return ""
     return stringcheck
-    
-def checkStrNone(stringcheck):
-    if stringcheck == "None": return ""
-    return stringcheck
-    
+
 @app.route('/update_mapping_config_route', methods=['POST'])
 def update_mapping_config():
     selected_type = request.form.get('selected_type')
@@ -4090,183 +4088,245 @@ def update_mapping_config():
 
 @app.route('/mapping_billing')  
 def mapping_billing_route():
-    
+    # SQL query to fetch options for the dropdown
+    type_query = "SELECT VC_NAME FROM AMR_VC_TYPE"
+    type_results = fetch_data(type_query)
+    type_options = [str(type[0]) for type in type_results]
+
+    # SQL query to fetch data based on selected type
+    base_query = f"""
+     SELECT
+        address,
+        description,
+        data_type,
+        evc_type,
+        or_der,
+        daily
         
-        # SQL query to fetch options for the dropdown
-        type_query = "SELECT VC_NAME FROM AMR_VC_TYPE ORDER BY VC_NAME"
-        type_results = fetch_data(type_query)
-        type_options = [str(type[0]) for type in type_results]
+    FROM
+        amr_mapping_billing, amr_vc_type
+    WHERE
+        amr_mapping_billing.evc_type = amr_vc_type.id
+        AND amr_vc_type.VC_NAME LIKE :1
+        AND daily = 1
+    order by or_der
+    """
 
-        # SQL query to fetch data based on selected type
-        base_query = """
-        SELECT
-            address,
-            description,
-            data_type,
-            evc_type,
-            or_der,
-            daily
+    selected_type = request.args.get("type_dropdown") or ""
+    if selected_type:
+        type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
+        results = fetch_data(type_id_query, (selected_type,))
+        
+        interval = request.args.get("interval") or "10"
+        
+         
+        if results:
+            type_id = str(results[0][0])
+
+            query = base_query
+            results = fetch_data(query, (selected_type,))
             
-        FROM
-            amr_mapping_billing, amr_vc_type
-        WHERE
-            amr_mapping_billing.evc_type = amr_vc_type.id
-            AND amr_vc_type.VC_NAME LIKE :1
-            AND daily = 1
-        """
+            print("type:", type_id)
+            max_daily_query = "SELECT MAX(daily) FROM amr_mapping_billing WHERE evc_type LIKE :1"
+            max_daily_result = fetch_data(max_daily_query, (type_id,))
+            max_daily_value = str(max_daily_result[0][0]) if max_daily_result and max_daily_result[0][0] else ""
+            print("max_day:", max_daily_value)
 
-        selected_type = request.args.get("type_dropdown") or ""
-        if selected_type:
-            type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
-            results = fetch_data(type_id_query, (selected_type,))
+            #if max_daily_value <=
+            columns = [
+                "address",
+                "description",
+                "data_type",
+                "evc_type",
+                "or_der",
+                "daily",
+            ]
+            df = pd.DataFrame(results, columns=columns)
+            print("dd:", df)
             
-            interval = request.args.get("interval") or "10"
-            
-            if results:
-                type_id = str(results[0][0])
+            # Extracting lists directly from DataFrame columns
+            list_address = df["address"].tolist()
+            list_description = df["description"].tolist()
+            list_data_type = df["data_type"].tolist()
+            list_evc_type = df["evc_type"].tolist()
+            list_or_der = df["or_der"].tolist()
+            list_daily = df["daily"].tolist()
 
-                query = base_query
-                results = fetch_data(query, (selected_type,))
-                
-                print("type:", type_id)
-                max_daily_query = "SELECT MAX(daily) FROM amr_mapping_billing WHERE evc_type LIKE :1"
-                max_daily_result = fetch_data(max_daily_query, (type_id,))
-                max_daily_value = str(max_daily_result[0][0]) if max_daily_result and max_daily_result[0][0] else ""
-                print("max_day:", max_daily_value)
+            return render_template(
+                'mapping_billing.html', 
+                type_options=type_options, 
+                selected_type=selected_type, 
+                max_daily_value=max_daily_value,
+                table=df.to_html(index=False),
+                list_address=list_address,
+                list_description=list_description,
+                list_data_type=list_data_type,
+                list_evc_type=list_evc_type,
+                list_or_der=list_or_der,
+                list_daily=list_daily,
+                interval=interval
+            )
 
-                #if max_daily_value <=
-                columns = [
-                    "address",
-                    "description",
-                    "data_type",
-                    "evc_type",
-                    "or_der",
-                    "daily",
-                ]
-                df = pd.DataFrame(results, columns=columns)
-                print("dd", df)
-                
-                # Extracting lists directly from DataFrame columns
-                list_address = df["address"].tolist()
-                list_description = df["description"].tolist()
-                list_data_type = df["data_type"].tolist()
-                list_evc_type = df["evc_type"].tolist()
-                list_or_der = df["or_der"].tolist()
-                list_daily = df["daily"].tolist()
-
-                return render_template(
-                    'mapping_billing.html', 
-                    type_options=type_options, 
-                    selected_type=selected_type, 
-                    max_daily_value=max_daily_value,
-                    table=df.to_html(index=False),
-                    list_address=list_address,
-                    list_description=list_description,
-                    list_data_type=list_data_type,
-                    list_evc_type=list_evc_type,
-                    list_or_der=list_or_der,
-                    list_daily=list_daily,
-                    interval=interval
-                )
-
-        return render_template('mapping_billing.html', type_options=type_options)
+    return render_template('mapping_billing.html', type_options=type_options)
 
     
 @app.route('/update_mapping_billing_route', methods=['POST'])
 def update_mapping_billing():
+    selected_type = request.form.get('selected_type')
+
+    # Fetch type_id from the database
+    type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME = '{selected_type}'"
+    results = fetch_data(type_id_query)
+    type_id = str(results[0]).strip("',()")
     
-        
-        type_name_value = ["Time Stamp","Converted Index (VbA)","Unconverted Index (VmA)","Pressure Daily Average","Temperature Daily Average"]
-        unit_type_name_value = ["Ulong","Ulong","Ulong","float","float"]
-        selected_type = request.form.get('selected_type')
-
-        # Fetch type_id from the database
-        type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME = '{selected_type}'"
-        results = fetch_data(type_id_query)
-        type_id = str(results[0]).strip("',()")
-        
-        max_daily_query = "SELECT MAX(daily),MAX(id),MAX(address),MAX(or_der)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
-        max_daily_result = fetch_data(max_daily_query)
-        current_id = 0
-        current_address = 0
-        current_order = 0
-        for row in max_daily_result:
-            if len(row) >= 3:
-                max_daily_value = int(row[0])
-                current_id = int(row[1])   
-                current_address = int(row[2]) 
-                current_order = int(row[3])
+    #max_daily_query = "SELECT MAX(daily),MAX(id),MAX(address),MAX(or_der)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
+    max_daily_query = "SELECT MAX(daily)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
+    max_daily_result = fetch_data(max_daily_query)
+    max_daily_query = str(max_daily_result[0]).strip("',()")
+    # print("Max:", max_daily_query)
+    
+    # evc_type = type_id
+    # max_daily_query = max day before save 
+    
+    dataframes = {
+                'address':[],
+                'description':[],
+                'data_type':[],
+                'evc_type':[],
+                'or_der':[],
+                'daily':[],
+    }
+    df_data = pd.DataFrame(dataframes)
+    
+    # get max day from text box
+    max_daily_new = int(request.form.get('max_day'))
+    
+    # get information Crete initial dataframe
+    
+    address_value_array = []
+    description_value_array = []
+    data_type_value_array = []
+    or_der_value_array = []
+    
+    
+    for i in range(0, QUANTITY_BILLING_PER_DAY): 
+        i = f"{i:02d}"
+        address_key = f"list_address{i}"
+        description_key = f"list_description{i}"
+        data_type_key = f"list_data_type{i}"
+        #evc_type_key = f"list_evc_type{i}"
+        or_der_key = f"list_or_der{i}"
+        #daily_key = f"list_daily{i}"
                 
-        if current_id == 0 or current_address == 0 or current_order == 0:
-            return redirect('/') # TODO : handler an errors and alert it.
+        address_value = request.form.get(address_key.strip("',()"))
+        address_value_array.append(int(address_value))
         
+        description_value = request.form.get(description_key.strip("',()"))
+        description_value_array.append(description_value)
         
-        max_daily_new = int(request.form.get('max_day'))
-        
-        interval = request.args.get("interval") or "10"
-        if  max_daily_new <= max_daily_value :
-            # Delete excess rows from max_daily_new + 1 to max_daily_value
-            for i in range(max_daily_value, max_daily_new, -1):
-                delete_query = f"""
-                DELETE FROM AMR_MAPPING_BILLING
-                WHERE evc_type = '{type_id}' AND DAILY = {i}
-                """
-                update_sql( delete_query)
+        data_type_value = request.form.get(data_type_key.strip("',()"))
+        data_type_value_array.append(data_type_value)
+        #evc_type_value = request.form.get(evc_type_key.strip("',()"))
+        or_der_value = request.form.get(or_der_key.strip("',()"))
+        or_der_value_array.append(or_der_value)
 
-        elif max_daily_new > max_daily_value:
-            # Update existing rows from 1 to max_daily_value
-            for i in range(max_daily_new - max_daily_value):
-                for x,y in zip(type_name_value,unit_type_name_value):
-                    # Adjust the values as needed from your form input or other sources
-                    new_address = current_address = current_address + 2
-                    new_description = x
-                    new_data_type = y
-                    new_evc_type = type_id
-                    new_or_der = current_order = current_order + 1
-                    new_daily = i + 1 + max_daily_value
-                
-                    insert_query = f"""
-                    INSERT INTO AMR_MAPPING_BILLING (ADDRESS, DESCRIPTION, DATA_TYPE, evc_type, OR_DER, DAILY)
-                    VALUES ('{new_address}', '{new_description}', '{new_data_type}',  '{new_evc_type}', '{new_or_der}', '{new_daily}')
-                    """
+    
+    #print("XX", address_value_array, description_value_array, data_type_value_array, or_der_value_array)
 
-                    update_sql( insert_query)
-                    # print(insert_query)
-        
-        # Update SQL query based on your table structure
-        for i in range(0, 5): 
-            i = f"{i:02d}"
-            address_key = f"list_address{i}"
-            description_key = f"list_description{i}"
-            data_type_key = f"list_data_type{i}"
-            evc_type_key = f"list_evc_type{i}"
-            or_der_key = f"list_or_der{i}"
-            daily_key = f"list_daily{i}"
-                    
-            address_value = request.form.get(address_key.strip("',()"))
-            description_value = request.form.get(description_key.strip("',()"))
-            data_type_value = request.form.get(data_type_key.strip("',()"))
-            evc_type_value = request.form.get(evc_type_key.strip("',()"))
-            or_der_value = request.form.get(or_der_key.strip("',()"))
-            daily_value = request.form.get(daily_key.strip("',()"))
-            # print("address:", address_value)
+    # create Full Data frame
+    # Get interval
+    interval = request.args.get("interval") or "10"
+    # print("interval", interval)
+    
+    # for j in range(0,max_daily_new):
+    #     #daily_value = j+1
+    #     for i in range(0, QUANTITY_BILLING_PER_DAY):
+             
+    #         address_calc = int(address_value_array[i]) + (j*int(interval))
+    #         print("")
+    #         data = {
+    #                 'address': [address_calc], 
+    #                 'description': [description_value_array[i]],
+    #                 'data_type': [data_type_value_array[i]],
+    #                 'evc_type': [type_id],
+    #                 'or_der': [int(or_der_value_array[i])],
+    #                 'daily': [j+1]
+    #         }
             
-            # Update SQL query based on your table structure
-            update_query = f"""
-            UPDATE AMR_MAPPING_BILLING
-            SET
-                ADDRESS = '{address_value}',
-                DESCRIPTION = '{description_value}',
-                DATA_TYPE = '{data_type_value}',
-                OR_DER = '{or_der_value}',
-                DAILY = '{daily_value}'        
-            WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
-        """
+    #         df2 = pd.DataFrame(data)
+    #         df_data = pd.concat([df_data, df2], ignore_index=True)
+            
+    #     df_data['address'] = df_data['address'].astype(int)
+    #     df_data['or_der'] = df_data['or_der'].astype(int)
+    #     df_data['daily'] = df_data['daily'].astype(int)      
+            
+    print("dd4", df_data)
+         
+       
+    if  max_daily_new <= int(max_daily_query) :
+        if max_daily_new < int(max_daily_query):
+            delete_query = f"""
+            DELETE FROM AMR_MAPPING_BILLING
+            WHERE evc_type = '{type_id}' AND DAILY > {max_daily_new}
+            """
+            # print(delete_query)
+            update_sql(delete_query)
+        
+        for j in range(max_daily_new):
+            for i in range(QUANTITY_BILLING_PER_DAY):
+                update_query = f"""
+                UPDATE AMR_MAPPING_BILLING
+                SET 
+                    ADDRESS = '{int(address_value_array[i]) + (j* int(interval))}',
+                    DESCRIPTION = '{description_value_array[i]}',
+                    data_type = '{data_type_value_array[i]}'
+                WHERE 
+                    evc_type = '{type_id}' and 
+                    or_der = {i+1} and 
+                    daily = {j+1}
+                    
+                """
+                # print("update_query", update_query)
+                update_sql(update_query)
+        
+    else : # max_daily_new > int(max_daily_query):
+        # updte 1 to max_daily_query
+        for j in range(int(max_daily_query)):
+            for i in range(QUANTITY_BILLING_PER_DAY):
+                update_billing = f"""
+                UPDATE AMR_MAPPING_BILLING
+                SET 
+                    ADDRESS = '{int(address_value_array[i]) + (j* int(interval))}',
+                    DESCRIPTION = '{description_value_array[i]}',
+                    data_type = '{data_type_value_array[i]}'
+                WHERE 
+                    evc_type = '{type_id}' and 
+                    or_der = {i+1} and 
+                    daily = {j+1}
+                """
+                # print("update_billing", update_billing)
+                update_sql(update_billing)
+        
+        # Insert max_daily_query to max_daily_new
+        
+        for j in range(max_daily_new - int(max_daily_query)):
+            for i in range(QUANTITY_BILLING_PER_DAY):  # Assuming this is the correct length
+                new_address = int(address_value_array[i]) + ((int(max_daily_query) + j) * int(interval))
+                new_description = description_value_array[i]
+                new_data_type = data_type_value_array[i]
+                new_evc_type = type_id
+                new_or_der = or_der_value_array[i]
+                new_daily = int(max_daily_query) + j + 1
 
-            update_sql( update_query)
-            print(update_query)
+                insert_query = f"""
+                INSERT INTO AMR_MAPPING_BILLING (ADDRESS, DESCRIPTION, DATA_TYPE, evc_type, OR_DER, DAILY)
+                VALUES ('{new_address}', '{new_description}', '{new_data_type}',  '{new_evc_type}', '{new_or_der}', '{new_daily}')
+                """
 
-        return redirect("/mapping_billing")
+                update_sql(insert_query)
+                # print(insert_query)
+
+    return redirect("/mapping_billing")
 
 
 @app.route("/add_mapping_route")
