@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import pandas as pd
 import cx_Oracle
 import sqlite3
@@ -639,7 +639,8 @@ def add_site():
     MET0 = "MET0"
     PROT0 = "PROT0"
     
-    RMIU_POLL_REPEAT1 = 0
+    
+    sql_commands = []
         
     if request.method == 'POST':
         phase = request.form['phase']
@@ -658,21 +659,69 @@ def add_site():
         initial_username = request.form['initial_username']
         initial_password = request.form['initial_password']
         
-        print(f'Phase: {phase}')
-        print(f'Site Name: {site_name}')
-        print(f'Factory Name: {factory_name}')
-        print(f'Region: {region}')
-        print(f'RMIU Type: {rmiu_type}')
-        print(f'Power Indicator: {power_indicator}')
-        print(f'MODBUS ID: {modbus_id}')
-        print(f'IP Address: {ip_address}')
-        print(f'Ready to Billing: {ready_to_billing}')  # Will print '1' if checkbox is checked
-        print(f'Auto Ping: {auto_ping}')  # Will print '1' if checkbox is checked
-        print(f'Billing Date: {billing_date}')
-        print(f'Show SG CO2 N2: {show_sg_co2_n2}')
-        print(f'Amount of Meter: {amount_of_meter}')
-        print(f'Initial Username: {initial_username}')
-        print(f'Initial Password: {initial_password}')
+        port_1 = request.form['port_1']
+        port1 = request.form['port1']
+        auto_1 = request.form['auto_1']
+        
+        port_2 = request.form['port_2']
+        port2 = request.form['port2']
+        auto_2 = request.form['auto_2']
+        
+        port_3 = request.form['port_3']
+        port3 = request.form['port3']
+        auto_3 = request.form['auto_3']
+        
+        port_4 = request.form['port_4']
+        port4 = request.form['port4']
+        auto_4 = request.form['auto_4']
+        
+        port_5 = request.form['port_5']
+        port5 = request.form['port5']
+        auto_5 = request.form['auto_5']
+        
+        port_6 = request.form['port_6']
+        port6 = request.form['port6']
+        auto_6 = request.form['auto_6']
+        
+        # print(f'Phase: {phase}')
+        # print(f'Site Name: {site_name}')
+        # print(f'Factory Name: {factory_name}')
+        # print(f'Region: {region}')
+        # print(f'RMIU Type: {rmiu_type}')
+        # print(f'Power Indicator: {power_indicator}')
+        # print(f'MODBUS ID: {modbus_id}')
+        # print(f'IP Address: {ip_address}')
+        # print(f'Ready to Billing: {ready_to_billing}')  # Will print '1' if checkbox is checked
+        # print(f'Auto Ping: {auto_ping}')  # Will print '1' if checkbox is checked
+        # print(f'Billing Date: {billing_date}')
+        # print(f'Show SG CO2 N2: {show_sg_co2_n2}')
+        # print(f'Amount of Meter: {amount_of_meter}')
+        # print(f'Initial Username: {initial_username}')
+        # print(f'Initial Password: {initial_password}')
+        
+        # print(f'port_1: {port_1}')
+        # print(f'port1: {port1}')
+        # print(f'auto_1: {auto_1}')
+        
+        # print(f'port_2: {port_2}')
+        # print(f'port2: {port2}')
+        # print(f'auto_2: {auto_2}')
+        
+        # print(f'port_3: {port_3}')
+        # print(f'port3: {port3}')
+        # print(f'auto_3: {auto_3}')
+        
+        # print(f'port_4: {port_4}')
+        # print(f'port4: {port4}')
+        # print(f'auto_4: {auto_4}')
+        
+        # print(f'port_5: {port_5}')
+        # print(f'port5: {port5}')
+        # print(f'auto_5: {auto_5}')
+        
+        # print(f'port_6: {port_6}')
+        # print(f'port6: {port6}')
+        # print(f'auto_6: {auto_6}')
 
         amr_user = f"""
         INSERT INTO AMR_USER (ID, DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL, USER_GROUP, USER_ENABLE)
@@ -688,69 +737,254 @@ def add_site():
                                 CUST_ID, 
                                 METER_ID, 
                                 PROTOCOL_ID, 
-                                RTU_MODBUS_ID, 
+                                RTU_MODBUS_ID,
+                                RMIU_AUTO_ENABLE,
+                                PING_ENABLE,
+                                RMIU_TYPE, 
                                 SIM_IP,
                                 RMIU_POLL_REPEAT1,
                                 RMIU_POLL_REPEAT2,
-                                AMR_PHASE,
-                                BILLING_DATE
+                                AMR_PHASE
                                 )
         VALUES ({max_id_value}, '{site_name}', 
                                 '{AMR0+max_id_value}', 
                                 '{CUST0+max_id_value}', 
                                 '{MET0+max_id_value}', 
                                 '{PROT0+max_id_value}', 
-                                '{modbus_id}', 
+                                '{modbus_id}',
+                                '{ready_to_billing}',
+                                '{auto_ping}',
+                                '{rmiu_type}', 
                                 '{ip_address}',
-                                '{RMIU_POLL_REPEAT1}',
-                                '{RMIU_POLL_REPEAT1}',
-                                '{phase}',
-                                '{billing_date}'
+                                '{0}',
+                                '{0}',
+                                '{phase}'
                                 )
         """
-        # update_sql(amr_field_id)
+        update_sql(amr_field_id)
         
         amr_field_customer= f"""
         INSERT INTO AMR_FIELD_CUSTOMER (
                                         ID, 
                                         CUST_ID,
                                         CUST_NAME,
-                                        CUST_FACTORY_NAME
+                                        CUST_FACTORY_NAME,
+                                        METER_RUN
                                         )
         VALUES ({max_id_value}, '{CUST0+max_id_value}',
                                 '{site_name}',
-                                '{factory_name}'            
+                                '{factory_name}',
+                                '{amount_of_meter}'            
                                 )
         """
         # update_sql(amr_field_customer)
         
-        amr_field_meter = f"""
-        INSERT INTO AMR_FIELD_METER (METER_ID,
-                                    METER_NO_STREAM          
-                                    )
-        VALUES ('{MET0+max_id_value}', '{amount_of_meter}')
-        
+        amr_pl_group = f""" 
+        INSERT INTO AMR_PL_GROUP (ID, PL_REGION_ID, FIELD_ID) 
+        VALUES ({max_id_value}, '{region}', '{AMR0+max_id_value}')
         """
-        # update_sql(amr_field_meter)
-
-
-        return render_template('display_site.html', 
-                            phase=phase, 
-                            site_name=site_name, 
-                            factory_name=factory_name, 
-                            region=region, 
-                            rmiu_type=rmiu_type, 
-                            power_indicator=power_indicator, 
-                            modbus_id=modbus_id, 
-                            ip_address=ip_address, 
-                            billing_date=billing_date, 
-                            show_sg_co2_n2=show_sg_co2_n2, 
-                            initial_username=initial_username, 
-                            initial_password=initial_password)
+        update_sql(amr_pl_group)
         
-    
+        for i in range(1, int(amount_of_meter) + 1): 
+            amr_field_meter = f"""
+            INSERT INTO AMR_FIELD_METER (METER_ID, 
+                                        METER_STREAM_NO, 
+                                        METER_NO_STREAM,
+                                        METER_STREAM_TYPE,
+                                        METER_PORT_NO,
+                                        METER_AUTO_ENABLE,
+                                        METER_POLL_REPEAT1,
+                                        METER_POLL_REPEAT2,
+                                        METER_POLL_REPEAT3,
+                                        METER_POLL_REPEAT4,
+                                        METER_POLL_REPEAT5,
+                                        METER_POLL_REPEAT6,
+                                        METER_POLL_REPEAT7 
+                                        )
+            VALUES ('{MET0+max_id_value}', '{i}',
+                                        '{amount_of_meter}',
+                                        '{request.form['port_' + str(i)]}',
+                                        '{request.form['port' + str(i)]}',
+                                        '{request.form['auto_' + str(i)]}',
+                                        '{0}',
+                                        '{0}',
+                                        '{0}',
+                                        '{0}',
+                                        '{0}',
+                                        '{0}',
+                                        '{0}'
+                                        )         
+            """
+            # update_sql(amr_field_meter)
+            
+            amr_field_profile = f"""
+            INSERT INTO AMR_FIELD_PROFILE (METER_ID, 
+                                            METER_STREAM_NO,
+                                            WRITE_CONFIG_ENABLE,
+                                            WRITE_CONFIG_REPEAT1,
+                                            WRITE_CONFIG_REPEAT2
+                                            )
+            VALUES ('{MET0+max_id_value}', '{i}',
+                                            '{auto_ping}',
+                                            '{0}',
+                                            '{0}'
+                                            )
+            """
+            # update_sql(amr_field_profile)
+            
+            amr_field_protocal = f"""
+            INSERT INTO AMR_FIELD_PROTOCAL (PROTOCOL_ID, PROTOCOL_STREAM_NO, PROTOCOL_NO_STREAM)
+            VALUES ('{PROT0+max_id_value}', '{i}', '{amount_of_meter}')
+            """
+            # update_sql(amr_field_protocal)
+            
+        return render_template('home.html',)
+
+        
     return render_template('add_site.html', max_id_value=max_id_value)
+
+@app.route('/edit_site', methods=['GET', 'POST'])
+def edit_site():
+    query_type = request.args.get("query_type")
+
+    # SQL query to fetch unique PL_REGION_ID values
+    region_query = """
+    SELECT * FROM AMR_REGION 
+    """
+
+    selected_region = request.args.get("region_dropdown")
+
+    # Fetch unique region values
+    region_results = fetch_data(region_query)
+    region_options = [str(region[0]) for region in region_results]
+
+    tag_query = """
+    SELECT DISTINCT TAG_ID
+    FROM AMR_FIELD_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+    ORDER BY TAG_ID
+    """
     
+    selected_tag = request.args.get("tag_dropdown")
+    
+    # Fetch tag options based on the selected region
+    tag_results = fetch_data(tag_query, params={"region_id": selected_region})
+    tag_options = [str(tag[0]) for tag in tag_results]
+    
+    show_tag_query = """
+    SELECT DISTINCT
+        AMR_FIELD_ID.TAG_ID,
+        AMR_FIELD_ID.SIM_IP,
+        AMR_FIELD_ID.RTU_MODBUS_ID,
+        AMR_FIELD_ID.AMR_PHASE,
+        AMR_FIELD_CUSTOMER.CUST_FACTORY_NAME,
+        AMR_USER.USER_NAME,
+        AMR_USER.PASSWORD,
+        AMR_FIELD_METER.METER_ID,
+        AMR_FIELD_METER.METER_STREAM_NO,
+        AMR_FIELD_METER.METER_NO_STREAM,
+        AMR_FIELD_METER.METER_STREAM_TYPE,
+        AMR_FIELD_METER.METER_PORT_NO,
+        AMR_FIELD_PROFILE.METER_ID,
+        AMR_FIELD_PROTOCAL.PROTOCOL_ID,
+        AMR_FIELD_PROTOCAL.PROTOCOL_NO_STREAM
+    FROM 
+        AMR_FIELD_ID
+    JOIN AMR_FIELD_CUSTOMER ON AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID
+    JOIN AMR_USER ON AMR_FIELD_ID.ID = AMR_USER.ID
+    JOIN AMR_FIELD_METER ON AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID
+    JOIN AMR_FIELD_PROFILE ON AMR_FIELD_ID.METER_ID = AMR_FIELD_PROFILE.METER_ID
+    JOIN AMR_FIELD_PROTOCAL ON AMR_FIELD_ID.PROTOCOL_ID = AMR_FIELD_PROTOCAL.PROTOCOL_ID
+    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+    JOIN AMR_REGION ON AMR_PL_GROUP.PL_REGION_ID = AMR_REGION.ID
+    WHERE 
+        AMR_REGION.ID = :region_id AND
+        AMR_FIELD_ID.TAG_ID = :tag_id
+    """
+    
+    data = []
+    if selected_region is not None and selected_tag is not None:
+        data = fetch_data(show_tag_query, params={"region_id": selected_region, "tag_id": selected_tag})
+       
+
+    # Create DataFrame from query results
+    columns = [
+        'tag_id',
+        'sim_ip',
+        'rtu_modbus_id',
+        'amr_phase',
+        'cust_factory_name',
+        'user_name',
+        'password',
+        'meter_id',
+        'meter_stream_no',
+        'meter_no_stream',
+        'meter_stream_type',
+        'meter_port_no',
+        'meter_id',
+        'protocol_id',
+        'protocol_no_stream'
+    ]
+    df = pd.DataFrame(data, columns=columns)
+    
+    
+    if not df.empty and len(df["tag_id"]) > 0:
+        list_tag_id = df["tag_id"].tolist()[0]
+    else:
+        list_tag_id = None
+    print("list_tag_id:", list_tag_id)
+    
+    if not df.empty and len(df["cust_factory_name"]) > 0:
+        list_cust_factory_name = df["cust_factory_name"].tolist()[0]
+    else:
+        list_cust_factory_name = None
+        
+    if not df.empty and len(df["amr_phase"]) > 0:
+        list_amr_phase = df["amr_phase"].tolist()[0]
+    else:
+        list_amr_phase = None
+        
+    if not df.empty and len(df["rtu_modbus_id"]) > 0:
+        list_rtu_modbus_id = df["rtu_modbus_id"].tolist()[0]
+    else:
+        list_rtu_modbus_id = None
+        
+    if not df.empty and len(df["sim_ip"]) > 0:
+        list_sim_ip = df["sim_ip"].tolist()[0]
+    else:
+        list_sim_ip = None
+        
+    if not df.empty and len(df["user_name"]) > 0:
+        list_user_name = df["user_name"].tolist()[0]
+    else:
+        list_user_name = None
+        
+    if not df.empty and len(df["password"]) > 0:
+        list_password = df["password"].tolist()[0]
+    else:
+        list_password = None
+
+    # Convert DataFrame to HTML table
+    html_table = df.to_html(index=False)
+
+    return render_template('edit_site.html', 
+                           region_options=region_options, 
+                           tag_options=tag_options, 
+                           selected_region=selected_region,
+                           selected_tag=selected_tag,
+                           list_tag_id=list_tag_id,
+                           list_cust_factory_name=list_cust_factory_name,
+                           list_amr_phase=list_amr_phase,
+                           list_rtu_modbus_id=list_rtu_modbus_id,
+                           list_sim_ip=list_sim_ip,
+                           list_user_name=list_user_name,
+                           list_password=list_password,
+                           html_table=html_table)
+
+    
+
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
