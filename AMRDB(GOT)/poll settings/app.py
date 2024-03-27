@@ -681,7 +681,7 @@ def update_mapping_billing():
     max_daily_query = "SELECT MAX(daily)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
     max_daily_result = fetch_data(max_daily_query)
     max_daily_query = str(max_daily_result[0]).strip("',()")
-    print("Max:", max_daily_query)
+    # print("Max:", max_daily_query)
     
     # evc_type = type_id
     # max_daily_query = max day before save 
@@ -734,41 +734,40 @@ def update_mapping_billing():
     # create Full Data frame
     # Get interval
     interval = request.args.get("interval") or "10"
-    print("interval", interval)
+    # print("interval", interval)
     
-    for j in range(0,max_daily_new):
-        #daily_value = j+1
-        for i in range(0, QUANTITY_BILLING_PER_DAY):
+    # for j in range(0,max_daily_new):
+    #     #daily_value = j+1
+    #     for i in range(0, QUANTITY_BILLING_PER_DAY):
              
-            address_calc = int(address_value_array[i]) + (j*int(interval))
-            print("")
-            data = {
-                    'address': [address_calc], 
-                    'description': [description_value_array[i]],
-                    'data_type': [data_type_value_array[i]],
-                    'evc_type': [type_id],
-                    'or_der': [int(or_der_value_array[i])],
-                    'daily': [j+1]
-            }
+    #         address_calc = int(address_value_array[i]) + (j*int(interval))
+    #         print("")
+    #         data = {
+    #                 'address': [address_calc], 
+    #                 'description': [description_value_array[i]],
+    #                 'data_type': [data_type_value_array[i]],
+    #                 'evc_type': [type_id],
+    #                 'or_der': [int(or_der_value_array[i])],
+    #                 'daily': [j+1]
+    #         }
             
-            df2 = pd.DataFrame(data)
-            df_data = pd.concat([df_data, df2], ignore_index=True)
+    #         df2 = pd.DataFrame(data)
+    #         df_data = pd.concat([df_data, df2], ignore_index=True)
             
-        df_data['address'] = df_data['address'].astype(int)
-        df_data['or_der'] = df_data['or_der'].astype(int)
-        df_data['daily'] = df_data['daily'].astype(int)      
+    #     df_data['address'] = df_data['address'].astype(int)
+    #     df_data['or_der'] = df_data['or_der'].astype(int)
+    #     df_data['daily'] = df_data['daily'].astype(int)      
             
     print("dd4", df_data)
          
        
     if  max_daily_new <= int(max_daily_query) :
-        print("EEEE", max_daily_new, max_daily_query)
         if max_daily_new < int(max_daily_query):
             delete_query = f"""
             DELETE FROM AMR_MAPPING_BILLING
             WHERE evc_type = '{type_id}' AND DAILY > {max_daily_new}
             """
-            print(delete_query)
+            # print(delete_query)
             update_sql(delete_query)
         
         for j in range(max_daily_new):
@@ -785,13 +784,12 @@ def update_mapping_billing():
                     daily = {j+1}
                     
                 """
-                print("update_query", update_query)
-
+                # print("update_query", update_query)
                 update_sql(update_query)
         
     else : # max_daily_new > int(max_daily_query):
         # updte 1 to max_daily_query
-        for j in range(0, int(max_daily_query)):
+        for j in range(int(max_daily_query)):
             for i in range(QUANTITY_BILLING_PER_DAY):
                 update_billing = f"""
                 UPDATE AMR_MAPPING_BILLING
@@ -804,8 +802,7 @@ def update_mapping_billing():
                     or_der = {i+1} and 
                     daily = {j+1}
                 """
-                print("update_billing", update_billing)
-
+                # print("update_billing", update_billing)
                 update_sql(update_billing)
         
         # Insert max_daily_query to max_daily_new
@@ -825,24 +822,7 @@ def update_mapping_billing():
                 """
 
                 update_sql(insert_query)
-                print(insert_query)
-    
-    
-    # Update SQL query based on your table structure
-    
-        # update_query = f"""
-        # UPDATE AMR_MAPPING_BILLING
-        # SET
-        #     ADDRESS = '{address_value}',
-        #     DESCRIPTION = '{description_value}',
-        #     DATA_TYPE = '{data_type_value}',
-        #     OR_DER = '{or_der_value}',
-        #     DAILY = '{daily_value}'        
-        # WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
-        # """
-
-        # update_sql(update_query)
-        # print(update_query)
+                # print(insert_query)
 
     return redirect("/mapping_billing")
 
