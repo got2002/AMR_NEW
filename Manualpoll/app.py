@@ -2,6 +2,7 @@ from flask import Flask, render_template, request,session
 import socket
 import struct
 from pymodbus.utilities import computeCRC
+from flask_session import Session
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 communication_traffic = []
@@ -58,7 +59,18 @@ def read_data_old():
     request_message += crc.to_bytes(2, byteorder="big")
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((tcp_ip, tcp_port))
+    sock.settimeout(5)  
+
+    try:
+        sock.connect((tcp_ip, tcp_port))
+        print("Connected to server")
+    except socket.timeout:
+        print("Connection timed out")
+    except socket.error as e:
+        print(f"Error connecting to server: {e}")
+    finally:
+        client_socket.close()
+    
 
     # Store the TX message in communication_traffic
     communication_traffic.append({"direction": "TX", "data": request_message.hex()})
@@ -78,6 +90,7 @@ def read_data_old():
         int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
         for i in range(0, len(data), bytes_per_value)
     ]
+    print(values)
     data_list = []
     values = values[:-1]
     address = starting_address
