@@ -13,46 +13,18 @@ QUANTITY_RANGE_CONFIG_LIST = 10  # poll range ทำเป็น list จะม�
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-username = "root"
-password = "root"
-hostname = "192.168.102.192"
-port = "1521"
-service_name = "orcl"
+# username = "root"
+# password = "root"
+# hostname = "192.168.102.192"
+# port = "1521"
+# service_name = "orcl"
 
-dsn = cx_Oracle.makedsn(hostname, port, service_name)
-
-try:
-    connection_info = {
-        "user": username,
-        "password": password,
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Success")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-# ptt_pivot_params = {
-#     "username": "PTT_PIVOT",
-#     "password": "PTT_PIVOT",
-#     "hostname": "10.100.56.3",
-#     "port": "1521",
-#     "service_name": "PTTAMR_MST"
-# }
-
-# dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+# dsn = cx_Oracle.makedsn(hostname, port, service_name)
 
 # try:
 #     connection_info = {
-#         "user": ptt_pivot_params["username"],
-#         "password": ptt_pivot_params["password"],
+#         "user": username,
+#         "password": password,
 #         "dsn": dsn,
 #         "min": 1,
 #         "max": 5,
@@ -62,11 +34,39 @@ except cx_Oracle.Error as e:
 
 #     connection_pool = cx_Oracle.SessionPool(**connection_info)
 #     connection = connection_pool.acquire()
-#     print("Connection to PTT_PIVOT successful.")
-    
+#     print("Success")
 # except cx_Oracle.Error as e:
 #     (error,) = e.args
 #     print("Oracle Error:", error)
+
+ptt_pivot_params = {
+    "username": "PTT_PIVOT",
+    "password": "PTT_PIVOT",
+    "hostname": "10.100.56.3",
+    "port": "1521",
+    "service_name": "PTTAMR_MST"
+}
+
+dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+
+try:
+    connection_info = {
+        "user": ptt_pivot_params["username"],
+        "password": ptt_pivot_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to PTT_PIVOT successful.")
+    
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
 
 def fetch_data(query, params=None):
     try:
@@ -733,7 +733,7 @@ def update_mapping_billing():
 
     # create Full Data frame
     # Get interval
-    interval = request.args.get("interval") or "10"
+    interval = request.args.get("interval") or "30"
     # print("interval", interval)
     
     # for j in range(0,max_daily_new):

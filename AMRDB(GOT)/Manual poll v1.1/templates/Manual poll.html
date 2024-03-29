@@ -619,12 +619,12 @@
                                 <button type="submit" name="action_configuration" value="configuration" style=" height: 34px; width: 185px; font-size: x-small; border: none;border-radius: 0.5rem;background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
                             </div> -->
                             {% if not df.empty %}
-                                <div class="btn-buttonActaris" style="margin-top: -60px; margin-left: -480px;">
-                                    <form method="POST">
-                                        <button type="submit" name="action_configuration"  value="configuration" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
-                                    </form>
-                                </div>
-                            {% endif %}
+                            <div class="btn-buttonActaris" style="margin-top: 30px; margin-left: -480px;">
+                                <form id="myForm" method="POST">
+                                    <button id="popupButton" type="submit" onclick="openPopup()" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
+                                </form>
+                            </div>
+                        {% endif %}
                                         
                              <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
                          </div>
@@ -648,15 +648,108 @@
 
      </div>
  </div>
- 
+ {% if not df.empty %}
  <button id="fetchDataButton">save_to_oracle</button>
+ {% endif %}
+ </div>
+</div>
+</div>
+<div >
+    <p id="txConfigData"></p>
+    <p id="rxConfigData"></p>
+    <p id="txBillingData"></p>
+    <p id="rxBillingData"></p>
+</div>
+<table >
+    {{ result_config_html | safe }}
+</table>
+<table>
+    {{ result_billing_html | safe }}
+</table>
+</body>
 
- <script>
+<script>
+
+var popupWindow; // Declare popupWindow variable to make it accessible globally
+
+function openPopup() {
+    var tx_config = "{{ tx_config }}";
+    var rx_config = "{{ rx_config }}";
+    var tx_billing = "{{ tx_billing }}";
+    var rx_billing = "{{ rx_billing }}";
+
+    var popupContent = "<div>";
+
+    // Store data in JavaScript variables
+    var txConfigData = document.getElementById("txConfigData");
+    var rxConfigData = document.getElementById("rxConfigData");
+    var txBillingData = document.getElementById("txBillingData");
+    var rxBillingData = document.getElementById("rxBillingData");
+
+    txConfigData.innerHTML = tx_config;
+    rxConfigData.innerHTML = rx_config;
+    txBillingData.innerHTML = tx_billing;
+    rxBillingData.innerHTML = rx_billing;
+
+    popupContent += "<p>" + tx_config + "</p>";
+    popupContent += "<p>" + rx_config + "</p>";
+
+    popupContent += "</div>";
+
+    popupWindow = window.open('', '_blank', 'width=500,height=500');
+    popupWindow.document.write('<!DOCTYPE html>');
+    popupWindow.document.write('<html lang="en">');
+    popupWindow.document.write('<head>');
+    popupWindow.document.write('<meta charset="UTF-8">');
+    popupWindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+    popupWindow.document.write('<title>Popup Content</title>');
+    popupWindow.document.write('</head>');
+    popupWindow.document.write('<body>');
+    popupWindow.document.write(popupContent);
+    popupWindow.document.write('</body>');
+    popupWindow.document.write('</html>');
+
+    setTimeout(function() {
+        popupContent += "<div>";
+        // Add tx_billing and rx_billing data to the content to be displayed
+        popupContent += "<p>" + tx_billing + "</p>";
+        popupContent += "<p>" + rx_billing + "</p>";
+        popupContent += "</div>";
+
+        popupWindow.document.body.innerHTML = popupContent;
+
+        
+        setTimeout(function() {
+            closePopup();
+            // Display the hidden content and result tables when the process is complete
+            document.getElementById("hiddenContent").style.display = "block";
+            document.getElementById("resultTables").style.display = "block";
+        }, 5000);
+    }, 5000); // 5 seconds
+
+    popupWindow.document.close();
+
+    if (!popupWindow || popupWindow.closed || typeof popupWindow.closed == 'undefined') {
+        alert('Popup window blocked! Please enable popups for this site.');
+    }
+}
+
+// Function to close the popupWindow
+function closePopup() {
+    if (popupWindow) {
+        popupWindow.close();
+    }
+}
+
+</script>
+
+    
+<script>
     document.getElementById("fetchDataButton").onclick = function() {
         
         var xhr = new XMLHttpRequest();
 
-        xhr.open("POST", "/save_to_oracle");
+        xhr.open("POST", "/save_to_oracle_manualpoll");
 
         xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -704,15 +797,4 @@
         xhr.send(data);
     };
 </script>
-
-
-
-
-
- </div>
- 
-</div>
-</div>
-</body>
-
 </html>
