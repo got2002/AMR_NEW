@@ -107,8 +107,8 @@ def fetch_data(connection, query, params=None):
 
 
 
-@app.route("/write_evc",methods=["GET"])
-def Manualpoll_data():
+@app.route("/write_evc_old",methods=["GET"])
+def Manualpoll_data_old():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
        
@@ -223,7 +223,7 @@ def Manualpoll_data():
         Port_str = [''] 
     
     return render_template(
-        "evc.html",
+        "write_evc_old.html",
         tables=[df.to_html(classes="data")],
         titles=df.columns.values,
         selected_tag=selected_tag,
@@ -236,8 +236,8 @@ def Manualpoll_data():
     )
 
 
-@app.route('/write_evc', methods=['POST'])
-def read_data():
+@app.route('/write_evc_old', methods=['POST'])
+def read_data_old():
     try:
         global change_to_32bit_counter, communication_traffic
         
@@ -399,7 +399,7 @@ def read_data():
             Port_str = [''] 
         
 
-        return render_template('evc.html',   df=df,
+        return render_template('write_evc_old.html',   df=df,
 
             slave_id=slave_id,
             function_code=function_code,
