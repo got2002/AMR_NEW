@@ -886,6 +886,7 @@ def edit_site():
         AMR_FIELD_METER.METER_NO_STREAM,
         AMR_FIELD_METER.METER_STREAM_TYPE,
         AMR_FIELD_METER.METER_PORT_NO,
+        AMR_FIELD_METER.METER_AUTO_ENABLE,
         AMR_FIELD_PROFILE.METER_ID,
         AMR_FIELD_PROTOCAL.PROTOCOL_ID,
         AMR_FIELD_PROTOCAL.PROTOCOL_NO_STREAM
@@ -901,6 +902,7 @@ def edit_site():
     WHERE 
         AMR_REGION.ID = :region_id AND
         AMR_FIELD_ID.TAG_ID = :tag_id
+    ORDER BY METER_STREAM_NO
     """
     
     data = []
@@ -922,6 +924,7 @@ def edit_site():
         'meter_no_stream',
         'meter_stream_type',
         'meter_port_no',
+        'meter_auto_enable',
         'meter_id',
         'protocol_id',
         'protocol_no_stream'
@@ -929,44 +932,70 @@ def edit_site():
     df = pd.DataFrame(data, columns=columns)
     
     
-    if not df.empty and len(df["tag_id"]) > 0:
-        list_tag_id = df["tag_id"].tolist()[0]
+    if not df.empty:
+        list_tag_id = df["tag_id"].iloc[0]
+        list_cust_factory_name = df["cust_factory_name"].iloc[0]
+        list_amr_phase = df["amr_phase"].iloc[0]
+        list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
+        list_sim_ip = df["sim_ip"].iloc[0]
+        list_user_name = df["user_name"].iloc[0]
+        list_password = df["password"].iloc[0]
+        print("list_user_name", list_user_name)
+        list_meter_stream_no = df["meter_stream_no"].tolist()       
+        list_meter_port_no = df["meter_port_no"].tolist()
+        list_meter_auto_enable = df["meter_auto_enable"].tolist()
+        
+        update_user = f"""
+        UPDATE AMR_USER 
+        SET 
+            user_name = '{list_user_name}',
+            password = '{list_password}'
+            
+        WHERE id = '138'
+        """
+        print("update_user", update_user)
+        update_sql(update_user)
+        
+        list_meter_stream_type = []
+        for meter_stream_type in df["meter_stream_type"]:
+            meter_stream_type_list = f"""SELECT vc_name FROM amr_vc_type WHERE id = '{meter_stream_type}' ORDER BY id"""
+            data = fetch_data(meter_stream_type_list)
+            if data:
+                list_meter_stream_type.append(data[0][0])
+            else:
+                list_meter_stream_type.append(None)
+            print("list_meter_stream_type", list_meter_stream_type)
+                
+        list_meter_port_no = []
+        for meter_port_no in df["meter_port_no"]:
+            meter_port_no_list =f"""SELECT port_no FROM amr_port_info WHERE id = '{meter_port_no}' ORDER BY id"""
+            port = fetch_data(meter_port_no_list)
+            if port:
+                list_meter_port_no.append(port[0][0])
+            else:
+                list_meter_port_no.append(None)
+            print("list_meter_port_no", list_meter_port_no)
+            
+            
     else:
         list_tag_id = None
-    print("list_tag_id:", list_tag_id)
-    
-    if not df.empty and len(df["cust_factory_name"]) > 0:
-        list_cust_factory_name = df["cust_factory_name"].tolist()[0]
-    else:
         list_cust_factory_name = None
-        
-    if not df.empty and len(df["amr_phase"]) > 0:
-        list_amr_phase = df["amr_phase"].tolist()[0]
-    else:
         list_amr_phase = None
-        
-    if not df.empty and len(df["rtu_modbus_id"]) > 0:
-        list_rtu_modbus_id = df["rtu_modbus_id"].tolist()[0]
-    else:
         list_rtu_modbus_id = None
-        
-    if not df.empty and len(df["sim_ip"]) > 0:
-        list_sim_ip = df["sim_ip"].tolist()[0]
-    else:
         list_sim_ip = None
-        
-    if not df.empty and len(df["user_name"]) > 0:
-        list_user_name = df["user_name"].tolist()[0]
-    else:
         list_user_name = None
-        
-    if not df.empty and len(df["password"]) > 0:
-        list_password = df["password"].tolist()[0]
-    else:
         list_password = None
+        list_meter_stream_no = None
+        list_meter_auto_enable = None
+        list_meter_stream_type = None
+        list_meter_port_no = None
+        
+    
 
-    # Convert DataFrame to HTML table
     html_table = df.to_html(index=False)
+    
+    
+
 
     return render_template('edit_site.html', 
                            region_options=region_options, 
@@ -980,6 +1009,10 @@ def edit_site():
                            list_sim_ip=list_sim_ip,
                            list_user_name=list_user_name,
                            list_password=list_password,
+                           list_meter_stream_no=list_meter_stream_no,
+                           list_meter_stream_type=list_meter_stream_type,
+                           list_meter_port_no=list_meter_port_no,
+                           list_meter_auto_enable=list_meter_auto_enable,
                            html_table=html_table)
 
     
