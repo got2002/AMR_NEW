@@ -84,9 +84,6 @@ def fetch_data(query, params=None):
         return []
 
 
-
-
-
 @app.route("/get_tags", methods=["GET"])
 def get_tags():
     selected_region = request.args.get("selected_region")
@@ -106,14 +103,11 @@ def get_tags():
 
     return jsonify({"tag_options": tag_options})
 
-
 @app.route("/Manualpoll_data")
 def Manualpoll_data():
-    
     region_query = """
         SELECT * FROM AMR_REGION 
     """
-    
     tag_query = """
         SELECT DISTINCT TAG_ID
         FROM AMR_FIELD_ID
@@ -132,16 +126,14 @@ def Manualpoll_data():
             AMR_FIELD_METER.METER_NO_STREAM as NoRun,
             AMR_FIELD_METER.METER_ID as METERID,
             AMR_VC_TYPE.VC_NAME as VCtype,
-            AMR_FIELD_ID.SIM_IP as IPAddress,
-            
+            AMR_FIELD_ID.SIM_IP as IPAddress,           
             AMR_PORT_INFO.PORT_NO as port,
             amr_poll_range.evc_type as evc_type,
-    
-   amr_vc_type.vc_name as vc_name ,
-   amr_poll_range.poll_billing as poll_billing ,
-    amr_poll_range.poll_config as poll_config,
-    amr_poll_range.poll_billing_enable as poll_billing_enable ,
-   amr_poll_range.poll_config_enable as poll_config_enable
+            amr_vc_type.vc_name as vc_name ,
+            amr_poll_range.poll_billing as poll_billing ,
+            amr_poll_range.poll_config as poll_config,
+            amr_poll_range.poll_billing_enable as poll_billing_enable ,
+            amr_poll_range.poll_config_enable as poll_config_enable
         FROM
             AMR_FIELD_ID,
             AMR_USER,
@@ -261,8 +253,6 @@ def Manualpoll_data():
         # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
     )
 
-
-
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
     
@@ -274,7 +264,6 @@ def read_data():
     tcp_port = int(request.form["tcp_port"])
     evc_type = int(request.form["evc_type"])
     
-
     run = int(request.form["run"])
     run = run
     METERID = str(request.form["METERID"])
@@ -299,10 +288,8 @@ def read_data():
         if poll_config_enable_list[i-1] == '1':
             # print(poll_config_enable_list[i-1])
             
-            
             starting_address_i = int(request.form[f'starting_address_{i}'])
-            # print(starting_address_i)
-            
+            # print(starting_address_i)            
             quantity_i = int(request.form[f'quantity_{i}'])
             
             adjusted_quantity_i = quantity_i - starting_address_i + 1
@@ -315,7 +302,6 @@ def read_data():
             # print(df_pollRange)
             
     for i in range(7, 17): 
-        
         if poll_billing_enable_list[i-7] == '1': 
             # print("i",i)
             # print(poll_billing_enable_list[i-7])
@@ -350,7 +336,6 @@ def read_data():
         # print(start_address)
         adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity_i'])
         
-
         is_16bit = request.form.get("is_16bit") == "true"
         if is_16bit:
             bytes_per_value = 2
@@ -370,15 +355,11 @@ def read_data():
         sock_i.connect((tcp_ip, tcp_port))
         communication_traffic_i = []
     
-        
         communication_traffic_i.append(request_message_i.hex())
         sock_i.send(request_message_i)
         response_i = sock_i.recv(1024)
         # print(response_i)
-        
-        
-        
-        
+ 
         communication_traffic_i.append(response_i.hex())
         # print("TX config:",communication_traffic_i[0])
         # print("RX config:", communication_traffic_i[1])
@@ -391,10 +372,7 @@ def read_data():
             abort(400, f"Error: Unexpected response code from device {communication_traffic_i[1]}!")
         else:
             pass
-                    
-                
-                
-        
+ 
         data = {
             'address_start': [int(start_address)],
             'finish': [int(start_address+adjusted_quantity)],
@@ -403,27 +381,19 @@ def read_data():
         }
         # print(data)
         df_2 = pd.DataFrame(data)
-        df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)
-
-        
-        # print(df_Modbus)
-        
-        
+        df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)        
+        # print(df_Modbus)               
         sock_i.close()
-        
-        
-    
+            
     ##############   billing
     for i in range(0, len(df_pollBilling)):
-        
-        
+       
         # print(i)
         start_address = int(df_pollBilling.loc[i,'starting_address_i'])
         # print(start_address)
         adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity_i'])
         # print(adjusted_quantity)
         
-
         is_16bit = request.form.get("is_16bit") == "true"
         if is_16bit:
             bytes_per_value = 2
@@ -442,16 +412,12 @@ def read_data():
         sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock_i.connect((tcp_ip, tcp_port))
         communication_traffic_i = []
-    
-        
+           
         communication_traffic_i.append(request_message_i.hex())
         
         sock_i.send(request_message_i)
         response_i = sock_i.recv(1024)
-        
-        
-
-        
+             
         communication_traffic_i.append(response_i.hex())
         # print("TX billing:",communication_traffic_i[0])
         # print("RX billing:", communication_traffic_i[1])
@@ -463,9 +429,7 @@ def read_data():
             # print("billing", response_i[1:2])
             abort(400, f"Error: Unexpected response code from device {communication_traffic_i[1]}!")
         else:
-            pass
-
-                
+            pass      
         
         # print(communication_traffic_i)
         data = {
@@ -477,11 +441,9 @@ def read_data():
         # print(data)
         df_2 = pd.DataFrame(data)
         df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
-        
-        
+             
         # print(df_Modbusbilling)
-        
-        
+               
         sock_i.close()
     
        
@@ -506,7 +468,6 @@ def read_data():
             
             data_type = str(df_mapping.iloc[i,3])
             
-            
             for j in range(0,len(df_Modbus)):
                 address_start = int(df_Modbus.iloc[j,0])
                 address_finish = int(df_Modbus.iloc[j,1])
@@ -517,18 +478,15 @@ def read_data():
                     frameRx = (df_Modbus.iloc[j,3])
                     #
                     raw_data = frameRx[location_data + 6: location_data + 14]
-                    
-                  
+                                    
                     list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
                     # print(list_of_values_configured)
                     break
         # print(list_of_values_configured)
         value_config = pd.DataFrame(list_of_values_configured,columns=['Value'])
-        result_config = pd.concat([df_mapping, value_config], axis=1)
-        
+        result_config = pd.concat([df_mapping, value_config], axis=1)       
         result_config_html = result_config.to_html(classes="data", index=False)
-        
-                   
+                           
     ### list_of_balue_billing
         evc_type = evc_type
         query = """
@@ -542,13 +500,9 @@ def read_data():
         
         # print(df_Modbusbilling)   
         list_of_values_billing = []
-        for i in range(0, len(df_mappingbilling)):
-            
+        for i in range(0, len(df_mappingbilling)):    
             address = int(df_mappingbilling.iloc[i,2])
-            
-            data_type = str(df_mappingbilling.iloc[i,4])
-            
-            
+            data_type = str(df_mappingbilling.iloc[i,4])           
             for j in range(0,len(df_Modbusbilling)):
                 address_start = int(df_Modbusbilling.iloc[j,0])
                 address_finish = int(df_Modbusbilling.iloc[j,1])
@@ -572,17 +526,7 @@ def read_data():
         # ['description']
         # print(result_billing)
         result_billing_html = result_billing.to_html(classes="data", index=False)
-        
-                
-        
-        
-            
-            
-            
-            
     
-        
-        
     combined_data = {
         
         "communication_traffic_i": communication_traffic_i, 
@@ -600,18 +544,7 @@ def read_data():
                 data_16bit["value"] * 2
             )  
             data_list_16bit.append({"address": address_16bit, "value": value_16bit})
-    
-    
-    
         
-    
-    
-    
-
-
-           
-   
-    
     region_query = """
         SELECT * FROM AMR_REGION 
         """
@@ -819,8 +752,6 @@ def convert_raw_to_value(data_type, raw_data):
     else:
        
         return raw_data 
-
-
 
 def delete_data(sql_text_config_delete, sql_text_billing_delete):
     # print(sql_text_config_delete, sql_text_bolling_delete)
@@ -1137,11 +1068,7 @@ def save_to_oracle_manualpoll():
         # for i in range(0, len(df_mappingbilling), 5):
         #     values_subset = list_of_values_billing[i:i+5]
         #     print(values_subset)
-                
-                
-                
-                
-                
+                             
         date_system = datetime.datetime.now().strftime('%d-%m-%Y')   
         sql_text_config_delete = f"""delete from AMR_CONFIGURED_DATA where METER_ID = '{METERID}' AND METER_STREAM_NO = '{run}' AND DATA_DATE = TO_DATE('{date_system}', 'DD-MM-YYYY')"""
     
@@ -1188,8 +1115,6 @@ def save_to_oracle_manualpoll():
         #         connection.commit()  
         #         print("Insert data 'config' successful")
             
-           
-
         # else:
            
         #     with cx_Oracle.connect(username, password, f"{hostname}:{port}/{service_name}") as connection:
@@ -1197,17 +1122,10 @@ def save_to_oracle_manualpoll():
         #             cursor.execute(sql_text_config_insert)  
         #         connection.commit()  
         #         print("Insert data 'config' successful")
-        
-        
-        
-        
-        
-        
-        
+                
         sql_texts = []
         for i in range(0, len(df_mappingbilling), 5):
-           
-            
+             
             values_subset = list_of_values_billing[i:i+5]
             # print(values_subset)
             
@@ -1233,23 +1151,17 @@ def save_to_oracle_manualpoll():
         #                 cursor.execute(sql_statement.strip())
         #         connection.commit()
         #         print("Insert data billing successful")
-        
-        
-
 
     # ############ billing #######################
         # query_maxdaily = f"""SELECT MAX(DAILY)FROM amr_mapping_billing WHERE evc_type = '{evc_type}'"""
         # results_maxdaily = fetch_data(query_maxdaily)
         # max_daily_value = results_maxdaily[0][0] 
         # # print("max_daily_value",":",max_daily_value)
-        
-        
+         
         # query_maxdaily_1 = f"""SELECT MAX(DAILY)-1 FROM amr_mapping_billing WHERE evc_type = '{evc_type}'"""
         # results_maxdaily_1 = fetch_data(query_maxdaily_1)
         # max_daily_value_1 = results_maxdaily_1[0][0]
-        
-        
-        
+
         # query_maxdate = """SELECT DATA_DATE FROM (SELECT DATA_DATE, ROW_NUMBER() OVER (ORDER BY DATA_DATE DESC) AS rn FROM amr_billing_data WHERE DATA_DATE = (SELECT MAX(DATA_DATE) FROM amr_billing_data))WHERE rn = 2"""
         # maxdate_db = fetch_data(query_maxdate)
         # maxdate_billing_1 = pd.DataFrame(maxdate_db)
@@ -1261,21 +1173,16 @@ def save_to_oracle_manualpoll():
         
         #     maxdate_billing_str_1 = maxdate_billing_1.iloc[0].strftime('%d-%m-%Y')
 
-
-
         # query_maxdate = """SELECT MAX(DATA_DATE) - 1 FROM amr_billing_data"""
         # maxdate_db = fetch_data(query_maxdate)
         # maxdate_billing = pd.DataFrame(maxdate_db)
         # maxdate_billing = maxdate_billing.iloc[0]
         # maxdate_billing_str = maxdate_billing.iloc[0].strftime('%d-%m-%Y')
-        
-        
+
         # values_subset_1 = list_of_values_billing[0]
         
         # values_subset = list_of_values_billing[5]
-        
-        
-        
+
         # ########### เช็คค่า poll ซ้ำ #####################
         # if values_subset_1 == maxdate_billing_str_1:
         #         print(values_subset_1 ,":",maxdate_billing_str_1)
@@ -1326,12 +1233,10 @@ def save_to_oracle_manualpoll():
         #                                     cursor.execute(sql_text_billing_NotMatched_delete)
         #                                     connection.commit()
         #                                     print("Deleted 'Not' Matched data from billing successfully")
-                                
-                                
+  
         #                 else:
         #                         print("ไม่มีข้อมูล ใน error ")
         #                         print("insert poll เรียบร้อย")
-                                
                                 
         #             for i in range(0, len(df_billing), 2):
         #                     db_test_matched = df_billing[i:i+2] 
@@ -1419,9 +1324,7 @@ def save_to_oracle_manualpoll():
         #                                                     cursor.execute(sql_text_billing_matched_delete)
         #                                                     connection.commit()
         #                                                     print("Deleted matched data from billing successfully")  
-                                                
-                                                
-                                                
+                                                             
         #                         else:
         #                                 print("Not Matched:", db_test_matched)
         #                                 query = f"""SELECT   DATA_DATE, CORRECTED_VOL, UNCORRECTED_VOL, AVR_PF, AVR_TF 
@@ -1453,12 +1356,6 @@ def save_to_oracle_manualpoll():
         #                                         connection.commit()
         #                                         print("Insert data ERROR successful")
                                         
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
         #                                 sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
         #                                                             WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
         #                                                             AND METER_ID = '{METERID}' 
@@ -1470,18 +1367,6 @@ def save_to_oracle_manualpoll():
         #                                         connection.commit()
         #                                         print("Deleted 'Not' Matched data from billing successfully")
             
-            
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
         # ########### เช็คค่า poll ปกติ #####################
         # else:
                     
@@ -1508,8 +1393,7 @@ def save_to_oracle_manualpoll():
 
         #         single_dates_formatted = pd.to_datetime(single_dates).strftime('%d-%m-%Y')
         #         single_date_rows = df_billing[df_billing['DATA_DATE'].isin(single_dates)]
-
-            
+ 
         #         df_billing = df_billing[~df_billing['DATA_DATE'].isin(single_dates)]
                 
         #         if len(single_dates_formatted) > 0:
@@ -1533,13 +1417,11 @@ def save_to_oracle_manualpoll():
         #                                     cursor.execute(sql_text_billing_NotMatched_delete)
         #                                     connection.commit()
         #                                     print("Deleted 'Not' Matched data from billing successfully")
-                                
-                                
+                                                      
         #                 else:
         #                         print("ไม่มีข้อมูล ใน error ")
         #                         print("insert poll เรียบร้อย")
-                                
-                                
+                                                        
         #             for i in range(0, len(df_billing), 2):
         #                     db_test_matched = df_billing[i:i+2] 
         #                             # print(db_test_matched)
@@ -1560,8 +1442,7 @@ def save_to_oracle_manualpoll():
         #                                                 cursor.execute(sql_text_billing_matched_delete)
         #                                                 connection.commit()
         #                                                 print("Deleted matched data from billing successfully")  
-                                            
-                                            
+                                                                                
                                             
         #                     else:
         #                             print("Not Matched:", db_test_matched)
@@ -1660,11 +1541,7 @@ def save_to_oracle_manualpoll():
         #                                     connection.commit()
         #                                     print("Insert data ERROR successful")
                                     
-                                    
-                                    
-                                    
-                                    
-                                    
+         
                                     
         #                             sql_text_billing_NotMatched_delete= f"""DELETE FROM AMR_BILLING_DATA 
         #                                                         WHERE DATA_DATE = TO_DATE('{db_test_matched['DATA_DATE'].iloc[0]}', 'DD-MM-YYYY') 
@@ -1696,13 +1573,8 @@ def save_to_oracle_manualpoll():
             "status": "error",
             "message": f"An error occurred while updating data: {str(e)}",
         }
-
     return jsonify(response)
-        
-
-
-
-
+    
 
 def handle_actaris_action(i, address):
     return address
@@ -1714,12 +1586,5 @@ def process_selected_rows():
     selected_rows = request.form.getlist("selected_rows")
     return "Selected rows processed successfully"
      
-
-
-
-
-
-
-
 if __name__ == "__main__":
     app.run(debug=True)
