@@ -1549,7 +1549,6 @@ def save_to_oracle_manualpoll():
         }
     return jsonify(response)
     
-
 def handle_actaris_action(i, address):
     return address
 def handle_action_configuration(i, value, address):
