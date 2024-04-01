@@ -896,10 +896,7 @@ def save_to_oracle_manualpoll():
             sock_i.send(request_message_i)
             response_i = sock_i.recv(1024)
             # print(response_i)
-            
-            
-            
-            
+                 
             communication_traffic_i.append(response_i.hex())
             
             if response_i[1:2] != b'\x03':
@@ -931,8 +928,7 @@ def save_to_oracle_manualpoll():
             start_address = int(df_pollBilling.loc[i,'starting_address'])
             # print(start_address)
             adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity'])
-            # print(adjusted_quantity)
-            
+            # print(adjusted_quantity) 
 
             is_16bit = request.form.get("is_16bit") == "true"
             if is_16bit:
@@ -948,33 +944,22 @@ def save_to_oracle_manualpoll():
             crc_i = computeCRC(request_message_i)
             request_message_i += crc_i.to_bytes(2, byteorder="big")
             
-            
-            
             sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock_i.connect((tcp_ip, tcp_port))
             communication_traffic_i = []
         
-            
             communication_traffic_i.append(request_message_i.hex())
-            
             
             sock_i.send(request_message_i)
             response_i = sock_i.recv(1024)
-            
-            
-
-            
+             
             communication_traffic_i.append(response_i.hex())
             if response_i[1:2] != b'\x03':
                 # print("billing", response_i[1:2])
                 abort(400, f"Error: Unexpected response code from device {communication_traffic_i[1]}!")
             else:
                 pass
-                
-                
-              
-            
-            
+
             # print(communication_traffic_i)
             data = {
                 'address_start': [int(start_address)],
@@ -986,16 +971,12 @@ def save_to_oracle_manualpoll():
             df_2 = pd.DataFrame(data)
             df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
 
-            
             # print(df_Modbusbilling)
-            
             
             sock_i.close()
         
-        
             encode_data_dict = {} 
             
-        
             evc_type = evc_type
             query = """
             select amc.or_der as order1 , amc.address as address1, amc.description as desc1, amc.data_type as dtype1
@@ -1006,17 +987,14 @@ def save_to_oracle_manualpoll():
             poll_results = fetch_data(query, params={"evc_type": evc_type})
             # print(poll_results)
             df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
-            
                 
             list_of_values_configured = []
-            for i in range(0, len(df_mapping)):
-                
+            for i in range(0, len(df_mapping)): 
                 address = int(df_mapping.iloc[i,1])
                 # print(address)
                 data_type = str(df_mapping.iloc[i,3])
                 # print(data_type)
-                
-                
+                  
                 for j in range(0,len(df_Modbus)):
                     address_start = int(df_Modbus.iloc[j,0])
                     address_finish = int(df_Modbus.iloc[j,1])
@@ -1032,8 +1010,7 @@ def save_to_oracle_manualpoll():
                         list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
                         break
             # print(list_of_values_configured)
-                
-                
+                  
             evc_type = evc_type
             query = """
             SELECT amb.daily ,amb.or_der ,amb.address,amb.description,amb.data_type  FROM amr_mapping_billing amb WHERE amb.evc_type = :evc_type AND address is not null order by amb.daily
@@ -1074,15 +1051,12 @@ def save_to_oracle_manualpoll():
     
         sql_text_config_insert = "insert into AMR_CONFIGURED_DATA (DATA_DATE, METER_ID,METER_STREAM_NO, AMR_VC_TYPE, "
         for i in range(0, len(df_mapping)):  
-            
             sql_text_config_insert+=f" AMR_CONFIG{i+1},"
-        sql_text_config_insert+=" CREATED_BY) values ("
-        
+
+        sql_text_config_insert+=" CREATED_BY) values ("     
         sql_text_config_insert+=f"TO_DATE('{date_system}', 'DD-MM-YYYY'), '{METERID}','{run}','{evc_type}',"
     
-        
         for i in range(0, len(df_mapping)):
-        
             sql_text_config_insert+=f"'{str(list_of_values_configured[i])}',"
             
         sql_text_config_insert+="'')" 
