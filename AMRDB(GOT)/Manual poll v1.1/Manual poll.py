@@ -729,28 +729,18 @@ def read_data():
         tag_options=tag_options,combined_data=combined_data
     )
  
- 
- 
- 
-    
 def convert_raw_to_value(data_type, raw_data):
     if data_type == "Date":
         raw_data_as_int = int(raw_data, 16)
         date_object = datetime.datetime.fromtimestamp(raw_data_as_int).date()
-        
-        
         modified_date = date_object - datetime.timedelta(days=1)
-        
         formatted_date = modified_date.strftime('%d-%m-%Y') 
-        
         return formatted_date
     elif data_type == "Float":
-        
         return struct.unpack('!f', bytes.fromhex(raw_data))[0]
     elif data_type == "Ulong":
         return int(raw_data, 16)
     else:
-       
         return raw_data 
 
 def delete_data(sql_text_config_delete, sql_text_billing_delete):
@@ -781,8 +771,6 @@ def insert_data( full_sql_text):
                 print("Insert data billing successful")
     except cx_Oracle.Error as error:
         print("Oracle Error:", error)
-
-
 
 
 @app.route("/save_to_oracle_manualpoll", methods=["POST"])
@@ -830,12 +818,10 @@ def save_to_oracle_manualpoll():
                    'quantity': [quantity], 
                    'adjusted_quantity': [adjusted_quantity]}
                     df_2 = pd.DataFrame(data)
-            
                 df_pollRange = pd.concat([df_pollRange,df_2] , ignore_index=True)
                 # print(df_pollRange)
         
         for i in range(7, 17): 
-        
             if poll_billing_enable_list[i-7] == '1': 
                 # print("i",i)
                 # print(poll_billing_enable_list[i-7])
