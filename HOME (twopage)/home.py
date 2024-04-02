@@ -416,7 +416,7 @@ def billing_data():
         region_options = [str(region[0]) for region in region_results]
 
         query = ""
-        print(query)
+        #print(query)
         if query_type == "daily_data":
             # SQL query for main data
             query = """
@@ -702,7 +702,6 @@ def billing_data():
                     graphs[f"pressure_run{i}"] = graph_pressure
                     graphs[f"temperature_run{i}"] = graph_temperature
 
-
                     # เพิ่มเนื้อหา HTML สำหรับกราฟ
                     df = df.sort_values(by="DATA_DATE", ascending=True)
                     # ส่ง graph_html ไปยัง HTML template ของ Flask
@@ -720,9 +719,7 @@ def billing_data():
                         graph_uncorrected=graph_uncorrected,
                         graph_pressure=graph_pressure,
                         graph_temperature=graph_temperature,
-
                     )
-
 
             elif query_type == "config_data":
                 # Use pandas to create a DataFrame for config_data
@@ -1504,9 +1501,6 @@ def logout():
 
 
 
-
-
-
 @app.route("/billing_data_asgs")
 def billing_data_asgs():
    
@@ -1579,18 +1573,6 @@ def get_tag():
     # Return the tag_id values as JSON
     return jsonify(tag_results)
 ############ / View Billing Data  #####################
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
