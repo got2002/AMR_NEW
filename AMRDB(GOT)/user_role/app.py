@@ -8,55 +8,19 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 ######################### connection AMR_DB ###############################
-amr_db_params = {
-    "username": 'AMR_DB',
-    "password": 'AMR_DB',
-    "hostname": '10.104.240.26',
-    "port": '1521',
-    "sid": "AMR"
-}
-
-# Choose the database connection parameters based on your requirements
-selected_params = amr_db_params  # Change this to switch between databases
-print("aaaa", selected_params)
-
-dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
-
-try:
-    connection_info = {
-        "user": selected_params["username"],
-        "password": selected_params["password"],
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Connection to AMR_DB successful.")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-######################### connection AMR_DB ###############################
-
-######################### connection AMR_NEW ###############################
-
-# root_params = {
-#     "username": 'root',
-#     "password": 'root',
-#     "hostname": '192.168.102.192',
+# amr_db_params = {
+#     "username": 'AMR_DB',
+#     "password": 'AMR_DB',
+#     "hostname": '10.104.240.26',
 #     "port": '1521',
-#     "service_name": "orcl"
+#     "sid": "AMR"
 # }
 
 # # Choose the database connection parameters based on your requirements
-# selected_params = root_params  # Change this to switch between databases
-# # print("aaaa", selected_params)
+# selected_params = amr_db_params  # Change this to switch between databases
+# print("aaaa", selected_params)
 
-# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["sid"])
 
 # try:
 #     connection_info = {
@@ -71,10 +35,46 @@ except cx_Oracle.Error as e:
 
 #     connection_pool = cx_Oracle.SessionPool(**connection_info)
 #     connection = connection_pool.acquire()
-#     print("Connection to AMR_NEW successful.")
+#     print("Connection to AMR_DB successful.")
 # except cx_Oracle.Error as e:
 #     (error,) = e.args
 #     print("Oracle Error:", error)
+
+######################### connection AMR_DB ###############################
+
+######################### connection AMR_NEW ###############################
+
+root_params = {
+    "username": 'root',
+    "password": 'root',
+    "hostname": '192.168.102.192',
+    "port": '1521',
+    "service_name": "orcl"
+}
+
+# Choose the database connection parameters based on your requirements
+selected_params = root_params  # Change this to switch between databases
+# print("aaaa", selected_params)
+
+dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
+
+try:
+    connection_info = {
+        "user": selected_params["username"],
+        "password": selected_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to AMR_NEW successful.")
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
 
 ######################### connection AMR_ ###############################
 
@@ -874,6 +874,7 @@ def edit_site():
     
     show_tag_query = """
     SELECT DISTINCT
+        AMR_FIELD_ID.ID,
         AMR_FIELD_ID.TAG_ID,
         AMR_FIELD_ID.SIM_IP,
         AMR_FIELD_ID.RTU_MODBUS_ID,
@@ -912,6 +913,7 @@ def edit_site():
 
     # Create DataFrame from query results
     columns = [
+        'id',
         'tag_id',
         'sim_ip',
         'rtu_modbus_id',
@@ -933,6 +935,7 @@ def edit_site():
     
     
     if not df.empty:
+        list_id = df["id"].iloc[0]
         list_tag_id = df["tag_id"].iloc[0]
         list_cust_factory_name = df["cust_factory_name"].iloc[0]
         list_amr_phase = df["amr_phase"].iloc[0]
@@ -940,28 +943,29 @@ def edit_site():
         list_sim_ip = df["sim_ip"].iloc[0]
         list_user_name = df["user_name"].iloc[0]
         list_password = df["password"].iloc[0]
-        print("list_user_name", list_user_name)
         list_meter_stream_no = df["meter_stream_no"].tolist()       
         list_meter_port_no = df["meter_port_no"].tolist()
         list_meter_auto_enable = df["meter_auto_enable"].tolist()
         
-        update_user = f"""
-        UPDATE AMR_USER 
-        SET 
-            user_name = '{list_user_name}',
-            password = '{list_password}'
+        # update_user = f"""
+        #     UPDATE AMR_USER 
+        #     SET 
+        #         user_name = '{list_user_name}',
+        #         password = '{list_password}'
+        #     WHERE id = '{list_id}'
+        #     """
+        # print("update_user", update_user)
+        # update_sql(update_user)
+
+
             
-        WHERE id = '138'
-        """
-        print("update_user", update_user)
-        update_sql(update_user)
         
         list_meter_stream_type = []
         for meter_stream_type in df["meter_stream_type"]:
             meter_stream_type_list = f"""SELECT vc_name FROM amr_vc_type WHERE id = '{meter_stream_type}' ORDER BY id"""
-            data = fetch_data(meter_stream_type_list)
-            if data:
-                list_meter_stream_type.append(data[0][0])
+            type = fetch_data(meter_stream_type_list)
+            if type:
+                list_meter_stream_type.append(type[0][0])
             else:
                 list_meter_stream_type.append(None)
             print("list_meter_stream_type", list_meter_stream_type)
@@ -978,6 +982,7 @@ def edit_site():
             
             
     else:
+        list_id = None
         list_tag_id = None
         list_cust_factory_name = None
         list_amr_phase = None
@@ -993,8 +998,6 @@ def edit_site():
     
 
     html_table = df.to_html(index=False)
-    
-    
 
 
     return render_template('edit_site.html', 
@@ -1002,6 +1005,7 @@ def edit_site():
                            tag_options=tag_options, 
                            selected_region=selected_region,
                            selected_tag=selected_tag,
+                           list_id=list_id,
                            list_tag_id=list_tag_id,
                            list_cust_factory_name=list_cust_factory_name,
                            list_amr_phase=list_amr_phase,
