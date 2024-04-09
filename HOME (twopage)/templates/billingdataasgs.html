@@ -1,523 +1,940 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billing Data (ASGS)</title>
+<head>
+  <!-- meta -->
+  <meta charset="UTF-8">
+  <meta name="description" content="NO Description">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <meta name="author" content="Prompt">
+  <meta name="copyright" content="Copyright © 2025">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Monthly Data</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
-    <!-- Stylesheet -->
-    <!-- <link rel="stylesheet" href="Css/billingdata.css"> -->
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Bootstrap Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Bootstrap Datepicker Stylesheet and Script -->
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
-  </head>
-  <style>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Bootstrap Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 
-    @font-face {
-      font-family: "PTT45Pride-Bold";
-      src: url("PTT45Pride-Bold.otf") format("truetype");
-      font-weight: bold;
-      font-style: normal;
-    }
-    
-    body {
-      background-image: linear-gradient(to right, #5b707e, #abb2b9);
-      font-family: "PTT45Pride-Bold", sans-serif;
-      min-width: 1200px; 
-      font-weight: bold;
-      min-height: 800px; 
-    }
-  
 
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap Datepicker Stylesheet and Script -->
+  <!-- Option 1: Include in HTML -->
 
-  label {
-    display: block;
-    margin-bottom: 10px;
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+</head>
+<style>
+  /* Option 2: Import via CSS */
+  @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+  @import url('https://fonts.googleapis.com/css?family=Roboto:400,500|Roboto+Mono:400,500');
+
+  @font-face {
+    font-family: "PTT45Pride-Regular";
+    src: url("PTT45Pride-Regular.otf") format("truetype");
     font-weight: bold;
-    color: #333;
+    font-style: normal;
+  }
+
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
+  html {
+
+    box-sizing: border-box;
+  }
+
+  body {
+
+    background-color: #525965;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-family: "PTT45Pride-Regular", sans-serif;
+    color: #000000;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-content {
+    flex: 1;
+  }
+
+  .box_we {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .plot-container {
     width: 100%;
+    padding: 20px;
+    /* เพิ่ม padding เพื่อสร้างกรอบ */
+    margin-bottom: 20px;
+    /* เพิ่มระยะห่างระหว่างกราฟ */
+  }
+
+  @media (max-width: 768px) {
+    .plot-container {
+      margin-bottom: 10px;
+      /* เพิ่มระยะห่างระหว่างกราฟในโหมด mobile */
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "PTT45Pride-Regular", sans-serif;
+    font-weight: 600;
+    color: #ccc;
+    text-align: left;
     padding: 3px;
   }
 
-  input {
-    width: 20%;
-    padding: 5px;
-    margin-top: 0px;
-    margin-bottom: 30px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: #555;
-  }
-
-  input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-  }
-
-
-
-  .textW {
-    margin-left: 2%;
-    margin-top: -10px;
-    color: #ffffff;
-    font-size: 40px;
-    position: absolute;
-    left: 2%;
-    font-family: 'Noto Sans Thai Looped', sans-serif;
-    text-shadow: 0 0 20px #6ac3fb, 0 0 40px #6ac3fb;
-  }
-
-  .menu {
-    display: grid;
-    grid-template-rows: 40px max-content;
-    gap: 10px;
-    margin-top: 10%;
-  }
-
-  .toggle {
-    all: unset;
-    background-color: dodgerblue;
-    color: white;
-    width: 150px;
-    padding: 10px;
-    font-weight: 700;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .toggle::after {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-width: 0 3px 3px 0;
-    border-style: solid;
-    transform: rotate(45deg);
-    transition: 0.4s;
-  }
-
-  .list {
-    background-color: white;
-    color: #444;
-    list-style: none;
-    display: grid;
-    grid-template-rows: repeat(4, 40px);
-    border-radius: 5px;
-    overflow: hidden;
-    height: 0;
-    transition: 0.4s;
-  }
-
-  .list-item {
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    transition: 0.4s, transform 0.4s var(--delay);
-    transform: translateX(-100%);
-    user-select: none;
-    cursor: pointer;
-  }
-
-  .list-item:hover {
-    background-color: dodgerblue;
-    color: #fff;
-  }
-
-  .toggle:focus::after {
-    transform: rotate(225deg);
-  }
-
-  .toggle:focus~.list {
-    height: 160px;
-  }
-
-  .toggle:focus~.list .list-item {
-    transform: translateX(0);
-  }
-
-
-  .logo {
-    width: 200px;
-    object-position: 30% 38%;
-    display: flex;
-    margin: auto;
-    padding: 5%;
-  }
-
-
-  form {
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-  }
-
-  .form-container {
-    text-align: center;
-    margin-bottom: 30px;
-    margin-top: 5%;
-  }
-
-  .text-box-group {
-        background-color: #fff;
-        min-width: 1000px; 
-        min-height: 800px; 
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: -39%;
-        z-index: 5;
-        margin-left: 27%;
-        margin-bottom: 10%;
-      }
-
-  .form-container-BOx {
-    width: 90%;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        z-index: 5;
-        margin-left: 23%;
-  }
-
-
-  .scrolling-text {
-    animation: scroll-left 60s linear infinite;
-    white-space: nowrap;
-  }
-
-  @keyframes scroll-left {
-    0% {
-      transform: translateX(100%);
-    }
-
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-
-/* Container styling */
-.plot-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 20px auto; /* Updated margin */
-  width: 90%; /* Adjusted width for better responsiveness */
-  padding: 20px;
-  background-color: #f8f8f8; /* Light background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-  border-radius: 12px; /* Rounded corners */
-}
-
-/* Individual plot styling */
-.plot-container>div {
-  width: 45%;
-  margin: 10px;
-  border-radius: 8px;
-  overflow: hidden; /* Ensure rounded corners are applied */
-  background-color: #ffffff; /* White background color */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-}
-
-/* Adjusted style for the .plotly element within the plot container */
-.plot-container>div .plotly {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-}
-
-
-
-/* Common styles for th and td */
-th, td {
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #000000;
-}
-
-/* Styles for th */
-th {
-    background-color: #bcb9b9;
-    height: 40px;
-    cursor: pointer;
-    font-size: xx-small;
-}
-
-/* Styles for td */
-td {
-    background-color: rgb(255, 255, 255);
-    height: 20px;
-    width: 55px;
-    font-size: small;
-}
-
-/* Table styles */
-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: large;
-    table-layout: fixed;
-}
-
-/* Container styles */
-.table-container {
-    margin-top: 0%;
-    margin-bottom: 5%;
-    margin-left: auto; /* ขยับ container ไปทางขวา */
-    margin-right: auto; /* ขยับ container ไปทางซ้าย */
-}
-
-
-/* Responsive design for smaller screens */
-@media (max-width: 645px) {
-    .table {
-        width: 100%;
-    }
-}
-
-
-
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 10rem;
-    padding: .5rem 0;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
-    max-width: 200px;
-  }
-
-  #region_dropdown {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #333;
-  }
-
-  #region_dropdown:hover {
-    border-color: #666;
-  }
-
-  #region_dropdown option {
-    background-color: #fff;
-    color: #333;
-  }
-
-  #region_dropdown option:hover {
-    background-color: #f2f2f2;
-  }
-
-  label[for="tag_dropdown"] {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-
-  }
-
-  #tag_dropdown {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #333;
-  }
-
-  #tag_dropdown:hover {
-    border-color: #666;
-  }
-
-  #tag_dropdown option {
-    background-color: #fff;
-    color: #333;
-  }
-
-  #tag_dropdown option:hover {
-    background-color: #f2f2f2;
-  }
-
-  .loadingoverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding-top: 20%;
-  }
-
-
-  #region_dropdown {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: none;
-    width: 200px;
-    margin-bottom: 2%;
-    margin-top: 1%;
-  }
-
-  @keyframes spin {
+  @keyframes swing {
     0% {
       transform: rotate(0deg);
     }
 
+    10% {
+      transform: rotate(10deg);
+    }
+
+    30% {
+      transform: rotate(0deg);
+    }
+
+    40% {
+      transform: rotate(-10deg);
+    }
+
+    50% {
+      transform: rotate(0deg);
+    }
+
+    60% {
+      transform: rotate(5deg);
+    }
+
+    70% {
+      transform: rotate(0deg);
+    }
+
+    80% {
+      transform: rotate(-5deg);
+    }
+
     100% {
-      transform: rotate(360deg);
+      transform: rotate(0deg);
     }
   }
 
+  @keyframes sonar {
+    0% {
+      transform: scale(0.9);
+      opacity: 1;
+    }
 
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
 
-  /* Dropdown Styles */
-  .form-containerBox select,
-  .form-containerBox input[type="date"] {
+  body {
+    font-size: 0.9rem;
+  }
+
+  .page-wrapper .sidebar-wrapper,
+  .sidebar-wrapper .sidebar-brand>a,
+  .sidebar-wrapper .sidebar-dropdown>a:after,
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+  .sidebar-wrapper ul li a i,
+  .page-wrapper .page-content,
+  .sidebar-wrapper .sidebar-search input.search-menu,
+  .sidebar-wrapper .sidebar-search .input-group-text,
+  .sidebar-wrapper .sidebar-menu ul li a,
+  #show-sidebar,
+  #close-sidebar {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  /*----------------page-wrapper----------------*/
+
+  .page-wrapper {
+    height: 100vh;
+  }
+
+  .page-wrapper .theme {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border-radius: 4px;
+    margin: 2px;
+  }
+
+  .page-wrapper .theme.chiller-theme {
+    background: #1e2229;
+  }
+
+  /*----------------toggeled sidebar----------------*/
+
+  .page-wrapper.toggled .sidebar-wrapper {
+    left: 0px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .page-wrapper.toggled .page-content {
+      padding-left: 300px;
+    }
+  }
+
+  /*----------------show sidebar button----------------*/
+  #show-sidebar {
+        position: fixed;
+        left: 0;
+        top: 100px;
+        border-radius: 0 4px 4px 0px;
+        width: 35px;
+        transition-delay: 0.3s;
+    }
+
+  .page-wrapper.toggled #show-sidebar {
+    left: -40px;
+  }
+
+  /*----------------sidebar-wrapper----------------*/
+
+  .sidebar-wrapper {
+    width: 260px;
+    height: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    z-index: 999;
+  }
+
+  .sidebar-wrapper ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-wrapper a {
+    text-decoration: none;
+  }
+
+  /*----------------sidebar-content----------------*/
+
+  .sidebar-content {
+    max-height: calc(100% - 30px);
+    height: calc(100% - 30px);
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .sidebar-content.desktop {
+    overflow-y: hidden;
+  }
+
+  /*--------------------sidebar-brand----------------------*/
+
+  .sidebar-wrapper .sidebar-brand {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-wrapper .sidebar-brand>a {
+    text-transform: uppercase;
+    font-weight: bold;
+    flex-grow: 1;
+  }
+
+  .sidebar-wrapper .sidebar-brand #close-sidebar {
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  /*--------------------sidebar-header----------------------*/
+
+  .sidebar-wrapper .sidebar-header {
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-pic {
+    float: left;
+    width: 60px;
+    padding: 2px;
+    border-radius: 12px;
+    margin-right: 15px;
+    overflow: hidden;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-pic img {
+    object-fit: cover;
+    height: 100%;
     width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info {
+    font-size: 27px;
+    float: left;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info>span {
+    display: block;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-role {
+    font-size: 16px;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-status {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-status i {
+    font-size: 10px;
+    margin-right: 4px;
+
+  }
+
+  /*-----------------------sidebar-search------------------------*/
+
+  .sidebar-wrapper .sidebar-search>div {
+    padding: 10px 20px;
+  }
+
+  /*----------------------sidebar-menu-------------------------*/
+
+  .sidebar-wrapper .sidebar-menu {
+    padding-bottom: 10px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .header-menu span {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 15px 20px 5px 20px;
+    display: inline-block;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a {
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    position: relative;
+    padding: 8px 30px 8px 20px;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a i {
+    margin-right: 10px;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a:hover>i::before {
+    display: inline-block;
+    animation: swing ease-in-out 0.5s 1 alternate;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown>a:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f105";
+    font-style: normal;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background: 0 0;
+    position: absolute;
+    right: 15px;
+    top: 14px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu ul {
+    padding: 5px 0;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li {
+    padding-left: 25px;
+    font-size: 13px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before {
+    content: "\f111";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    font-style: normal;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-right: 10px;
+    font-size: 8px;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a span.label,
+  .sidebar-wrapper .sidebar-menu ul li a span.badge {
+    float: right;
+    margin-top: 8px;
+    margin-left: 5px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .badge,
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .label {
+    float: right;
+    margin-top: 0px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-submenu {
+    display: none;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a:after {
+    transform: rotate(90deg);
+    right: 17px;
+  }
+
+  /*--------------------------side-footer------------------------------*/
+
+  .sidebar-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+  }
+
+  .sidebar-footer>a {
+    flex-grow: 1;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+  }
+
+  .sidebar-footer>a .notification {
+    position: absolute;
+    top: 0;
+  }
+
+  .badge-sonar {
+    display: inline-block;
+    background: #980303;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    position: absolute;
+    top: 0;
+  }
+
+  .badge-sonar:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid #980303;
+    opacity: 0;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: sonar 1.5s infinite;
+  }
+
+  /*--------------------------page-content-----------------------------*/
+
+  .page-wrapper .page-content {
+    display: inline-block;
+    width: 100%;
+    padding-left: 0px;
+    padding-top: 20px;
+  }
+
+  .page-wrapper .page-content>div {
+    padding: 20px 40px;
+  }
+
+  .page-wrapper .page-content {
+    overflow-x: hidden;
+  }
+
+  /*------scroll bar---------------------*/
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #525965;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #525965;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: #525965;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+  }
+
+  ::-webkit-scrollbar-track:hover {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
 
+  /*-----------------------------chiller-theme-------------------------------------------------*/
 
-  h1 {
-    color: #333;
-    padding: 3%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -40px;
+  .chiller-theme .sidebar-wrapper {
+    background: #31353D;
   }
 
-  h2 {
-    color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -20px;
-    font-size: xx-large;
+  .chiller-theme .sidebar-wrapper .sidebar-header,
+  .chiller-theme .sidebar-wrapper .sidebar-search,
+  .chiller-theme .sidebar-wrapper .sidebar-menu {
+    border-top: 1px solid #3a3f48;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-role,
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-status,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text,
+  .chiller-theme .sidebar-wrapper .sidebar-brand>a,
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li a,
+  .chiller-theme .sidebar-footer>a {
+    color: #818896;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a,
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info,
+  .chiller-theme .sidebar-wrapper .sidebar-brand>a:hover,
+  .chiller-theme .sidebar-footer>a:hover i {
+    color: #b8bfce;
+  }
+
+  .page-wrapper.chiller-theme.toggled #close-sidebar {
+    color: #bdbdbd;
+  }
+
+  .page-wrapper.chiller-theme.toggled #close-sidebar:hover {
+    color: #ffffff;
+  }
+
+  .chiller-theme .sidebar-wrapper ul li:hover a i,
+  .chiller-theme .sidebar-wrapper .sidebar-dropdown .sidebar-submenu li a:hover:before,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu:focus+span,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active a i {
+    color: #16c7ff;
+    text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li a i,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown div,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    background: #3a3f48;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu .header-menu span {
+    color: #6c7b88;
+  }
+
+  .chiller-theme .sidebar-footer {
+    background: #3a3f48;
+    box-shadow: 0px -1px 5px #282c33;
+    border-top: 1px solid #464a52;
+  }
+
+  .chiller-theme .sidebar-footer>a:first-child {
+    border-left: none;
+  }
+
+  .chiller-theme .sidebar-footer>a:last-child {
+    border-right: none;
+  }
+
+  .sidebar-header {
+    justify-content: space-between;
+    align-items: left;
+    padding: 15px;
+    color: #959da3;
+  }
+
+  .date-time-container {
+    font-size: 11px;
+    margin-bottom: 10px;
+    /* ระยะห่างด้านล่างของเวลา */
+  }
+
+  .weather-widget {
+    text-align: left;
+    order: 1;
+    /* เปลี่ยนลำดับการแสดงผล */
+  }
+
+  .weather-icon i {
+    font-size: 2em;
+  }
+
+  .weather-icon {
+    margin-bottom: 10px;
+  }
+
+  #weather-description,
+  #temperature {
+    margin-top: 1px;
+  }
+
+  /* Responsive Layout */
+  @media screen and (max-width: 768px) {
+    .sidebar-header {
+      flex-direction: column;
+      align-items: center;
+      /* จัดให้เวลาอยู่ตรงกลาง */
+    }
+
+    .date-time-container {
+      margin-bottom: 10px;
+      align-items: center;
+      /* จัดให้เวลาอยู่ตรงกลาง */
+    }
+  }
+
+  /* CSS */
+  #status-text {
+    color: green;
+    /* สีข้อความ Online */
+  }
+
+  #status-text.offline {
+    color: red;
+    /* สีข้อความ Offline */
+  }
+
+  .sidebar-brand {
+    font-size: 10px;
+  }
+
+  .back-button,
+  .forward-button,
+  .logout {
+    display: inline-block;
+    margin: 10px;
+    padding: 6px 16px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: #818689;
+    color: #6b6a6a;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* เพิ่ม position */
+    z-index: 2;
+    /* กำหนดค่า z-index ที่มีค่ามากกว่าตัวอื่น */
+  }
+
+  .back-button i,
+  .forward-button i,
+  .logout i {
+    margin-right: 3px;
+  }
+
+  .back-button:hover,
+  .forward-button:hover,
+  .logout:hover {
+    background-color: #454748;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .parent-container {
+    text-align: right;
+  }
+
+  select,
+  input {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #e6e6e6;
+    width: 100%;
+    padding: 3px;
   }
 
   label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-
-  input[type="text"]{
-    padding: 8px;
-    box-sizing: border-box;
-    width: 30%;
-    border: 1px solid #050505;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    margin-top: 10px;
-    max-width: 1000px;
-  }
-
-  select {
-    padding: 8px;
-    box-sizing: border-box;
-    width: 40%;
-    border: 1px solid #050505;
-    border-radius: 5px;
     margin-bottom: 10px;
-    margin-top: 10px;
-    max-width: 1000px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #e6e6e6;
+    width: 100%;
+    padding: 3px;
   }
-
-  #region_dropdown {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: none;
+  #monthYearPicker,
+  #tag-dropdown,
+  #region-dropdown {
     width: 200px;
-    margin-bottom: 5%;
-    margin-top: 5%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  #monthYearPicker,
+  #tag-dropdown:hover,
+  #region-dropdown:hover {
+    border-color: #666;
+  }
+  #monthYearPicker,
+  #tag-dropdown option,
+  #region-dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
+#monthYearPicker,
+  #tag-dropdown option:hover,
+  #region-dropdown option:hover {
+    background-color: #f2f2f2;
+  }
+
+  td {
+    background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
+    height: 20px;
+    width: 55px;
+    align-items: center;
+    text-align: center;
+    font-size: small;
+    padding: 3px;
+    word-wrap: break-word;
+  }
+
+  th {
+    background-color: #bcb9b9;
+    border: 2px solid #171717;
+    height: 40px;
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size: xx-small;
+    word-wrap: break-word;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: large;
+    table-layout: fixed;
+    margin-top: -15px;
   }
 
 
+  th,
+  td {
+    font-size: 10px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 60px;
+    padding: 3px;
 
-  input[type="checkbox"] {
-    margin-right: 5px;
+  }
+
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  .monthYearPicker {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #e6e6e6;
+    width: 100%;
+    padding: 3px;
+  }
+
+  /* ปรับแต่งตำแหน่งและขนาดของ datepicker */
+  .datepicker {
+    width: 15%;
+
+    position: absolute;
+    z-index: 9999;
+  }
+
+  /* เพิ่มสไตล์ CSS ที่คุณต้องการให้ปฏิทินตกแต่ง */
+  .datepicker-container {
+    font-family: 'Arial', sans-serif;
+
+  }
+
+  .datepicker-header {
+    background-color: #007bff;
+    color: #0e0d0d;
+  }
+
+  .datepicker-switch {
+    color: #000000;
+  }
+
+  .datepicker-days th,
+  .datepicker-months th,
+  .datepicker-years th {
+    background-color: #f8f9fa;
+  }
+
+  .datepicker table tr td.active,
+  .datepicker table tr td.active:hover {
+    background-color: #007bff;
+    color: #626161;
+  }
+
+  .datepicker table tr td.today,
+  .datepicker table tr td.today:hover {
+    background-color: #65686a;
+    color: #007bff;
   }
 
 
-  #statusMessage {
-    margin-top: 15px;
-    color: #4caf50;
+  .box_we {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    z-index: 5;
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .selected {
+    display: flex;
+    text-align: center;
+    margin-bottom: -30px;
+    margin-top: 20px;
+  }
+
+  .selected h1 {
+    margin-bottom: 0px;
+    /* เพิ่มระยะห่างด้านล่าง */
+  }
+
+  .selected p {
+    margin: 5px 0;
+    padding: 5px;
+    /* เพิ่มระยะห่างด้านบนและด้านล่าง */
+  }
+
+  .selected span {
     font-weight: bold;
   }
 
-
-
-
-  .link-button {
-    display: inline-block;
-    margin-top: 15px;
-    text-decoration: none;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    border-radius: 5px;
-  }
-  button {
-    margin: 10px;
-    border-radius: 5px;
-
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 60px;
   }
 
   .custom-btn {
-    margin: auto;
+    /* รายละเอียดของ .custom-btn คงเดิม */
+    margin-left: 0px;
+    /* ระยะห่างด้านซ้าย */
+    margin-right: 0px;
+    /* ระยะห่างด้านขวา */
+  }
+
+
+  .custom-btn {
+
     color: #fff;
-    width: 120px;
+    width: 130px;
     height: 40px;
     padding: 10px 25px;
     font-weight: 500;
@@ -528,10 +945,11 @@ table {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 35px;
+    margin-top: 20px;
     border-radius: 5px;
     margin-bottom: -25px;
   }
+
 
   /* 1 */
   .btn-1 {
@@ -557,1021 +975,377 @@ table {
     transform: translateY(-4px);
   }
 
-  .clearfix:before,
-  .clearfix:after {
-    content: " ";
-    display: table;
-  }
-
-  .clearfix:after {
-    clear: both;
-  }
-
-  .clearfix {
-    zoom: 1px;
-  }
-
-  .container {
-    position: relative;
-    margin: 0px 0px 0px left;
-    padding: 0;
-    clear: both;
-    margin-top: 150px;
-  }
-
-  .button-container {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    justify-content: center;
-    gap: 10px; 
-    margin-bottom: 40px;
-  }
-
-  @media only screen and (min-width: 1024px) {
-    .container {
-      width: 1024px;
-    }
-  }
-
-  @media only screen and (min-width: 960px) and (max-width: 1199px) {
-    .container {
-      width: 1030px;
-    }
-  }
-
-  @media only screen and (min-width: 768px) and (max-width: 959px) {
-    .container {
-      width: 682px;
-    }
-  }
-
-  @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .container {
-      width: 428px;
-      margin: 0 auto;
-    }
-  }
-
-  @media only screen and (max-width: 479px) {
-    .container {
-      width: 320px;
-      margin: 0 auto;
-    }
-  }
-
-  .mcd-menu {
-    font-size: large;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background: #fff;
-    /*height: 100px;*/
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    /* == */
-    width: 260px;
-    /* == */
-    max-width: 1880px;
-  }
-  
-  .mcd-menu li {
-    position: relative;
-    /*float:left;*/
-    width: 260px;
-  }
-  
-  .mcd-menu li a {
-    display: block;
-    text-decoration: none;
-    padding: 12px 20px;
-    color: #777;
-    /*text-align: center;
-    border-right: 1px solid #E7E7E7;*/
-  
-    /* == */
-    text-align: left;
-    height: 36px;
-    position: relative;
-    border-bottom: 1px solid #eee;
-    /* == */
-  }
-  
-  .mcd-menu li a i {
-    /*display: block;
-    font-size: 30px;
-    margin-bottom: 10px;*/
-  
-    /* == */
-    float: left;
-    font-size: 20px;
-    margin: 0 10px 0 0;
-    /* == */
-  }
-  
-  /* == */
-  .mcd-menu li a p {
-    float: left;
-    margin: 0;
-  }
-  /* == */
-  
-  .mcd-menu li a strong {
-    display: block;
-    text-transform: uppercase;
-  }
-  
-  .mcd-menu li a small {
-    display: block;
-    font-size: 10px;
-  }
-  
-  .mcd-menu li a i,
-  .mcd-menu li a strong,
-  .mcd-menu li a small {
-    position: relative;
-  
-    transition: all 300ms linear;
-    -o-transition: all 300ms linear;
-    -ms-transition: all 300ms linear;
-    -moz-transition: all 300ms linear;
-    -webkit-transition: all 300ms linear;
-  }
-  .mcd-menu li:hover > a i {
-    opacity: 1;
-    -webkit-animation: moveFromTop 300ms ease-in-out;
-    -moz-animation: moveFromTop 300ms ease-in-out;
-    -ms-animation: moveFromTop 300ms ease-in-out;
-    -o-animation: moveFromTop 300ms ease-in-out;
-    animation: moveFromTop 300ms ease-in-out;
-  }
-  .mcd-menu li:hover a strong {
-    opacity: 1;
-    -webkit-animation: moveFromLeft 300ms ease-in-out;
-    -moz-animation: moveFromLeft 300ms ease-in-out;
-    -ms-animation: moveFromLeft 300ms ease-in-out;
-    -o-animation: moveFromLeft 300ms ease-in-out;
-    animation: moveFromLeft 300ms ease-in-out;
-  }
-  .mcd-menu li:hover a small {
-    opacity: 1;
-    -webkit-animation: moveFromRight 300ms ease-in-out;
-    -moz-animation: moveFromRight 300ms ease-in-out;
-    -ms-animation: moveFromRight 300ms ease-in-out;
-    -o-animation: moveFromRight 300ms ease-in-out;
-    animation: moveFromRight 300ms ease-in-out;
-  }
-  
-  .mcd-menu li:hover > a {
-    color: #2e6ff2;
-  }
-  .mcd-menu li a.active {
-    position: relative;
-    color: #2e6ff2;
-    border: 0;
-    /*border-top: 4px solid #e67e22;
-    border-bottom: 4px solid #e67e22;
-    margin-top: -4px;*/
-    box-shadow: 0 0 5px #ddd;
-    -moz-box-shadow: 0 0 5px #ddd;
-    -webkit-box-shadow: 0 0 5px #ddd;
-  
-    /* == */
-    border-left: 4px solid #2e6ff2;
-    border-right: 4px solid #2e6ff2;
-    margin: 0 -4px;
-    /* == */
-  }
-  .mcd-menu li a.active:before {
-    content: "";
-    position: absolute;
-    /*top: 0;
-    left: 45%;
-    border-top: 5px solid #e67e22;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;*/
-  
-    /* == */
-    top: 42%;
-    left: 0;
-    border-left: 5px solid #2e6ff2;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    /* == */
-  }
-  
-  /* == */
-  .mcd-menu li a.active:after {
-    content: "";
-    position: absolute;
-    top: 42%;
-    right: 0;
-    border-right: 5px solid #2e6ff2;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-  }
-  /* == */
-  
-  @keyframes moveFromTop {
-    from {
-      opacity: 0;
-      -webkit-transform: translateY(200%);
-      -moz-transform: translateY(200%);
-      -ms-transform: translateY(200%);
-      -o-transform: translateY(200%);
-      transform: translateY(200%);
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: translateY(0%);
-      -moz-transform: translateY(0%);
-      -ms-transform: translateY(0%);
-      -o-transform: translateY(0%);
-      transform: translateY(0%);
-    }
-  }
-  @keyframes moveFromLeft {
-    from {
-      opacity: 0;
-      -webkit-transform: translateX(200%);
-      -moz-transform: translateX(200%);
-      -ms-transform: translateX(200%);
-      -o-transform: translateX(200%);
-      transform: translateX(200%);
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: translateX(0%);
-      -moz-transform: translateX(0%);
-      -ms-transform: translateX(0%);
-      -o-transform: translateX(0%);
-      transform: translateX(0%);
-    }
-  }
-  @keyframes moveFromRight {
-    from {
-      opacity: 0;
-      -webkit-transform: translateX(-200%);
-      -moz-transform: translateX(-200%);
-      -ms-transform: translateX(-200%);
-      -o-transform: translateX(-200%);
-      transform: translateX(-200%);
-    }
-    to {
-      opacity: 1;
-      -webkit-transform: translateX(0%);
-      -moz-transform: translateX(0%);
-      -ms-transform: translateX(0%);
-      -o-transform: translateX(0%);
-      transform: translateX(0%);
-    }
-  }
-  
-  .mcd-menu li ul,
-  .mcd-menu li ul li ul {
-    position: absolute;
-    height: auto;
-    min-width: 200px;
-    padding: 0;
-    margin: 0;
-    background: #fff;
-    /*border-top: 4px solid #e67e22;*/
-    opacity: 0;
-    visibility: hidden;
-    transition: all 300ms linear;
-    -o-transition: all 300ms linear;
-    -ms-transition: all 300ms linear;
-    -moz-transition: all 300ms linear;
-    -webkit-transition: all 300ms linear;
-    /*top: 130px;*/
-    z-index: 1000;
-  
-    /* == */
-    left: 280px;
-    top: 0px;
-    border-left: 4px solid #2e6ff2;
-    /* == */
-  }
-  .mcd-menu li ul:before {
-    content: "";
-    position: absolute;
-    /*top: -8px;
-    left: 23%;
-    border-bottom: 5px solid #e67e22;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;*/
-  
-    /* == */
-    top: 25px;
-    left: -9px;
-    border-right: 5px solid #2e6ff2;
-    border-bottom: 5px solid transparent;
-    border-top: 5px solid transparent;
-    /* == */
-  }
-  .mcd-menu li:hover > ul,
-  .mcd-menu li ul li:hover > ul {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    /*top: 100px;*/
-  
-    /* == */
-    left: 260px;
-    /* == */
-  }
-  /*.mcd-menu li ul li {
-    float: none;
-  }*/
-  .mcd-menu li ul li a {
-    padding: 10px;
-    text-align: left;
-    border: 0;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 0 5px #ddd;
-    -moz-box-shadow: 0 0 5px #ddd;
-    -webkit-box-shadow: 0 0 5px #ddd;
-    /* == */
-    height: auto;
-    /* == */
-  }
-  .mcd-menu li ul li a i {
-    font-size: 16px;
-    display: inline-block;
-    margin: 0 10px 0 0;
-    
-  }
-  .mcd-menu li ul li ul {
-    left: 290px;
-    top: 0;
-    border: 0;
-    border-left: 4px solid #2e6ff2;
-  }
-  .mcd-menu li ul li ul:before {
-    content: "";
-    position: absolute;
-    top: 15px;
-    /*left: -14px;*/
-    /* == */
-    left: -9px;
-    /* == */
-    border-right: 5px solid #2e6ff2;
-    border-bottom: 5px solid transparent;
-    border-top: 5px solid transparent;
-  }
-  .mcd-menu li ul li:hover > ul {
-    top: 0px;
-    left: 260px;
-  }
-  
-  /*.mcd-menu li.float {
-    float: right;
-  }*/
-
-  
-  .search-mobile {
-    display: none !important;
-    background: #2e6ff2;
-    border-left: 1px solid #2e6ff2;
-    border-radius: 0 3px 3px 0;
-  }
-  .search-mobile i {
-    color: #fff;
-    margin: 0 !important;
-  }
-  
-  @media only screen and (min-width: 960px) and (max-width: 1199px) {
-    .mcd-menu {
-      margin-left: 10px;
-    }
-  }
-  
-  @media only screen and (min-width: 768px) and (max-width: 959px) {
-    .mcd-menu {
-      width: 200px;
-    }
-    .mcd-menu li a {
-      height: 30px;
-    }
-    .mcd-menu li a i {
-      font-size: 22px;
-    }
-    .mcd-menu li a strong {
-      font-size: 12px;
-    }
-    .mcd-menu li a small {
-      font-size: 10px;
-    }
-    .mcd-menu li a.search input {
-      width: 120px;
-      font-size: 12px;
-    }
-    .mcd-menu li a.search button {
-      padding: 8px 10px 9px 10px;
-    }
-    .mcd-menu li > ul {
-      min-width: 180px;
-    }
-    .mcd-menu li:hover > ul {
-      min-width: 180px;
-      left: 200px;
-    }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
-      min-width: 150px;
-    }
-    .mcd-menu li ul li:hover > ul {
-      left: 180px;
-      min-width: 150px;
-    }
-    .mcd-menu li ul li ul li:hover > ul {
-      left: 150px;
-      min-width: 150px;
-    }
-    .mcd-menu li ul a {
-      font-size: 12px;
-    }
-    .mcd-menu li ul a i {
-      font-size: 14px;
-    }
-  }
-  
-  @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .mcd-menu {
-      width: 50px;
-    }
-    .mcd-menu li a {
-      position: relative;
-      padding: 12px 16px;
-      height: 20px;
-    }
-    .mcd-menu li a small {
-      display: none;
-    }
-    .mcd-menu li a strong {
-      display: none;
-    }
-    .mcd-menu li a:hover strong,
-    .mcd-menu li a.active strong {
-      display: block;
-      font-size: 10px;
-      padding: 3px 0;
-      position: absolute;
-      bottom: 0px;
-      left: 0;
-      background: #2e6ff2;
-      color: #fff;
-      min-width: 100%;
-      text-transform: lowercase;
-      font-weight: normal;
-      text-align: center;
-    }
-    .mcd-menu li .search {
-      display: none;
-    }
-  
-    .mcd-menu li > ul {
-      min-width: 180px;
-      left: 70px;
-    }
-    .mcd-menu li:hover > ul {
-      min-width: 180px;
-      left: 50px;
-    }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
-      min-width: 150px;
-    }
-    .mcd-menu li ul li:hover > ul {
-      left: 180px;
-      min-width: 150px;
-    }
-    .mcd-menu li ul li ul li > ul {
-      left: 35px;
-      top: 45px;
-      border: 0;
-      border-top: 4px solid #2e6ff2;
-    }
-    .mcd-menu li ul li ul li > ul:before {
-      left: 30px;
-      top: -9px;
-      border: 0;
-      border-bottom: 5px solid #2e6ff2;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-    }
-    .mcd-menu li ul li ul li:hover > ul {
-      left: 30px;
-      min-width: 150px;
-      top: 35px;
-    }
-    .mcd-menu li ul a {
-      font-size: 12px;
-    }
-    .mcd-menu li ul a i {
-      font-size: 14px;
-    }
-  }
-  
-  @media only screen and (max-width: 479px) {
-    .mcd-menu {
-      width: 50px;
-    }
-    .mcd-menu li a {
-      position: relative;
-      padding: 12px 16px;
-      height: 20px;
-    }
-    .mcd-menu li a small {
-      display: none;
-    }
-    .mcd-menu li a strong {
-      display: none;
-    }
-    .mcd-menu li a:hover strong,
-    .mcd-menu li a.active strong {
-      display: block;
-      font-size: 10px;
-      padding: 3px 0;
-      position: absolute;
-      bottom: 0px;
-      left: 0;
-      background: #2e6ff2;
-      color: #fff;
-      min-width: 100%;
-      text-transform: lowercase;
-      font-weight: normal;
-      text-align: center;
-    }
-    .mcd-menu li .search {
-      display: none;
-    }
-  
-    .mcd-menu li > ul {
-      min-width: 180px;
-      left: 70px;
-    }
-    .mcd-menu li:hover > ul {
-      min-width: 180px;
-      left: 50px;
-    }
-    .mcd-menu li ul li > ul,
-    .mcd-menu li ul li ul li > ul {
-      min-width: 150px;
-    }
-    .mcd-menu li ul li:hover > ul {
-      left: 180px;
-      min-width: 150px;
-    }
-    .mcd-menu li ul li ul li > ul {
-      left: 35px;
-      top: 45px;
-      border: 0;
-      border-top: 4px solid #2e6ff2;
-    }
-    .mcd-menu li ul li ul li > ul:before {
-      left: 30px;
-      top: -9px;
-      border: 0;
-      border-bottom: 5px solid #2e6ff2;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-    }
-    .mcd-menu li ul li ul li:hover > ul {
-      left: 30px;
-      min-width: 150px;
-      top: 35px;
-    }
-    .mcd-menu li ul a {
-      font-size: 12px;
-    }
-    .mcd-menu li ul a i {
-      font-size: 14px;
-    }
-  }
-
   footer {
-    background-color: #2e6ff2;
-    color: white;
-    text-align: left;
-    padding: 10px;
+    background-color: #28253700;
+    color: #fff;
+    padding: 7px;
+    text-align: center;
+    font-size: 10px;
     position: fixed;
     bottom: 0;
-    left: 0;
     width: 100%;
-    box-shadow: 0 0 5px #ddd;
-    -moz-box-shadow: 0 0 5px #ddd;
-    -webkit-box-shadow: 0 0 5px #ddd;
-    font-size: small;
   }
 
-  .top-bar {
-    background-image: linear-gradient(0deg, #0055ff, #4da3fa, #0055ff);
-    color: #fff;
-    padding: 10px 10px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 80px;
-    box-shadow: 0 0 5px #ddd;
-    -moz-box-shadow: 0 0 5px #ddd;
-    -webkit-box-shadow: 0 0 5px #ddd;
-    z-index: 2;
-  }
-
-  .container-top {
-    max-width: 1880px;
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    width: 95px;
-    padding: 0px;
-    margin: 0px;
-    display: flex;
-    margin-top: -25px;
-  }
-
-  .Automatic {
-    font-size: 35px;
-    font-weight: bold;
-    padding: 0px;
-    margin-top: -25px;
-  }
-
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-
-  .navbar li {
-    margin-right: 20px;
-  }
-
-  .navbar a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s ease-in-out;
-  }
-
-  .navbar a:hover {
-    color: #8f8f8f;
-  }
-
-  .mcd-menu li a i {
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .mcd-menu li a:focus i,
-  .mcd-menu li a:hover i,
-  .mcd-menu li.active a i {
-    color: #3498db;
-    font-size: 1.5em;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-
-
-  /* Styling for the selected information */
-  .selected {
-    margin-top: -15%;
-    margin-bottom: -20%;
-  }
-
-  .outer {
-    background: #b4b4b4;
-    opacity: 0.9;
-    width: 979.5px;
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 7px 7px 0px 0px;
-  }
-  
-  .outer.dark {
-    background: #273138;
-  }
-  
-  .outer.dark .dot {
-    background: #4a5c66;
-  }
-  
-  .outer.yosemite {
-    background: #f6f6f6;
-    background: -moz-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #dadada));
-    background: -webkit-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
-    background: -o-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
-    background: -ms-linear-gradient(top, #f6f6f6 0%, #dadada 100%);
-    background: linear-gradient(to bottom, #f6f6f6 0%, #dadada 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#dadada', GradientType=0);
-    border: 1px solid #d8d8d8;
-    border-bottom: 1px solid #b4b4b4;
-  }
-  
-  .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    background: #f9f9f9;
-    border-radius: 50%;
-    margin: 0 4px 0 0;
-  }
-  
-  .dot.red {
-    background: #FF6057;
-    border: 1px solid #E14640;
-  }
-  
-  .dot.amber {
-    background: #FFBD2E;
-    border: 1px solid #DFA123;
-  }
-  
-  .dot.green {
-    background: #27C93F;
-    border: 1px solid #1DAD2B;
-  }
-  .box_we {
-    width: 90%;
-    background-color: #fff;
+  .page-content {
     padding: 20px;
-    margin: auto;
-    z-index: 5;
-    margin-top: 2%;
   }
-  .forward-button {
-    position: fixed;
-    top: 10px;
-    right: 0px; /* เปลี่ยน left เป็น right */
+
+  .row {
+    margin: 0 -10px;
   }
-.back-button {
-position: fixed;
-top: 10px;
-right: 110px; /* เปลี่ยน left เป็น right */
-}
 
-.back-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
-}
+  .col-md-6 {
+    padding: 10px;
+  }
 
-.back-button a:hover {
-    
-transform: translateY(-4px);
-}
-/* Your existing styles here */
+  .plot-container {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .col-md-6 {
+      width: 100%;
+    }
+  }
 
 
+  #ajaxloader2 {
+    margin: 30px auto 0;
+  }
 
-.forward-button a {
-margin: auto;
-color: #fff;
-width: 50px;
-height: 10px;
-padding: 10px 25px;
-font-weight: 500;
-background: transparent;
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-top: 90px;
-border-radius: 5px;
-margin-bottom: -25px;
-margin-left: 10%;
-}
+  #ajaxloader2 .outer {
+    border: 5px solid rgba(0, 183, 229, 0.9);
+    opacity: 0.9;
+    width: 50px;
+    height: 50px;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    -moz-box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    -webkit-animation: spin-right 0.5s linear infinite normal;
+    -moz-animation: spin-right 0.5s linear infinite normal;
+    -ms-animation: spin-right 0.5s linear infinite normal;
+    animation: spin-right 0.5s linear infinite normal;
+    -webkit-animation-delay: 0;
+    -moz-animation-delay: 0;
+    -o-animation-delay: 0;
+    animation-delay: 0;
+    margin: 0 auto;
+  }
 
-.forward-button a:hover {
+  #ajaxloader2 .inner {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 5px solid rgba(0, 183, 229, 0.9);
+    opacity: 0.9;
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    -webkit-box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    -moz-box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    box-shadow: 0 0 35px rgba(0, 61, 76, 0.9);
+    position: relative;
+    top: -50px;
+    margin: 0 auto;
+    -webkit-animation: spin-left 0.5s linear infinite normal;
+    -moz-animation: spin-left 0.5s linear infinite normal;
+    -ms-animation: spin-left 0.5s linear infinite normal;
+    animation: spin-left 0.5s linear infinite normal;
+    -webkit-animation-delay: 0;
+    -moz-animation-delay: 0;
+    -o-animation-delay: 0;
+    animation-delay: 0;
+  }
 
-transform: translateY(-4px);
-}
 
 </style>
 
-  <body>
-    <div class="top-bar">
-      <div class="container-top">
-        <div style="display: flex; align-items: center;">
-          <img class="logo"
-            src="https://www.pttplc.com/uploads/About/about-logo.png"
-            alt="PTT Public Company Limited Logo">
-          <span class="Automatic" style="margin-left: 10px;"
-            alt="logo">Automatic Meter Reading (ASGS)</span>
-        </div>
-        <div class="back-button" >
-          <a href="javascript:history.back()"style="text-decoration: none;">
-            <i class="fas fa-arrow-circle-left"style="margin-right: 10px"></i> Back
-          </a>
-        </div>
-        <div class="forward-button" >
-          <a href="javascript:history.forward()"style="text-decoration: none;">
-            <i class="fas fa-arrow-circle-right"style="margin-right: -80px"></i> Forward
-          </a>
-        </div>
-      </div>
+<body>
+  <div class="parent-container">
+    <div class="back-button">
+      <a href="javascript:history.back()" style="text-decoration: none;color: #fff;">
+        <i style="font-size: large;" class="fas fa-arrow-circle-left"></i>
+      </a>
     </div>
-    <div class="container">
-      <nav>
-          <ul class="mcd-menu">
-            <ul class="mcd-menu">
-              <li>
-                  <a href="{{ url_for('homeasgs') }}" >
-                      <i class="fa fa-home"></i>
-                      <strong>Home</strong>
-                      <small>Back to Homepage</small>
-                  </a>
-              </li>
-              <li>
-                  <a class="active">
-                      <i class="fa fa-database"></i>
-                      <strong>Reports</strong>
-                      <small>View </small>
-                  </a>
-                  <ul>
-                      <li><a href="{{ url_for('billing_data_asgs') }}"><i></i>- View Monthly Data</a></li>
-                      <li><a href="#"><i></i>- View EVC Status</a></li>
-                      <li><a href="Daily_summary"><i></i>- Daily Summary</a></li>
-                      <li><a href="#"><i></i>- Monthly Summery</a></li>
-                      <li><a href="sitedetail_data"><i></i>- Site Detail</a></li>
-                      <li><a href="#"><i></i>- New Site Detail</a></li>
-                  </ul>
-              </li>
-              <li>
-                <a>
-                    <i class="fas fa-clipboard-list"></i>
-                    <strong>Manage Users</strong>
-                    <small>Users</small>
-                </a>
+
+    <div class="forward-button">
+      <a href="javascript:history.forward()" style="text-decoration: none; color: #fff;">
+        <i style="font-size: large;" class="fas fa-arrow-circle-right"></i>
+      </a>
+    </div>
+
+    <a class="logout" href="{{ url_for('ASGS') }}" style="text-decoration: none; color: #fff; font-size: 18px;">
+      <i style="margin-left: 5px;" class="fas fa-home"></i> Home
+    </a>
+  </div>
+  <div class="page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+      <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+      <div class="sidebar-content">
+        <div class="sidebar-brand">
+          <a href="#">PTT - Automatic Meter Reading</a>
+          <div id="close-sidebar">
+            <i class="fas fa-times"></i>
+          </div>
+        </div>
+        <div class="sidebar-header">
+          <div class="user-pic">
+            <img class="img-responsive img-rounded" src="https://www.pttplc.com/uploads/About/about-logo.png"
+              alt="User picture">
+          </div>
+          <div style="margin-left: 2px; margin-top: 5px;" class="user-info">
+            <span style="margin-bottom: 4%;" class="user-name">
+              <strong>{{ username }}</strong>
+            </span>
+            <span class="user-role">Server: ASGS</span>
+            <span class="user-status" style="margin-top: 10%;" id="status-container">
+              <i class="fa fa-circle" id="status-icon"></i>
+              <span id="status-text">Online</span>
+              <span style="font-size: 7px;" id="status-last-update">Last Update: <span id="last-update-time"></span>
+              </span>
+          </div>
+        </div>
+        <!-- sidebar-header -->
+        <div class="sidebar-header">
+
+          <div class="weather-widget">
+            <div id="weather-icon" class="weather-icon"></div>
+            <p id="weather-description"></p>
+            <p id="temperature"></p>
+          </div>
+          <div class="date-time-container">
+            <p id="date-time"></p>
+          </div>
+        </div>
+
+        <!-- sidebar-header -->
+
+        <div class="sidebar-menu">
+          <ul>
+            <li class="header-menu">
+              <span>General</span>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-database"></i>
+                <span>Reports</span>
+                <!-- <span class="badge badge-pill badge-warning">New</span> -->
+              </a>
+              <div class="sidebar-submenu">
                 <ul>
-                    <li><a href="#"><i></i>- </i>Add User</a></li>
-                    <li><a href="#"><i></i>- </i>Edit User</a></li>
-                    <li><a href="#"><i></i>- </i>Remove User</a></li>
+                  <li>
+                    <a href="{{ url_for('billing_data') }}">View Monthly Data
+                      <!-- <span class="badge badge-pill badge-success">Pro</span> -->
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">View EVC Status</a>
+                  </li>
+                  <li>
+                    <a href="#">Daily Summary</a>
+                  </li>
+                  <li>
+                    <a href="#">Monthly Summery</a>
+                  </li>
+                  <li>
+                    <a href="sitedetail_data">Site Detail</a>
+                  </li>
                 </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Manage Users</span>
+                <!-- <span class="badge badge-pill badge-danger">3</span> -->
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Add User
+
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">Edit User</a>
+                  </li>
+                  <li>
+                    <a href="#">Remove User</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fas fa-file-alt"></i>
+                <span>Manage Sites</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Add Site</a>
+                  </li>
+                  <li>
+                    <a href="#">Edit Site</a>
+                  </li>
+                  <li>
+                    <a href="#">Remove Site</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fas fa-wrench"></i>
+                <span>Polling Setting</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">EVC Management</a>
+                  </li>
+                  <li>
+                    <a href="{{ url_for('polling_route') }}">Polling Range Setting</a>
+                  </li>
+                  <li>
+                    <a href="mapping_config">Configuration Mapping</a>
+                  </li>
+                  <li>
+                    <a href="mapping_billing">Daily Billing Mapping</a>
+                  </li>
+                  <li>
+                    <a href="#">Hourly Billing Mapping</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fas fa-search"></i>
+                <span>Polling Actions</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="Manualpoll_data">Manual Poll (EVC Profile)</a>
+                  </li>
+                  <li>
+                    <a href="write_evc">Write Config (SG,Co2,N2)</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="header-menu">
+              <!-- <span>Extra</span> -->
             </li>
             <li>
-              <a>
-                  <i class="fas fa-file-alt"></i>
-                  <strong>Manage Sites</strong>
-                  <small>Sites</small>
-              </a>
-              <ul>
-                  <li><a href="#"><i></i>- Add Site</a></li>
-                  <li><a href="#"><i></i>- Edit Site</a></li>
-                  <li><a href="#"><i></i>- </i>Remove Site</a></li>
-              </ul>
-          </li>
-            <li>
-              <a>
-                  <i class="fas fa-wrench"></i>
-                  <strong>Polling Setting</strong>
-                  <small>Setting</small>
-              </a>
-              <ul>
-                  <li><a href="#"><i></i>- EVC Management</a></li>
-                  <li><a><i></i>- Polling Range Setting</a>
-                  <ul>
-                    <li><a href="{{ url_for('polling_route') }}"><i></i>- Polling</a></li>
-                    <li><a href="#"><i></i>- </i>Add Polling</a></li>
-
-                    </ul>
-            
-                      <li><a><i></i>- Configuration Mapping</a>
-                      <ul>
-                        <li><a href="mapping_config"><i></i>- Mapping Config</a></li>
-                        <li><a href="#"><i></i>- Add Mapping Config</a></li>
-                      </ul>
-                      <li><a><i></i>- Daily Billing Mapping</a>
-                        <ul>
-                          <li><a href="mapping_billing"><i></i>- Billing Mapping</a></li>
-                          <li><a href="#"><i></i>- Add Billing Mapping</a></li>
-                        </ul>
-
-
-                      <li><a href="#"><i></i>- Hourly Billing Mapping</a></li>
-              </ul>
-          </li>
-              <li>
-                <a>
-                    <i class="fas fa-search"></i>
-                    <strong>Polling Actions</strong>
-                    <small>Polling</small>
-                </a>
-                <ul>
-                    <li><a href="write_evc"><i></i>- Write Config (SG,Co2,N2)</a></li>
-                </ul>
+              <!-- <a href="#">
+                                <i class="fa fa-book"></i>
+                                <span>Documentation</span>
+                                <span class="badge badge-pill badge-primary">Beta</span>
+                            </a> -->
             </li>
-        </ul>
+          </ul>
+        </div>
+        <!-- sidebar-menu  -->
+      </div>
+      <!-- sidebar-content  -->
+      <div class="sidebar-footer">
+        <!-- <a href="#">
+          <i class="fa fa-bell"></i>
+          <span class="badge badge-pill badge-warning notification">3</span>
+        </a> -->
+        <!-- <a href="#">
+          <i class="fa fa-envelope"></i>
+          <span class="badge badge-pill badge-success notification">7</span>
+        </a> -->
+        <!-- <a href="#">
+          <i class="fa fa-cog"></i>
+          <span class="badge-sonar"></span>
+        </a> -->
+        <a href="{{ url_for('logout') }}">
+          <i class="fa fa-power-off" style="margin-right: 5px;"></i>Logout
+        </a>
+      </div>
     </nav>
-<div class="text-box-group">
-  <div class="outer yosemite">
-      <div class="dot red"></div>
-      <div class="dot amber"></div>
-      <div class="dot green"></div>
- </div>
- <div class="box_we">
-    <form method="GET" action="{{ url_for('billing_data_asgs') }}">
-            <h2> View Billing Data (ASGS)</h2>
-            <div class="form-container">
-              <div class="form-row">
-                <!-- Dropdown for REGION_NAME -->
-                <div class="form-group col-md-4">
-                    <label for="region-dropdown">Select Region:</label>
-                    <select id="region-dropdown" name="region" class="form-control">
-                        <option value="">Select Region</option>
-                        {% for result in region_results %}
-                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-        
-                <!-- Dropdown for tag_id -->
-                <div class="form-group col-md-4">
-                    <label for="tag-dropdown">Select Tag:</label>
-                    <select id="tag-dropdown" name="tag" class="form-control">
-                        <option value="">Select Tag</option>
-                        {% for result in tag_results %}
-                            <option value="{{ result[0] }}" {% if selected_region == result[0] %}selected{% endif %}>{{ result[0] }}</option>
-                        {% endfor %}
-                    </select>
+    <!-- sidebar-wrapper  -->
+    <main style="margin-top: -5%;" class="page-content">
+      <div class="container-fluid">
+        <h2>View Billing Data</h2>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class="box_we">
+                <form method="get" action="{{ url_for('billing_data_asgs') }}">
+                  <div class="container-menu">
+                    <div class="row">
+
+                      <div class="col-md-4">
+                        <label for="region-dropdown">Select Region:</label>
+                        <select id="region-dropdown" name="region">
+                          <option value="">Select Region</option>
+                          {% for result in region_results %}
+                          <option value="{{ result[0] }}" {% if selected_region==result[0] %}selected{% endif %}>{{
+                            result[0] }}</option>
+                          {% endfor %}
+                        </select>
+
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="tag-dropdown">Select Site:</label>
+                        <select id="tag-dropdown" name="tag">
+                          <option value="{{ selected_tag }}" selected>{{ selected_tag }}
+                          <option value="">Select Tag</option>
+                          {% for result in tag_results %}
+                          <option value="{{ result[0] }}" {% if selected_region==result[0] %}selected{% endif %}>{{
+                            result[0] }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+
+
+                    <div class="col-md-4">
+                    <label for="monthYearPicker">Month & Year:</label>
+                    <input type="text"  id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
                 </div>
                 
-                <!-- Input field for selecting month and year -->
-                <div class="form-group col-md-4">
-                    <label for="monthYearPicker">Month & Year:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="monthYearPicker" name="monthYear"value="{{ selected_month_year }}" autocomplete="off">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="monthYearAddon"></span>
-                        </div>
+              </div>
+                    <div class="button-container">
+                      <button class="custom-btn btn-2" type="submit" name="query_type" value="submit"
+                        onclick="showLoading()">Submit</button>
+                      <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                        Filters</button>
                     </div>
-                </div>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div id="selected">
-              <div id="loadingOverlay" style="display: none;" >
-                <img src="static/Search.gif" alt="Loading...">
-            </div>
-                <p class="selected" style="margin-top: 20%;"></p>
-                <h1>Selected</h1>
-                <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-                <p>Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-                <p>Date: <span id="selected_date">{{ selected_date }}</span></p>
-                <p>Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-                </p>
 
-            </div>
-        <div class="button-container">
-        <button class="custom-btn btn-2" type="submit" name="query_type"
-        value="submit" onclick="showLoading()" >Submit</button>
-        <button class="custom-btn btn-1 btn-secondary" type="button"
-        onclick="clearFilters()">Clear
-        Filters</button>
-    </div>
-</div>
-    </form>     
-      <div class="table-container" >
-        <table id="dataTable">
-            <thead>
+
+
+        <div class="box_we" style="margin-bottom: 5%;">
+          <div class="selected">
+            <p style="font-size: large;">Selected :</p>
+            <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+            <p>/ Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+            <p>/ Date: <span id="selected_date">{{ selected_date }}</span></p>
+            <p>/ Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+          </div>
+          <div class="table-container" style="margin-top: 5%;">
+            <table id="dataTable" class="table table-striped table-bordered">
+              <thead>
                 <tr>
                   <th>DATA_DATE</th>
                   <th>REGION_NAME</th>
@@ -1587,144 +1361,317 @@ transform: translateY(-4px);
                   <th>AVR_PF</th>
                   <th>AVR_PF_UNIT</th>
                 </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
                 {% for row in results %}
-                    <tr>
-                        <td>{{ row[0] }}</td>
-                        <td>{{ row[1] }}</td>
-                        <td>{{ row[2] }}</td>
-                        <td>{{ row[3] }}</td>
-                        <td>{{ row[4] }}</td>
-                        <td>{{ row[5] }}</td>
-                        <td>{{ row[6] }}</td>
-                        <td>{{ row[7] }}</td>
-                        <td>{{ row[8] }}</td>
-                        <td>{{ row[9] }}</td>
-                        <td>{{ row[10] }}</td>
-                        <td>{{ row[11] }}</td>
-                        <td>{{ row[12] }}</td>
-                    </tr>
+                <tr>
+                  <td>{{ row[0] }}</td>
+                  <td>{{ row[1] }}</td>
+                  <td>{{ row[2] }}</td>
+                  <td>{{ row[3] }}</td>
+                  <td>{{ row[4] }}</td>
+                  <td>{{ row[5] }}</td>
+                  <td>{{ row[6] }}</td>
+                  <td>{{ row[7] }}</td>
+                  <td>{{ row[8] }}</td>
+                  <td>{{ row[9] }}</td>
+                  <td>{{ row[10] }}</td>
+                  <td>{{ row[11] }}</td>
+                  <td>{{ row[12] }}</td>
+                </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <footer class="footer">POWERED BY ATOS - ASGS</footer>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </div>
+  </main>
+
+  <!-- <div class="form-group col-md-12"> -->
+
+  <!-- page-content" -->
+
+
+  </div>
+  <!-- page-wrapper -->
+  <footer style="text-align: right;">All rights reserved copyright © 2024</footer>
+  <footer style="text-align: left;">Powered By ATOS - ASGS</footer>
 </body>
-</html>
 <script>
-    
-    $(document).ready(function(){
-            // Event listener for changes in the REGION_NAME dropdown
-            $('#region-dropdown').change(function(){
-                // Get the selected REGION_NAME
-                var selectedRegion = $(this).val();
 
-                // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
-                $.ajax({
-                    url: '/get_tag_asgs',
-                    method: 'GET',
-                    data: { region: selectedRegion },
-                    success: function(data){
-                        // Clear existing options in tag_id dropdown
-                        $('#tag-dropdown').empty();
+  $(document).ready(function () {
+    // Event listener for changes in the REGION_NAME dropdown
+    $('#region-dropdown').change(function () {
+      // Get the selected REGION_NAME
+      var selected_Region = $(this).val();
 
-                        // Add a default option
-                        $('#tag-dropdown').append($('<option>', {
-                            value: '',
-                            text: 'Select Tag'
-                        }));
+      // Make an AJAX request to fetch tag_id based on the selected REGION_NAME
+      $.ajax({
+        url: '/get_tag_asgs',
+        method: 'GET',
+        data: { region: selected_Region },
+        success: function (data) {
+          // Clear existing options in tag_id dropdown
+          $('#tag-dropdown').empty();
 
-                        // Add new options based on the retrieved data
-                        $.each(data, function(index, value){
-                            $('#tag-dropdown').append($('<option>', {
-                                value: value,
-                                text: value
-                            }));
-                        });
-                    }
-                });
-            });
+          // Add a default option
+          $('#tag-dropdown').append($('<option>', {
+            value: '',
+            text: 'Select Tag'
+          }));
 
-            // Initialize the month and year datepicker
-            $('#monthYearPicker').datepicker({
-                format: "mm/yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                autoclose: true,
-                showOnFocus: true  // Display the calendar when the input field is focused
-            });
-        });
-    function clearFilters() {
-        document.getElementById('region_dropdown').value = '';
-        document.getElementById('tag_dropdown').value = '';
-        document.getElementById('selected_month_year').value = '';
-        function showLoading() {
-        document.getElementById('loadingOverlay').style.display = 'block';
+          // Add new options based on the retrieved data
+          $.each(data, function (index, value) {
+            $('#tag-ropdown').append($('<option>', {
+              value: value,
+              text: value
+            }));
+          });
         }
-      }
-    
-      document.addEventListener('DOMContentLoaded', function () {
-        // Assuming you have JavaScript/jQuery to handle changes and update the display
-        var selectedRegion = null;
-        var selectedTag = null;
-        var selectedDate = null;
-    
-        document.getElementById('region_dropdown').addEventListener('change', function () {
-          selectedRegion = this.value;
-        });
-    
-        document.getElementById('tag_dropdown').addEventListener('change', function () {
-          selectedTag = this.value;
-        });
-    
-        document.getElementById('selected_month_year').addEventListener('change', function () {
-          selectedDate = this.value;
-        });
-    
-        // Event listener for form submission with 'daily_data' event
-        var formDailyData = document.querySelector('form[action="/billing_data_asgs"]'); // Adjust this selector based on your actual form
-        formDailyData.addEventListener('submit', function (event) {
-          event.preventDefault(); // Prevent the form from submitting immediately
-    
-          showLoadingOverlay();
-    
-          // Simulate delay with setTimeout (you can replace this with your actual loading logic)
-          setTimeout(function () {
-            // Update the displayed values after the loading is complete
-            document.getElementById('selected_region').innerText = selectedRegion;
-            document.getElementById('selected_tag').innerText = selectedTag;
-            document.getElementById('selected_month_year').innerText = selectedDate;
-    
-            // Optionally, update the meter ID
-            var selectedMeterIdSpan = document.getElementById('selected_meter_id');
-            if (selectedMeterIdSpan) {
-              selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
-            }
-    
-            // Reset selected values
-            selectedRegion = null;
-            selectedTag = null;
-            selectedDate = null;
-    
-            // Submit the form programmatically
-            formDailyData.submit();
-          }, 2000); // Adjust the delay time as needed (in milliseconds)
-        });
       });
-          function showLoading() {
-        // แสดง loading overlay
-        document.getElementById('loadingOverlay').style.display = 'block';
-      }
+    });
 
-      // ฟังก์ชันนี้ควรถูกเรียกเมื่อข้อมูลถูกโหลดแล้ว
-      function hideLoading() {
-        // ซ่อน loading overlay
-        document.getElementById('loadingOverlay').style.display = 'none';
-      }
+    // Initialize the month and year datepicker
+    $('#monthYearPicker').datepicker({
+      format: "mm/yyyy",
+      viewMode: "months",
+      minViewMode: "months",
+      autoclose: true,
+      showOnFocus: true  // Display the calendar when the input field is focused
+    });
+  });
+  function clearFilters() {
+    document.getElementById('region_dropdown').value = '';
+    document.getElementById('tag_dropdown').value = '';
+    document.getElementById('monthYearPicker').value = '';
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'block';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Assuming you have JavaScript/jQuery to handle changes and update the display
+    var selectedRegion = null;
+    var selectedTag = null;
+    var selectedDate = null;
+
+    document.getElementById('region_dropdown').addEventListener('change', function () {
+      selectedRegion = this.value;
+    });
+
+    document.getElementById('tag_dropdown').addEventListener('change', function () {
+      selectedTag = this.value;
+    });
+
+    document.getElementById('date_dropdown').addEventListener('change', function () {
+      selectedDate = this.value;
+    });
+
+    // Event listener for form submission with 'daily_data' event
+    var formDailyData = document.querySelector('form[action="/billing_data_asgs"]'); // Adjust this selector based on your actual form
+    formDailyData.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent the form from submitting immediately
+
+      showLoadingOverlay();
+
+      // Simulate delay with setTimeout (you can replace this with your actual loading logic)
+      setTimeout(function () {
+        // Update the displayed values after the loading is complete
+        document.getElementById('selected_region').innerText = selectedRegion;
+        document.getElementById('selected_tag').innerText = selectedTag;
+        document.getElementById('selected_date').innerText = selectedDate;
+
+        // Optionally, update the meter ID
+        var selectedMeterIdSpan = document.getElementById('selected_meter_id');
+        if (selectedMeterIdSpan) {
+          selectedMeterIdSpan.innerText = "{{ selected_meter_id }}"; // Replace with your actual meter ID variable
+        }
+
+        // Reset selected values
+        selectedRegion = null;
+        selectedTag = null;
+        selectedDate = null;
+
+        // Submit the form programmatically
+        formDailyData.submit();
+      }, 2000); // Adjust the delay time as needed (in milliseconds)
+    });
+  });
+  function showLoading() {
+    // แสดง loading overlay
+    document.getElementById('loadingOverlay').style.display = 'block';
+  }
+
 
 
 
 </script>
 
+<script>
+  function checkInternetConnection() {
+    // ตรวจสอบสถานะเชื่อมต่ออินเทอร์เน็ต
+    // ตรวจสอบได้ว่ามีการเชื่อมต่อหรือไม่ โดยใช้ navigator.onLine
+    return navigator.onLine;
+  }
 
+  // JavaScript
+  function updateStatus() {
+    var statusContainer = document.getElementById('status-container');
+    var statusIcon = document.getElementById('status-icon');
+    var statusText = document.getElementById('status-text');
+    var lastUpdate = document.getElementById('last-update-time');
+
+    var now = new Date();
+    var timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+
+    if (checkInternetConnection()) {
+      // ถ้าเชื่อมต่ออินเทอร์เน็ต
+      statusIcon.style.color = 'green'; // สีเขียว
+      statusText.textContent = 'Online';
+      statusText.classList.remove('offline'); // ลบ class 'offline' ถ้ามี
+    } else {
+      // ถ้าไม่เชื่อมต่ออินเทอร์เน็ต
+      statusIcon.style.color = 'red'; // สีแดง
+      statusText.textContent = 'Offline';
+      statusText.classList.add('offline'); // เพิ่ม class 'offline'
+    }
+
+    lastUpdate.textContent = timeString;
+  }
+  // JavaScript
+  setInterval(updateStatus, 10000); // อัปเดตทุก 1 วินาที (1000 มิลลิวินาที)
+
+</script>
+<script>
+  // Function to update weather icon
+  function updateWeatherIcon(weatherCondition) {
+    var iconClass;
+
+    // Add logic to determine the appropriate weather icon based on the condition
+    switch (weatherCondition.toLowerCase()) {
+      case 'clear':
+        iconClass = 'fas fa-sun'; // Font Awesome sun icon
+        break;
+      case 'clouds':
+        iconClass = 'fas fa-cloud'; // Font Awesome cloud icon
+        break;
+      case 'rain':
+        iconClass = 'fas fa-cloud-showers-heavy'; // Font Awesome rain icon
+        break;
+      case 'thunderstorm':
+        iconClass = 'fas fa-bolt'; // Font Awesome thunderstorm icon
+        break;
+      case 'snow':
+        iconClass = 'fas fa-snowflake'; // Font Awesome snow icon
+        break;
+      default:
+        iconClass = 'fas fa-question-circle'; // Default to a question mark icon for unknown conditions
+    }
+
+    // Set the appropriate icon class
+    document.getElementById('weather-icon').innerHTML = '<i class="' + iconClass + '"></i>';
+  }
+
+</script>
+<script>
+  // Function to update date and time
+  function updateDateTime() {
+    var now = new Date();
+    var dateTimeString = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+    document.getElementById('date-time').textContent = dateTimeString;
+  }
+
+  // Function to update weather data from OpenWeatherMap API
+  function updateWeatherData() {
+    // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+    var apiKey = 'fbae867d03fc9892a7469d2f562ce558';
+    var city = 'Bangkok'; // Replace with your city name
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey;
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Extract relevant weather data
+        var weatherCondition = data.weather[0].main;
+        var weatherDescription = data.weather[0].description;
+        var temperatureKelvin = data.main.temp;
+
+        // Convert temperature from Kelvin to Celsius
+        var temperatureCelsius = temperatureKelvin - 273.15;
+
+        // Update weather icon, description, and temperature
+        updateWeatherIcon(weatherCondition);
+        document.getElementById('weather-description').textContent = 'Weather: ' + weatherDescription;
+        document.getElementById('temperature').textContent = 'Temperature: ' + temperatureCelsius.toFixed(2) + '°C';
+      })
+      .catch(error => console.error('Error fetching weather data:', error));
+  }
+
+
+  // Function to update weather icon
+  function updateWeatherIcon(weatherCondition) {
+    var iconClass;
+
+    // Add logic to determine the appropriate weather icon based on the condition
+    switch (weatherCondition.toLowerCase()) {
+      case 'clear':
+        iconClass = 'fa-sun';
+        break;
+      case 'clouds':
+        iconClass = 'fa-cloud';
+        break;
+      case 'rain':
+        iconClass = 'fa-cloud-showers-heavy';
+        break;
+      default:
+        iconClass = 'fa-question-circle'; // Default to a question mark icon for unknown conditions
+    }
+
+    // Set the appropriate icon class
+    document.getElementById('weather-icon').innerHTML = '<i class="fa ' + iconClass + '" aria-hidden="true"></i>';
+  }
+
+  // Call the functions initially
+  updateDateTime();
+  updateWeatherData();
+
+  // Update date and time every second
+  setInterval(updateDateTime, 1000);
+
+  // Update weather data every 10 minutes (adjust as needed)
+  setInterval(updateWeatherData, 600000);
+</script>
+<script>
+  $(".sidebar-dropdown > a").click(function () {
+    $(".sidebar-submenu").slideUp(200);
+    if (
+      $(this)
+        .parent()
+        .hasClass("active")
+    ) {
+      $(".sidebar-dropdown").removeClass("active");
+      $(this)
+        .parent()
+        .removeClass("active");
+    } else {
+      $(".sidebar-dropdown").removeClass("active");
+      $(this)
+        .next(".sidebar-submenu")
+        .slideDown(200);
+      $(this)
+        .parent()
+        .addClass("active");
+    }
+  });
+
+  $("#close-sidebar").click(function () {
+    $(".page-wrapper").removeClass("toggled");
+  });
+  $("#show-sidebar").click(function () {
+    $(".page-wrapper").addClass("toggled");
+  });
+
+
+
+</script>
