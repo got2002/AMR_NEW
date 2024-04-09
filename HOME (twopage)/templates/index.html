@@ -23,32 +23,32 @@
       <form method="POST">
         <div class="form-group">
           <label for="slave_id">Slave ID</label>
-          <input type="number" class="form-control" id="slave_id" name="slave_id" value="{{slave_id}}" required>
+          <input type="number" class="form-control" id="slave_id" name="slave_id" value="1" required>
         </div>
 
         <div class="form-group">
           <label for="function_code">Function Code</label>
-          <input type="number" class="form-control" id="function_code" name="function_code" value="{{function_code}}"
+          <input type="number" class="form-control" id="function_code" name="function_code" value="3"
             required>
         </div>
         <div class="form-group">
           <label for="starting_address">Starting Address</label>
           <input type="number" class="form-control" id="starting_address" name="starting_address"
-            value="{{starting_address}}" required>
+            value="" required>
         </div>
        <div class="form-group">
           <label for="quantity">Quantity</label>
-          <input type="number" class="form-control" id="quantity" name="quantity" value="{{quantity}}" required>
+          <input type="number" class="form-control" id="quantity" name="quantity" value="" required>
 
         </div>
 <div class="form-group">
   <label for="tcp_ip">TCP IP</label>
-                <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{session['tcp_ip']}}" required>
+                <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="" required>
 </div>
 
 <div class="form-group">
   <label for="tcp_port">TCP Port</label>
-                <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="{{session['tcp_port']}}" required>
+                <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="" required>
 </div>
 <input type="hidden" name="tcp_ip_filled" value="{{ tcp_ip_filled }}">
 <input type="hidden" name="tcp_port_filled" value="{{ tcp_port_filled }}">
