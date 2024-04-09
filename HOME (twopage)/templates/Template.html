@@ -1279,8 +1279,8 @@
   }
 
   .form-group {
-    margin-bottom: 10px;
 
+margin-bottom: 4%;
     width: 100%;
   }
 
@@ -1321,7 +1321,7 @@
           </a>
         </li>
         <li>
-          <a class="active">
+          <a >
             <i class="fa fa-database"></i>
             <strong>Reports</strong>
             <small>View Data</small>
@@ -1376,7 +1376,7 @@
           </ul>
         </li>
         <li>
-          <a>
+          <a class="active">
             <i class="fas fa-search"></i>
             <strong>Polling Actions</strong>
             <small>Polling</small>
@@ -1400,7 +1400,7 @@
       <div class="dot green"></div>
     </div>
     <div class="box_we" style="margin-top: 3%;">
-      <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
+      <form id="filterForm" action="write_evc" method="get">
         <div class="container-menu">
           <label for="region_dropdown">Select Region:</label>
           <select id="region_dropdown" name="region_dropdown">
@@ -1505,10 +1505,14 @@
 
           <div class="form-group">
             <label style="margin-bottom: 5px;" for="starting_address">Starting Address</label>
-            <input type="number" class="form-control" id="starting_address" name="starting_address"
-              value="{{starting_address}}" required>
+            <select type="number" class="form-control" id="starting_address" name="starting_address" required>
+              <option value="">Select</option>
+              <option value="1003">SG</option>
+              <option value="1005">Co2</option>
+              <option value="1007">N2</option>
+            </select>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label style="margin-bottom: 5px;" for="quantity">Quantity</label>
             <select type="number" class="form-control" id="quantity" name="quantity" required>
               <option value="">Select</option>
@@ -1519,22 +1523,23 @@
               <option value="8">4</option>
 
             </select>
-          </div>
-          <!-- <div class="form-group">
+          </div> -->
+          <div class="form-group" style="display: none;">
             <label for="tcp_ip">TCP IP</label>
             <input type="text" class="form-control" id="tcp_ip" name="tcp_ip" value="{{ ip_str }}" required>
           </div>
 
-          <div class="form-group">
+          <div class="form-group"style="display: none;">
             <label for="tcp_port">TCP Port</label>
             <input type="text" class="form-control" id="tcp_port" name="tcp_port" value="{{ Port_str }}" required>
-          </div> -->
+          </div>
 
 
           <div class="form-group">
-
-            <input type="number" class="form-control" id="data_0" name="data_0" step="any" value="0" required>
-          </div>
+            <input type="number" class="form-control" id="data_0" name="data_0" step="any" value="" required placeholder="Value">
+        </div>  
+        
+        
 
           <div class="form-group">
             <input type="number" class="form-control" id="data_1" name="data_1" step="any" value="0" required>
@@ -1548,7 +1553,7 @@
             <input type="number" class="form-control" id="data_3" name="data_3" step="any" value="0" required>
           </div>
           <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
-
+          <div class="button-container">
           <button style="margin-bottom: 1%;" class="custom-btn btn-2" type="submit"  name="is_16bit" value="true">Read
             Data</button>
 
@@ -1604,52 +1609,49 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // เลือก element ของ dropdown "Quantity"
-    var quantitySelect = document.getElementById("quantity");
-    // เลือก element ของช่องข้อมูลทั้งหมด
-    var dataInputs = document.querySelectorAll('[id^="data_"]');
+   
+    var startingAddressSelect = document.getElementById("starting_address"); // เปลี่ยนชื่อตัวแปรจาก startingaddressSelect เป็น startingAddressSelect
 
-    // ฟังก์ชันเพื่อซ่อนช่องข้อมูลทั้งหมด
+    var dataInputs = document.querySelectorAll('[id^="data_"]');
+   
+
+   
     function hideAllDataInputs() {
       dataInputs.forEach(function (input) {
         input.style.display = "none";
       });
     }
 
-    // เมื่อมีการเลือกค่าใน dropdown "Quantity"
-    quantitySelect.addEventListener("change", function () {
-      // ซ่อนช่องข้อมูลทั้งหมดก่อน
+    
+    startingAddressSelect.addEventListener("change", function () {
+      
       hideAllDataInputs();
 
-      // หาค่าที่เลือกใน dropdown
-      var selectedQuantity = parseInt(this.value);
+      
+      var selectedStartingAddress = parseInt(this.value); 
 
-      // แสดงช่องข้อมูลเฉพาะที่ต้องการ
-      if (selectedQuantity === 2) {
+      
+      if (selectedStartingAddress === 1003) { 
         dataInputs[0].style.display = "block";
+        
       }
-      if (selectedQuantity === 4) {
+      if (selectedStartingAddress === 1007) { 
         dataInputs[0].style.display = "block";
-        dataInputs[1].style.display = "block";
+       
+        
       }
-      if (selectedQuantity === 6) {
+      if (selectedStartingAddress === 1005) {
         dataInputs[0].style.display = "block";
-        dataInputs[1].style.display = "block";
-        dataInputs[2].style.display = "block";
+       
+        
       }
-      if (selectedQuantity === 8) {
-        dataInputs[0].style.display = "block";
-        dataInputs[1].style.display = "block";
-        dataInputs[2].style.display = "block";
-        dataInputs[3].style.display = "block";
-      }
+     
     });
 
-    // เรียกใช้ฟังก์ชันเพื่อซ่อนช่องข้อมูลทั้งหมดเมื่อโหลดหน้าเสร็จ
+    
     hideAllDataInputs();
   });
 </script>
-
 
 
 <script>
