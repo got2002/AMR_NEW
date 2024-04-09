@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="content-language" content="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Mapping Config</title>
+    <title>LOGIN</title>
 
     <!-- Stylesheet
     <link rel="stylesheet" href="/HOME (Doing Here)/templates/Css/home.css"> -->
@@ -24,29 +24,102 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+    </style>
 </head>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
-</style>
-<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
     @font-face {
         font-family: "PTT45Pride-Bold";
         src: url("PTT45Pride-Bold.otf") format("truetype");
-        font-weight: bold;
-        font-style: normal;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "PTT45Pride-Bold", sans-serif;
     }
 
     body {
-        background-image: linear-gradient(to right, #5b707e, #abb2b9), url("your-image.jpg");
-        background-size: cover;
-        /* ปรับขนาดรูปภาพให้เต็มพื้นหลัง */
-        background-position: center;
-        /* จัดตำแหน่งรูปภาพให้กลาง */
-        background-repeat: no-repeat;
-        /* ปิดการทำซ้ำรูปภาพ */
+        background: rgb(35, 50, 70);
+        background: -moz-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -webkit-gradient(radial, top left, 0px, top left, 100%, color-stop(0%, rgba(35, 50, 70, 1)), color-stop(57%, rgba(90, 113, 132, 1)));
+        background: -webkit-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -o-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: -ms-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        background: radial-gradient(ellipse at top left, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#233246', endColorstr='#5a7184', GradientType=1);
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Default styles for non-responsive layout */
+    body {
         font-family: "PTT45Pride-Bold", sans-serif;
-        font-weight: 600;
-        max-width: 100vw;
+        overflow: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #333;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
+
+    /* Responsive styles */
+    @media screen and (max-width: 768px) {
+        body {
+            height: auto;
+            overflow: auto;
+        }
+
+        .login {
+            width: 90%;
+            padding: 20px;
+        }
+
+        .login::before,
+        .login::after {
+            width: 100%;
+            height: 100%;
+        }
+
+        .login::before {
+            left: 50%;
+            bottom: -50%;
+        }
+
+        .login::after {
+            left: 50%;
+            bottom: -85%;
+        }
+
+
+
+        /* Add additional styles for smaller screens as needed */
+    }
+
+    .input-field,
+    .password-container,
+    .checkbox-wrapper-46,
+    .container {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
     }
 
     .login {
@@ -59,9 +132,11 @@
         left: 50%;
         width: 400px;
         transform: translate(-50%, -50%);
-        transition: transform 300ms, box-shadow 300ms;
-        box-shadow: 5px 10px 10px rgba(39, 40, 40, 0.2);
+        transition: transform 300ms, filter 300ms;
+        filter: drop-shadow(5px 10px 10px rgba(39, 40, 40, 0.2));
+        /* เพิ่ม drop-shadow ด้วย filter */
     }
+
 
     .login::before,
     .login::after {
@@ -90,38 +165,8 @@
         animation: wawes 7s infinite;
     }
 
-    .login>input {
-        font-family: 'Asap', sans-serif;
-        display: block;
-        border-radius: 5px;
-        font-size: 16px;
-        background: white;
-        width: 100%;
-        border: 0;
-        padding: 10px 10px;
-        margin: 15px -10px;
-    }
 
-    .login>button {
-        font-family: 'Asap', sans-serif;
-        cursor: pointer;
-        color: #fff;
-        font-size: 16px;
-        text-transform: uppercase;
-        width: 80px;
-        border: 0;
-        padding: 10px 0;
-        margin-top: 10px;
-        margin-left: -5px;
-        border-radius: 5px;
-        background-color: rgb(7, 200, 46);
-        transition: background-color 300ms;
-        font-family: 'JetBrains Mono', monospace;
-    }
 
-    .login>button:hover {
-        background-color: rgb(4, 125, 26);
-    }
 
     @keyframes wawes {
         from {
@@ -142,30 +187,28 @@
         font-size: 12px;
     }
 
-    .logo {
-        display: grid;
-        place-items: center;
-        /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
-        /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
-        height: 100px;
-        /* ตัวอย่างเท่านี้โลโก้จะปรับขนาดเพื่อแสดงในความสูง 100px */
-    }
 
 
 
 
     /* Set a style for the submit button */
     .btn {
-        background-color: dodgerblue;
-        color: white;
-        padding: 15px 20px;
-        border: none;
-        cursor: pointer;
         width: 100%;
-        opacity: 0.9;
+        padding: 14px 28px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #4ec55a;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        text-transform: uppercase;
     }
 
     .btn:hover {
+        background-color: #57aa61;
+        box-shadow: 0px 0px 15px rgba(29, 126, 54, 2.3);
         opacity: 1;
     }
 
@@ -178,22 +221,14 @@
         /* สำหรับตัวอย่างเท่านี้เท่าที่รู้จัก */
     }
 
-    button {
-        padding: 12px 24px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* แนะนำให้เพิ่มความกว้างและความสูงเพื่อให้เห็นการจัดวาง */
+        width: 100%;
+        /* สำหรับตัวอย่างเท่านี้เท่าที่รู้จัก */
     }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
 
 
     /* Input label styles */
@@ -206,10 +241,10 @@
     /* Input field styles */
     input[type=text],
     input[type=password] {
-        width: calc(70% - 24px);
-        padding: 9px;
+        width: calc(100% - 24px);
+        padding: 13px;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 7px;
         box-sizing: border-box;
         margin-bottom: 16px;
         transition: border-color 0.3s;
@@ -217,82 +252,451 @@
 
     input[type=text]:focus,
     input[type=password]:focus {
-        border-color: #04AA6D;
+        border-color: #0a04aa;
     }
 
-    /* Style the submit button */
-    input[type=submit] {
-        background-color: #04AA6D;
-        color: white;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 4px;
+
+    form .field.shake {
+        animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            margin-left: 0px;
+        }
+
+        20%,
+        80% {
+            margin-left: -12px;
+        }
+
+        40%,
+        60% {
+            margin-left: 12px;
+        }
+    }
+    form .field.shake input,
+    form .field.error input {
+        border-color: #dc3545;
+    }
+
+    .field .input-area i {
+        position: absolute;
+        top: 50%;
+        font-size: 18px;
+        pointer-events: none;
+        transform: translateY(-50%);
+    }
+
+    .input-area .icon {
+        left: 15px;
+        color: #bfbfbf;
+        transition: color 0.2s ease;
+    }
+
+    .input-area .error-icon {
+        right: 15px;
+        color: #dc3545;
+    }
+
+    form input:focus~.icon,
+    form .field.valid .icon {
+        color: #ffffff;
+    }
+
+    form .field.shake input:focus~.icon,
+    form .field.error input:focus~.icon {
+        color: #bfbfbf;
+    }
+
+    form input::placeholder {
+        color: #bfbfbf;
+        font-size: 17px;
+    }
+
+    form .field .error-txt {
+        color: #dc3545;
+        text-align: left;
+        margin-top: 5px;
+    }
+
+    form .field .error {
+        display: none;
+    }
+
+    form .field.shake .error,
+    form .field.error .error {
+        display: block;
+    }
+
+    form .pass-txt {
+        text-align: left;
+        margin-top: -10px;
+    }
+    form .field .input-area {
+        height: 50px;
+        width: 100%;
+        position: relative;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+      }
+      
+      nav ul li {
+        margin-right: 20px;
+      }
+      
+      nav ul li a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        transition: color 0.3s ease;
+      }
+
+
+
+    #eyeIcon {
+        position: fixed;
+        transform: translateY(-50%);
+        right: 7%;
         cursor: pointer;
-        transition: background-color 0.3s;
+        color: #9098A9;
     }
 
-    input[type=submit]:hover {
-        background-color: #45a049;
+    .styled-checkbox {
+        position: absolute;
+        opacity: 0;
     }
 
-    .logo-container {
+    .styled-checkbox+label {
+        position: relative;
+        padding-left: 20px;
+        padding-right: 10px;
+        cursor: pointer;
+        display: inline-block;
+        line-height: 20px;
+    }
+
+
+    .styled-checkbox+label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #2196F3;
+        background-color: #fff;
+        box-sizing: border-box;
+    }
+
+    .styled-checkbox:checked+label:before {
+        background-color: #2196F3;
+        border-color: #2196F3;
+    }
+
+    .styled-checkbox:checked+label:after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 3px;
+        width: 6px;
+        height: 12px;
+        border: solid #fff;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+    }
+
+    .checkbox-wrapper-46 input[type="checkbox"] {
+        display: none;
+        visibility: hidden;
+    }
+
+    .checkbox-wrapper-46 .cbx {
+        margin: auto;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    .checkbox-wrapper-46 .cbx span {
+        display: inline-block;
+        vertical-align: middle;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        border-radius: 3px;
+        transform: scale(1);
+        vertical-align: middle;
+        border: 1px solid #9098A9;
+        transition: all 0.2s ease;
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child svg {
+        position: absolute;
+        top: 3px;
+        left: 2px;
+        fill: none;
+        stroke: #FFFFFF;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 16px;
+        stroke-dashoffset: 16px;
+        transition: all 0.3s ease;
+        transition-delay: 0.1s;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .checkbox-wrapper-46 .cbx span:first-child:before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: #506EEC;
+        display: block;
+        transform: scale(0);
+        opacity: 1;
+        border-radius: 50%;
+    }
+
+    .checkbox-wrapper-46 .cbx span:last-child {
+        padding-left: 8px;
+    }
+
+    .checkbox-wrapper-46 .cbx:hover span:first-child {
+        border-color: #506EEC;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child {
+        background: #506EEC;
+        border-color: #506EEC;
+        animation: wave-46 0.4s ease;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child svg {
+        stroke-dashoffset: 0;
+    }
+
+    .checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child:before {
+        transform: scale(3.5);
+        opacity: 0;
+        transition: all 0.6s ease;
+    }
+
+    @keyframes wave-46 {
+        50% {
+            transform: scale(0.9);
+        }
+    }
+
+    footer {
+        background-color: #28253700;
+        color: #fff;
+        padding: 7px;
+        text-align: center;
+        font-size: 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+
+    header {
+        background-color: #3f3e4700;
+        color: #fff;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+    }
+
+    /* You can add more specific styling for other input types if needed */
+    .logo {
         display: grid;
         place-items: center;
-        /* จัดวางโลโก้ตรงกลางทั้งแนวนอนและแนวตั้ง */
-        /* แนะนำให้กำหนดความสูงหรือความกว้างเพื่อให้โลโก้ปรับขนาดให้เหมาะสม */
+        margin-bottom: 15%;
+        margin-top: 0%;
+        width: 190px;
+        padding: 1px;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
 
+    span {
+        color: #bdbdbd;
+        filter: drop-shadow(0px 8px 4px rgba(10, 10, 10, 0.25));
+    }
+
+    .input-field,
+    .password-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .input-field i,
+    .password-container i {
+        margin-right: 8px;
+        text-align: center;
+    }
+
+    .form-container {
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fas {
+        display: inline-flex;
+        align-items: center;
+        color: rgb(97, 95, 95);
+        font-size: 24px;
+        margin-right: 5px;
+        margin-top: -15px;
     }
 </style>
 
 
-
 <body>
-    <form class="login">
-        <div class="logo-container">
-            <img src="https://cdn.discordapp.com/attachments/1171333981678080060/1186970967554134066/logo_PTT_3.png?ex=65952fdb&is=6582badb&hm=054c500f83a375c30361f6389ff1c61891735f0e44b85cf7dc67bcc0f3055583&"
-                alt="Logo" class="logo">
-        </div>
-        <label for="usrname">Username</label>
-        <input type="text" id="usrname" name="usrname" required>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="#">Welcome to Automatic Meter Reading </a></li>
+          </ul>
+        </nav>
+      </header>
+    <div class="login">
+        <form method="post" action="{{ url_for('login') }}">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo_PTT_3.png') }}" alt="Logo" class="logo">
+            </div>
+            {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+            {% endif %}
+            <div class="form-container">
+                <div class="input-field">
 
-        <label for="psw">Password</label>
-        <input type="password" id="psw" name="psw">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Username" id="username" name="username" required />
+                </div>
+                <div class="password-container">
+                    
+                    <i class="fas fa-lock"></i>
+                    <input placeholder="Password" type="password" id="password" name="password" required>
+
+                    <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                </div>
+                <!-- <div style="margin-left: 200px;" class="checkbox-wrapper-46">
+                    <input class="inp-cbx" id="cbx-46" type="checkbox" />
+                    <label class="cbx" for="cbx-46"><span>
+                            <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                            </svg></span><span style="font-size: x-small;">Remembered Password</span>
+                    </label>
+                </div> -->
+                <div class="container">
+                    <button style="margin-top: 10%;" type="submit" class="btn login-button">Login</button>
+                </div>
+            </div>
+
+        </form>
 
 
-
-        <div class="container" style="display: flex; justify-content: center; align-items: center;">
-            <button>Login</button>
-        </div>
-
-
-    </form>
-
+    </div>
+    <footer style="text-align: right;">All rights reserved copyright © 2024</footer>
+    <footer style="text-align: left;">Powered By ATOS - ASGS</footer>
 </body>
-
-</html>
-
 <script>
-    function togglePassword() {
-        const passwordField = document.getElementById('password');
-        passwordField.dataset.show = passwordField.dataset.show === 'true' ? 'false' : 'true';
-        passwordField.type = passwordField.dataset.show === 'true' ? 'text' : 'password';
+
+
+    document.querySelectorAll(".fa-eye").forEach((eye) => {
+        eye.addEventListener("click", () => {
+            const passwordInput = eye.previousElementSibling;
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eye.classList.remove("fa-eye");
+                eye.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                eye.classList.remove("fa-eye-slash");
+                eye.classList.add("fa-eye");
+            }
+        });
+    });
+
+    const rememberedCheckbox = document.getElementById("cbx-46");
+    const storedRememberedPassword = localStorage.getItem("rememberedPassword");
+
+    if (storedRememberedPassword) {
+        rememberedCheckbox.checked = true;
     }
-</script>
 
-<script>
-    var myInput = document.getElementById("psw");
-    var letter = document.getElementById("letter");
-    var capital = document.getElementById("capital");
-    var number = document.getElementById("number");
-    var length = document.getElementById("length");
-
-    var showPassword = document.getElementById("togglePassword");
-    showPassword.addEventListener("change", function () {
-        if (showPassword.checked) {
-            myInput.type = "text";
+    rememberedCheckbox.addEventListener("change", function () {
+        if (this.checked) {
+            localStorage.setItem("rememberedPassword", "yourPasswordValueHere");
         } else {
-            myInput.type = "password";
+            localStorage.removeItem("rememberedPassword");
         }
     });
 
+    const form = document.querySelector("form");
+    eField = form.querySelector(".username"),
+        eInput = eField.querySelector("input"),
+        pField = form.querySelector(".password"),
+        pInput = pField.querySelector("input");
+    form.onsubmit = (e) => {
+        e.preventDefault(); //preventing form submission
+        //if username and password are blank then add shake class, else call specified function
+        (eInput.value == "") ? eField.classList.add("shake", "error") : checkUsername();
+        (pInput.value == "") ? pField.classList.add("shake", "error") : checkPass();
+
+        setTimeout(() => { //remove shake class after 500ms
+            eField.classList.remove("shake");
+            pField.classList.remove("shake");
+        }, 500);
+
+        eInput.onkeyup = () => { checkUsername(); } //calling checkUsername function on username input keyup
+        pInput.onkeyup = () => { checkPass(); } //calling checkPassword function on pass input keyup
+
+        function checkUsername() { //checkUsername function
+            if (eInput.value == "") { //if username is empty then add error and remove valid class
+                eField.classList.add("error");
+                eField.classList.remove("valid");
+                let errorTxt = eField.querySelector(".error-txt");
+                //if username value is not empty then show please enter valid username else show Username can't be blank
+                (eInput.value != "") ? errorTxt.innerText = "Enter a valid username" : errorTxt.innerText = "Username can't be blank";
+            } else { //if username is not empty then remove error and add valid class
+                eField.classList.remove("error");
+                eField.classList.add("valid");
+            }
+        }
+
+        function checkPass() { //checkPass function
+            if (pInput.value == "") { //if pass is empty then add error and remove valid class
+                pField.classList.add("error");
+                pField.classList.remove("valid");
+            } else { //if pass is not empty then remove error and add valid class
+                pField.classList.remove("error");
+                pField.classList.add("valid");
+            }
+        }
+
+        //if eField and pField don't contain error class, that means the user filled in details properly
+        if (!eField.classList.contains("error") && !pField.classList.contains("error")) {
+            window.location.href = form.getAttribute("action"); //redirecting user to the specified URL which is inside the action attribute of the form tag
+        }
+    }
 </script>
+
+</html>
