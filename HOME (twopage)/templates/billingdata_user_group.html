@@ -218,13 +218,13 @@
 
   /*----------------show sidebar button----------------*/
   #show-sidebar {
-        position: fixed;
-        left: 0;
-        top: 100px;
-        border-radius: 0 4px 4px 0px;
-        width: 35px;
-        transition-delay: 0.3s;
-    }
+    position: fixed;
+    left: 0;
+    top: 100px;
+    border-radius: 0 4px 4px 0px;
+    width: 35px;
+    transition-delay: 0.3s;
+  }
 
   .page-wrapper.toggled #show-sidebar {
     left: -40px;
@@ -817,7 +817,7 @@
     padding: 30px;
     margin: 10px auto;
     word-wrap: break-word;
-    
+
   }
 
   .table1 th,
@@ -1069,7 +1069,8 @@
       </a>
     </div>
 
-    <a class="logout" href="{{ url_for('home_amr') }}" style="text-decoration: none; color: #fff; font-size: 18px;">
+    <a class="logout" href="{{ url_for('home_user_group') }}"
+      style="text-decoration: none; color: #fff; font-size: 18px;">
       <i style="margin-left: 5px;" class="fas fa-home"></i> Home
     </a>
   </div>
@@ -1118,25 +1119,25 @@
         <!-- sidebar-header -->
         <div class="sidebar-menu">
           <ul>
-              <li class="header-menu">
-                  <span>General</span>
-              </li>
-              <li class="sidebar-dropdown">
-                  <a href="#">
-                      <i class="fa fa-database"></i>
-                      <span>Reports</span>
-                      <!-- <span class="badge badge-pill badge-warning">New</span> -->
-                  </a>
-                  <div class="sidebar-submenu">
-                      <ul>
-                          <li>
-                              <a href="{{ url_for('billing_data_user_group') }}">View Monthly Data
-                                  <!-- <span class="badge badge-pill badge-success">Pro</span> -->
-                              </a>
-                          </li>
-                      </ul>
-                  </div>
-              </li>
+            <li class="header-menu">
+              <span>General</span>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-database"></i>
+                <span>Reports</span>
+                <!-- <span class="badge badge-pill badge-warning">New</span> -->
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="{{ url_for('billing_data_user_group') }}">View Monthly Data
+                      <!-- <span class="badge badge-pill badge-success">Pro</span> -->
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
             <li class="header-menu">
               <!-- <span>Extra</span> -->
@@ -1171,283 +1172,309 @@
         </a>
       </div>
     </nav>
-<!-- sidebar-wrapper  -->
-<main style="margin-top: -5%;" class="page-content">
-  <div class="container-fluid">
-    <h2>View Billing Data</h2>
-    <hr>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <div class="box_we">
-            <form method="get" action="{{ url_for('billing_data_user_group') }}">
-              <div class="container-menu">
-                <div class="row">
-                  <div class="col-md-4">
-                    
-                   
-                    <label for="region_dropdown">Select Region:</label>
-                    
-                      <input id="region_dropdown" name="region_dropdown" value="{{ region_options }}" readonly>
-                     
-                   
-                  
-                  </div>
-
-                  <div class="col-md-4">
-                    <label for="tag_dropdown">Select Site:</label>
-                    <select id="tag_dropdown" name="tag_dropdown" class="form-control">
-                      <option value="{{ selected_tag }}" selected>{{ selected_tag }}</option>
-                      {% for tag in tag_options %}
-                      <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-
-                  <div class="col-md-4">
-                    <label for="date_picker">Select Date:</label>
-                    <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
-                      class="form-control" autocomplete="off" onchange="checkDate()">
-                  </div>
-                </div>
-                <div id="loadingOverlay" style="display: none;">
-                  <img src="static/Search.gif" alt="Loading...">
-                </div>
-
-                <div class="button-container">
-                  <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
-                    onclick="showLoading()">Daily Data</button>
-                  <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
-                    onclick="showLoading()">Config Data</button>
-                  <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
-                    Filters</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-              {% if tables.get('daily_data_run1') %}
-              <div class="box_we" style="margin-top: -2%;">
-                <div class="selected">
-                  <p style="font-size: large;">Selected :</p>
-                  <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
-                  <p>/ Site: <span id="selected_tag">{{ selected_tag }}</span></p>
-                  <p>/ Date: <span id="selected_date">{{ selected_date }}</span></p>
-                  <p>/ Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
-                </div>
-              </div>
-              <div class="container">
-                
-                <div class="table-responsive table1" id="table1">
-                  <h5>Run 1: {{ selected_tag }}</h5>
-                  <table class="table table-bordered table-striped">
-                    {{ tables['daily_data_run1']|safe }}
-                  </table>
-                </div>
-                {% endif %}
-
-                {% if tables.get('daily_data_run2') %}
-                <div class="table-responsive table1" id="table2">
-                  <h5>Run 2: {{ selected_tag }}</h5>
-                  <table class="table table-bordered table-striped">
-                    {{ tables['daily_data_run2']|safe }}
-                  </table>
-                </div>
-                {% endif %}
-
-                {% if tables.get('daily_data_run3') %}
-                <div class="table-responsive table1" id="table3">
-                  <h5>Run 3: {{ selected_tag }}</h5>
-                  <table class="table table-bordered table-striped">
-                    {{ tables['daily_data_run3']|safe }}
-                  </table>
-                </div>
-                {% endif %}
-
-                {% if tables.get('daily_data_run4') %}
-                <div class="table-responsive table1" id="table4">
-                  <h5>Run 4: {{ selected_tag }}</h5>
-                  <table class="table table-bordered table-striped">
-                    {{ tables['daily_data_run4']|safe }}
-                  </table>
-                </div>
-                {% endif %}
-              </div>
-
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-md-6 col-xs-12">
-                    <div class="plot-container">
-                      {{ graph_corrected|safe }}
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-xs-12">
-                    <div class="plot-container">
-                      {{ graph_uncorrected|safe }}
-                    </div>
-                  </div>
-                </div>
-              
-                <div class="row">
-                  <div class="col-md-6 col-xs-12">
-                    <div class="plot-container">
-                      {{ graph_pressure|safe }}
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-xs-12">
-                    <div class="plot-container">
-                      {{ graph_temperature|safe }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {% if tables.get('config_data_run1') %}
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="box_we">
-                    <div class="table-responsive">
-                      <h5>Run 1: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run1']|safe }}
-                        </tbody>
-                      </table>
-                    </div>
-                    {% endif %}
-
-                    {% if tables.get('config_data_run2') %}
+    <!-- sidebar-wrapper  -->
+    <main style="margin-top: -5%;" class="page-content">
+      <div class="container-fluid">
+        <h2>View Billing Data</h2>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class="box_we">
+                <form method="get" action="{{ url_for('billing_data_user_group') }}">
+                  <div class="container-menu">
                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="box_we">
-                          <div class="table-responsive">
-                      <h5>Run 2: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run2']|safe }}
-                        </tbody>
-                      </table>
-                    </div>
-                    {% endif %}
+                      <div class="col-md-4">
 
-                    {% if tables.get('config_data_run3') %}
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="box_we">
-                          <div class="table-responsive">
-                      <h5>Run 3: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run3']|safe }}
-                        </tbody>
-                      </table>
-                    </div>
-                    {% endif %}
 
-                    {% if tables.get('config_data_run4') %}
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="box_we">
-                          <div class="table-responsive">
-                      <h5>Run 4: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run4']|safe }}
-                        </tbody>
-                      </table>
-                    </div>
-                    {% endif %}
+                        <label for="region_dropdown">Select Region:</label>
 
-                    {% if tables.get('config_data_run5') %}
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="box_we">
-                          <div class="table-responsive">
-                      <h5>Run 5: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run5']|safe }}
-                        </tbody>
-                      </table>
+                        <input id="region_dropdown" name="region_dropdown" value="{{ region_options }}" readonly>
+
+
+
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="tag_dropdown">Select Site:</label>
+                        <select id="tag_dropdown" name="tag_dropdown" class="form-control">
+                          <option value="{{ selected_tag }}" selected>{{ selected_tag }}</option>
+                          {% for tag in tag_options %}
+                          <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="date_picker">Select Date:</label>
+                        <input type="text" id="date_picker" name="date_dropdown" value="{{ selected_date }}"
+                          class="form-control" autocomplete="off" onchange="checkDate()">
+                      </div>
                     </div>
-                    {% endif %}
-                    {% if tables.get('config_data_run6') %}
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="box_we">
-                          <div class="table-responsive">
-                      <h5>Run 6: {{ selected_tag }}</h5>
-                      <table class="table table-bordered">
-                        <!-- The following line combines thead and tbody into a single block -->
-                        <thead>
-                          <tr>
-                            {% for key, value in dropped_columns_data[0].items() %}
-                            <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
-                            {% endfor %}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {{ tables['config_data_run6']|safe }}
-                        </tbody>
-                      </table>
+                    <div id="loadingOverlay" style="display: none;">
+                      <img src="static/Search.gif" alt="Loading...">
                     </div>
-                    {% endif %}
+
+                    <div class="button-container">
+                      <button class="custom-btn btn-2" type="submit" name="query_type" value="daily_data"
+                        onclick="showLoading()">Daily Data</button>
+                      <button class="custom-btn btn-2" type="submit" name="query_type" value="config_data"
+                        onclick="showLoading()">Config Data</button>
+                      <button class="custom-btn btn-1 btn-secondary" type="button" onclick="clearFilters()">Clear
+                        Filters</button>
+                    </div>
                   </div>
-                </div>
-                <!-- <div class="form-group col-md-12"> -->
+                </form>
               </div>
             </div>
           </div>
         </div>
-    </main>
-    <!-- page-content" -->
+
+
+
+
+        {% if tables.get('daily_data_run1') %}
+        <div class="box_we" style="margin-top: -2%;">
+          <div class="selected">
+            <p style="font-size: large;">Selected :</p>
+            <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
+            <p>/ Site: <span id="selected_tag">{{ selected_tag }}</span></p>
+            <p>/ Date: <span id="selected_date">{{ selected_date }}</span></p>
+            <p>/ Meter ID: <span id="selected_meter_id">{{ selected_meter_id}}</span></p>
+          </div>
+        </div>
+        <div class="container">
+
+          <div class="table-responsive table1" id="table1">
+            <h5>Run 1: {{ selected_tag }}</h5><br><br>
+            <table class="table table-bordered table-striped">
+              {{ tables['daily_data_run1']|safe }}
+            </table>
+          </div>
+          {% endif %}
+          <br>
+
+          {% if tables.get('daily_data_run2') %}
+          <div class="table-responsive table1" id="table2">
+            <h5>Run 2: {{ selected_tag }}</h5><br>
+            <table class="table table-bordered table-striped">
+              {{ tables['daily_data_run2']|safe }}
+            </table>
+          </div>
+          {% endif %}
+
+          {% if tables.get('daily_data_run3') %}
+          <div class="table-responsive table1" id="table3">
+            <h5>Run 3: {{ selected_tag }}</h5><br>
+            <table class="table table-bordered table-striped">
+              {{ tables['daily_data_run3']|safe }}
+            </table>
+          </div>
+          {% endif %}
+
+          {% if tables.get('daily_data_run4') %}
+          <div class="table-responsive table1" id="table4">
+            <h5>Run 4: {{ selected_tag }}</h5><br>
+            <table class="table table-bordered table-striped">
+              {{ tables['daily_data_run4']|safe }}
+            </table>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="plot-container">
+                {{ graph_corrected|safe }}
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="plot-container">
+                {{ graph_uncorrected|safe }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="plot-container">
+                {{ graph_pressure|safe }}
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="plot-container">
+                {{ graph_temperature|safe }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run1') %}
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 1: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run1']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run2') %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 2: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run2']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run3') %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 3: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run3']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run4') %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 4: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run4']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run5') %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 5: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run5']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+        {% if tables.get('config_data_run6') %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="box_we">
+              <div class="table-responsive">
+                <h5>Run 6: {{ selected_tag }}</h5><br>
+                <table class="table table-bordered">
+                  <!-- The following line combines thead and tbody into a single block -->
+                  <thead>
+                    <tr>
+                      {% for key, value in dropped_columns_data[0].items() %}
+                      <th style="border-bottom: 1px solid #000000;">{{ value }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{ tables['config_data_run6']|safe }}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <br><br>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+  <!-- <div class="form-group col-md-12"> -->
+  </div>
+  </div>
+  </div>
+  </main>
+  <!-- page-content" -->
 
 
   </div>
