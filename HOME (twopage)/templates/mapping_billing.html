@@ -806,15 +806,15 @@
     }
 
     .textbox-pair {
-            margin-bottom: 5px;
-        }
+        margin-bottom: 5px;
+    }
 
-        #max_day,
-        #interval {
-            width: 7%;
-            margin-bottom: 2%;
-            margin-top: 1%;
-        }
+    #max_day,
+    #interval {
+        width: 7%;
+        margin-bottom: 2%;
+        margin-top: 1%;
+    }
 </style>
 
 <body>
@@ -1047,36 +1047,37 @@
                             class="form-inline">
                             <label style="font-size: large;" for="type_dropdown">Select Type:</label>
                             <select id="type_dropdown" name="type_dropdown" class="form-control">
-                                <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --</option>
+                                <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --
+                                </option>
                                 {% for type in type_options %}
-                                <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}</option>
+                                <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}
+                                </option>
                                 {% endfor %}
                             </select>
                             <button style="height: fit-content; margin-left: 20px;" class="btn btn-primary"
                                 type="submit">View</button>
                         </form>
-    
+
                         <form method="POST" action="/update_mapping_billing_route">
                             <input type="hidden" name="selected_type" value="{{ selected_type }}">
                             <label for="max_day">Max day:</label>
                             <input style="width: 7%; margin-bottom: 1%; margin-top: 2%;" type="text" id="max_day"
-                                name="max_day" value="{{ max_daily_value }}" >
+                                name="max_day" value="{{ max_daily_value }}">
                             {% for i in range(0, list_address|length) %}
                             <div class="textbox-pair">
-                                <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1) }}</label>
+                                <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1)
+                                    }}</label>
                                 <input type="text" id="list_address{{ '{:02d}'.format(i) }}"
-                                    name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}"
-                                    >
-    
+                                    name="list_address{{ '{:02d}'.format(i) }}" value="{{ list_address[i] }}">
+
                                 <label for="description{{ '{:02d}'.format(i) }}">Description {{ '{:02d}'.format(i + 1)
                                     }}</label>
                                 <input type="text" id="list_description{{ '{:02d}'.format(i) }}"
-                                    name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}"
-                                    >
-    
-                                <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1) }}</label>
-                                <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}"
-                                    >
+                                    name="list_description{{ '{:02d}'.format(i) }}" value="{{ list_description[i] }}">
+
+                                <label for="data_type{{ '{:02d}'.format(i) }}">Data Type {{ '{:02d}'.format(i + 1)
+                                    }}</label>
+                                <select id="text{{ '{:02d}'.format(i) }}" name="list_data_type{{ '{:02d}'.format(i) }}">
                                     <option value="None" {% if list_data_type[i]=='None' %} selected {% endif %}>None
                                     </option>
                                     <option value="Date" {% if list_data_type[i]=='Date' %} selected {% endif %}>Date
@@ -1086,26 +1087,39 @@
                                     <option value="Float" {% if list_data_type[i]=='Float' %} selected {% endif %}>Float
                                     </option>
                                 </select>
-    
+
+                                <label style="display: none;" for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{
+                                    '{:02d}'.format(i + 1)
+                                    }}</label>
+                                <input style="display: none;" type="text" id="list_evc_type{{ '{:02d}'.format(i) }}"
+                                    name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}">
+
+                                <label style="display: none;" for="or_der{{ '{:02d}'.format(i) }}">Order {{
+                                    '{:02d}'.format(i + 1) }}</label>
+                                <input style="display: none;" type="text" id="list_or_der{{ '{:02d}'.format(i) }}"
+                                    name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
+
                                 <label for="daily{{ '{:02d}'.format(i) }}">Daily {{ '{:02d}'.format(i + 1) }}</label>
                                 <input style="width: 7%;" type="text" id="list_daily{{ '{:02d}'.format(i) }}"
-                                    name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}"
-                                    >
+                                    name="list_daily{{ '{:02d}'.format(i) }}" value="{{ list_daily[i] }}">
+
+
                             </div>
                             {% endfor %}
-    
+
                             <label for="interval">Interval:</label>
-                            <input style="width: 7%; margin-top: 1%; margin-bottom: 2%;" type="text" id="interval"
-                                name="interval" value="{{ interval }}" placeholder="Enter interval value"
-                                >
+                            <input type="text" id="interval" name="interval" value="{{ interval }}" required>
+                            Actaris = 30 Elster = 10
                             <br>
-                            <input class="btn btn-success" type="submit" value="Submit">
+                            <div class="button-container">
+                                <input class="btn btn-success" type="submit" value="Submit">
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </main>
-    <!-- page-content" -->
+        <!-- page-content" -->
     </div>
     <!-- page-wrapper -->
 
