@@ -54,6 +54,7 @@
     html {
         box-sizing: border-box;
     }
+
     body {
         background: rgb(35, 50, 70);
         background: -moz-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
@@ -288,7 +289,7 @@
     .sidebar-wrapper .sidebar-header .user-info .user-status i {
         font-size: 10px;
         margin-right: 4px;
-   
+
     }
 
     /*-----------------------sidebar-search------------------------*/
@@ -637,9 +638,11 @@
         color: red;
         /* สีข้อความ Offline */
     }
-    .sidebar-brand{
+
+    .sidebar-brand {
         font-size: 10px;
     }
+
     .parent-container {
         text-align: right;
     }
@@ -718,7 +721,8 @@
             </a>
         </div>
 
-        <a class="logout" href="{{ url_for('home_amr') }}" style="text-decoration: none; color: #fff; font-size: 18px;">
+        <a class="logout" href="{{ url_for('home_user') }}"
+            style="text-decoration: none; color: #fff; font-size: 18px;">
             <i style="margin-left: 5px;" class="fas fa-home"></i> Home
         </a>
     </div>
@@ -737,8 +741,7 @@
                 <div class="sidebar-header">
                     <div class="user-pic">
                         <img class="img-responsive img-rounded"
-                            src="https://www.pttplc.com/uploads/About/about-logo.png"
-                            alt="User picture">
+                            src="https://www.pttplc.com/uploads/About/about-logo.png" alt="User picture">
                     </div>
                     <div style="margin-left: 2px; margin-top: 5px;" class="user-info">
                         <span style="margin-bottom: 4%;" class="user-name">
@@ -748,7 +751,8 @@
                         <span class="user-status" style="margin-top: 10%;" id="status-container">
                             <i class="fa fa-circle" id="status-icon"></i>
                             <span id="status-text">Online</span>
-                            <span style="font-size: 7px;" id="status-last-update">Last Update: <span id="last-update-time"></span>
+                            <span style="font-size: 7px;" id="status-last-update">Last Update: <span
+                                    id="last-update-time"></span>
                             </span>
                     </div>
                 </div>
