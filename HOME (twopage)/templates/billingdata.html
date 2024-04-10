@@ -682,38 +682,38 @@
   }
 
   .back-button,
-    .forward-button,
-    .logout,
-    .refresh-button {
-        display: inline-block;
-        margin: 10px;
-        padding: 6px 16px;
-        text-decoration: none;
-        font-size: 11px;
-        font-weight: bold;
-        border-radius: 4px;
-        background-color: #818689;
-        color: #6b6a6a;
-        transition: background-color 0.3s, color 0.3s;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        position: relative;
-        z-index: 2;
-    }
+  .forward-button,
+  .logout,
+  .refresh-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 6px 16px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: #818689;
+    color: #6b6a6a;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
 
-    .back-button i,
-    .forward-button i,
-    .logout i,
-    .refresh-button i {
-        margin-right: 3px;
-    }
+  .back-button i,
+  .forward-button i,
+  .logout i,
+  .refresh-button i {
+    margin-right: 3px;
+  }
 
-    .back-button:hover,
-    .forward-button:hover,
-    .logout:hover,
-    .refresh-button:hover {
-        background-color: #454748;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
+  .back-button:hover,
+  .forward-button:hover,
+  .logout:hover,
+  .refresh-button:hover {
+    background-color: #454748;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
 
   .parent-container {
     text-align: right;
@@ -1039,49 +1039,49 @@
   }
 
   #loading-bar-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background-color: #ddd;
-        z-index: 9999;
-    }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #ddd;
+    z-index: 9999;
+  }
 
-    #loading-bar {
-        height: 100%;
-        width: 0;
-        background-color: #4caf50;
-        transition: width 0.3s ease-in-out;
-    }
+  #loading-bar {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50;
+    transition: width 0.3s ease-in-out;
+  }
 </style>
 
 <body>
   <div id="loading-bar-container">
     <div id="loading-bar"></div>
-</div>
-<div class="parent-container">
+  </div>
+  <div class="parent-container">
     <div class="refresh-button">
-        <a href="javascript:location.reload(true)" style="text-decoration: none; color: #fff;">
-            <i style="font-size: large;" class="fas fa-sync"></i>
-        </a>
+      <a href="javascript:location.reload(true)" style="text-decoration: none; color: #fff;">
+        <i style="font-size: large;" class="fas fa-sync"></i>
+      </a>
     </div>
     <div class="back-button">
-        <a href="javascript:history.back()" style="text-decoration: none;color: #fff;">
-            <i style="font-size: large;" class="fas fa-arrow-circle-left"></i>
-        </a>
+      <a href="javascript:history.back()" style="text-decoration: none;color: #fff;">
+        <i style="font-size: large;" class="fas fa-arrow-circle-left"></i>
+      </a>
     </div>
 
     <div class="forward-button">
-        <a href="javascript:history.forward()" style="text-decoration: none; color: #fff;">
-            <i style="font-size: large;" class="fas fa-arrow-circle-right"></i>
-        </a>
+      <a href="javascript:history.forward()" style="text-decoration: none; color: #fff;">
+        <i style="font-size: large;" class="fas fa-arrow-circle-right"></i>
+      </a>
     </div>
 
     <a class="logout" href="{{ url_for('home_amr') }}" style="text-decoration: none; color: #fff; font-size: 18px;">
-        <i style="margin-left: 5px;" class="fas fa-home"></i> Home
+      <i style="margin-left: 5px;" class="fas fa-home"></i> Home
     </a>
-</div>
+  </div>
   <div class="page-wrapper chiller-theme toggled">
     <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
       <i class="fas fa-bars"></i>
@@ -1338,7 +1338,7 @@
           {% if tables.get('daily_data_run1') %}
           <div class="box_we" style="margin-top: -2%;">
             <div class="selected">
-              <p style="font-size: large;">Selected :</p>
+              <p style="font-size: large;">Selected :</p><br>
               <p>Region: <span id="selected_region">{{ selected_region }}</span></p>
               <p>/ Site: <span id="selected_tag">{{ selected_tag }}</span></p>
               <p>/ Date: <span id="selected_date">{{ selected_date }}</span></p>
@@ -1348,7 +1348,7 @@
           <div class="container">
 
             <div class="table-responsive table1" id="table1">
-              <h5>Run 1: {{ selected_tag }}</h5>
+              <h5>Run 1: {{ selected_tag }}</h5><br>
               <table class="table table-bordered table-striped">
                 {{ tables['daily_data_run1']|safe }}
               </table>
@@ -1357,7 +1357,7 @@
 
             {% if tables.get('daily_data_run2') %}
             <div class="table-responsive table1" id="table2">
-              <h5>Run 2: {{ selected_tag }}</h5>
+              <h5>Run 2: {{ selected_tag }}</h5><br>
               <table class="table table-bordered table-striped">
                 {{ tables['daily_data_run2']|safe }}
               </table>
@@ -1366,7 +1366,7 @@
 
             {% if tables.get('daily_data_run3') %}
             <div class="table-responsive table1" id="table3">
-              <h5>Run 3: {{ selected_tag }}</h5>
+              <h5>Run 3: {{ selected_tag }}</h5><br>
               <table class="table table-bordered table-striped">
                 {{ tables['daily_data_run3']|safe }}
               </table>
@@ -1375,7 +1375,7 @@
 
             {% if tables.get('daily_data_run4') %}
             <div class="table-responsive table1" id="table4">
-              <h5>Run 4: {{ selected_tag }}</h5>
+              <h5>Run 4: {{ selected_tag }}</h5><br>
               <table class="table table-bordered table-striped">
                 {{ tables['daily_data_run4']|safe }}
               </table>
@@ -1417,7 +1417,7 @@
             <div class="col-md-12">
               <div class="box_we">
                 <div class="table-responsive">
-                  <h5>Run 1: {{ selected_tag }}</h5>
+                  <h5>Run 1: {{ selected_tag }}</h5><br>
                   <table class="table table-bordered">
                     <!-- The following line combines thead and tbody into a single block -->
                     <thead>
@@ -1433,13 +1433,14 @@
                   </table>
                 </div>
                 {% endif %}
+                <br><br>
 
                 {% if tables.get('config_data_run2') %}
                 <div class="row">
                   <div class="col-md-12">
                     <div class="box_we">
                       <div class="table-responsive">
-                        <h5>Run 2: {{ selected_tag }}</h5>
+                        <h5>Run 2: {{ selected_tag }}</h5><br>
                         <table class="table table-bordered">
                           <!-- The following line combines thead and tbody into a single block -->
                           <thead>
@@ -1455,13 +1456,14 @@
                         </table>
                       </div>
                       {% endif %}
+                      <br><br>
 
                       {% if tables.get('config_data_run3') %}
                       <div class="row">
                         <div class="col-md-12">
                           <div class="box_we">
                             <div class="table-responsive">
-                              <h5>Run 3: {{ selected_tag }}</h5>
+                              <h5>Run 3: {{ selected_tag }}</h5><br>
                               <table class="table table-bordered">
                                 <!-- The following line combines thead and tbody into a single block -->
                                 <thead>
@@ -1477,13 +1479,14 @@
                               </table>
                             </div>
                             {% endif %}
+                            <br><br>
 
                             {% if tables.get('config_data_run4') %}
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="box_we">
                                   <div class="table-responsive">
-                                    <h5>Run 4: {{ selected_tag }}</h5>
+                                    <h5>Run 4: {{ selected_tag }}</h5><br>
                                     <table class="table table-bordered">
                                       <!-- The following line combines thead and tbody into a single block -->
                                       <thead>
@@ -1499,13 +1502,14 @@
                                     </table>
                                   </div>
                                   {% endif %}
+                                  <br><br>
 
                                   {% if tables.get('config_data_run5') %}
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="box_we">
                                         <div class="table-responsive">
-                                          <h5>Run 5: {{ selected_tag }}</h5>
+                                          <h5>Run 5: {{ selected_tag }}</h5><br>
                                           <table class="table table-bordered">
                                             <!-- The following line combines thead and tbody into a single block -->
                                             <thead>
@@ -1521,12 +1525,14 @@
                                           </table>
                                         </div>
                                         {% endif %}
+                                        <br><br>
+
                                         {% if tables.get('config_data_run6') %}
                                         <div class="row">
                                           <div class="col-md-12">
                                             <div class="box_we">
                                               <div class="table-responsive">
-                                                <h5>Run 6: {{ selected_tag }}</h5>
+                                                <h5>Run 6: {{ selected_tag }}</h5><br>
                                                 <table class="table table-bordered">
                                                   <!-- The following line combines thead and tbody into a single block -->
                                                   <thead>
@@ -1561,57 +1567,57 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-  hideLoader();
-});
+    hideLoader();
+  });
 
-function showLoader() {
-  var loaderContainer = document.getElementById("loadingOverlay");
-  loaderContainer.style.display = "flex"; // แสดง Loader
+  function showLoader() {
+    var loaderContainer = document.getElementById("loadingOverlay");
+    loaderContainer.style.display = "flex"; // แสดง Loader
 
-  var progressBar = document.getElementById("progressBar");
-  progressBar.style.width = "0%"; // เริ่มต้นที่ความคืบหน้า 0%
-}
+    var progressBar = document.getElementById("progressBar");
+    progressBar.style.width = "0%"; // เริ่มต้นที่ความคืบหน้า 0%
+  }
 
-function hideLoader() {
-  var loaderContainer = document.getElementById("loadingOverlay");
-  loaderContainer.style.display = "none"; // ซ่อน Loader
-}
+  function hideLoader() {
+    var loaderContainer = document.getElementById("loadingOverlay");
+    loaderContainer.style.display = "none"; // ซ่อน Loader
+  }
 
-// เรียกใช้ showLoader เมื่อต้องการแสดง Loader (เช่น เมื่อมีการโหลดข้อมูล)
-// เรียกใช้ hideLoader เมื่อต้องการซ่อน Loader (เมื่อข้อมูลโหลดเสร็จ)
+  // เรียกใช้ showLoader เมื่อต้องการแสดง Loader (เช่น เมื่อมีการโหลดข้อมูล)
+  // เรียกใช้ hideLoader เมื่อต้องการซ่อน Loader (เมื่อข้อมูลโหลดเสร็จ)
 
-// ฟังก์ชันนี้ให้ความคืบหน้า (progress) สามารถเรียกใช้ได้ตามต้องการ
-function setProgress(percentage) {
-  var progressBar = document.getElementById("progressBar");
-  progressBar.style.width = percentage + "%";
-}
+  // ฟังก์ชันนี้ให้ความคืบหน้า (progress) สามารถเรียกใช้ได้ตามต้องการ
+  function setProgress(percentage) {
+    var progressBar = document.getElementById("progressBar");
+    progressBar.style.width = percentage + "%";
+  }
 
-// ตัวอย่างการเรียกใช้ setProgress เมื่อต้องการเพิ่มความคืบหน้า
-// setProgress(50); // เพิ่มความคืบหน้าที่ 50%
+  // ตัวอย่างการเรียกใช้ setProgress เมื่อต้องการเพิ่มความคืบหน้า
+  // setProgress(50); // เพิ่มความคืบหน้าที่ 50%
 
 </script>
 <script>
-    //  <div id="loading-bar-container">
-    //     <div id="loading-bar"></div>
-    // </div>
+  //  <div id="loading-bar-container">
+  //     <div id="loading-bar"></div>
+  // </div>
   // Function to show the loading bar
   function showLoadingBar() {
-      document.getElementById('loading-bar').style.width = '100%';
+    document.getElementById('loading-bar').style.width = '100%';
   }
 
   // Function to hide the loading bar
   function hideLoadingBar() {
-      document.getElementById('loading-bar').style.width = '0';
+    document.getElementById('loading-bar').style.width = '0';
   }
 
   // Event listener for page load
   window.addEventListener('load', function () {
-      hideLoadingBar(); // Hide the loading bar initially
+    hideLoadingBar(); // Hide the loading bar initially
   });
 
   // Event listener for beforeunload (when the page is about to be reloaded)
   window.addEventListener('beforeunload', function () {
-      showLoadingBar(); // Show the loading bar before the page reloads
+    showLoadingBar(); // Show the loading bar before the page reloads
   });
 
 </script>
