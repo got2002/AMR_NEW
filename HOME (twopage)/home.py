@@ -365,10 +365,12 @@ def billing_data():
 
         query_type = request.args.get("query_type")
 
+
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
         SELECT * FROM AMR_REGION 
         """
+
 
         tag_query = """
         SELECT DISTINCT TAG_ID
@@ -378,11 +380,13 @@ def billing_data():
         """
 
         # Fetch unique region values
-        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_results = fetch_data(ptt_pivot_connection, region_query)
         region_options = [str(region[0]) for region in region_results]
+        
+        
 
         query = ""
-        # print(query)
+        print(query)
         if query_type == "daily_data":
             # SQL query for main data
             query = """
@@ -390,7 +394,8 @@ def billing_data():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
+                TO_CHAR(AMR_BILLING_DATA.DATA_DATE),
+                
                 AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
                 AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
                 AMR_BILLING_DATA.AVR_PF as Pressure,
@@ -406,7 +411,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-            # print(query)
+            print(query)
 
             # Return the template with the DataFrame
 
@@ -416,7 +421,7 @@ def billing_data():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
+                TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
                 
                 amr_configured_data.amr_config1,
                 amr_configured_data.amr_config2,
@@ -474,7 +479,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-            # print(query)
+            print(query)
         # Get selected values from the dropdowns
         billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
         configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
@@ -486,11 +491,11 @@ def billing_data():
         selected_region = request.args.get("region_dropdown")
 
         # Fetch unique region values
-        region_results = fetch_data(ptt_pivot_connection,region_query)
+        region_results = fetch_data(ptt_pivot_connection, region_query)
         region_options = [str(region[0]) for region in region_results]
 
         # Fetch tag options based on the selected region
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+        tag_results = fetch_data(ptt_pivot_connection, tag_query, params={"region_id": selected_region})
         tag_options = [str(tag[0]) for tag in tag_results]
 
         if selected_date:
@@ -516,7 +521,7 @@ def billing_data():
 
         if selected_region:
             # Use fetch_data function to retrieve data
-            results = fetch_data(ptt_pivot_connection,query)
+            results = fetch_data(ptt_pivot_connection, query)
 
             if query_type == "daily_data":
                 # Use pandas to create a DataFrame for daily_data
@@ -534,26 +539,34 @@ def billing_data():
                         "METER_STREAM_NO",
                     ],
                 )
-                
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                # selected_meter_id = df["METER_ID"].iloc[0]
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Remove newline characters
                 df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
-                
+
+                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Sort DataFrame by 'DATA_DATE'
+                df = df.sort_values(by="DATA_DATE")
+
                 # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
@@ -566,31 +579,62 @@ def billing_data():
                     "pressure": None,
                     "temperature": None
                 }
+                
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+                # Initialize df_month_list outside the if statement
+                df_month_list = pd.DataFrame(columns=['DATA_DATE'])
+
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
+
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
+
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
+
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
+
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+                
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
                     
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
 
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
-
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
-
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
-
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
-                    
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
+                                
+                # common_table_properties = {"classes": "data", "index": False,"header":None}
+                
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
                     df_run = df[df['METER_STREAM_NO'] == str(i)]
@@ -779,61 +823,102 @@ def billing_data():
                 dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
                 df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-                print(df.columns)
+                
+                # selected_meter_id = df["METER_ID"].iloc[0]
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                ##!!!! Detact if empty 
+                
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
                 # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
                 df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
                 # Sort DataFrame by 'DATA_DATE'
                 df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                
+
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
+                # Create Full table of selectedMonth
                 tables = {
                     "daily_data": None,
                     
                 }
-
-                common_table_properties = {"classes": "data", "index": False,"header":None}
-
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
                 
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
+
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
+
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
+
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
+
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
+
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+
+                
+
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
+                    
+                common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
+
+
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
+            
                 return render_template(
                     "billingdata.html",
-                    
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
@@ -842,7 +927,7 @@ def billing_data():
                     region_options=region_options,
                     tag_options=tag_options, 
                     dropped_columns_data=dropped_columns_data,
-                    selected_meter_id=selected_meter_id,
+                    selected_meter_id=selected_meter_id
                 )
         else:
             # Render the template without executing the query
@@ -853,7 +938,7 @@ def billing_data():
                 selected_tag=selected_tag,
                 region_options=region_options,
                 tag_options=tag_options,
-                tables={},
+                tables={}
             )
             
 
@@ -865,9 +950,6 @@ def billing_data_user_group():
     #with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
         query_type = request.args.get("query_type")
-        
-        if 'username' not in session:
-            return redirect(url_for('login'))
 
         # Fetch user information from the session
         logged_in_user = session['username']
@@ -909,22 +991,23 @@ def billing_data_user_group():
         # """
         
         tag_query = """
-        SELECT DISTINCT AMR_FIELD_ID.TAG_ID
-        FROM AMR_FIELD_ID, amr_user, amr_pl_group 
+        SELECT DISTINCT AMR_FIELD_ID.TAG_ID 
+        FROM AMR_FIELD_ID, amr_user, amr_pl_group
         WHERE
             amr_user.user_group = amr_pl_group.pl_region_id
             and AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID
             and AMR_FIELD_ID.tag_id NOT like '%.remove%'
             and amr_pl_group.pl_region_id = :region_options
+            ORDER BY AMR_FIELD_ID.TAG_ID
         """
         
         print(tag_query)
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_options": region_options})
+        tag_results = fetch_data(ptt_pivot_connection, tag_query, params={"region_options": region_options})
         tag_options = [str(tag[0]) for tag in tag_results]
         print("tag:", tag_options)
         
         query = ""
-        #print(query)
+        print(query)
         if query_type == "daily_data":
             # SQL query for main data
             query = """
@@ -932,7 +1015,8 @@ def billing_data_user_group():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
+                TO_CHAR(AMR_BILLING_DATA.DATA_DATE),
+                
                 AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
                 AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
                 AMR_BILLING_DATA.AVR_PF as Pressure,
@@ -958,7 +1042,7 @@ def billing_data_user_group():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
+                TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
                 
                 amr_configured_data.amr_config1,
                 amr_configured_data.amr_config2,
@@ -1052,7 +1136,7 @@ def billing_data_user_group():
 
         if selected_region:
             # Use fetch_data function to retrieve data
-            results = fetch_data(ptt_pivot_connection,query)
+            results = fetch_data(ptt_pivot_connection, query)
 
             if query_type == "daily_data":
                 # Use pandas to create a DataFrame for daily_data
@@ -1071,24 +1155,34 @@ def billing_data_user_group():
                     ],
                 )
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                # selected_meter_id = df["METER_ID"].iloc[0]
+
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Remove newline characters
                 df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
+                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Sort DataFrame by 'DATA_DATE'
+                df = df.sort_values(by="DATA_DATE")
+
                 # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
@@ -1101,31 +1195,62 @@ def billing_data_user_group():
                     "pressure": None,
                     "temperature": None
                 }
+                
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+                # Initialize df_month_list outside the if statement
+                df_month_list = pd.DataFrame(columns=['DATA_DATE'])
 
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
 
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
 
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
 
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
 
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+                
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
 
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
+                                
+                # common_table_properties = {"classes": "data", "index": False,"header":None}
+                
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
                     df_run = df[df['METER_STREAM_NO'] == str(i)]
@@ -1314,57 +1439,100 @@ def billing_data_user_group():
                 dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
                 df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-                print(df.columns)
+                
+                # selected_meter_id = df["METER_ID"].iloc[0]
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                ##!!!! Detact if empty 
+                
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
                 # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
                 df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
                 # Sort DataFrame by 'DATA_DATE'
                 df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                
+
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
+                # Create Full table of selectedMonth
                 tables = {
                     "daily_data": None,
                     
                 }
+                
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
 
-                common_table_properties = {"classes": "data", "index": False,"header":None}
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
+
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
+
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
+
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+
+                
+
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
+                    
+                common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
+
+
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
+                        
                 return render_template(
                     "billingdata_user_group.html",
                     
@@ -1405,13 +1573,12 @@ def billing_data_user():
     with connect_to_amr_db() as ptt_pivot_connection:
     #with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
-        if 'username' not in session:
-            return redirect(url_for('login'))
 
         # Fetch user information from the session
         logged_in_user = session['username']
         if logged_in_user not in users:
             return redirect(url_for('login'))
+    
         
         user_info = users[logged_in_user]
         user_level = user_info.get('user_level')
@@ -1420,10 +1587,10 @@ def billing_data_user():
         
         logged_in_user = logged_in_user
         print("user:", logged_in_user)
-    
+
         query_type = request.args.get("query_type")
 
-    
+
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
         SELECT amr_region.id
@@ -1443,6 +1610,7 @@ def billing_data_user():
             AND amr_pl_group.pl_region_id = amr_region.id
             AND user_name = :logged_in_user
             AND amr_user.user_enable like '1'
+            ORDER BY AMR_FIELD_ID.TAG_ID
         """
 
         # Fetch unique region values
@@ -1458,7 +1626,8 @@ def billing_data_user():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 AMR_FIELD_ID.METER_ID,
-                AMR_BILLING_DATA.DATA_DATE,
+                TO_CHAR(AMR_BILLING_DATA.DATA_DATE),
+                
                 AMR_BILLING_DATA.CORRECTED_VOL as CORRECTED,
                 AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
                 AMR_BILLING_DATA.AVR_PF as Pressure,
@@ -1484,7 +1653,7 @@ def billing_data_user():
                 AMR_PL_GROUP.PL_REGION_ID,
                 AMR_FIELD_ID.TAG_ID,
                 amr_field_id.meter_id,
-                AMR_CONFIGURED_DATA.DATA_DATE,
+                TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE),
                 
                 amr_configured_data.amr_config1,
                 amr_configured_data.amr_config2,
@@ -1589,7 +1758,7 @@ def billing_data_user():
 
         if selected_region:
             # Use fetch_data function to retrieve data
-            results = fetch_data(ptt_pivot_connection,query)
+            results = fetch_data(ptt_pivot_connection, query)
 
             if query_type == "daily_data":
                 # Use pandas to create a DataFrame for daily_data
@@ -1608,24 +1777,34 @@ def billing_data_user():
                     ],
                 )
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                # selected_meter_id = df["METER_ID"].iloc[0]
+
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
-                # Continue with the rest of your DataFrame processing
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
-                df = df.sort_values(by="DATA_DATE")
-                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Remove newline characters
                 df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
+                df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
+                # Sort DataFrame by 'DATA_DATE'
+                df = df.sort_values(by="DATA_DATE")
+
                 # Assuming 'df' is the DataFrame created from the query results
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
@@ -1638,31 +1817,62 @@ def billing_data_user():
                     "pressure": None,
                     "temperature": None
                 }
+                
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run1"] = df_run1.to_html(classes="data", index=False)
+                # Initialize df_month_list outside the if statement
+                df_month_list = pd.DataFrame(columns=['DATA_DATE'])
 
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run2"] = df_run2.to_html(classes="data", index=False)
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
 
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run3"] = df_run3.to_html(classes="data", index=False)
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
 
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run4"] = df_run4.to_html(classes="data", index=False)
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
 
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run5"] = df_run5.to_html(classes="data", index=False)
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
 
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["daily_data_run6"] = df_run6.to_html(classes="data", index=False)
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+                
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
 
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
+                                
+                # common_table_properties = {"classes": "data", "index": False,"header":None}
+                
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
                     df_run = df[df['METER_STREAM_NO'] == str(i)]
@@ -1851,60 +2061,102 @@ def billing_data_user():
                 dropped_columns_data = dropped_columns_data.to_dict(orient="records")
 
                 df = df.drop(columns=columns_to_drop)  # Drop specified columns
-
-                print(df.columns)
+                
+                # selected_meter_id = df["METER_ID"].iloc[0]
                 # Get the selected Meter ID before removing it from the DataFrame
-                selected_meter_id = df["METER_ID"].iloc[0]
+                ##!!!! Detact if empty 
+                
+                selected_meter_id = None
+
+                # Check if 'METER_ID' column exists and the DataFrame is not empty
+                if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
+                    selected_meter_id = df['METER_ID'].iloc[0]
+                    print(f"Selected Meter ID: {selected_meter_id}")
+                else:
+                    print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
 
                 # Remove newline characters
-                df = df.apply(
-                    lambda x: x.str.replace("\n", "") if x.dtype == "object" else x
-                )
-                df["DATA_DATE"] = pd.to_datetime(df["DATA_DATE"])
+                df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
                 df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
                 # Sort DataFrame by 'DATA_DATE'
                 df = df.sort_values(by="DATA_DATE")
-                # Send the DataFrame to the HTML template
-                df_run1 = df[df['METER_STREAM_NO'] == '1']
-                df_run2 = df[df['METER_STREAM_NO'] == '2']
-                df_run3 = df[df['METER_STREAM_NO'] == '3']
-                df_run4 = df[df['METER_STREAM_NO'] == '4']
-                df_run5 = df[df['METER_STREAM_NO'] == '5']
-                df_run6 = df[df['METER_STREAM_NO'] == '6']
+                
+
+                num_streams = 6
+                df_runs = {}
+
+                # Loop to create DataFrames for each METER_STREAM_NO
+                for i in range(1, num_streams + 1):
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
+                # Create Full table of selectedMonth
                 tables = {
                     "daily_data": None,
                     
                 }
+                
+                selected_date = request.args.get("date_dropdown")
+                print("date1:", selected_date)
 
-                common_table_properties = {"classes": "data", "index": False,"header":None}
+                # Check if 'selected_date' is available
+                if selected_date:
+                    # Convert selected_date to 'YYYY-MM' format for consistency
+                    selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
+                    print("date2:", selected_date_formatted)
 
-                if not df_run1.empty:
-                    df_run1 = df_run1.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run1"] = df_run1.to_html(**common_table_properties)
-                if not df_run2.empty:
-                    df_run2 = df_run2.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run2"] = df_run2.to_html(**common_table_properties)
-                if not df_run3.empty:
-                    df_run3 = df_run3.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run3"] = df_run3.to_html(**common_table_properties)
-                if not df_run4.empty:
-                    df_run4 = df_run4.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run4"] = df_run4.to_html(**common_table_properties)
-                if not df_run5.empty:
-                    df_run5 = df_run5.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run5"] = df_run4.to_html(**common_table_properties)
-                if not df_run6.empty:
-                    df_run6 = df_run6.drop('METER_STREAM_NO', axis=1, errors='ignore')
-                    tables["config_data_run6"] = df_run4.to_html(**common_table_properties)
-                return render_template(
-                    "billingdata_user.html",
+                    # Get the current month and year
+                    current_month_year = datetime.datetime.now().strftime('%Y-%m')
+
+                    # Determine if the selected date is in the current month
+                    is_current_month = selected_date_formatted == current_month_year
+
+                    # Update the query to use the selected date
+                    if is_current_month:
+                        # If the selected date is in the current month, show all days up to the current date
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{current_month_year}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
+                        """
+                    else:
+                        # If the selected date is in a previous month, show all days of the selected month
+                        query_day = f"""
+                            SELECT TO_CHAR(TRUNC(LEVEL - 1) + TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) AS Date1
+                            FROM DUAL
+                            CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
+                        """
+
+                    # Fetch data for the month list
+                    query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+
+                
+
+                # Merge DataFrames using a loop
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
                     
+                    if not df_run.empty:
+                        merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        df_runs[f'df_run{i}'] = merged_df
+                    
+                common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
+
+
+                for i in range(1, num_streams + 1):
+                    df_run = df_runs[f'df_run{i}']
+                    if not df_run.empty:
+                        df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        df_run = df_run.fillna("N/A")
+                        tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
+                        
+                return render_template(
+                    "billingdata_user.html",               
                     tables=tables,
                     titles=df.columns.values,
                     selected_date=selected_date,
@@ -1930,7 +2182,7 @@ def billing_data_user():
                 username=logged_in_user,  
                 description=description,
                 user_level=user_level
-            )  
+            )   
 ############ / View Billing Data  #####################
 
 
@@ -4987,6 +5239,7 @@ def update_polling_data():
         type_id = str(results[0]).strip("',()")
         print(type_id)
         
+        
         # Update configuration data
         poll_config_all = ""
         enable_config = ""
@@ -5220,8 +5473,8 @@ def mapping_config_route():
                 list_or_der=df["or_der"].tolist()
                 
             )
-        else:
-            return render_template('mapping_config.html', type_options=type_options)
+
+        return render_template('mapping_config.html', type_options=type_options)
 
 def checkStrNone(stringcheck):
     if stringcheck == "None": return ""
@@ -5229,10 +5482,13 @@ def checkStrNone(stringcheck):
     
 @app.route('/update_mapping_config_route', methods=['POST'])
 def update_mapping_config():
-    if 'username' not in session:
-        return redirect(url_for('login'))
+    
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
+        
+        if 'username' not in session:
+            return redirect(url_for('login'))
+    
         selected_type = request.form.get('selected_type')
 
         # Fetch type_id from the database
@@ -5315,7 +5571,7 @@ def update_mapping_config():
                 print("Error : invalid address ; alert หน้าจอ และ ออกจาก function นี้ได้เลย ")
                 
                 #error
-                return ""
+                return "error length"
                 
         
             description_VC_TYPE.append(checkStrNone(description_value))
@@ -5333,7 +5589,7 @@ def update_mapping_config():
             WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
             """
             # print("Update Query##################", update_query)
-            update_sql(update_query)
+            update_sql(ptt_pivot_connection, update_query)
             
             
         
@@ -5366,10 +5622,10 @@ def update_mapping_config():
             
         """
         
-        update_sql(update_vc_info_query)
+        update_sql(ptt_pivot_connection, update_vc_info_query)
         # print(update_vc_info_query)
 
-        return redirect("/mapping_config")
+    return redirect("/mapping_config")
 
 
 @app.route('/mapping_billing')  
@@ -5406,7 +5662,8 @@ def mapping_billing_route():
             type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
             results = fetch_data(ptt_pivot_connection,type_id_query, (selected_type,))
             
-            interval = request.args.get("interval") or "10"
+            interval = ""
+
             
             if results:
                 type_id = str(results[0][0])
@@ -5464,55 +5721,151 @@ def update_mapping_billing():
         return redirect(url_for('login'))
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
-        type_name_value = ["Time Stamp","Converted Index (VbA)","Unconverted Index (VmA)","Pressure Daily Average","Temperature Daily Average"]
-        unit_type_name_value = ["Ulong","Ulong","Ulong","float","float"]
         selected_type = request.form.get('selected_type')
 
         # Fetch type_id from the database
         type_id_query = f"SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME = '{selected_type}'"
-        results = fetch_data(ptt_pivot_connection,type_id_query)
+        results = fetch_data(ptt_pivot_connection, type_id_query)
         type_id = str(results[0]).strip("',()")
         
-        max_daily_query = "SELECT MAX(daily),MAX(id),MAX(address),MAX(or_der)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
-        max_daily_result = fetch_data(ptt_pivot_connection,max_daily_query)
-        current_id = 0
-        current_address = 0
-        current_order = 0
-        for row in max_daily_result:
-            if len(row) >= 3:
-                max_daily_value = int(row[0])
-                current_id = int(row[1])   
-                current_address = int(row[2]) 
-                current_order = int(row[3])
-                
-        if current_id == 0 or current_address == 0 or current_order == 0:
-            return redirect('/') # TODO : handler an errors and alert it.
+        #max_daily_query = "SELECT MAX(daily),MAX(id),MAX(address),MAX(or_der)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
+        max_daily_query = "SELECT MAX(daily)  FROM amr_mapping_billing  WHERE evc_type = {}".format(type_id)
+        max_daily_result = fetch_data(ptt_pivot_connection, max_daily_query)
+        max_daily_query = str(max_daily_result[0]).strip("',()")
+        # print("Max:", max_daily_query)
         
+        # evc_type = type_id
+        # max_daily_query = max day before save 
         
+        dataframes = {
+                    'address':[],
+                    'description':[],
+                    'data_type':[],
+                    'evc_type':[],
+                    'or_der':[],
+                    'daily':[],
+        }
+        df_data = pd.DataFrame(dataframes)
+        
+        # get max day from text box
         max_daily_new = int(request.form.get('max_day'))
         
-        interval = request.args.get("interval") or "10"
-        if  max_daily_new <= max_daily_value :
-            # Delete excess rows from max_daily_new + 1 to max_daily_value
-            for i in range(max_daily_value, max_daily_new, -1):
+        # get information Crete initial dataframe
+        
+        address_value_array = []
+        description_value_array = []
+        data_type_value_array = []
+        or_der_value_array = []
+        
+        
+        for i in range(0, QUANTITY_BILLING_PER_DAY): 
+            i = f"{i:02d}"
+            address_key = f"list_address{i}"
+            description_key = f"list_description{i}"
+            data_type_key = f"list_data_type{i}"
+            #evc_type_key = f"list_evc_type{i}"
+            or_der_key = f"list_or_der{i}"
+            #daily_key = f"list_daily{i}"
+                    
+            address_value = request.form.get(address_key.strip("',()"))
+            address_value_array.append(int(address_value))
+            
+            description_value = request.form.get(description_key.strip("',()"))
+            description_value_array.append(description_value)
+            
+            data_type_value = request.form.get(data_type_key.strip("',()"))
+            data_type_value_array.append(data_type_value)
+            #evc_type_value = request.form.get(evc_type_key.strip("',()"))
+            or_der_value = request.form.get(or_der_key.strip("',()"))
+            or_der_value_array.append(or_der_value)
+
+        
+        #print("XX", address_value_array, description_value_array, data_type_value_array, or_der_value_array)
+
+        # Get interval
+        # interval = request.args.get("interval") or "30"
+        interval = request.form['interval']
+        
+        # for j in range(0,max_daily_new):
+        #     #daily_value = j+1
+        #     for i in range(0, QUANTITY_BILLING_PER_DAY):
+                
+        #         address_calc = int(address_value_array[i]) + (j*int(interval))
+        #         print("")
+        #         data = {
+        #                 'address': [address_calc], 
+        #                 'description': [description_value_array[i]],
+        #                 'data_type': [data_type_value_array[i]],
+        #                 'evc_type': [type_id],
+        #                 'or_der': [int(or_der_value_array[i])],
+        #                 'daily': [j+1]
+        #         }
+                
+        #         df2 = pd.DataFrame(data)
+        #         df_data = pd.concat([df_data, df2], ignore_index=True)
+                
+        #     df_data['address'] = df_data['address'].astype(int)
+        #     df_data['or_der'] = df_data['or_der'].astype(int)
+        #     df_data['daily'] = df_data['daily'].astype(int)      
+                
+        # print("dd4", df_data)
+            
+        
+        if  max_daily_new <= int(max_daily_query) :
+            if max_daily_new < int(max_daily_query):
                 delete_query = f"""
                 DELETE FROM AMR_MAPPING_BILLING
-                WHERE evc_type = '{type_id}' AND DAILY = {i}
+                WHERE evc_type = '{type_id}' AND DAILY > {max_daily_new}
                 """
+                # print(delete_query)
                 update_sql(ptt_pivot_connection, delete_query)
-
-        elif max_daily_new > max_daily_value:
-            # Update existing rows from 1 to max_daily_value
-            for i in range(max_daily_new - max_daily_value):
-                for x,y in zip(type_name_value,unit_type_name_value):
-                    # Adjust the values as needed from your form input or other sources
-                    new_address = current_address = current_address + 2
-                    new_description = x
-                    new_data_type = y
+            
+            for j in range(max_daily_new):
+                for i in range(QUANTITY_BILLING_PER_DAY):
+                    update_query = f"""
+                    UPDATE AMR_MAPPING_BILLING
+                    SET 
+                        ADDRESS = '{int(address_value_array[i]) + (j* int(interval))}',
+                        DESCRIPTION = '{description_value_array[i]}',
+                        data_type = '{data_type_value_array[i]}'
+                    WHERE 
+                        evc_type = '{type_id}' and 
+                        or_der = {i+1} and 
+                        daily = {j+1}
+                        
+                    """
+                    # print("update_query", update_query)
+                    update_sql(ptt_pivot_connection, update_query)
+            
+        else : # max_daily_new > int(max_daily_query):
+            # updte 1 to max_daily_query
+            for j in range(int(max_daily_query)):
+                for i in range(QUANTITY_BILLING_PER_DAY):
+                    update_billing = f"""
+                    UPDATE AMR_MAPPING_BILLING
+                    SET 
+                        ADDRESS = '{int(address_value_array[i]) + (j* int(interval))}',
+                        DESCRIPTION = '{description_value_array[i]}',
+                        data_type = '{data_type_value_array[i]}'
+                    WHERE 
+                        evc_type = '{type_id}' and 
+                        or_der = {i+1} and 
+                        daily = {j+1}
+                    """
+                    # print("update_billing", update_billing)
+                    update_sql(ptt_pivot_connection, update_billing)
+            
+            # Insert max_daily_query to max_daily_new
+            
+            for j in range(max_daily_new - int(max_daily_query)):
+                for i in range(QUANTITY_BILLING_PER_DAY):  # Assuming this is the correct length
+                    new_address = int(address_value_array[i]) + ((int(max_daily_query) + j) * int(interval))
+                    new_description = description_value_array[i]
+                    new_data_type = data_type_value_array[i]
                     new_evc_type = type_id
-                    new_or_der = current_order = current_order + 1
-                    new_daily = i + 1 + max_daily_value
-                
+                    new_or_der = or_der_value_array[i]
+                    new_daily = int(max_daily_query) + j + 1
+
                     insert_query = f"""
                     INSERT INTO AMR_MAPPING_BILLING (ADDRESS, DESCRIPTION, DATA_TYPE, evc_type, OR_DER, DAILY)
                     VALUES ('{new_address}', '{new_description}', '{new_data_type}',  '{new_evc_type}', '{new_or_der}', '{new_daily}')
@@ -5520,39 +5873,6 @@ def update_mapping_billing():
 
                     update_sql(ptt_pivot_connection, insert_query)
                     # print(insert_query)
-        
-        # Update SQL query based on your table structure
-        for i in range(0, 5): 
-            i = f"{i:02d}"
-            address_key = f"list_address{i}"
-            description_key = f"list_description{i}"
-            data_type_key = f"list_data_type{i}"
-            evc_type_key = f"list_evc_type{i}"
-            or_der_key = f"list_or_der{i}"
-            daily_key = f"list_daily{i}"
-                    
-            address_value = request.form.get(address_key.strip("',()"))
-            description_value = request.form.get(description_key.strip("',()"))
-            data_type_value = request.form.get(data_type_key.strip("',()"))
-            evc_type_value = request.form.get(evc_type_key.strip("',()"))
-            or_der_value = request.form.get(or_der_key.strip("',()"))
-            daily_value = request.form.get(daily_key.strip("',()"))
-            # print("address:", address_value)
-            
-            # Update SQL query based on your table structure
-            update_query = f"""
-            UPDATE AMR_MAPPING_BILLING
-            SET
-                ADDRESS = '{address_value}',
-                DESCRIPTION = '{description_value}',
-                DATA_TYPE = '{data_type_value}',
-                OR_DER = '{or_der_value}',
-                DAILY = '{daily_value}'        
-            WHERE evc_type = '{evc_type_value}' and or_der = '{or_der_value}'
-        """
-
-            update_sql(ptt_pivot_connection, update_query)
-            print(update_query)
 
         return redirect("/mapping_billing")
 
