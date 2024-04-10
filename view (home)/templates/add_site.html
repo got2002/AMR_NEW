@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add site</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #eee;
+        padding: 10px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin-right: 10px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    nav a:hover {
+        background-color: #dd2d;
+    }
+
+    .hidden {
+        display: none;
+
+    }
+
+
+
+    /* textbox */
+
+    /* General styling for all textboxes */
+    .textbox-container {
+        margin-bottom: 10px;
+
+    }
+
+    .textbox-pair {
+        margin-bottom: 3px;
+    }
+
+    input[type="text"] {
+        width: 200px;
+        /* Adjust the width as needed */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    @keyframes oscillate {
+        0% {
+            transform: translateX(0);
+        }
+
+        50% {
+            transform: translateX(0px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    .enable-container {
+        margin-bottom: 10px;
+        /* Add some space between containers */
+        animation: alternate-reverse;
+        /* Apply the oscillation animation */
+    }
+
+    /* Additional styling for labels and checkboxes */
+    label {
+        margin-right: 5px;
+    }
+
+    input[type="checkbox"] {
+        margin-left: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .label {
+        display: inline-block;
+        width: 150px;
+        /* Adjust the width as needed */
+        text-align: left;
+        /* Align label text to the right */
+        margin-right: 10px;
+        /* Add some margin between label and dropdown */
+    }
+
+    .input-select {
+        width: 200px;
+        /* Adjust the width as needed */
+    }
+
+
+
+    /* Adjust the width as needed */
+</style>
+
+<body>
+    <header>
+        <h1>AMR</h1>
+    </header>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <br>
+    <a href="{{ url_for('home') }}">home</a>
+
+    <h2>Add Site</h2>
+    <form method="POST" action="{{ url_for('add_site') }}">
+        <div class="container">
+            <div class="form-group">
+                <label class="label" for="id">ID:</label>
+                <input type="text" id="id" name="id" required value="{{ max_id_value }}" readonly class="input-select">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="phase">PHASE:</label>
+                <select id="phase" name="phase" required class="input-select">
+                    {% for phase_option in range(2, 100) %}
+                    <option value="{{ phase_option }}" {% if phase_option==2 %}selected{% endif %}>{{ phase_option }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="site_name">SITE NAME:</label>
+                <input type="text" id="site_name" name="site_name" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="factory_name">FACTORY NAME:</label>
+                <input type="text" id="factory_name" name="factory_name" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="region">REGION:</label>
+                <select id="region" name="region" class="input-select">
+                    <option value="pt001">Region 1</option>
+                    <option value="pt002">Region 2</option>
+                    <option value="pt003">Region 3</option>
+                    <option value="pt005">Region 5</option>
+                    <option value="pt006">Region 6</option>
+                    <option value="pt009">Region 9</option>
+                    <option value="pt010">Region 10</option>
+                    <option value="pt011">Region 11</option>
+                    <option value="ptngv">NGV</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label class="label" for="rmiu_type">RMIU TYPE:</label>
+                <select id="rmiu_type" name="rmiu_type" required class="input-select">
+                    <option value="1" selected>VIOLA</option>
+                    <option value="2">T-Box lite</option>
+                    <option value="3">VIOLA-GE_TCP</option>
+                    <option value="4">VIOLA-GE_SERAIL</option>
+                    <option value="5">Micro-AMR</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="power_indicator">POWER INDICATOR:</label>
+                <select id="power_indicator" name="power_indicator" class="input-select">
+                    <option value="None">None</option>
+                    <option value="Comparator">Comparator</option>
+                    <option value="Analog Module">Analog Module</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="modbus_id">MODBUS ID(T-Box only):</label>
+                <input type="text" id="modbus_id" name="modbus_id" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="ip_address">IP ADDRESS:</label>
+                <input type="text" id="ip_address" name="ip_address" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="ready_to_billing">READY TO BILLING:</label>
+                <input type="checkbox" id="ready_to_billing" name="ready_to_billing" value="1" class="input-checkbox">
+                <input type="hidden" id="ready_to_billing" name="ready_to_billing" value="0">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="auto_ping">AUTO PING:</label>
+                <input type="checkbox" id="auto_ping" name="auto_ping" value="1" checked class="input-checkbox">
+                <input type="hidden" id="auto_ping" name="auto_ping" value="0">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="billing_date">BILLING DATE:</label>
+                <select id="billing_date" name="billing_date" class="input-select">
+                    <option value="28">28</option>
+                    <option value="Last month">Last month</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="show_sg_co2_n2">SHOW SG CO2 N2:</label>
+                <select id="show_sg_co2_n2" name="show_sg_co2_n2" class="input-select">
+                    <option value="Show">Show</option>
+                    <option value="Hidden">Hidden</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="amount_of_meter">AMOUNT OF METER:</label>
+                <select id="amount_of_meter" name="amount_of_meter" class="input-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="initial_username">INITIAL USERNAME:</label>
+                <input type="text" id="initial_username" name="initial_username" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="initial_password">INITIAL PASSWORD:</label>
+                <input type="text" id="initial_password" name="initial_password" required class="input-text">
+            </div>
+
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <th>NO.</th>
+                        <th>EVC TYPE</th>
+                        <th>PORT</th>
+                        <th>AUTO</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>RMIU</td>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="auto_7" value="1">
+                            <input type="hidden" name="auto_7" value="0">
+                        </td>
+                        <!-- checked="checked"  -->
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><select name="port_1">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port1">
+                                <option value="1">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_1" value="1" checked="checked">
+                            <input type="hidden" name="auto_1" value="0">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td><select name="port_2">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port2">
+                                <option value="1" selected="">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="3">Tbox + Digi Port no. 1</option>
+                                <option value="4">Tbox + Digi Port no. 2</option>
+                                <option value="5">Tbox + Digi Port no. 3</option>
+                                <option value="6">Tbox + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_2" value="1" checked="checked">
+                            <input type="hidden" name="auto_2" value="0">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td><select name="port_3">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port3">
+                                <option value="1" selected="">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="3">Tbox + Digi Port no. 1</option>
+                                <option value="4">Tbox + Digi Port no. 2</option>
+                                <option value="5">Tbox + Digi Port no. 3</option>
+                                <option value="6">Tbox + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_3" value="1" checked="checked">
+                            <input type="hidden" name="auto_3" value="0">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td><select name="port_4">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port4">
+                                <option value="1" selected="">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="3">Tbox + Digi Port no. 1</option>
+                                <option value="4">Tbox + Digi Port no. 2</option>
+                                <option value="5">Tbox + Digi Port no. 3</option>
+                                <option value="6">Tbox + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_4" value="1" checked="checked">
+                            <input type="hidden" name="auto_4" value="0">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td><select name="port_5">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port5">
+                                <option value="1" selected="">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="3">Tbox + Digi Port no. 1</option>
+                                <option value="4">Tbox + Digi Port no. 2</option>
+                                <option value="5">Tbox + Digi Port no. 3</option>
+                                <option value="6">Tbox + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_5" value="1" checked="checked">
+                            <input type="hidden" name="auto_5" value="0">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td><select name="port_6">
+                                <option value="7">Elster EK-220</option>
+                                <option value="1">Instromet 999</option>
+                                <option value="2">Instromet 555</option>
+                                <option value="3">Gas Micro</option>
+                                <option value="4">Rockwell</option>
+                                <option value="5">Actaris(G1)</option>
+                                <option value="6">Mercury</option>
+                                <option value="8">Actaris(G2)</option>
+                                <option value="9">Actaris(G3)</option>
+                                <option value="10">Actaris(G4)</option>
+                                <option value="11">Elster EK-220(u)</option>
+                                <option value="12">Actaris(u)</option>
+                                <option value="13">Elster EK-280</option>
+                                <option value="14">Elster EK-280(u)</option>
+                            </select></td>
+                        <td>
+                            <select name="port6">
+                                <option value="1" selected="">Viola Port no.1</option>
+                                <option value="2">Viola Port no.2</option>
+                                <option value="3">Viola + Digi Port no. 1</option>
+                                <option value="4">Viola + Digi Port no. 2</option>
+                                <option value="5">Viola + Digi Port no. 3</option>
+                                <option value="6">Viola + Digi Port no. 4</option>
+                                <option value="3">Tbox + Digi Port no. 1</option>
+                                <option value="4">Tbox + Digi Port no. 2</option>
+                                <option value="5">Tbox + Digi Port no. 3</option>
+                                <option value="6">Tbox + Digi Port no. 4</option>
+                                <option value="7">Viola + Moxa Port no. 1</option>
+                                <option value="8">Viola + Moxa Port no. 2</option>
+                                <option value="9">Viola + Moxa Port no. 3</option>
+                                <option value="10">Viola + Moxa Port no. 4</option>
+                                <option value="11">Tbox + Moxa Port no. 1</option>
+                                <option value="12">Tbox + Moxa Port no. 2</option>
+                                <option value="13">Tbox + Moxa Port no. 3</option>
+                                <option value="14">Tbox + Moxa Port no. 4</option>
+                                <option value="15">Micro AMR Port no. 1</option>
+                                <option value="16">Micro AMR Port no. 2</option>
+                                <option value="17">Micro AMR Port no. 3</option>
+                                <option value="18">Micro AMR Port no. 4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="auto_6" value="1" checked="checked">
+                            <input type="hidden" name="auto_6" value="0">
+                        </td>
+                    </tr>
+                </table>
+
+
+                <input type="submit" name="ADD" value="ADD">
+                <input type="reset" name="CLEAR" value="CLEAR">
+
+
+            </div>
+    </form>
+
+    </form>
+    <script>
+        // function updateBillingDate() {
+        //     var billingDateSelect = document.getElementById("billing_date");
+        //     var selectedValue = billingDateSelect.options[billingDateSelect.selectedIndex].value;
+
+        //     // Set the value based on the selected option
+        //     if (selectedValue === "28") {
+        //         billingDateSelect.value = "1";
+        //     } else if (selectedValue === "Last month") {
+        //         billingDateSelect.value = "0";
+        //     }
+        // }
+    </script>
+
+</body>
+
+</html>
