@@ -869,7 +869,7 @@
 
 
 
-  #type_dropdown{
+  #type_dropdown {
     width: 15%;
     padding: 5px;
     border: 1px solid #ccc;
@@ -879,7 +879,7 @@
     margin-bottom: 10px;
   }
 
-  #success_btn{
+  #success_btn {
     margin-top: 20px;
   }
 </style>
@@ -1111,14 +1111,14 @@
           <div class="form-group col-md-12">
             <form id="pollingForm" method="get" action="{{ url_for('polling_route') }}">
               <label for="type_dropdown">Select Type:</label>
-              <select id="type_dropdown" name="type_dropdown" >
+              <select id="type_dropdown" name="type_dropdown">
                 <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --</option>
                 {% for type in type_options %}
                 <option value="{{ type }}" {% if selected_type==type %}selected{% endif %}>{{ type }}</option>
                 {% endfor %}
               </select>
-              <button  id="toggleButton" class="btn btn-primary" type="button"
-                onclick="submitForm()">View Information</button>
+              <button id="toggleButton" class="btn btn-primary" type="button" onclick="submitForm()">View
+                Information</button>
             </form>
             <hr>
             <div style="margin-top:  -20px;" id="myElement" class="textbox-container row">
@@ -1144,9 +1144,8 @@
                   </div>
                   {% endfor %}
                 </div>
-              </form>
 
-              <form action="/update_polling_data" method="post">
+
                 <h2>Poll Billing</h2>
                 <div class="row">
                   {% for i in range(0, list_billing|length, 2) %}
@@ -1167,9 +1166,9 @@
                   {% endfor %}
                 </div>
 
-
+                <button id="success_btn" class="btn btn-success" type="submit">Save Edit Data</button>
               </form>
-              <button id="success_btn" class="btn btn-success" type="submit">Save Edit Data</button>
+
             </div>
           </div>
         </div>
@@ -1186,58 +1185,58 @@
 
 <script>
   function saveToOracle() {
-      // Collect data from the Poll Configure form
-      var configureData = collectFormData('start_config', 'end_config', 'enable_config');
+    // Collect data from the Poll Configure form
+    var configureData = collectFormData('start_config', 'end_config', 'enable_config');
 
-      // Collect data from the Poll Billing form
-      var billingData = collectFormData('billing_start', 'billing_end', 'enable_billing');
+    // Collect data from the Poll Billing form
+    var billingData = collectFormData('billing_start', 'billing_end', 'enable_billing');
 
-      // You can now send the data to your backend or perform any other necessary actions
-      console.log('Configure Data:', configureData);
-      console.log('Billing Data:', billingData);
+    // You can now send the data to your backend or perform any other necessary actions
+    console.log('Configure Data:', configureData);
+    console.log('Billing Data:', billingData);
 
-      // Add your logic to save data to Oracle here
+    // Add your logic to save data to Oracle here
   }
 
   function collectFormData(startName, endName, enableName) {
-      var data = {
-          list: [],
-          enableList: []
-      };
+    var data = {
+      list: [],
+      enableList: []
+    };
 
-      // Collect data from the form
-      $('input[name^=' + startName + ']').each(function (index, element) {
-          var startValue = $(element).val();
-          var endValue = $('input[name=' + endName + ']').eq(index).val();
-          data.list.push({ start: startValue, end: endValue });
-      });
+    // Collect data from the form
+    $('input[name^=' + startName + ']').each(function (index, element) {
+      var startValue = $(element).val();
+      var endValue = $('input[name=' + endName + ']').eq(index).val();
+      data.list.push({ start: startValue, end: endValue });
+    });
 
-      // Collect enable data from the form
-      $('input[name^=' + enableName + ']').each(function (index, element) {
-          data.enableList.push($(element).prop('checked') ? '1' : '0');
-      });
+    // Collect enable data from the form
+    $('input[name^=' + enableName + ']').each(function (index, element) {
+      data.enableList.push($(element).prop('checked') ? '1' : '0');
+    });
 
-      return data;
+    return data;
   }
 
 
   function submitForm() {
-      // Trigger the form submission
-      document.getElementById("pollingForm").submit();
+    // Trigger the form submission
+    document.getElementById("pollingForm").submit();
   }
 
   // Add an event listener to dynamically update the dropdown options
   document.getElementById("type_dropdown").addEventListener("change", function () {
-      // Get the selected value
-      var selectedtype = this.value;
+    // Get the selected value
+    var selectedtype = this.value;
 
-      // Hide the "All" option if no type is selected
-      var allOption = this.options[0];
-      if (selectedtype) {
-          allOption.style.display = "none";
-      } else {
-          allOption.style.display = "block";
-      }
+    // Hide the "All" option if no type is selected
+    var allOption = this.options[0];
+    if (selectedtype) {
+      allOption.style.display = "none";
+    } else {
+      allOption.style.display = "block";
+    }
   });
 </script>
 
