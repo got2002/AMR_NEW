@@ -893,13 +893,13 @@ def edit_site():
         AMR_FIELD_PROTOCAL.PROTOCOL_NO_STREAM
     FROM 
         AMR_FIELD_ID
-    JOIN AMR_FIELD_CUSTOMER ON AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID
-    JOIN AMR_USER ON AMR_FIELD_ID.ID = AMR_USER.ID
-    JOIN AMR_FIELD_METER ON AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID
-    JOIN AMR_FIELD_PROFILE ON AMR_FIELD_ID.METER_ID = AMR_FIELD_PROFILE.METER_ID
-    JOIN AMR_FIELD_PROTOCAL ON AMR_FIELD_ID.PROTOCOL_ID = AMR_FIELD_PROTOCAL.PROTOCOL_ID
-    JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-    JOIN AMR_REGION ON AMR_PL_GROUP.PL_REGION_ID = AMR_REGION.ID
+        JOIN AMR_FIELD_CUSTOMER ON AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID
+        JOIN AMR_USER ON AMR_FIELD_ID.ID = AMR_USER.ID
+        JOIN AMR_FIELD_METER ON AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID
+        JOIN AMR_FIELD_PROFILE ON AMR_FIELD_ID.METER_ID = AMR_FIELD_PROFILE.METER_ID
+        JOIN AMR_FIELD_PROTOCAL ON AMR_FIELD_ID.PROTOCOL_ID = AMR_FIELD_PROTOCAL.PROTOCOL_ID
+        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+        JOIN AMR_REGION ON AMR_PL_GROUP.PL_REGION_ID = AMR_REGION.ID
     WHERE 
         AMR_REGION.ID = :region_id AND
         AMR_FIELD_ID.TAG_ID = :tag_id
@@ -947,19 +947,8 @@ def edit_site():
         list_meter_port_no = df["meter_port_no"].tolist()
         list_meter_auto_enable = df["meter_auto_enable"].tolist()
         
-        # update_user = f"""
-        #     UPDATE AMR_USER 
-        #     SET 
-        #         user_name = '{list_user_name}',
-        #         password = '{list_password}'
-        #     WHERE id = '{list_id}'
-        #     """
-        # print("update_user", update_user)
-        # update_sql(update_user)
 
-
-            
-        
+    
         list_meter_stream_type = []
         for meter_stream_type in df["meter_stream_type"]:
             meter_stream_type_list = f"""SELECT vc_name FROM amr_vc_type WHERE id = '{meter_stream_type}' ORDER BY id"""
@@ -979,7 +968,7 @@ def edit_site():
             else:
                 list_meter_port_no.append(None)
             print("list_meter_port_no", list_meter_port_no)
-            
+        
             
     else:
         list_id = None
@@ -995,29 +984,39 @@ def edit_site():
         list_meter_stream_type = None
         list_meter_port_no = None
         
+    update_user = f"""
+            UPDATE AMR_USER 
+            SET 
+                user_name = '{list_user_name}',
+                password = '{list_password}'
+            WHERE id = '{list_id}'
+            """
+    print("update_user", update_user)
+    update_sql(update_user)
     
 
     html_table = df.to_html(index=False)
-
+    
+    
 
     return render_template('edit_site.html', 
-                           region_options=region_options, 
-                           tag_options=tag_options, 
-                           selected_region=selected_region,
-                           selected_tag=selected_tag,
-                           list_id=list_id,
-                           list_tag_id=list_tag_id,
-                           list_cust_factory_name=list_cust_factory_name,
-                           list_amr_phase=list_amr_phase,
-                           list_rtu_modbus_id=list_rtu_modbus_id,
-                           list_sim_ip=list_sim_ip,
-                           list_user_name=list_user_name,
-                           list_password=list_password,
-                           list_meter_stream_no=list_meter_stream_no,
-                           list_meter_stream_type=list_meter_stream_type,
-                           list_meter_port_no=list_meter_port_no,
-                           list_meter_auto_enable=list_meter_auto_enable,
-                           html_table=html_table)
+                            region_options=region_options, 
+                            tag_options=tag_options, 
+                            selected_region=selected_region,
+                            selected_tag=selected_tag,
+                            list_id=list_id,
+                            list_tag_id=list_tag_id,
+                            list_cust_factory_name=list_cust_factory_name,
+                            list_amr_phase=list_amr_phase,
+                            list_rtu_modbus_id=list_rtu_modbus_id,
+                            list_sim_ip=list_sim_ip,
+                            list_user_name=list_user_name,
+                            list_password=list_password,
+                            list_meter_stream_no=list_meter_stream_no,
+                            list_meter_stream_type=list_meter_stream_type,
+                            list_meter_port_no=list_meter_port_no,
+                            list_meter_auto_enable=list_meter_auto_enable,
+                            html_table=html_table)
 
     
 
