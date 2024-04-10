@@ -744,7 +744,7 @@
 
     }
 
-  
+
     .btn-1 {
         border: none;
         background-color: #007bff;
@@ -1018,10 +1018,11 @@
                 <hr>
                 <div class="row">
                     <div class=" col-md-12">
-                        <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}">
-                            <label  style="font-size: large;" for="type_dropdown">Select Type:</label>
+                        <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}"
+                            class="form-inline">
+                            <label style="font-size: large;" for="type_dropdown">Select Type:</label>
 
-                            <select id="type_dropdown" name="type_dropdown" >
+                            <select id="type_dropdown" name="type_dropdown" class="form-control">
                                 <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --
                                 </option>
                                 {% for type in type_options %}
@@ -1030,7 +1031,8 @@
                                 {% endfor %}
                             </select>
 
-                            <button style="height: fit-content; margin-left: 20px;" class="btn btn-primary" type="submit">View</button>
+                            <button style="height: fit-content; margin-left: 20px;" class="btn btn-primary"
+                                type="submit">View</button>
                     </div>
                     </form>
                 </div>
@@ -1070,15 +1072,19 @@
                             </option>
                         </select>
 
-                        <!-- <label for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{ '{:02d}'.format(i + 1) }}</label>
-                                    <input type="text" id="list_evc_type{{ '{:02d}'.format(i) }}" name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}" readonly>
-                    
-                                    <label for="or_der{{ '{:02d}'.format(i) }}">Order {{ '{:02d}'.format(i + 1) }}</label>
-                                    <input type="text" id="list_or_der{{ '{:02d}'.format(i) }}" name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly> -->
+                        <label style="display: none;" for="evc_type{{ '{:02d}'.format(i) }}">EVC Type {{
+                            '{:02d}'.format(i + 1) }}</label>
+                        <input style="display: none;" type="text" id="list_evc_type{{ '{:02d}'.format(i) }}"
+                            name="list_evc_type{{ '{:02d}'.format(i) }}" value="{{ list_evc_type[i] }}" readonly>
+
+                        <label style="display: none;" for="or_der{{ '{:02d}'.format(i) }}">Order {{ '{:02d}'.format(i +
+                            1) }}</label>
+                        <input style="display: none;" type="text" id="list_or_der{{ '{:02d}'.format(i) }}"
+                            name="list_or_der{{ '{:02d}'.format(i) }}" value="{{ list_or_der[i] }}" readonly>
                     </div>
 
                     {% endfor %}
-                    <div  class="button-container">
+                    <div class="button-container">
                         <input id="submitButton" class="btn btn-success" type="submit" value="Submit">
                     </div>
             </div>
