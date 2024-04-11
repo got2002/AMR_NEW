@@ -539,6 +539,12 @@ def billing_data():
                         "METER_STREAM_NO",
                     ],
                 )
+                df["Pressure"] = df["Pressure"].astype(float)
+                df["Temperature"] = df["Temperature"].astype(float)
+    
+                df["Pressure"] = df["Pressure"].round(4)
+                df["Temperature"] = df["Temperature"].round(4)
+                print("dffff:", df)
                 # Get the selected Meter ID before removing it from the DataFrame
                 # selected_meter_id = df["METER_ID"].iloc[0]
                 selected_meter_id = None
@@ -1154,6 +1160,11 @@ def billing_data_user_group():
                         "METER_STREAM_NO",
                     ],
                 )
+                df["Pressure"] = df["Pressure"].astype(float)
+                df["Temperature"] = df["Temperature"].astype(float)
+    
+                df["Pressure"] = df["Pressure"].round(4)
+                df["Temperature"] = df["Temperature"].round(4)
                 # Get the selected Meter ID before removing it from the DataFrame
                 # selected_meter_id = df["METER_ID"].iloc[0]
 
@@ -1776,6 +1787,11 @@ def billing_data_user():
                         "METER_STREAM_NO",
                     ],
                 )
+                df["Pressure"] = df["Pressure"].astype(float)
+                df["Temperature"] = df["Temperature"].astype(float)
+    
+                df["Pressure"] = df["Pressure"].round(4)
+                df["Temperature"] = df["Temperature"].round(4)
                 # Get the selected Meter ID before removing it from the DataFrame
                 # selected_meter_id = df["METER_ID"].iloc[0]
 
