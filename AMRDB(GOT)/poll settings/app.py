@@ -615,7 +615,7 @@ def mapping_billing_route():
         type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
         results = fetch_data(type_id_query, (selected_type,))
         
-        interval = request.args.get("interval") or "10"
+        interval = ""
         
          
         if results:
@@ -733,7 +733,7 @@ def update_mapping_billing():
 
     # create Full Data frame
     # Get interval
-    interval = request.args.get("interval") or "30"
+    interval = request.form['interval']
     # print("interval", interval)
     
     # for j in range(0,max_daily_new):
