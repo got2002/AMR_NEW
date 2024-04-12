@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-from flask import render_template
+import numpy as np
 import pandas as pd
 import cx_Oracle
 from flask import flash
@@ -2617,7 +2617,7 @@ def read_data():
         print("Connected successfully.")
         
 
-        if evc_type in [5, 8, 9, 10, 12]:
+        if int(evc_type) in [5, 8, 9, 10, 12]:
                 #send wa
             slave_id_1 = 0x01
             function_code_1 = 0x03
@@ -2635,21 +2635,23 @@ def read_data():
 
             crc_1 = computeCRC(request_Actaris)
             request_Actaris += crc_1
-            print(request_Actaris)
-            sock_i.send(request_Actaris)
-            print(sock_i)
 
-            time.sleep(5)
+            for _ in range(2):  
+                sock_i.send(request_Actaris)
+                print(sock_i)
+                time.sleep(0.5)
+            
+           
             response = sock_i.recv(4096)
-            time.sleep(5)
+            
             
             
             
         for i in range(0, len(df_pollRange)):
             
-            # print(i)
+            
             start_address = int(df_pollRange.loc[i,'starting_address_i'])
-            # print(start_address)
+            
             adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity_i'])
             
 
@@ -2666,7 +2668,7 @@ def read_data():
             
             communication_traffic_i.append(request_message_i.hex())
             sock_i.send(request_message_i)
-            time.sleep(2)
+            time.sleep(0.5)
             response_i = sock_i.recv(1024)
                 
             
@@ -2692,7 +2694,7 @@ def read_data():
 
             
             
-            print(df_Modbus)
+            print("config",df_Modbus)
             
         
             
@@ -2722,7 +2724,7 @@ def read_data():
             
             communication_traffic_i.append(request_message_i.hex())
             sock_i.send(request_message_i)
-            time.sleep(2)
+            time.sleep(0.5)
             response_i = sock_i.recv(1024)
             
             
@@ -2748,7 +2750,7 @@ def read_data():
             df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
            
             
-            print(df_Modbusbilling)
+            print("billing",df_Modbusbilling)
             
             
             
@@ -2800,9 +2802,10 @@ def read_data():
             # print(list_of_values_configured)
             value_config = pd.DataFrame(list_of_values_configured,columns=['Value'])
             # print(value_config)
-            result_config = pd.concat([df_mapping, value_config], axis=1)
+            result_config = pd.concat([df_mapping['desc'], value_config], axis=1)
+            result_config = result_config.transpose()
             print(result_config)
-            result_config_html = result_config.to_html(classes="data", index=False)
+            result_config_html = result_config.to_html(classes="data", index=False , header=False)
             
             
                     
@@ -2847,14 +2850,30 @@ def read_data():
                     # print("type", data_type ,"raw", raw_data, "=",  convert_raw_to_value(data_type,raw_data))
                     break
             # print(list_of_values_billing)
-            value_billing = pd.DataFrame(list_of_values_billing,columns=['Value'])
-            # print(value_billing)
-            result_billing = pd.concat([df_mappingbilling, value_billing], axis=1)
-            # print(result_billing)
+            value_billing = pd.DataFrame(list_of_values_billing, columns=['Value'])
+
+            # Transpose the DataFrame
+            value_billing = value_billing.transpose()
+
+            # Define the chunk size
+            chunk_size = 5
+
+            # Calculate the number of chunks needed
+            num_chunks = (len(value_billing.columns) + chunk_size - 1) // chunk_size
+
+            # Split the DataFrame into chunks
+            chunks = np.array_split(value_billing, num_chunks, axis=1)
             
-            result_billing_html = result_billing.to_html(classes="data", index=False)
+            # Convert each chunk to HTML table
+            result_billing_html = [chunk.to_html(classes="data", index=False, header=False).replace('\n','').replace('[','').replace(']','').replace(',','') for chunk in chunks]
+
+
+            print(result_billing_html)
+            
+
+           
                     
-            
+      
             
                 
                 
@@ -3022,10 +3041,10 @@ def read_data():
                 Port_str = [''] 
         
             zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
-            print("test")
+            
     return render_template(
         "Manual poll.html",
-        df=df, METERID=METERID, df_mapping=df_mapping, df_mappingbilling=df_mappingbilling, result_billing=result_billing, result_config=result_config,
+        df=df, METERID=METERID, df_mapping=df_mapping, df_mappingbilling=df_mappingbilling, result_config=result_config,
         slave_id=slave_id, result_billing_html=result_billing_html, result_config_html=result_config_html, df_Modbus_html=df_Modbus_html,
         function_code=function_code, starting_address_i=starting_address_i, quantity_i=quantity_i, communication_traffic_i=communication_traffic_i,
         zipped_data=zipped_data, run=run, poll_config_list=poll_config_list, poll_billing_list=poll_billing_list,
@@ -3203,12 +3222,14 @@ def save_to_oracle_manualpoll():
 
                 crc_1 = computeCRC(request_Actaris)
                 request_Actaris += crc_1
-                print(request_Actaris)
-                sock_i.send(request_Actaris)
-                print(sock_i)
-                time.sleep(5)
+                # print(request_Actaris)
+                for _ in range(2):  
+                    sock_i.send(request_Actaris)
+                    
+                    time.sleep(0.5)
+                
                 response = sock_i.recv(4096)
-                # sock_i.close()
+                
             for i in range(0, len(df_pollRange)):
             
                 # print(i)
@@ -3229,7 +3250,7 @@ def save_to_oracle_manualpoll():
         
                 communication_traffic_i.append(request_message_i.hex())
                 sock_i.send(request_message_i)
-                time.sleep(2)
+                time.sleep(1)
                 response_i = sock_i.recv(1024)
                 
                 # print(response_i)
@@ -3292,7 +3313,7 @@ def save_to_oracle_manualpoll():
                 
                 
                 sock_i.send(request_message_i)
-                time.sleep(3)
+                time.sleep(1)
                 response_i = sock_i.recv(1024)
                 
                 
@@ -4058,16 +4079,16 @@ def get_tag():
 
 @app.route('/Manualpoll')
 def index():
-    if 'username' not in session:
-        return redirect(url_for('login'))
+    # if 'username' not in session:
+    #     return redirect(url_for('login'))
     global tcp_ip, tcp_port
     return render_template('index.html', slave_id=0, function_code=0, starting_address=0, quantity=0, data_list=[], is_16bit=False, communication_traffic=communication_traffic)
 
 @app.route('/Manualpoll', methods=['POST'])
 def read_data_old():
     
-    if 'username' not in session:
-        return redirect(url_for('login'))
+    # if 'username' not in session:
+    #     return redirect(url_for('login'))
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
         global change_to_32bit_counter  # Use the global variable
@@ -4167,12 +4188,14 @@ def read_data_old():
         
         if int(vc_type_all) in [5, 8, 9, 10, 12]:
             
-            sock.send(request_Actaris)
-            print(sock)
-            time.sleep(5)
+            for _ in range(2):  # วนลูป 3 ครั้ง
+                sock.send(request_Actaris)
+                print(sock)
+                time.sleep(1)
+            
             response = sock.recv(4096)
             print(response)
-            time.sleep(2)
+           
             
         communication_traffic.append({"direction": "TX", "data": request_message.hex()})
 
@@ -4180,7 +4203,7 @@ def read_data_old():
             
             sock.send(request_message)
             print(sock)
-            time.sleep(5)
+            
             response = sock.recv(4096)
             print(response)
             
@@ -6287,14 +6310,184 @@ def add_site():
         
     return render_template('add_site.html', max_id_value=max_id_value)
 
+@app.route('/edit_site', methods=['GET', 'POST'])
+def edit_site():
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+        query_type = request.args.get("query_type")
 
+        # SQL query to fetch unique PL_REGION_ID values
+        region_query = """
+        SELECT * FROM AMR_REGION 
+        """
 
+        selected_region = request.args.get("region_dropdown")
 
+        # Fetch unique region values
+        region_results = fetch_data(ptt_pivot_connection, region_query)
+        region_options = [str(region[0]) for region in region_results]
 
+        tag_query = """
+        SELECT DISTINCT TAG_ID
+        FROM AMR_FIELD_ID
+        JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+        WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        ORDER BY TAG_ID
+        """
+        
+        selected_tag = request.args.get("tag_dropdown")
+        
+        # Fetch tag options based on the selected region
+        tag_results = fetch_data(ptt_pivot_connection, tag_query, params={"region_id": selected_region})
+        tag_options = [str(tag[0]) for tag in tag_results]
+        
+        show_tag_query = """
+        SELECT DISTINCT
+            AMR_FIELD_ID.ID,
+            AMR_FIELD_ID.TAG_ID,
+            AMR_FIELD_ID.SIM_IP,
+            AMR_FIELD_ID.RTU_MODBUS_ID,
+            AMR_FIELD_ID.AMR_PHASE,
+            AMR_FIELD_CUSTOMER.CUST_FACTORY_NAME,
+            AMR_USER.USER_NAME,
+            AMR_USER.PASSWORD,
+            AMR_FIELD_METER.METER_ID,
+            AMR_FIELD_METER.METER_STREAM_NO,
+            AMR_FIELD_METER.METER_NO_STREAM,
+            AMR_FIELD_METER.METER_STREAM_TYPE,
+            AMR_FIELD_METER.METER_PORT_NO,
+            AMR_FIELD_METER.METER_AUTO_ENABLE,
+            AMR_FIELD_PROFILE.METER_ID,
+            AMR_FIELD_PROTOCOL.PROTOCOL_ID,
+            AMR_FIELD_PROTOCOL.PROTOCOL_NO_STREAM
+        FROM 
+            AMR_FIELD_ID
+            JOIN AMR_FIELD_CUSTOMER ON AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID
+            JOIN AMR_USER ON AMR_FIELD_ID.ID = AMR_USER.ID
+            JOIN AMR_FIELD_METER ON AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID
+            JOIN AMR_FIELD_PROFILE ON AMR_FIELD_ID.METER_ID = AMR_FIELD_PROFILE.METER_ID
+            JOIN AMR_FIELD_PROTOCOL ON AMR_FIELD_ID.PROTOCOL_ID = AMR_FIELD_PROTOCOL.PROTOCOL_ID
+            JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+            JOIN AMR_REGION ON AMR_PL_GROUP.PL_REGION_ID = AMR_REGION.ID
+        WHERE 
+            AMR_REGION.ID = :region_id AND
+            AMR_FIELD_ID.TAG_ID = :tag_id
+        ORDER BY METER_STREAM_NO
+        """
+        
+        data = []
+        if selected_region is not None and selected_tag is not None:
+            data = fetch_data(ptt_pivot_connection, show_tag_query, params={"region_id": selected_region, "tag_id": selected_tag})
+        
 
+        # Create DataFrame from query results
+        columns = [
+            'id',
+            'tag_id',
+            'sim_ip',
+            'rtu_modbus_id',
+            'amr_phase',
+            'cust_factory_name',
+            'user_name',
+            'password',
+            'meter_id',
+            'meter_stream_no',
+            'meter_no_stream',
+            'meter_stream_type',
+            'meter_port_no',
+            'meter_auto_enable',
+            'meter_id',
+            'protocol_id',
+            'protocol_no_stream'
+        ]
+        df = pd.DataFrame(data, columns=columns)
+        
+        if not df.empty:
+            list_id = df["id"].iloc[0]
+            list_tag_id = df["tag_id"].iloc[0]
+            list_cust_factory_name = df["cust_factory_name"].iloc[0]
+            list_amr_phase = df["amr_phase"].iloc[0]
+            list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
+            list_sim_ip = df["sim_ip"].iloc[0]
+            list_user_name = df["user_name"].iloc[0]
+            list_password = df["password"].iloc[0]
+            list_meter_stream_no = df["meter_stream_no"].tolist()       
+            list_meter_port_no = df["meter_port_no"].tolist()
+            list_meter_auto_enable = df["meter_auto_enable"].tolist()
+            
+            update_user = f"""
+                UPDATE AMR_USER 
+                SET 
+                    user_name = '{list_user_name}',
+                    password = '{list_password}'
+                WHERE id = '{list_id}'
+                """
+            print("update_user", update_user)
+            update_sql(ptt_pivot_connection, update_user)
+            
 
+        
+            list_meter_stream_type = []
+            for meter_stream_type in df["meter_stream_type"]:
+                meter_stream_type_list = f"""SELECT vc_name FROM amr_vc_type WHERE id = '{meter_stream_type}' ORDER BY id"""
+                type = fetch_data(ptt_pivot_connection, meter_stream_type_list)
+                if type:
+                    list_meter_stream_type.append(type[0][0])
+                else:
+                    list_meter_stream_type.append(None)
+                print("list_meter_stream_type", list_meter_stream_type)
+                    
+            list_meter_port_no = []
+            for meter_port_no in df["meter_port_no"]:
+                meter_port_no_list =f"""SELECT port_no FROM amr_port_info WHERE id = '{meter_port_no}' ORDER BY id"""
+                port = fetch_data(ptt_pivot_connection, meter_port_no_list)
+                if port:
+                    list_meter_port_no.append(port[0][0])
+                else:
+                    list_meter_port_no.append(None)
+                print("list_meter_port_no", list_meter_port_no)
+            
+                
+        else:
+            list_id = None
+            list_tag_id = None
+            list_cust_factory_name = None
+            list_amr_phase = None
+            list_rtu_modbus_id = None
+            list_sim_ip = None
+            list_user_name = None
+            list_password = None
+            list_meter_stream_no = None
+            list_meter_auto_enable = None
+            list_meter_stream_type = None
+            list_meter_port_no = None
+        
+        
+        
+        
 
+        html_table = df.to_html(index=False)
+        
+        
 
+        return render_template('edit_site.html', 
+                                region_options=region_options, 
+                                tag_options=tag_options, 
+                                selected_region=selected_region,
+                                selected_tag=selected_tag,
+                                list_id=list_id,
+                                list_tag_id=list_tag_id,
+                                list_cust_factory_name=list_cust_factory_name,
+                                list_amr_phase=list_amr_phase,
+                                list_rtu_modbus_id=list_rtu_modbus_id,
+                                list_sim_ip=list_sim_ip,
+                                list_user_name=list_user_name,
+                                list_password=list_password,
+                                list_meter_stream_no=list_meter_stream_no,
+                                list_meter_stream_type=list_meter_stream_type,
+                                list_meter_port_no=list_meter_port_no,
+                                list_meter_auto_enable=list_meter_auto_enable,
+                                html_table=html_table)
 
 
 @app.route('/logout')
