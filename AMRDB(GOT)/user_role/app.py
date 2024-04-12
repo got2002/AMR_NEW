@@ -44,56 +44,24 @@ app.secret_key = 'your_secret_key'
 
 ######################### connection AMR_NEW ###############################
 
-root_params = {
-    "username": 'root',
-    "password": 'root',
-    "hostname": '192.168.102.192',
-    "port": '1521',
-    "service_name": "orcl"
-}
-
-# Choose the database connection parameters based on your requirements
-selected_params = root_params  # Change this to switch between databases
-# print("aaaa", selected_params)
-
-dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
-
-try:
-    connection_info = {
-        "user": selected_params["username"],
-        "password": selected_params["password"],
-        "dsn": dsn,
-        "min": 1,
-        "max": 5,
-        "increment": 1,
-        "threaded": True
-    }
-
-    connection_pool = cx_Oracle.SessionPool(**connection_info)
-    connection = connection_pool.acquire()
-    print("Connection to AMR_NEW successful.")
-except cx_Oracle.Error as e:
-    (error,) = e.args
-    print("Oracle Error:", error)
-
-######################### connection AMR_ ###############################
-
-
-######################### connection PTT_PIVOT ###############################
-# ptt_pivot_params = {
-#     "username": "PTT_PIVOT",
-#     "password": "PTT_PIVOT",
-#     "hostname": "10.100.56.3",
-#     "port": "1521",
-#     "service_name": "PTTAMR_MST"
+# root_params = {
+#     "username": 'root',
+#     "password": 'root',
+#     "hostname": '192.168.102.192',
+#     "port": '1521',
+#     "service_name": "orcl"
 # }
 
-# dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+# # Choose the database connection parameters based on your requirements
+# selected_params = root_params  # Change this to switch between databases
+# # print("aaaa", selected_params)
+
+# dsn = cx_Oracle.makedsn(selected_params["hostname"], selected_params["port"], selected_params["service_name"])
 
 # try:
 #     connection_info = {
-#         "user": ptt_pivot_params["username"],
-#         "password": ptt_pivot_params["password"],
+#         "user": selected_params["username"],
+#         "password": selected_params["password"],
 #         "dsn": dsn,
 #         "min": 1,
 #         "max": 5,
@@ -103,11 +71,43 @@ except cx_Oracle.Error as e:
 
 #     connection_pool = cx_Oracle.SessionPool(**connection_info)
 #     connection = connection_pool.acquire()
-#     print("Connection to PTT_PIVOT successful.")
-    
+#     print("Connection to AMR_NEW successful.")
 # except cx_Oracle.Error as e:
 #     (error,) = e.args
 #     print("Oracle Error:", error)
+
+######################### connection AMR_ ###############################
+
+
+######################### connection PTT_PIVOT ###############################
+ptt_pivot_params = {
+    "username": "PTT_PIVOT",
+    "password": "PTT_PIVOT",
+    "hostname": "10.100.56.3",
+    "port": "1521",
+    "service_name": "PTTAMR_MST"
+}
+
+dsn = cx_Oracle.makedsn(ptt_pivot_params["hostname"], ptt_pivot_params["port"], service_name=ptt_pivot_params["service_name"])
+
+try:
+    connection_info = {
+        "user": ptt_pivot_params["username"],
+        "password": ptt_pivot_params["password"],
+        "dsn": dsn,
+        "min": 1,
+        "max": 5,
+        "increment": 1,
+        "threaded": True
+    }
+
+    connection_pool = cx_Oracle.SessionPool(**connection_info)
+    connection = connection_pool.acquire()
+    print("Connection to PTT_PIVOT successful.")
+    
+except cx_Oracle.Error as e:
+    (error,) = e.args
+    print("Oracle Error:", error)
 
 ######################### connection PTT_PIVOT ###############################
 
