@@ -277,6 +277,7 @@
             margin-left: 12px;
         }
     }
+
     form .field.shake input,
     form .field.error input {
         border-color: #dc3545;
@@ -335,6 +336,7 @@
         text-align: left;
         margin-top: -10px;
     }
+
     form .field .input-area {
         height: 50px;
         width: 100%;
@@ -344,19 +346,19 @@
     nav ul {
         list-style: none;
         display: flex;
-      }
-      
-      nav ul li {
+    }
+
+    nav ul li {
         margin-right: 20px;
-      }
-      
-      nav ul li a {
+    }
+
+    nav ul li a {
         text-decoration: none;
         color: #fff;
         font-weight: bold;
         font-size: 16px;
         transition: color 0.3s ease;
-      }
+    }
 
 
 
@@ -570,11 +572,11 @@
 <body>
     <header>
         <nav>
-          <ul>
-            <li><a href="#">Welcome to Automatic Meter Reading </a></li>
-          </ul>
+            <ul>
+                <li><a href="#">Welcome to Automatic Meter Reading </a></li>
+            </ul>
         </nav>
-      </header>
+    </header>
     <div class="login">
         <form method="post" action="{{ url_for('login') }}">
             <div class="logo-container">
@@ -590,11 +592,11 @@
                     <input type="text" placeholder="Username" id="username" name="username" required />
                 </div>
                 <div class="password-container">
-                    
+
                     <i class="fas fa-lock"></i>
                     <input placeholder="Password" type="password" id="password" name="password" required>
 
-                    <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                    <!-- <i id="eyeIcon" class="fa-solid fa-eye"></i> -->
                 </div>
                 <!-- <div style="margin-left: 200px;" class="checkbox-wrapper-46">
                     <input class="inp-cbx" id="cbx-46" type="checkbox" />
