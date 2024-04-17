@@ -6401,31 +6401,23 @@ def edit_site():
             'protocol_no_stream'
         ]
         df = pd.DataFrame(data, columns=columns)
+
         
         if not df.empty:
-            list_id = df["id"].iloc[0]
-            list_tag_id = df["tag_id"].iloc[0]
-            list_cust_factory_name = df["cust_factory_name"].iloc[0]
-            list_amr_phase = df["amr_phase"].iloc[0]
-            list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
-            list_sim_ip = df["sim_ip"].iloc[0]
-            list_user_name = df["user_name"].iloc[0]
-            list_password = df["password"].iloc[0]
-            list_meter_stream_no = df["meter_stream_no"].tolist()       
-            list_meter_port_no = df["meter_port_no"].tolist()
-            list_meter_auto_enable = df["meter_auto_enable"].tolist()
+            for index, row in df.iterrows():
+                list_id = row["id"]
+                list_tag_id = row["tag_id"]
+                list_cust_factory_name = row["cust_factory_name"]
+                list_amr_phase = row["amr_phase"]
+                list_rtu_modbus_id = row["rtu_modbus_id"]
+                list_sim_ip = row["sim_ip"]
+                list_user_name = row["user_name"]
+                list_password = row["password"]
+                list_meter_stream_no = str(row["meter_stream_no"]).split()       
+                list_meter_port_no = str(row["meter_port_no"]).split()
+                list_meter_auto_enable = str(row["meter_auto_enable"]).split()
             
-            update_user = f"""
-                UPDATE AMR_USER 
-                SET 
-                    user_name = '{list_user_name}',
-                    password = '{list_password}'
-                WHERE id = '{list_id}'
-                """
-            print("update_user", update_user)
-            update_sql(ptt_pivot_connection, update_user)
             
-
         
             list_meter_stream_type = []
             for meter_stream_type in df["meter_stream_type"]:
@@ -6447,23 +6439,31 @@ def edit_site():
                     list_meter_port_no.append(None)
                 print("list_meter_port_no", list_meter_port_no)
             
-                
-        else:
-            list_id = None
-            list_tag_id = None
-            list_cust_factory_name = None
-            list_amr_phase = None
-            list_rtu_modbus_id = None
-            list_sim_ip = None
-            list_user_name = None
-            list_password = None
-            list_meter_stream_no = None
-            list_meter_auto_enable = None
-            list_meter_stream_type = None
-            list_meter_port_no = None
         
-        
-        
+        update_user = f"""
+                UPDATE AMR_USER 
+                SET 
+                    user_name = '{list_user_name}',
+                    password = '{list_password}'
+                WHERE id = '{list_id}'
+                """
+        print("update_user", update_user)
+        update_sql(ptt_pivot_connection, update_user)
+                  
+        # else:
+        #     list_id = None
+        #     list_tag_id = None
+        #     list_cust_factory_name = None
+        #     list_amr_phase = None
+        #     list_rtu_modbus_id = None
+        #     list_sim_ip = None
+        #     list_user_name = None
+        #     list_password = None
+        #     list_meter_stream_no = None
+        #     list_meter_auto_enable = None
+        #     list_meter_stream_type = None
+        #     list_meter_port_no = None
+            
         
 
         html_table = df.to_html(index=False)
