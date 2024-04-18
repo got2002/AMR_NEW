@@ -613,7 +613,7 @@ def mapping_billing_route():
     selected_type = request.args.get("type_dropdown") or ""
     if selected_type:
         type_id_query = "SELECT ID FROM AMR_VC_TYPE WHERE VC_NAME LIKE :1"
-        results = fetch_data(type_id_query, (selected_type,))
+        results = fetch_data(type_id_query, (selected_type))
         
         interval = ""
         
@@ -622,7 +622,7 @@ def mapping_billing_route():
             type_id = str(results[0][0])
 
             query = base_query
-            results = fetch_data(query, (selected_type,))
+            results = fetch_data(query, (selected_type))
             
             print("type:", type_id)
             max_daily_query = "SELECT MAX(daily) FROM amr_mapping_billing WHERE evc_type LIKE :1"
