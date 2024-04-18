@@ -343,6 +343,7 @@ def get_tags():
         FROM AMR_FIELD_ID
         JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
         WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        AND TAG_ID NOT LIKE '%remove%'
         """
 
         tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
@@ -2531,447 +2532,472 @@ def Manualpoll_data():
 def read_data():
     # if 'username' not in session:
     #     return redirect(url_for('login'))
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        global change_to_32bit_counter  # Use the global variable
-        slave_id = int(request.form["slave_id"])
-        function_code = int(request.form["function_code"])
-        
-        tcp_ip = request.form["tcp_ip"]
-        tcp_port = int(request.form["tcp_port"])
-        evc_type = int(request.form["evc_type"])
-        
-
-        run = int(request.form["run"])
-        run = run
-        METERID = str(request.form["METERID"])
-        
-        poll_config_enable_list = str(request.form["poll_config_enable_list"])
-        # print(poll_config_enable_list)
-        poll_billing_enable_list = str(request.form["poll_billing_enable_list"])
-        # print(poll_billing_enable_list)
-        
-        #query Pollrange
-        ##### config #####
-        
-        data= {'starting_address_i': [], 
-            'quantity_i': [], 
-            'adjusted_quantity_i': []}
-        df_pollRange = pd.DataFrame(data)
-        df_pollBilling = pd.DataFrame(data)
-        
-        for i in range(1, 6):
-            # print(i)
-            # print(poll_config_enable_list[i-1])
-            if poll_config_enable_list[i-1] == '1':
-                # print(poll_config_enable_list[i-1])
-                
-                
-                starting_address_i = int(request.form[f'starting_address_{i}'])
-                # print(starting_address_i)
-                
-                quantity_i = int(request.form[f'quantity_{i}'])
-                
-                adjusted_quantity_i = quantity_i - starting_address_i + 1
-                data= {'starting_address_i': [starting_address_i], 
-                    'quantity_i': [quantity_i], 
-                    'adjusted_quantity_i': [adjusted_quantity_i]}
-                df_2 = pd.DataFrame(data)
-                
-                df_pollRange = pd.concat([df_pollRange,df_2] , ignore_index=True)
-                # print(df_pollRange)
-
-        #print(df_pollRange)      
-        for i in range(7, 17): 
+    try:
+        with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+            print("Active Connection:", active_connection)
+            global change_to_32bit_counter  # Use the global variable
+            slave_id = int(request.form["slave_id"])
+            function_code = int(request.form["function_code"])
             
-            if poll_billing_enable_list[i-7] == '1': 
-                # print("i",i)
-                # print(poll_billing_enable_list[i-7])
-                starting_address_i = int(request.form[f'starting_address_{i-1}'])
-                # print(starting_address_i)
-                quantity_i = int(request.form[f'quantity_{i-1}'])
-                # print(quantity_i)
-                adjusted_quantity_i = quantity_i - starting_address_i + 1
-                data= {'starting_address_i': [starting_address_i], 
-                    'quantity_i': [quantity_i], 
-                    'adjusted_quantity_i': [adjusted_quantity_i]}
+            tcp_ip = request.form["tcp_ip"]
+            tcp_port = int(request.form["tcp_port"])
+            evc_type = int(request.form["evc_type"])
+            
+
+            run = int(request.form["run"])
+            run = run
+            METERID = str(request.form["METERID"])
+            
+            poll_config_enable_list = str(request.form["poll_config_enable_list"])
+            # print(poll_config_enable_list)
+            poll_billing_enable_list = str(request.form["poll_billing_enable_list"])
+            # print(poll_billing_enable_list)
+            
+            #query Pollrange
+            ##### config #####
+            
+            data= {'starting_address_i': [], 
+                'quantity_i': [], 
+                'adjusted_quantity_i': []}
+            df_pollRange = pd.DataFrame(data)
+            df_pollBilling = pd.DataFrame(data)
+            
+            for i in range(1, 6):
+                # print(i)
+                # print(poll_config_enable_list[i-1])
+                if poll_config_enable_list[i-1] == '1':
+                    # print(poll_config_enable_list[i-1])
+                    
+                    
+                    starting_address_i = int(request.form[f'starting_address_{i}'])
+                    # print(starting_address_i)
+                    
+                    quantity_i = int(request.form[f'quantity_{i}'])
+                    
+                    adjusted_quantity_i = quantity_i - starting_address_i + 1
+                    data= {'starting_address_i': [starting_address_i], 
+                        'quantity_i': [quantity_i], 
+                        'adjusted_quantity_i': [adjusted_quantity_i]}
+                    df_2 = pd.DataFrame(data)
+                    
+                    df_pollRange = pd.concat([df_pollRange,df_2] , ignore_index=True)
+                    # print(df_pollRange)
+
+            #print(df_pollRange)      
+            for i in range(7, 17): 
+                
+                if poll_billing_enable_list[i-7] == '1': 
+                    # print("i",i)
+                    # print(poll_billing_enable_list[i-7])
+                    starting_address_i = int(request.form[f'starting_address_{i-1}'])
+                    # print(starting_address_i)
+                    quantity_i = int(request.form[f'quantity_{i-1}'])
+                    # print(quantity_i)
+                    adjusted_quantity_i = quantity_i - starting_address_i + 1
+                    data= {'starting_address_i': [starting_address_i], 
+                        'quantity_i': [quantity_i], 
+                        'adjusted_quantity_i': [adjusted_quantity_i]}
+                    # print(data)
+                    df_2 = pd.DataFrame(data)
+                    
+                    df_pollBilling = pd.concat([df_pollBilling,df_2] , ignore_index=True)
+            
+            dataframes = {
+                    'address_start': [],
+                    'finish': [],
+                    'TX': [],
+                    'RX': []
+                }
+            df_Modbus = pd.DataFrame(dataframes)
+            df_Modbusbilling = pd.DataFrame(dataframes)
+            # print(df_data)
+            
+            
+            try:
+                sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock_i.settimeout(20)  
+                sock_i.connect((tcp_ip, tcp_port))
+                print("Connected successfully.")
+            except ConnectionRefusedError:
+                abort(400, f"Error: Connection refused to {tcp_ip}:{tcp_port}!")
+            except TimeoutError:
+                abort(400, f"Error: Connection timed out to {tcp_ip}:{tcp_port}!")
+            except Exception as e:
+                abort(400, f"Error: {e}")
+            
+
+            if int(evc_type) in [5, 8, 9, 10, 12]:
+                    #send wa
+                slave_id_1 = 0x01
+                function_code_1 = 0x03
+                starting_address_1 = 0x0004
+                quantity_1 = 0x0002
+
+                request_Actaris= bytearray([
+                        slave_id_1,
+                        function_code_1,
+                        starting_address_1 >> 8,
+                        starting_address_1 & 0xFF,
+                        quantity_1 >> 8,
+                        quantity_1 & 0xFF,
+                    ])
+
+                crc_1 = computeCRC(request_Actaris)
+                request_Actaris += crc_1
+
+                for _ in range(2):  
+                    sock_i.send(request_Actaris)
+                    print(sock_i)
+                    time.sleep(0.5)
+                
+            
+                response = sock_i.recv(4096)
+                
+                
+                
+                
+            for i in range(0, len(df_pollRange)):
+                
+                
+                start_address = int(df_pollRange.loc[i,'starting_address_i'])
+                
+                adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity_i'])
+                
+
+                
+                request_message_i = bytearray(
+                [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
+                crc_i = computeCRC(request_message_i)
+                request_message_i += crc_i
+                
+                
+                
+                communication_traffic_i = []
+            
+                
+                communication_traffic_i.append(request_message_i.hex())
+                try:
+                    sock_i.send(request_message_i)
+                    time.sleep(0.5)
+                    response_i = sock_i.recv(1024)
+                        
+                    
+                    
+                    
+                    communication_traffic_i.append(response_i.hex())
+                    
+                    config_safe = f"config: {communication_traffic_i}"
+                # sock_i.close()
+                # print("config :",communication_traffic_i)
+                # print(communication_traffic_i)
+                
+                except TimeoutError:
+                    abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
+                except Exception as e:
+                    abort(400, f"Error: {e}")
+                if response_i[1:2] != b'\x03':
+                    
+                    abort(400, f"Error: Unexpected response code from device {communication_traffic_i[1]} ,{response_i[1:2]}!")
+                else:
+                    pass
+                data = {
+                    'address_start': [int(start_address)],
+                    'finish': [int(start_address+adjusted_quantity)],
+                    'TX': [communication_traffic_i[0]],
+                    'RX': [communication_traffic_i[1]]
+                }
                 # print(data)
                 df_2 = pd.DataFrame(data)
+                df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)
+
                 
-                df_pollBilling = pd.concat([df_pollBilling,df_2] , ignore_index=True)
-        
-        dataframes = {
-                'address_start': [],
-                'finish': [],
-                'TX': [],
-                'RX': []
-            }
-        df_Modbus = pd.DataFrame(dataframes)
-        df_Modbusbilling = pd.DataFrame(dataframes)
-        # print(df_data)
-        
-        
-        sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock_i.settimeout(20)  
-        sock_i.connect((tcp_ip, tcp_port))
-        print("Connected successfully.")
-        
-
-        if int(evc_type) in [5, 8, 9, 10, 12]:
-                #send wa
-            slave_id_1 = 0x01
-            function_code_1 = 0x03
-            starting_address_1 = 0x0004
-            quantity_1 = 0x0002
-
-            request_Actaris= bytearray([
-                    slave_id_1,
-                    function_code_1,
-                    starting_address_1 >> 8,
-                    starting_address_1 & 0xFF,
-                    quantity_1 >> 8,
-                    quantity_1 & 0xFF,
-                ])
-
-            crc_1 = computeCRC(request_Actaris)
-            request_Actaris += crc_1
-
-            for _ in range(2):  
-                sock_i.send(request_Actaris)
-                print(sock_i)
-                time.sleep(0.5)
-            
-           
-            response = sock_i.recv(4096)
-            
-            
-            
-            
-        for i in range(0, len(df_pollRange)):
-            
-            
-            start_address = int(df_pollRange.loc[i,'starting_address_i'])
-            
-            adjusted_quantity = int(df_pollRange.loc[i,'adjusted_quantity_i'])
-            
-
-            
-            request_message_i = bytearray(
-            [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
-            crc_i = computeCRC(request_message_i)
-            request_message_i += crc_i
-            
-            
-            
-            communication_traffic_i = []
-        
-            
-            communication_traffic_i.append(request_message_i.hex())
-            sock_i.send(request_message_i)
-            time.sleep(0.5)
-            response_i = sock_i.recv(1024)
+                
+                print("config",df_Modbus)
                 
             
-            
-            
-            communication_traffic_i.append(response_i.hex())
-            
-            config_safe = f"config: {communication_traffic_i}"
-            # sock_i.close()
-            # print("config :",communication_traffic_i)
-            # print(communication_traffic_i)
-            
-            
-            data = {
-                'address_start': [int(start_address)],
-                'finish': [int(start_address+adjusted_quantity)],
-                'TX': [communication_traffic_i[0]],
-                'RX': [communication_traffic_i[1]]
-            }
-            # print(data)
-            df_2 = pd.DataFrame(data)
-            df_Modbus = pd.concat([df_Modbus, df_2], ignore_index=True)
-
-            
-            
-            print("config",df_Modbus)
-            
-        
-            
-        
-            
-        
-        ##############   billing
-        for i in range(0, len(df_pollBilling)):
-            
-            
-            # print(i)
-            start_address = int(df_pollBilling.loc[i,'starting_address_i'])
-            # print(start_address)
-            adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity_i'])
-            # print(adjusted_quantity)
-            
-
-            request_message_i = bytearray(
-            [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
-            crc_i = computeCRC(request_message_i)
-            request_message_i += crc_i
-            
-            
-            
-            communication_traffic_i = []
-        
-            
-            communication_traffic_i.append(request_message_i.hex())
-            sock_i.send(request_message_i)
-            time.sleep(0.5)
-            response_i = sock_i.recv(1024)
-            
-            
-            
-            
-            communication_traffic_i.append(response_i.hex())
-            
-            billing_safe = f"billing: {communication_traffic_i}"
-            
-            
-           
-            
-            # sock_i.close()
-            # print(communication_traffic_i)
-            data = {
-                'address_start': [int(start_address)],
-                'finish': [int(start_address+adjusted_quantity-1)],
-                'TX': [communication_traffic_i[0]],
-                'RX': [communication_traffic_i[1]]
-            }
-            # print(data)
-            df_2 = pd.DataFrame(data)
-            df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
-           
-            
-            print("billing",df_Modbusbilling)
-            
-            
-            
-            
-        
-            encode_data_dict = {} 
-        df_Modbus_all = pd.concat([df_Modbus,df_Modbusbilling], ignore_index=True)
-        df_Modbus_html = df_Modbus_all.to_html(classes="data", index=False)
-        
-        
-
-        ######
-        # query Mapping and encode data
-        # fetch mapping    
-        evc_type = evc_type
-        query = """
-        select amc.or_der as order1 , amc.address as address1, amc.description as desc1, amc.data_type as dtype1
-        from amr_mapping_config amc
-        where amc.evc_type = :evc_type AND address is not null 
-        order by order1
-        """
-        poll_results = fetch_data(ptt_pivot_connection,query, params={"evc_type": evc_type})
-        df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
-        
                 
-        list_of_values_configured = []
-        for i in range(0, len(df_mapping)):
+            
                 
-            address = int(df_mapping.iloc[i,1])
             
-            data_type = str(df_mapping.iloc[i,3])
+            ##############   billing
+            for i in range(0, len(df_pollBilling)):
+                
+                
+                # print(i)
+                start_address = int(df_pollBilling.loc[i,'starting_address_i'])
+                # print(start_address)
+                adjusted_quantity = int(df_pollBilling.loc[i,'adjusted_quantity_i'])
+                # print(adjusted_quantity)
+                
+
+                request_message_i = bytearray(
+                [slave_id, function_code, start_address >> 8, start_address & 0xFF, adjusted_quantity >> 8, adjusted_quantity & 0xFF])
+                crc_i = computeCRC(request_message_i)
+                request_message_i += crc_i
+                
+                
+                
+                communication_traffic_i = []
             
-            
-            for j in range(0,len(df_Modbus)):
-                address_start = int(df_Modbus.iloc[j,0])
-                address_finish = int(df_Modbus.iloc[j,1])
-                #print(address)
-                if address >= address_start and address <= address_finish:
-                    # print(address_start, address_finish, df_Modbus.iloc[j,3])
-                    location_data = (address - address_start)*int(8/2)
-                    frameRx = (df_Modbus.iloc[j,3])
-                    #
-                    raw_data = frameRx[location_data + 6: location_data + 14]
+                
+                communication_traffic_i.append(request_message_i.hex())
+                try:
+                    sock_i.send(request_message_i)
+                    time.sleep(0.5)
+                    response_i = sock_i.recv(1024)
                     
-                
-                    list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
-                    # print(list_of_values_configured)
-                    break
-            # print(list_of_values_configured)
-            value_config = pd.DataFrame(list_of_values_configured,columns=['Value'])
-            # print(value_config)
-            result_config = pd.concat([df_mapping['desc'], value_config], axis=1)
-            result_config = result_config.transpose()
-            print(result_config)
-            result_config_html = result_config.to_html(classes="data", index=False , header=False)
-            
-            
                     
-        ### list_of_value_billing
-        evc_type = evc_type
-        query = """
-        SELECT amb.daily ,amb.or_der ,amb.address,amb.description,amb.data_type  FROM amr_mapping_billing amb WHERE amb.evc_type = :evc_type AND address is not null order by amb.daily
-        ,amb.or_der
-        """
-        poll_resultsbilling = fetch_data(ptt_pivot_connection,query, params={"evc_type": evc_type})
-        # print(poll_resultsbilling)
-        df_mappingbilling = pd.DataFrame(poll_resultsbilling, columns=['daily','or_der', 'address', 'description', 'data_type'])
-        
-        
-        #print(df_mappingbilling)
-        # print(df_Modbusbilling)   
-        list_of_values_billing = []
-        for i in range(0, len(df_mappingbilling)):
-                
-            address = int(df_mappingbilling.iloc[i,2])
-            
-            data_type = str(df_mappingbilling.iloc[i,4])
-            
-            #print("AA", address, address_start, address_finish)
-
-            # print(i, df_mappingbilling.loc[i])
-            for j in range(0,len(df_Modbusbilling)):
-                address_start = int(df_Modbusbilling.iloc[j,0])
-                address_finish = int(df_Modbusbilling.iloc[j,1])
-            
-                if address >= address_start and address <= address_finish:
-                    # print(address)
-                    # print(address_start, address_finish)
-                    location_data = (address - address_start)*int(8/2)
-                    # print(location_data)
-                    frameRx = (df_Modbusbilling.iloc[j,3])
-                
-                    raw_data = frameRx[location_data + 6: location_data + 14]
-                    # print(raw_data)
                     
-                    list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
-                    # print("type", data_type ,"raw", raw_data, "=",  convert_raw_to_value(data_type,raw_data))
-                    break
-            # print(list_of_values_billing)
-            value_billing = pd.DataFrame(list_of_values_billing, columns=['Value'])
-
-            # Transpose the DataFrame
-            value_billing = value_billing.transpose()
-
-            # Define the chunk size
-            chunk_size = 5
-
-            # Calculate the number of chunks needed
-            num_chunks = (len(value_billing.columns) + chunk_size - 1) // chunk_size
-
-            # Split the DataFrame into chunks
-            chunks = np.array_split(value_billing, num_chunks, axis=1)
-            
-            # Convert each chunk to HTML table
-            result_billing_html = [chunk.to_html(classes="data", index=False, header=False).replace('\n','').replace('[','').replace(']','').replace(',','') for chunk in chunks]
-
-
-            print(result_billing_html)
-            
-
-           
                     
-      
+                    communication_traffic_i.append(response_i.hex())
+                    
+                    billing_safe = f"billing: {communication_traffic_i}"
+                
+                except TimeoutError:
+                    abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
+                except Exception as e:
+                    abort(400, f"Error: {e}")
+                if response_i[1:2] != b'\x03':
+                    
+                    abort(400, f"Error: Unexpected response code from device {communication_traffic_i[1]} ,{response_i[1:2]}!")
+                else:
+                    pass
             
                 
+                # sock_i.close()
+                # print(communication_traffic_i)
+                data = {
+                    'address_start': [int(start_address)],
+                    'finish': [int(start_address+adjusted_quantity-1)],
+                    'TX': [communication_traffic_i[0]],
+                    'RX': [communication_traffic_i[1]]
+                }
+                # print(data)
+                df_2 = pd.DataFrame(data)
+                df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
+            
+                
+                print("billing",df_Modbusbilling)
                 
                 
                 
-        ######################################################################
-        
-        region_query = """
-            SELECT * FROM AMR_REGION 
+                
+            
+                encode_data_dict = {} 
+            df_Modbus_all = pd.concat([df_Modbus,df_Modbusbilling], ignore_index=True)
+            df_Modbus_html = df_Modbus_all.to_html(classes="data", index=False)
+            
+            
+
+            ######
+            # query Mapping and encode data
+            # fetch mapping    
+            evc_type = evc_type
+            query = """
+            select amc.or_der as order1 , amc.address as address1, amc.description as desc1, amc.data_type as dtype1
+            from amr_mapping_config amc
+            where amc.evc_type = :evc_type AND address is not null 
+            order by order1
             """
-        
-        tag_query = """
-            SELECT DISTINCT TAG_ID
-            FROM AMR_FIELD_ID
-            JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
-            WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
-            """
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        
-        region_options = [str(region[0]) for region in region_results]
-        query = """
-            SELECT
-                AMR_FIELD_METER.METER_STREAM_NO as RunNo,
-                AMR_PL_GROUP.PL_REGION_ID as region,
-                AMR_FIELD_ID.TAG_ID as Sitename,
-                AMR_FIELD_METER.METER_NO_STREAM as NoRun,
-                AMR_FIELD_METER.METER_ID as METERID,
-                AMR_VC_TYPE.VC_NAME as VCtype,
-                AMR_FIELD_ID.SIM_IP as IPAddress,
+            poll_results = fetch_data(ptt_pivot_connection,query, params={"evc_type": evc_type})
+            df_mapping = pd.DataFrame(poll_results, columns=['order', 'address', 'desc', 'data_type'])
+            
+                    
+            list_of_values_configured = []
+            for i in range(0, len(df_mapping)):
+                    
+                address = int(df_mapping.iloc[i,1])
                 
-                AMR_PORT_INFO.PORT_NO as port,
-                amr_poll_range.evc_type as evc_type,
-        
-    amr_vc_type.vc_name as vc_name ,
-    amr_poll_range.poll_billing as poll_billing ,
-        amr_poll_range.poll_config as poll_config,
-        amr_poll_range.poll_billing_enable as poll_billing_enable ,
-    amr_poll_range.poll_config_enable as poll_config_enable
-            FROM
-                AMR_FIELD_ID,
-                AMR_USER,
-                AMR_FIELD_CUSTOMER,
-                AMR_FIELD_METER,
-                AMR_PL_GROUP,
-                AMR_VC_TYPE,
-                AMR_PORT_INFO,
-                amr_poll_range
-            WHERE
-                AMR_USER.USER_ENABLE=1 AND
-                amr_vc_type.id=amr_poll_range.evc_type AND
-                AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
-                AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
-                AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
-                AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
-                AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
-                {tag_condition}
-                {region_condition}
+                data_type = str(df_mapping.iloc[i,3])
+                
+                
+                for j in range(0,len(df_Modbus)):
+                    address_start = int(df_Modbus.iloc[j,0])
+                    address_finish = int(df_Modbus.iloc[j,1])
+                    #print(address)
+                    if address >= address_start and address <= address_finish:
+                        # print(address_start, address_finish, df_Modbus.iloc[j,3])
+                        location_data = (address - address_start)*int(8/2)
+                        frameRx = (df_Modbus.iloc[j,3])
+                        #
+                        raw_data = frameRx[location_data + 6: location_data + 14]
+                        
+                    
+                        list_of_values_configured.append(convert_raw_to_value(data_type,raw_data))
+                        # print(list_of_values_configured)
+                        break
+                # print(list_of_values_configured)
+                value_config = pd.DataFrame(list_of_values_configured,columns=['Value'])
+                # print(value_config)
+                result_config = pd.concat([df_mapping['desc'], value_config], axis=1)
+                result_config = result_config.transpose()
+                print(result_config)
+                result_config_html = "<h2>config</h2>" + result_config.to_html(classes="data", index=False, header=False)
+
+
+                
+                
+                        
+            ### list_of_value_billing
+            evc_type = evc_type
+            query = """
+            SELECT amb.daily ,amb.or_der ,amb.address,amb.description,amb.data_type  FROM amr_mapping_billing amb WHERE amb.evc_type = :evc_type AND address is not null order by amb.daily
+            ,amb.or_der
             """
-        tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
-        region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
-        selected_tag = request.args.get("tag_dropdown")
-        selected_region = request.args.get("region_dropdown")
-        region_results = fetch_data(ptt_pivot_connection,region_query)
-        region_options = [str(region[0]) for region in region_results]
-        tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
-        tag_options = [str(tag[0]) for tag in tag_results]
-        # Sort the tag options alphabetically
-        tag_options.sort()
-        if selected_tag:
-            tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
-        if selected_region:
-            region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
-        query = query.format(tag_condition=tag_condition, region_condition=region_condition)
+            poll_resultsbilling = fetch_data(ptt_pivot_connection,query, params={"evc_type": evc_type})
+            # print(poll_resultsbilling)
+            df_mappingbilling = pd.DataFrame(poll_resultsbilling, columns=['daily','or_der', 'address', 'description', 'data_type'])
+            
+            
+            #print(df_mappingbilling)
+            # print(df_Modbusbilling)   
+            list_of_values_billing = []
+            for i in range(0, len(df_mappingbilling)):
+                    
+                address = int(df_mappingbilling.iloc[i,2])
+                
+                data_type = str(df_mappingbilling.iloc[i,4])
+                
+                #print("AA", address, address_start, address_finish)
+
+                # print(i, df_mappingbilling.loc[i])
+                for j in range(0,len(df_Modbusbilling)):
+                    address_start = int(df_Modbusbilling.iloc[j,0])
+                    address_finish = int(df_Modbusbilling.iloc[j,1])
+                
+                    if address >= address_start and address <= address_finish:
+                        # print(address)
+                        # print(address_start, address_finish)
+                        location_data = (address - address_start)*int(8/2)
+                        # print(location_data)
+                        frameRx = (df_Modbusbilling.iloc[j,3])
+                    
+                        raw_data = frameRx[location_data + 6: location_data + 14]
+                        # print(raw_data)
+                        
+                        list_of_values_billing.append(convert_raw_to_value(data_type,raw_data))   
+                        # print("type", data_type ,"raw", raw_data, "=",  convert_raw_to_value(data_type,raw_data))
+                        break
+                # print(list_of_values_billing)
+                value_billing = pd.DataFrame(list_of_values_billing, columns=['Value'])
+
+                # Transpose the DataFrame
+                value_billing = value_billing.transpose()
+
+                # Define the chunk size
+                chunk_size = 5
+
+                # Calculate the number of chunks needed
+                num_chunks = (len(value_billing.columns) + chunk_size - 1) // chunk_size
+
+                # Split the DataFrame into chunks
+                chunks = np.array_split(value_billing, num_chunks, axis=1)
+                
+                # Convert each chunk to HTML table
+                result_billing_html = [(("<h2>Billing</h2>"
+                         "<table>"
+                         "<thead>"
+                         "<tr>"
+                         "<th>DATA_DATE</th>"
+                         "<th>UNCORRECTED_VOL</th>"
+                         "<th>CORRECTED_VOL</th>"
+                         "<th>AVR_PF</th>"
+                         "<th>AVR_TF</th>"
+                         "</tr>"
+                         "</thead>"
+                         "<tbody>"
+                        if idx == 0 else "") + chunk.to_html(classes="data", index=False, header=False).replace('\n','').replace('[','').replace(']','').replace(',','') +
+                        "</tbody>""</table>") for idx, chunk in enumerate(chunks)]
+
+
+
+
+
+
+
+
+                print(result_billing_html)
+                
+
+            
+                        
         
-        df = pd.DataFrame(
-            columns=[
-                "RUN",
-                "Region",
-                "Sitename",
-                "NoRun",
-                "METERID",
-                "VCtype",
-                "IPAddress",
-                "Port",
-                "evc_type",
-                "vc_name",
-                "poll_billing",
-                "poll_config",
-                "poll_billing_enable",
-                "poll_config_enable",
-            ]
-        )
-        
-        if selected_region:
-            results = fetch_data(ptt_pivot_connection,query)
+                
+                    
+                    
+                    
+                    
+            ######################################################################
+            
+            region_query = """
+                SELECT * FROM AMR_REGION 
+                """
+            
+            tag_query = """
+                SELECT DISTINCT TAG_ID
+                FROM AMR_FIELD_ID
+                JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
+                WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+                """
+            region_results = fetch_data(ptt_pivot_connection,region_query)
+            
+            region_options = [str(region[0]) for region in region_results]
+            query = """
+                SELECT
+                    AMR_FIELD_METER.METER_STREAM_NO as RunNo,
+                    AMR_PL_GROUP.PL_REGION_ID as region,
+                    AMR_FIELD_ID.TAG_ID as Sitename,
+                    AMR_FIELD_METER.METER_NO_STREAM as NoRun,
+                    AMR_FIELD_METER.METER_ID as METERID,
+                    AMR_VC_TYPE.VC_NAME as VCtype,
+                    AMR_FIELD_ID.SIM_IP as IPAddress,
+                    
+                    AMR_PORT_INFO.PORT_NO as port,
+                    amr_poll_range.evc_type as evc_type,
+            
+        amr_vc_type.vc_name as vc_name ,
+        amr_poll_range.poll_billing as poll_billing ,
+            amr_poll_range.poll_config as poll_config,
+            amr_poll_range.poll_billing_enable as poll_billing_enable ,
+        amr_poll_range.poll_config_enable as poll_config_enable
+                FROM
+                    AMR_FIELD_ID,
+                    AMR_USER,
+                    AMR_FIELD_CUSTOMER,
+                    AMR_FIELD_METER,
+                    AMR_PL_GROUP,
+                    AMR_VC_TYPE,
+                    AMR_PORT_INFO,
+                    amr_poll_range
+                WHERE
+                    AMR_USER.USER_ENABLE=1 AND
+                    amr_vc_type.id=amr_poll_range.evc_type AND
+                    AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
+                    AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
+                    AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
+                    AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
+                    AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
+                    AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID
+                    {tag_condition}
+                    {region_condition}
+                """
+            tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
+            region_condition = "AND amr_pl_group.pl_region_id IS NOT NULL"
+            selected_tag = request.args.get("tag_dropdown")
+            selected_region = request.args.get("region_dropdown")
+            region_results = fetch_data(ptt_pivot_connection,region_query)
+            region_options = [str(region[0]) for region in region_results]
+            tag_results = fetch_data(ptt_pivot_connection,tag_query, params={"region_id": selected_region})
+            tag_options = [str(tag[0]) for tag in tag_results]
+            # Sort the tag options alphabetically
+            tag_options.sort()
+            if selected_tag:
+                tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
+            if selected_region:
+                region_condition = f"AND amr_pl_group.pl_region_id = '{selected_region}'"
+            query = query.format(tag_condition=tag_condition, region_condition=region_condition)
+            
             df = pd.DataFrame(
-                results,
                 columns=[
                     "RUN",
                     "Region",
@@ -2987,61 +3013,84 @@ def read_data():
                     "poll_config",
                     "poll_billing_enable",
                     "poll_config_enable",
-                ],
+                ]
             )
-            METERID =df.get(["METERID"]).values.tolist()
-            run = df.get(["RUN"]).values.tolist() 
-            evc_type_list = df.get(["evc_type"]).values.tolist() 
-        
-            # print(evc_type_list)
             
-            poll_config_list = df.get(["poll_config"]).values.tolist()
-            # print(poll_config_list)
+            if selected_region:
+                results = fetch_data(ptt_pivot_connection,query)
+                df = pd.DataFrame(
+                    results,
+                    columns=[
+                        "RUN",
+                        "Region",
+                        "Sitename",
+                        "NoRun",
+                        "METERID",
+                        "VCtype",
+                        "IPAddress",
+                        "Port",
+                        "evc_type",
+                        "vc_name",
+                        "poll_billing",
+                        "poll_config",
+                        "poll_billing_enable",
+                        "poll_config_enable",
+                    ],
+                )
+                METERID =df.get(["METERID"]).values.tolist()
+                run = df.get(["RUN"]).values.tolist() 
+                evc_type_list = df.get(["evc_type"]).values.tolist() 
             
-            if poll_config_list:
-                config_list_str = str(poll_config_list).strip("[]'").split(",")
-                # print(config_list_str)
-            else:
-            # Provide a default value if poll_config_list is empty
-                config_list_str = [''] * 10
-            poll_billing_list = df.get(["poll_billing"]).values.tolist()
-            if poll_billing_list:
-                billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
-                # print(billing_list_str)
-            else:
-            # Provide a default value if poll_config_list is empty
-                billing_list_str = [''] * 20
-            poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
-            
-            if poll_config_enable_list:
-                poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
-            else:
-                poll_config_enable_str = [''] * 20
+                # print(evc_type_list)
                 
-            poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
-            
-            if poll_billing_enable_list:
-                poll_billing_enable_str = str(poll_billing_enable_list).strip("[]'").split(",")
-            else:
-                poll_billing_enable_str = [''] * 20
-            tcp_ip = df.get(["IPAddress"]).values.tolist()
-            if tcp_ip:
-                ip_str = str(tcp_ip[0]).strip("[]'").split(",")
+                poll_config_list = df.get(["poll_config"]).values.tolist()
+                # print(poll_config_list)
                 
-            else:
-            # Provide a default value if poll_config_list is empty
-                ip_str = [''] 
-            # print(ip_str)
-            tcp_port = df.get(["Port"]).values.tolist()
-            if tcp_port:
-                Port_str = str(tcp_port[0]).strip("[]'").split(",")
-                # print(Port_str)
-            else:
-            # Provide a default value if poll_config_list is empty
-                Port_str = [''] 
-        
-            zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
+                if poll_config_list:
+                    config_list_str = str(poll_config_list).strip("[]'").split(",")
+                    # print(config_list_str)
+                else:
+                # Provide a default value if poll_config_list is empty
+                    config_list_str = [''] * 10
+                poll_billing_list = df.get(["poll_billing"]).values.tolist()
+                if poll_billing_list:
+                    billing_list_str = str(poll_billing_list[0]).strip("[]'").split(",")
+                    # print(billing_list_str)
+                else:
+                # Provide a default value if poll_config_list is empty
+                    billing_list_str = [''] * 20
+                poll_config_enable_list = df.get(["poll_config_enable"]).values.tolist()
+                
+                if poll_config_enable_list:
+                    poll_config_enable_str = str(poll_config_enable_list).strip("[]'").split(",")
+                else:
+                    poll_config_enable_str = [''] * 20
+                    
+                poll_billing_enable_list = df.get(["poll_billing_enable"]).values.tolist()
+                
+                if poll_billing_enable_list:
+                    poll_billing_enable_str = str(poll_billing_enable_list).strip("[]'").split(",")
+                else:
+                    poll_billing_enable_str = [''] * 20
+                tcp_ip = df.get(["IPAddress"]).values.tolist()
+                if tcp_ip:
+                    ip_str = str(tcp_ip[0]).strip("[]'").split(",")
+                    
+                else:
+                # Provide a default value if poll_config_list is empty
+                    ip_str = [''] 
+                # print(ip_str)
+                tcp_port = df.get(["Port"]).values.tolist()
+                if tcp_port:
+                    Port_str = str(tcp_port[0]).strip("[]'").split(",")
+                    # print(Port_str)
+                else:
+                # Provide a default value if poll_config_list is empty
+                    Port_str = [''] 
             
+                zipped_data = zip(poll_config_list, poll_billing_list ,tcp_ip,tcp_port,poll_config_enable_list,poll_billing_enable_list,evc_type_list,run,METERID)
+    except Exception as e:
+            abort(400, f"Error: {e}")        
     return render_template(
         "Manual poll.html",
         df=df, METERID=METERID, df_mapping=df_mapping, df_mappingbilling=df_mappingbilling, result_config=result_config,
@@ -3251,7 +3300,7 @@ def save_to_oracle_manualpoll():
                 communication_traffic_i.append(request_message_i.hex())
                 sock_i.send(request_message_i)
                 time.sleep(1)
-                response_i = sock_i.recv(1024)
+                response_i = sock_i.recv(4096)
                 
                 # print(response_i)
                 
@@ -3314,7 +3363,7 @@ def save_to_oracle_manualpoll():
                 
                 sock_i.send(request_message_i)
                 time.sleep(1)
-                response_i = sock_i.recv(1024)
+                response_i = sock_i.recv(4096)
                 
                 
 
@@ -6149,46 +6198,6 @@ def add_site():
             port_6 = request.form['port_6']
             port6 = request.form['port6']
             auto_6 = request.form['auto_6']
-            
-            # print(f'Phase: {phase}')
-            # print(f'Site Name: {site_name}')
-            # print(f'Factory Name: {factory_name}')
-            # print(f'Region: {region}')
-            # print(f'RMIU Type: {rmiu_type}')
-            # print(f'Power Indicator: {power_indicator}')
-            # print(f'MODBUS ID: {modbus_id}')
-            # print(f'IP Address: {ip_address}')
-            # print(f'Ready to Billing: {ready_to_billing}')  # Will print '1' if checkbox is checked
-            # print(f'Auto Ping: {auto_ping}')  # Will print '1' if checkbox is checked
-            # print(f'Billing Date: {billing_date}')
-            # print(f'Show SG CO2 N2: {show_sg_co2_n2}')
-            # print(f'Amount of Meter: {amount_of_meter}')
-            # print(f'Initial Username: {initial_username}')
-            # print(f'Initial Password: {initial_password}')
-            
-            # print(f'port_1: {port_1}')
-            # print(f'port1: {port1}')
-            # print(f'auto_1: {auto_1}')
-            
-            # print(f'port_2: {port_2}')
-            # print(f'port2: {port2}')
-            # print(f'auto_2: {auto_2}')
-            
-            # print(f'port_3: {port_3}')
-            # print(f'port3: {port3}')
-            # print(f'auto_3: {auto_3}')
-            
-            # print(f'port_4: {port_4}')
-            # print(f'port4: {port4}')
-            # print(f'auto_4: {auto_4}')
-            
-            # print(f'port_5: {port_5}')
-            # print(f'port5: {port5}')
-            # print(f'auto_5: {auto_5}')
-            
-            # print(f'port_6: {port_6}')
-            # print(f'port6: {port6}')
-            # print(f'auto_6: {auto_6}')
 
             amr_user = f"""
             INSERT INTO AMR_USER (ID, DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL, USER_GROUP, USER_ENABLE)
@@ -6410,6 +6419,7 @@ def edit_site():
             list_amr_phase = df["amr_phase"].iloc[0]
             list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
             list_sim_ip = df["sim_ip"].iloc[0]
+            print("list_sim_ip", list_sim_ip)
             list_user_name = df["user_name"].iloc[0]
             list_password = df["password"].iloc[0]
             list_meter_stream_type = df["meter_stream_type"].iloc[0]
@@ -6485,10 +6495,33 @@ def update_edit_site():
         tag_id = request.form.get("tag_id")
         cust_factory_name = request.form.get("cust_factory_name")
         amr_phase = request.form.get("amr_phase")
-        rtu_modbus_id = request.form.get("rtu_modbus_id")
+        rtu_modbus_id = int(request.form.get("rtu_modbus_id"))
         sim_ip = request.form.get("sim_ip")
+        print("sim_ip", sim_ip)
         user_name = request.form.get("user_name")
         password = request.form.get("password")
+        
+        update_user = f"""
+            UPDATE AMR_USER 
+            SET 
+                description = '{tag_id}',
+                user_name = '{user_name}',
+                password = '{password}'
+            WHERE id = '{id}'
+        """
+        print("update_user:", update_user)
+        update_sql(ptt_pivot_connection, update_user)
+        
+        update_field_id = f"""
+            UPDATE AMR_FIELD_ID
+            SET
+                tag_id = '{tag_id}',
+                sim_ip = '{sim_ip}',
+                amr_phase = '{amr_phase}'
+            WHERE id = '{id}'
+        """
+        print("update_field_id", update_field_id)
+        update_sql(ptt_pivot_connection, update_field_id)
         
         meter_stream_type = request.form.get("list_meter_stream_type")
         print("meter_stream_type", meter_stream_type)
@@ -6496,20 +6529,8 @@ def update_edit_site():
         meter_port_no = request.form.get("list_meter_port_no")
         print("meter_port_no", meter_port_no)
 
-        update_user = f"""
-            UPDATE AMR_USER 
-            SET 
-                user_name = '{user_name}',
-                password = '{password}'
-            WHERE id = '{id}'
-        """
-
-        print("update_user:", update_user)
-        update_sql(ptt_pivot_connection, update_user)
-
 
     return redirect(url_for('edit_site'))
-
 
 
 @app.route('/logout')
