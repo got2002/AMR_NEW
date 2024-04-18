@@ -155,231 +155,248 @@
 
             <button type="submit" class="btn btn-primary">Edit</button>
 
-
-            <!-- Display tag_id -->
-            {% if selected_tag %}
-
-            <!-- Display HTML table -->
-            {% if html_table %}
-            {{ html_table|safe }}
-            {% endif %}
-            <br><br>
-
-            <label for="tag_id">Tag ID:</label>
-            <input type="text" id="tag_id" name="tag_id" value="{{ list_tag_id }}" required class="input-select"><br>
-
-            <label for="cust_factory_name">Cust factory name:</label>
-            <input type="text" id="cust_factory_name" name="cust_factory_name" value="{{ list_cust_factory_name }}"
-                required class="input-select"><br>
-
-            <label for="amr_phase">PHASE:</label>
-            <input type="text" id="amr_phase" name="amr_phase" value="{{ list_amr_phase }}" required
-                class="input-select"><br>
-
-            <label for="rtu_modbus_id">RTU MODBUSE:</label>
-            <input type="text" id="rtu_modbus_id" name="rtu_modbus_id" value="{{ list_rtu_modbus_id }}" required
-                class="input-select"><br>
-
-            <label for="sim_ip">IP ADDRESS:</label>
-            <input type="text" id="sim_ip" name="sim_ipe" value="{{ list_sim_ip }}" required class="input-select"><br>
-
-            <label for="user_name">USERNAME:</label>
-            <input type="text" id="user_name" name="user_name" value="{{ list_user_name }}" class="input-select"><br>
-
-            <label for="password">PASSWORD:</label>
-            <input type="text" id="password" name="password" value="{{ list_password }}" class="input-select"><br>
-            <br>
-            <table border="1" align="">
-                <thead>
-                    <tr>
-                        <th>NO.</th>
-                        <th>TYPE</th>
-                        <th>PORT</th>
-                        <th>AUTO</th>
-                        <th>WRITE</th>
-                        <th>PROFILE</th>
-                    </tr>
-
-                    <tr>
-                        <td>0</td>
-                        <td>RMIU</td>
-                        <td>&nbsp;</td>
-                        <td> <input type="checkbox" name="enable0" value="1" checked="CHECKED">
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                </thead>
+    </form>
 
 
-                <tbody>
-                    {% if list_meter_stream_no is not none %}
-                    {% for index in range(0, list_meter_stream_no|length) %}
-                    <tr>
-                        <td>{{ list_meter_stream_no[index] }}</td>
-                        <td>
-                            <!-- <select name="meterType{{ index }}"> -->
-                            <select id="text" name="list_meter_stream_type">
+    <!-- Display tag_id -->
+    {% if selected_tag %}
 
-                                <option value="7" {% if list_meter_stream_type[index]=='Elster EK-220' %} selected {%
-                                    endif %}>
-                                    Elster EK-220
-                                </option>
+    <!-- Display HTML table -->
+    {% if html_table %}
+    {{ html_table|safe }}
+    {% endif %}
+    <br><br>
 
-                                <option value="1" {% if list_meter_stream_type[index]=='Instromet 999' %} selected {%
-                                    endif %}>
-                                    Instromet 999</option>
+    <form method="POST" action="/update_edit_site_route">
 
-                                <option value="2" {% if list_meter_stream_type[index]=='Instromet 555' %} selected {%
-                                    endif %}>
-                                    Instromet 555
-                                </option>
+        <label style="display: none;" for="id">Tag ID:</label>
+        <input style="display: none;" type="text" id="id" name="id" value="{{ list_id }}" required
+            class="input-select"><br>
 
-                                <option value="3" {% if list_meter_stream_type[index]=='Gas Micro' %} selected {% endif
-                                    %}>
-                                    Gas Micro</option>
+        <label for="tag_id">Tag ID:</label>
+        <input type="text" id="tag_id" name="tag_id" value="{{ list_tag_id }}" required class="input-select"><br>
 
-                                <option value="4" {% if list_meter_stream_type[index]=='Rockwell' %} selected {% endif
-                                    %}>
-                                    Rockwell
-                                </option>
+        <label for="cust_factory_name">Cust factory name:</label>
+        <input type="text" id="cust_factory_name" name="cust_factory_name" value="{{ list_cust_factory_name }}" required
+            class="input-select"><br>
 
-                                <option value="5" {% if list_meter_stream_type[index]=='Actaris(G1)' %} selected {%
-                                    endif %}>
-                                    Actaris(G1)</option>
+        <label for="amr_phase">PHASE:</label>
+        <input type="text" id="amr_phase" name="amr_phase" value="{{ list_amr_phase }}" required
+            class="input-select"><br>
 
-                                <option value="6" {% if list_meter_stream_type[index]=='Mercury' %} selected {% endif
-                                    %}>
-                                    Mercury
-                                </option>
+        <label for="rtu_modbus_id">RTU MODBUSE:</label>
+        <input type="text" id="rtu_modbus_id" name="rtu_modbus_id" value="{{ list_rtu_modbus_id }}" required
+            class="input-select"><br>
 
-                                <option value="8" {% if list_meter_stream_type[index]=='Actaris(G2)' %} selected {%
-                                    endif %}>
-                                    Actaris(G2)</option>
+        <label for="sim_ip">IP ADDRESS:</label>
+        <input type="text" id="sim_ip" name="sim_ipe" value="{{ list_sim_ip }}" required class="input-select"><br>
 
-                                <option value="9" {% if list_meter_stream_type[index]=='Actaris(G3)' %} selected {%
-                                    endif %}>
-                                    Actaris(G3)
-                                </option>
+        <label for="user_name">USERNAME:</label>
+        <input type="text" id="user_name" name="user_name" value="{{ list_user_name }}" class="input-select"><br>
 
-                                <option value="10" {% if list_meter_stream_type[index]=='Actaris(G4)' %} selected {%
-                                    endif %}>
-                                    Actaris(G4)</option>
+        <label for="password">PASSWORD:</label>
+        <input type="text" id="password" name="password" value="{{ list_password }}" class="input-select"><br>
+        <br>
+        <table border="1" align="">
+            <thead>
+                <tr>
+                    <th>NO.</th>
+                    <th>TYPE</th>
+                    <th>PORT</th>
+                    <th>AUTO</th>
+                    <th>WRITE</th>
+                    <th>PROFILE</th>
+                </tr>
 
-                                <option value="11" {% if list_meter_stream_type[index]=='Elster EK-220(u)' %} selected
-                                    {% endif %}>
-                                    Elster EK-220(u)
-                                </option>
+                <tr>
+                    <td>0</td>
+                    <td>RMIU</td>
+                    <td>&nbsp;</td>
+                    <td> <input type="checkbox" name="enable0" value="1" checked="CHECKED">
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </thead>
 
-                                <option value="12" {% if list_meter_stream_type[index]=='Actaris(u)' %} selected {%
-                                    endif %}>
-                                    Actaris(u)</option>
 
-                                <option value="13" {% if list_meter_stream_type[index]=='Elster EK-280' %} selected {%
-                                    endif %}>
-                                    Elster EK-280
-                                </option>
+            <tbody>
+                {% if list_meter_stream_no is not none %}
+                {% for index in range(0, list_meter_stream_no|length) %}
+                <tr>
+                    <td>{{ list_meter_stream_no[index] }}</td>
+                    <td>
+                        <!-- <select name="meterType{{ index }}"> -->
+                        <select id="text" name="list_meter_stream_type">
 
-                                <option value="14" {% if list_meter_stream_type[index]=='Elster EK-280(u)' %} selected
-                                    {% endif %}>
-                                    Elster EK-280(u)</option>
+                            <option value="7" {% if list_meter_stream_type[index]=='Elster EK-220' %} selected {% endif
+                                %}>
+                                Elster EK-220
+                            </option>
 
-                            </select>
-                        </td>
+                            <option value="1" {% if list_meter_stream_type[index]=='Instromet 999' %} selected {% endif
+                                %}>
+                                Instromet 999</option>
 
-                        <td>
-                            <!-- <select name="port{{ index }}"> -->
-                            <select id="text" name="list_meter_port_no">
+                            <option value="2" {% if list_meter_stream_type[index]=='Instromet 555' %} selected {% endif
+                                %}>
+                                Instromet 555
+                            </option>
 
-                                <!-- <option value="1" selected>{{ list_meter_port_no[index] }}
+                            <option value="3" {% if list_meter_stream_type[index]=='Gas Micro' %} selected {% endif %}>
+                                Gas Micro</option>
+
+                            <option value="4" {% if list_meter_stream_type[index]=='Rockwell' %} selected {% endif %}>
+                                Rockwell
+                            </option>
+
+                            <option value="5" {% if list_meter_stream_type[index]=='Actaris(G1)' %} selected {% endif
+                                %}>
+                                Actaris(G1)</option>
+
+                            <option value="6" {% if list_meter_stream_type[index]=='Mercury' %} selected {% endif %}>
+                                Mercury
+                            </option>
+
+                            <option value="8" {% if list_meter_stream_type[index]=='Actaris(G2)' %} selected {% endif
+                                %}>
+                                Actaris(G2)</option>
+
+                            <option value="9" {% if list_meter_stream_type[index]=='Actaris(G3)' %} selected {% endif
+                                %}>
+                                Actaris(G3)
+                            </option>
+
+                            <option value="10" {% if list_meter_stream_type[index]=='Actaris(G4)' %} selected {% endif
+                                %}>
+                                Actaris(G4)</option>
+
+                            <option value="11" {% if list_meter_stream_type[index]=='Elster EK-220(u)' %} selected {%
+                                endif %}>
+                                Elster EK-220(u)
+                            </option>
+
+                            <option value="12" {% if list_meter_stream_type[index]=='Actaris(u)' %} selected {% endif
+                                %}>
+                                Actaris(u)</option>
+
+                            <option value="13" {% if list_meter_stream_type[index]=='Elster EK-280' %} selected {% endif
+                                %}>
+                                Elster EK-280
+                            </option>
+
+                            <option value="14" {% if list_meter_stream_type[index]=='Elster EK-280(u)' %} selected {%
+                                endif %}>
+                                Elster EK-280(u)</option>
+
+                        </select>
+                    </td>
+
+                    <td>
+                        <!-- <select name="port{{ index }}"> -->
+                        <select id="text" name="list_meter_port_no">
+
+                            <!-- <option value="1" selected>{{ list_meter_port_no[index] }}
                                 </option> -->
 
-                                <option value="1" {% if list_meter_port_no[index]=='2402' %} selected {% endif %}>
-                                    Viola Port no.1</option>
+                            <option value="1" {% if list_meter_port_no[index]=='2402' %} selected {% endif %}>
+                                Viola Port no.1</option>
 
-                                <option value="2" {% if list_meter_port_no[index]=='2404' %} selected {% endif %}>
-                                    Viola Port no.2</option>
+                            <option value="2" {% if list_meter_port_no[index]=='2404' %} selected {% endif %}>
+                                Viola Port no.2</option>
 
-                                <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {% endif %}>
-                                    Viola + Digi Port no. 1</option>
+                            <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {% endif %}>
+                                Viola + Digi Port no. 1</option>
 
-                                <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {% endif %}>
-                                    Viola + Digi Port no. 2</option>
+                            <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {% endif %}>
+                                Viola + Digi Port no. 2</option>
 
-                                <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {% endif %}>
-                                    Viola + Digi Port no. 3</option>
+                            <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {% endif %}>
+                                Viola + Digi Port no. 3</option>
 
-                                <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {% endif %}>
-                                    Viola + Digi Port no. 4</option>
+                            <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {% endif %}>
+                                Viola + Digi Port no. 4</option>
 
-                                <option value="7" {% if list_meter_port_no[index]=='4001' %} selected {% endif %}>
-                                    Viola + Moxa Port no. 1</option>
+                            <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {% endif %}>
+                                Tbox + Digi Port no. 1</option>
 
-                                <option value="8" {% if list_meter_port_no[index]=='4002' %} selected {% endif %}>
-                                    Viola + Moxa Port no. 2</option>
+                            <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {% endif %}>
+                                Tbox + Digi Port no. 2</option>
 
-                                <option value="9" {% if list_meter_port_no[index]=='4003' %} selected {% endif %}>
-                                    Viola + Moxa Port no. 3</option>
+                            <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {% endif %}>
+                                Tbox + Digi Port no. 3</option>
 
-                                <option value="10" {% if list_meter_port_no[index]=='4004' %} selected {% endif %}>
-                                    Viola + Moxa Port no. 4</option>
+                            <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {% endif %}>
+                                Tbox + Digi Port no. 4</option>
 
-                                <option value="11" {% if list_meter_port_no[index]=='4001' %} selected {% endif %}>
-                                    Tbox + Moxa Port no. 1</option>
+                            <option value="7" {% if list_meter_port_no[index]=='4001' %} selected {% endif %}>
+                                Viola + Moxa Port no. 1</option>
 
-                                <option value="12" {% if list_meter_port_no[index]=='4002' %} selected {% endif %}>
-                                    Tbox + Moxa Port no. 2</option>
+                            <option value="8" {% if list_meter_port_no[index]=='4002' %} selected {% endif %}>
+                                Viola + Moxa Port no. 2</option>
 
-                                <option value="13" {% if list_meter_port_no[index]=='4003' %} selected {% endif %}>
-                                    Tbox + Moxa Port no. 3</option>
+                            <option value="9" {% if list_meter_port_no[index]=='4003' %} selected {% endif %}>
+                                Viola + Moxa Port no. 3</option>
 
-                                <option value="14" {% if list_meter_port_no[index]=='4004' %} selected {% endif %}>
-                                    Tbox + Moxa Port no. 4</option>
+                            <option value="10" {% if list_meter_port_no[index]=='4004' %} selected {% endif %}>
+                                Viola + Moxa Port no. 4</option>
 
-                                <option value="15" {% if list_meter_port_no[index]=='1' %} selected {% endif %}>
-                                    Micro AMR Port no. 1</option>
+                            <option value="11" {% if list_meter_port_no[index]=='4101' %} selected {% endif %}>
+                                Tbox + Moxa Port no. 1</option>
 
-                                <option value="16" {% if list_meter_port_no[index]=='2' %} selected {% endif %}>
-                                    Micro AMR Port no. 2</option>
+                            <option value="12" {% if list_meter_port_no[index]=='4102' %} selected {% endif %}>
+                                Tbox + Moxa Port no. 2</option>
 
-                                <option value="17" {% if list_meter_port_no[index]=='3' %} selected {% endif %}>
-                                    Micro AMR Port no. 3</option>
+                            <option value="13" {% if list_meter_port_no[index]=='4103' %} selected {% endif %}>
+                                Tbox + Moxa Port no. 3</option>
 
-                                <option value="18" {% if list_meter_port_no[index]=='4' %} selected {% endif %}>
-                                    Micro AMR Port no. 4</option>
+                            <option value="14" {% if list_meter_port_no[index]=='4104' %} selected {% endif %}>
+                                Tbox + Moxa Port no. 4</option>
+
+                            <option value="15" {% if list_meter_port_no[index]=='1' %} selected {% endif %}>
+                                Micro AMR Port no. 1</option>
+
+                            <option value="16" {% if list_meter_port_no[index]=='2' %} selected {% endif %}>
+                                Micro AMR Port no. 2</option>
+
+                            <option value="17" {% if list_meter_port_no[index]=='3' %} selected {% endif %}>
+                                Micro AMR Port no. 3</option>
+
+                            <option value="18" {% if list_meter_port_no[index]=='4' %} selected {% endif %}>
+                                Micro AMR Port no. 4</option>
 
 
 
-                            </select>
-                        </td>
+                        </select>
+                    </td>
 
-                        <td>
-                            <input name="enable{{ index }}" type="checkbox" value="1" checked="CHECKED">
+                    <td>
+                        <input name="enable{{ index }}" type="checkbox" value="1" checked="CHECKED">
 
-                        </td>
-                        <td>
-                            <input name="writeenable{{ index }}" type="checkbox" value="1">
-                        </td>
-                        <td>
-                            <select name="profile{{ index }}">
-                                <option value="0">-----none-----</option>
-                                <option value="0" selected="">PROFILE_NAME</option>
-                                <option value="1">QC740</option>
-                                <option value="2">QC741</option>
-                            </select>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
-                </tbody>
+                    </td>
+                    <td>
+                        <input name="writeenable{{ index }}" type="checkbox" value="1">
+                    </td>
+                    <td>
+                        <select name="profile{{ index }}">
+                            <option value="0">-----none-----</option>
+                            <option value="0" selected="">PROFILE_NAME</option>
+                            <option value="1">QC740</option>
+                            <option value="2">QC741</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
 
-            </table>
+        </table>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
 
-            {% endif %}
+        {% endif %}
 
 
 
