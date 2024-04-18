@@ -6314,7 +6314,6 @@ def add_site():
 def edit_site():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
-        query_type = request.args.get("query_type")
 
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
@@ -6322,6 +6321,7 @@ def edit_site():
         """
 
         selected_region = request.args.get("region_dropdown")
+        print("selected_region", selected_region)
 
         # Fetch unique region values
         region_results = fetch_data(ptt_pivot_connection, region_query)
@@ -6401,24 +6401,24 @@ def edit_site():
             'protocol_no_stream'
         ]
         df = pd.DataFrame(data, columns=columns)
-
+        print("df", df)
         
         if not df.empty:
-            for index, row in df.iterrows():
-                list_id = row["id"]
-                list_tag_id = row["tag_id"]
-                list_cust_factory_name = row["cust_factory_name"]
-                list_amr_phase = row["amr_phase"]
-                list_rtu_modbus_id = row["rtu_modbus_id"]
-                list_sim_ip = row["sim_ip"]
-                list_user_name = row["user_name"]
-                list_password = row["password"]
-                list_meter_stream_no = str(row["meter_stream_no"]).split()       
-                list_meter_port_no = str(row["meter_port_no"]).split()
-                list_meter_auto_enable = str(row["meter_auto_enable"]).split()
+            list_id = df["id"].iloc[0]
+            list_tag_id = df["tag_id"].iloc[0]
+            list_cust_factory_name = df["cust_factory_name"].iloc[0]
+            list_amr_phase = df["amr_phase"].iloc[0]
+            list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
+            list_sim_ip = df["sim_ip"].iloc[0]
+            list_user_name = df["user_name"].iloc[0]
+            list_password = df["password"].iloc[0]
+            list_meter_stream_type = df["meter_stream_type"].iloc[0]
+            list_meter_stream_no = df["meter_stream_no"].tolist()       
+            list_meter_port_no = df["meter_port_no"].tolist()
+            list_meter_auto_enable = df["meter_auto_enable"].tolist()
             
             
-        
+            # Fetch and update meter stream types
             list_meter_stream_type = []
             for meter_stream_type in df["meter_stream_type"]:
                 meter_stream_type_list = f"""SELECT vc_name FROM amr_vc_type WHERE id = '{meter_stream_type}' ORDER BY id"""
@@ -6427,8 +6427,9 @@ def edit_site():
                     list_meter_stream_type.append(type[0][0])
                 else:
                     list_meter_stream_type.append(None)
-                print("list_meter_stream_type", list_meter_stream_type)
-                    
+            print("list_meter_stream_type", list_meter_stream_type)
+
+            # Fetch and update meter port numbers
             list_meter_port_no = []
             for meter_port_no in df["meter_port_no"]:
                 meter_port_no_list =f"""SELECT port_no FROM amr_port_info WHERE id = '{meter_port_no}' ORDER BY id"""
@@ -6437,38 +6438,23 @@ def edit_site():
                     list_meter_port_no.append(port[0][0])
                 else:
                     list_meter_port_no.append(None)
-                print("list_meter_port_no", list_meter_port_no)
+            print("list_meter_port_no", list_meter_port_no)
             
-        
-        update_user = f"""
-                UPDATE AMR_USER 
-                SET 
-                    user_name = '{list_user_name}',
-                    password = '{list_password}'
-                WHERE id = '{list_id}'
-                """
-        print("update_user", update_user)
-        update_sql(ptt_pivot_connection, update_user)
-                  
-        # else:
-        #     list_id = None
-        #     list_tag_id = None
-        #     list_cust_factory_name = None
-        #     list_amr_phase = None
-        #     list_rtu_modbus_id = None
-        #     list_sim_ip = None
-        #     list_user_name = None
-        #     list_password = None
-        #     list_meter_stream_no = None
-        #     list_meter_auto_enable = None
-        #     list_meter_stream_type = None
-        #     list_meter_port_no = None
-            
-        
+        else:
+            list_id = None
+            list_tag_id = None
+            list_cust_factory_name = None
+            list_amr_phase = None
+            list_rtu_modbus_id = None
+            list_sim_ip = None
+            list_user_name = None
+            list_password = None
+            list_meter_stream_no = None
+            list_meter_auto_enable = None
+            list_meter_stream_type = None
+            list_meter_port_no = None
 
         html_table = df.to_html(index=False)
-        
-        
 
         return render_template('edit_site.html', 
                                 region_options=region_options, 
@@ -6484,10 +6470,46 @@ def edit_site():
                                 list_user_name=list_user_name,
                                 list_password=list_password,
                                 list_meter_stream_no=list_meter_stream_no,
+                                list_meter_auto_enable=list_meter_auto_enable,
                                 list_meter_stream_type=list_meter_stream_type,
                                 list_meter_port_no=list_meter_port_no,
-                                list_meter_auto_enable=list_meter_auto_enable,
                                 html_table=html_table)
+        
+        
+@app.route('/update_edit_site_route', methods=['POST'])
+def update_edit_site():
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+        
+        id = request.form.get("id")
+        tag_id = request.form.get("tag_id")
+        cust_factory_name = request.form.get("cust_factory_name")
+        amr_phase = request.form.get("amr_phase")
+        rtu_modbus_id = request.form.get("rtu_modbus_id")
+        sim_ip = request.form.get("sim_ip")
+        user_name = request.form.get("user_name")
+        password = request.form.get("password")
+        
+        meter_stream_type = request.form.get("list_meter_stream_type")
+        print("meter_stream_type", meter_stream_type)
+        
+        meter_port_no = request.form.get("list_meter_port_no")
+        print("meter_port_no", meter_port_no)
+
+        update_user = f"""
+            UPDATE AMR_USER 
+            SET 
+                user_name = '{user_name}',
+                password = '{password}'
+            WHERE id = '{id}'
+        """
+
+        print("update_user:", update_user)
+        update_sql(ptt_pivot_connection, update_user)
+
+
+    return redirect(url_for('edit_site'))
+
 
 
 @app.route('/logout')
