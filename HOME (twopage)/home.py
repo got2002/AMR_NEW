@@ -6203,7 +6203,7 @@ def add_site():
             INSERT INTO AMR_USER (ID, DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL, USER_GROUP, USER_ENABLE)
             VALUES ({max_id_value}, '{site_name}', '{initial_username}', '{initial_password}', '3', '{MET0+max_id_value}', '1')
             """
-            # update_sql(amr_user)
+            update_sql(ptt_pivot_connection, amr_user)
             
             amr_field_id = f"""
             INSERT INTO AMR_FIELD_ID (
@@ -6237,7 +6237,7 @@ def add_site():
                                     '{phase}'
                                     )
             """
-            update_sql(amr_field_id)
+            update_sql(ptt_pivot_connection, amr_field_id)
             
             amr_field_customer= f"""
             INSERT INTO AMR_FIELD_CUSTOMER (
@@ -6253,13 +6253,13 @@ def add_site():
                                     '{amount_of_meter}'            
                                     )
             """
-            # update_sql(amr_field_customer)
+            update_sql(ptt_pivot_connection, amr_field_customer)
             
             amr_pl_group = f""" 
             INSERT INTO AMR_PL_GROUP (ID, PL_REGION_ID, FIELD_ID) 
             VALUES ({max_id_value}, '{region}', '{AMR0+max_id_value}')
             """
-            update_sql(amr_pl_group)
+            update_sql(ptt_pivot_connection, amr_pl_group)
             
             for i in range(1, int(amount_of_meter) + 1): 
                 amr_field_meter = f"""
@@ -6291,7 +6291,7 @@ def add_site():
                                             '{0}'
                                             )         
                 """
-                # update_sql(amr_field_meter)
+                update_sql(ptt_pivot_connection, amr_field_meter)
                 
                 amr_field_profile = f"""
                 INSERT INTO AMR_FIELD_PROFILE (METER_ID, 
@@ -6306,15 +6306,16 @@ def add_site():
                                                 '{0}'
                                                 )
                 """
-                # update_sql(amr_field_profile)
+                update_sql(ptt_pivot_connection, amr_field_profile)
                 
-                amr_field_protocal = f"""
-                INSERT INTO AMR_FIELD_PROTOCAL (PROTOCOL_ID, PROTOCOL_STREAM_NO, PROTOCOL_NO_STREAM)
+                amr_field_protocol = f"""
+                INSERT INTO AMR_FIELD_PROTOCOL (PROTOCOL_ID, PROTOCOL_STREAM_NO, PROTOCOL_NO_STREAM)
                 VALUES ('{PROT0+max_id_value}', '{i}', '{amount_of_meter}')
                 """
-                # update_sql(amr_field_protocal)
+                print("amr_field_protocol", amr_field_protocol)
+                update_sql(ptt_pivot_connection, amr_field_protocol)
                 
-            return render_template('home.html',)
+            return render_template('home.html')
 
         
     return render_template('add_site.html', max_id_value=max_id_value)
@@ -6410,7 +6411,6 @@ def edit_site():
             'protocol_no_stream'
         ]
         df = pd.DataFrame(data, columns=columns)
-        print("df", df)
         
         if not df.empty:
             list_id = df["id"].iloc[0]
@@ -6419,10 +6419,9 @@ def edit_site():
             list_amr_phase = df["amr_phase"].iloc[0]
             list_rtu_modbus_id = df["rtu_modbus_id"].iloc[0]
             list_sim_ip = df["sim_ip"].iloc[0]
-            print("list_sim_ip", list_sim_ip)
             list_user_name = df["user_name"].iloc[0]
             list_password = df["password"].iloc[0]
-            list_meter_stream_type = df["meter_stream_type"].iloc[0]
+            list_meter_stream_type = df["meter_stream_type"].tolist()
             list_meter_stream_no = df["meter_stream_no"].tolist()       
             list_meter_port_no = df["meter_port_no"].tolist()
             list_meter_auto_enable = df["meter_auto_enable"].tolist()
@@ -6437,7 +6436,7 @@ def edit_site():
                     list_meter_stream_type.append(type[0][0])
                 else:
                     list_meter_stream_type.append(None)
-            print("list_meter_stream_type", list_meter_stream_type)
+            # print("list_meter_stream_type111", list_meter_stream_type)
 
             # Fetch and update meter port numbers
             list_meter_port_no = []
@@ -6447,8 +6446,9 @@ def edit_site():
                 if port:
                     list_meter_port_no.append(port[0][0])
                 else:
-                    list_meter_port_no.append(None)
-            print("list_meter_port_no", list_meter_port_no)
+                    list_meter_port_no.append(None)                   
+            # print("list_meter_port_no111", list_meter_port_no)
+            
             
         else:
             list_id = None
@@ -6491,15 +6491,17 @@ def update_edit_site():
     with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
         
+        MET = 'MET0'
+        
         id = request.form.get("id")
         tag_id = request.form.get("tag_id")
         cust_factory_name = request.form.get("cust_factory_name")
         amr_phase = request.form.get("amr_phase")
         rtu_modbus_id = int(request.form.get("rtu_modbus_id"))
         sim_ip = request.form.get("sim_ip")
-        print("sim_ip", sim_ip)
         user_name = request.form.get("user_name")
         password = request.form.get("password")
+        
         
         update_user = f"""
             UPDATE AMR_USER 
@@ -6509,7 +6511,7 @@ def update_edit_site():
                 password = '{password}'
             WHERE id = '{id}'
         """
-        print("update_user:", update_user)
+        # print("update_user:", update_user)
         update_sql(ptt_pivot_connection, update_user)
         
         update_field_id = f"""
@@ -6517,18 +6519,38 @@ def update_edit_site():
             SET
                 tag_id = '{tag_id}',
                 sim_ip = '{sim_ip}',
-                amr_phase = '{amr_phase}'
+                amr_phase = '{amr_phase}',
+                rtu_modbus_id = '{rtu_modbus_id}'
             WHERE id = '{id}'
         """
-        print("update_field_id", update_field_id)
+        # print("update_field_id", update_field_id)
         update_sql(ptt_pivot_connection, update_field_id)
         
-        meter_stream_type = request.form.get("list_meter_stream_type")
-        print("meter_stream_type", meter_stream_type)
+        update_field_customer = f"""
+            UPDATE AMR_FIELD_CUSTOMER
+            SET
+                cust_factory_name = '{cust_factory_name}'
+            WHERE id = '{id}'
+        """
+        # print("update_field_customer", update_field_customer)
+        update_sql(ptt_pivot_connection, update_field_customer)
         
-        meter_port_no = request.form.get("list_meter_port_no")
-        print("meter_port_no", meter_port_no)
-
+        meter_stream_type = request.form.getlist("list_meter_stream_type")      
+        meter_stream_no = request.form.get("meter_stream_no")
+        meter_port_no = request.form.getlist("list_meter_port_no")
+        
+        for i, (stream_type, port_no) in enumerate(zip(meter_stream_type, meter_port_no)):
+            stream_no = meter_stream_no[i % len(meter_stream_no)]  
+            update_field_meter = f"""
+                UPDATE AMR_FIELD_METER
+                SET
+                    meter_stream_type = '{stream_type}',
+                    meter_port_no = '{port_no}'
+                WHERE meter_id = '{MET+id}'
+                AND meter_stream_no = '{i + 1}'
+            """
+            # print("update_field_meter", update_field_meter)
+            update_sql(ptt_pivot_connection, update_field_meter)
 
     return redirect(url_for('edit_site'))
 
