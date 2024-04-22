@@ -5,503 +5,1370 @@
     <meta charset="UTF-8">
     <link rel="icon" href="static/about-logo.png" sizes="192x192" type="image/png">
     <title>Manual poll</title>
+   
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Datepicker Stylesheet and Script -->
+    <!-- Option 1: Include in HTML -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     
     <style>
         
-        .btn {
-            align-items: center;
-            background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);
-        }
-        table {
-            font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            text-align: center;
-        }
+        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+  @import url('https://fonts.googleapis.com/css?family=Roboto:400,500|Roboto+Mono:400,500');
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+  @font-face {
+    font-family: "PTT45Pride-Regular";
+    src: url("PTT45Pride-Regular.otf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
 
-        th {
-            background-color: #f2f2f2;
-        }
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
 
-        .form-container {
-            margin: 20px;
-        }
+  html {
 
+    box-sizing: border-box;
+  }
 
-        .form-group label {
-            font-weight: bold;
-            font-size: small;
-            text-align: center;
-        }
-        .form-container {
-            border: 1px solid #fafafa;
-            border-radius: 5px;
-            box-shadow: 0px 2px 6px rgba(219, 176, 176, 0.1);
-            padding: 20px;
-            
-            background-color: white;
-        }
-        .btn-container {
-            position: absolute;
-            margin-left: 480px;
-            width: 205px;
-            margin-top: -170px;
-        }
-        
-        .btn-buttonElster {
-            margin-left: 1px;
-            position: absolute;
-            margin-top: 100px;
-        }
-        
-        .btn-buttonActaris {
-            margin-left: 1px;
-            position: absolute;
-            margin-top: 10px;
-        }
-        
-        .btn-button1 p {
-            display: flex;
-            position: absolute;
-            margin-left: 1px;
-            margin-top: 70px;
-        }
-        
-        .btn-button2 p {
-            display: flex;
-            position: absolute;
-            margin-left: 1px;
-            margin-top: 153px;
-        }
-        
-        .btn-warning {
-            position: absolute;
-            background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);
-        }
-        .btn-group {
-            margin-top: 10px;
-            justify-content: center;
-            gap: 10px;
-        }
-        /* สไตล์สำหรับช่องข้อมูลที่ใช้ความกว้างเต็มและมีพื้นหลัง */
-        
-        .full-width-input {
-            width: 100%;
-            height: 100%;
-            background-color: #0980f7;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .col-sm-9 {
-            display: grid;
-            top: 0px;
-            right: 0px;
-            width: 100px;
-            
-        }
-        
-        #communicationTrafficContainer_1 {
-    margin: auto;
-    width: 100%; 
-    overflow-x: auto; 
-   
-}
-#communicationTrafficContainer_2 {
-    margin: -0px 0px 0px 0px;
-    width: 100%; 
-    overflow-x: auto; 
-   
-}
-#communicationTrafficContainer_3 {
-    margin: -0px 0px 0px 0px;
-    width: 100%; 
-    overflow-x: auto; 
-   
-}
+  body {
 
-.table.table-bordered {
+    background-color: #525965;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-family: "PTT45Pride-Regular", sans-serif;
+    color: #000000;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-content {
+    flex: 1;
+  }
+
+  .box_we {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .plot-container {
+    width: 100%;
+    padding: 20px;
+    /* เพิ่ม padding เพื่อสร้างกรอบ */
+    margin-bottom: 20px;
+    /* เพิ่มระยะห่างระหว่างกราฟ */
+  }
+
+  @media (max-width: 768px) {
+    .plot-container {
+      margin-bottom: 10px;
+      /* เพิ่มระยะห่างระหว่างกราฟในโหมด mobile */
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "PTT45Pride-Regular", sans-serif;
+    font-weight: 600;
+    color: #ccc;
+    text-align: left;
+    padding: 3px;
+  }
+
+  @keyframes swing {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    10% {
+      transform: rotate(10deg);
+    }
+
+    30% {
+      transform: rotate(0deg);
+    }
+
+    40% {
+      transform: rotate(-10deg);
+    }
+
+    50% {
+      transform: rotate(0deg);
+    }
+
+    60% {
+      transform: rotate(5deg);
+    }
+
+    70% {
+      transform: rotate(0deg);
+    }
+
+    80% {
+      transform: rotate(-5deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes sonar {
+    0% {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  body {
+    font-size: 0.9rem;
+  }
+
+  .page-wrapper .sidebar-wrapper,
+  .sidebar-wrapper .sidebar-brand>a,
+  .sidebar-wrapper .sidebar-dropdown>a:after,
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+  .sidebar-wrapper ul li a i,
+  .page-wrapper .page-content,
+  .sidebar-wrapper .sidebar-search input.search-menu,
+  .sidebar-wrapper .sidebar-search .input-group-text,
+  .sidebar-wrapper .sidebar-menu ul li a,
+  #show-sidebar,
+  #close-sidebar {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  /*----------------page-wrapper----------------*/
+
+  .page-wrapper {
+    height: 100vh;
+  }
+
+  .page-wrapper .theme {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border-radius: 4px;
+    margin: 2px;
+  }
+
+  .page-wrapper .theme.chiller-theme {
+    background: #1e2229;
+  }
+
+  /*----------------toggeled sidebar----------------*/
+
+  .page-wrapper.toggled .sidebar-wrapper {
+    left: 0px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .page-wrapper.toggled .page-content {
+      padding-left: 300px;
+    }
+  }
+
+  /*----------------show sidebar button----------------*/
+  #show-sidebar {
+    position: fixed;
+    left: 0;
+    top: 100px;
+    border-radius: 0 4px 4px 0px;
+    width: 35px;
+    transition-delay: 0.3s;
+  }
+
+  .page-wrapper.toggled #show-sidebar {
+    left: -40px;
+  }
+
+  /*----------------sidebar-wrapper----------------*/
+
+  .sidebar-wrapper {
+    width: 260px;
+    height: 100%;
+    max-height: 100%;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    z-index: 999;
+  }
+
+  .sidebar-wrapper ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-wrapper a {
+    text-decoration: none;
+  }
+
+  /*----------------sidebar-content----------------*/
+
+  .sidebar-content {
+    max-height: calc(100% - 30px);
+    height: calc(100% - 30px);
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .sidebar-content.desktop {
+    overflow-y: hidden;
+  }
+
+  /*--------------------sidebar-brand----------------------*/
+
+  .sidebar-wrapper .sidebar-brand {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-wrapper .sidebar-brand>a {
+    text-transform: uppercase;
+    font-weight: bold;
+    flex-grow: 1;
+  }
+
+  .sidebar-wrapper .sidebar-brand #close-sidebar {
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  /*--------------------sidebar-header----------------------*/
+
+  .sidebar-wrapper .sidebar-header {
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-pic {
+    float: left;
+    width: 60px;
+    padding: 2px;
+    border-radius: 12px;
+    margin-right: 15px;
+    overflow: hidden;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-pic img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info {
+    font-size: 27px;
+    float: left;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info>span {
+    display: block;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-role {
+    font-size: 16px;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-status {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .sidebar-wrapper .sidebar-header .user-info .user-status i {
+    font-size: 10px;
+    margin-right: 4px;
+
+  }
+
+  /*-----------------------sidebar-search------------------------*/
+
+  .sidebar-wrapper .sidebar-search>div {
+    padding: 10px 20px;
+  }
+
+  /*----------------------sidebar-menu-------------------------*/
+
+  .sidebar-wrapper .sidebar-menu {
+    padding-bottom: 10px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .header-menu span {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 15px 20px 5px 20px;
+    display: inline-block;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a {
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    position: relative;
+    padding: 8px 30px 8px 20px;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a i {
+    margin-right: 10px;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    width: 100%; /* ปรับความกว้างของตาราง */
-}
+    border-radius: 4px;
+  }
 
-.table.table-bordered th,
-.table.table-bordered td {
-    white-space: nowrap;
-}
-        
-        #colSm9Container {
-            display: grid;
-            position: relative;
-            margin-bottom: -100px;
-            
-        }
-        
-        .btn-primary1 {
-            position: sticky;
-            display: flex;
-            left: 770px;
-            top: 203px;
-        }
-        body {
-            
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-            font-family: var(--font-family);
-            
-            background-image: linear-gradient(0deg, #d3d1d1 1%, #ebe8e8 99%);
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-        .form-group label{
-            margin-bottom: 100px;
-           
-        }
-        .container-fluid{
-            margin-top: -50px;
-        }
-        .table-responsive{
-            margin-top: auto;
-        }
-        
-       
+  .sidebar-wrapper .sidebar-menu ul li a:hover>i::before {
+    display: inline-block;
+    animation: swing ease-in-out 0.5s 1 alternate;
+  }
 
-    form {
-        margin: 20px;
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown>a:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f105";
+    font-style: normal;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background: 0 0;
+    position: absolute;
+    right: 15px;
+    top: 14px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu ul {
+    padding: 5px 0;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li {
+    padding-left: 25px;
+    font-size: 13px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before {
+    content: "\f111";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    font-style: normal;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-right: 10px;
+    font-size: 8px;
+  }
+
+  .sidebar-wrapper .sidebar-menu ul li a span.label,
+  .sidebar-wrapper .sidebar-menu ul li a span.badge {
+    float: right;
+    margin-top: 8px;
+    margin-left: 5px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .badge,
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a .label {
+    float: right;
+    margin-top: 0px;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-submenu {
+    display: none;
+  }
+
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a:after {
+    transform: rotate(90deg);
+    right: 17px;
+  }
+
+  /*--------------------------side-footer------------------------------*/
+
+  .sidebar-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+  }
+
+  .sidebar-footer>a {
+    flex-grow: 1;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+  }
+
+  .sidebar-footer>a .notification {
+    position: absolute;
+    top: 0;
+  }
+
+  .badge-sonar {
+    display: inline-block;
+    background: #980303;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    position: absolute;
+    top: 0;
+  }
+
+  .badge-sonar:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px solid #980303;
+    opacity: 0;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: sonar 1.5s infinite;
+  }
+
+  /*--------------------------page-content-----------------------------*/
+
+  .page-wrapper .page-content {
+    display: inline-block;
+    width: 100%;
+    padding-left: 0px;
+    padding-top: 20px;
+  }
+
+  .page-wrapper .page-content>div {
+    padding: 20px 40px;
+  }
+
+  .page-wrapper .page-content {
+    overflow-x: hidden;
+  }
+
+  /*------scroll bar---------------------*/
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 7px;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #525965;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #525965;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: #525965;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+  }
+
+  ::-webkit-scrollbar-track:hover {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+
+  /*-----------------------------chiller-theme-------------------------------------------------*/
+
+  .chiller-theme .sidebar-wrapper {
+    background: #31353D;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-header,
+  .chiller-theme .sidebar-wrapper .sidebar-search,
+  .chiller-theme .sidebar-wrapper .sidebar-menu {
+    border-top: 1px solid #3a3f48;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-role,
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info .user-status,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text,
+  .chiller-theme .sidebar-wrapper .sidebar-brand>a,
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li a,
+  .chiller-theme .sidebar-footer>a {
+    color: #818896;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li:hover>a,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active>a,
+  .chiller-theme .sidebar-wrapper .sidebar-header .user-info,
+  .chiller-theme .sidebar-wrapper .sidebar-brand>a:hover,
+  .chiller-theme .sidebar-footer>a:hover i {
+    color: #b8bfce;
+  }
+
+  .page-wrapper.chiller-theme.toggled #close-sidebar {
+    color: #bdbdbd;
+  }
+
+  .page-wrapper.chiller-theme.toggled #close-sidebar:hover {
+    color: #ffffff;
+  }
+
+  .chiller-theme .sidebar-wrapper ul li:hover a i,
+  .chiller-theme .sidebar-wrapper .sidebar-dropdown .sidebar-submenu li a:hover:before,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu:focus+span,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active a i {
+    color: #16c7ff;
+    text-shadow: 0px 0px 10px rgba(22, 199, 255, 0.5);
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu ul li a i,
+  .chiller-theme .sidebar-wrapper .sidebar-menu .sidebar-dropdown div,
+  .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,
+  .chiller-theme .sidebar-wrapper .sidebar-search .input-group-text {
+    background: #3a3f48;
+  }
+
+  .chiller-theme .sidebar-wrapper .sidebar-menu .header-menu span {
+    color: #6c7b88;
+  }
+
+  .chiller-theme .sidebar-footer {
+    background: #3a3f48;
+    box-shadow: 0px -1px 5px #282c33;
+    border-top: 1px solid #464a52;
+  }
+
+  .chiller-theme .sidebar-footer>a:first-child {
+    border-left: none;
+  }
+
+  .chiller-theme .sidebar-footer>a:last-child {
+    border-right: none;
+  }
+
+  .sidebar-header {
+    justify-content: space-between;
+    align-items: left;
+    padding: 15px;
+    color: #959da3;
+  }
+
+  .date-time-container {
+    font-size: 11px;
+    margin-bottom: 10px;
+    /* ระยะห่างด้านล่างของเวลา */
+  }
+
+  .weather-widget {
+    text-align: left;
+    order: 1;
+    /* เปลี่ยนลำดับการแสดงผล */
+  }
+
+  .weather-icon i {
+    font-size: 2em;
+  }
+
+  .weather-icon {
+    margin-bottom: 10px;
+  }
+
+  #weather-description,
+  #temperature {
+    margin-top: 1px;
+  }
+
+  /* Responsive Layout */
+  @media screen and (max-width: 768px) {
+    .sidebar-header {
+      flex-direction: column;
+      align-items: center;
+      /* จัดให้เวลาอยู่ตรงกลาง */
     }
 
-    table {
-        text-align: center;
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+    .date-time-container {
+      margin-bottom: 10px;
+      align-items: center;
+      /* จัดให้เวลาอยู่ตรงกลาง */
     }
+  }
 
-    th, td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
+  /* CSS */
+  #status-text {
+    color: green;
+    /* สีข้อความ Online */
+  }
 
-    th {
-        background-color: #f2f2f2;
-    }
+  #status-text.offline {
+    color: red;
+    /* สีข้อความ Offline */
+  }
 
-    input[type="checkbox"] {
-        margin-right: 5px;
-    }
-    .disabled {
-        color: red;
-    }
+  .sidebar-brand {
+    font-size: 10px;
+  }
 
-    .communication-traffic {
-        display: flex;
-        justify-content: space-around;
-        margin: 20px 0;
-    }
+  .back-button,
+  .forward-button,
+  .logout,
+  .refresh-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 6px 16px;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: #818689;
+    color: #6b6a6a;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
 
-    .communication-traffic div {
-        width: 18%;
-    }
+  .back-button i,
+  .forward-button i,
+  .logout i,
+  .refresh-button i {
+    margin-right: 3px;
+  }
 
-    .table {
-        table-layout: fixed;
-        height: 100px; /* Set your desired height */
-    }
+  .back-button:hover,
+  .forward-button:hover,
+  .logout:hover,
+  .refresh-button:hover {
+    background-color: #454748;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
 
-    .table th, .table td {
-        text-align: center;
+  .parent-container {
+    text-align: right;
+  }
+
+  select,
+  input {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #e6e6e6;
+    width: 100%;
+    padding: 3px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #e6e6e6;
+    width: 100%;
+    padding: 3px;
+  }
+
+  #tag_dropdown,
+  #region_dropdown {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  #tag_dropdown:hover,
+  #region_dropdown:hover {
+    border-color: #666;
+  }
+
+  #tag_dropdown option,
+  #region_dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  #tag_dropdown option:hover,
+  #region_dropdown option:hover {
+    background-color: #f2f2f2;
+  }
+
+  td {
+    background-color: rgb(255, 255, 255);
+    border: 1.5px solid #171717;
+    height: 38px;
+    width: 55px;
+    align-items: center;
+    text-align: center;
+    font-size: x-small;
+    padding: 3px;
+    word-wrap: break-word;
+  }
+
+  th {
+    background-color: #bcb9b9;
+    border: 1px solid #171717;
+    height: 40px;
+    width: 55px;
+    text-align: center;
+    align-items: center;
+    padding: 2px;
+    font-size:x-small;
+    word-wrap: break-word;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    
+    table-layout: fixed;
+    margin-top: -15px;
+  }
+
+
+  
+
+  .table1 {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 10px auto;
+    word-wrap: break-word;
+
+  }
+
+  .table1 th,
+  .table1 td {
+    font-size: small;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+
+
+  /* ปรับแต่งตำแหน่งและขนาดของ datepicker */
+  .datepicker {
+    width: 15%;
+
+    position: absolute;
+    z-index: 9999;
+  }
+
+  /* เพิ่มสไตล์ CSS ที่คุณต้องการให้ปฏิทินตกแต่ง */
+  .datepicker-container {
+    font-family: 'Arial', sans-serif;
+
+  }
+
+  .datepicker-header {
+    background-color: #007bff;
+    color: #0e0d0d;
+  }
+
+  .datepicker-switch {
+    color: #000000;
+  }
+
+  .datepicker-days th,
+  .datepicker-months th,
+  .datepicker-years th {
+    background-color: #f8f9fa;
+  }
+
+  .datepicker table tr td.active,
+  .datepicker table tr td.active:hover {
+    background-color: #007bff;
+    color: #626161;
+  }
+
+  .datepicker table tr td.today,
+  .datepicker table tr td.today:hover {
+    background-color: #65686a;
+    color: #007bff;
+  }
+
+
+  .box_we {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    z-index: 5;
+    margin-top: -1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .selected {
+    display: flex;
+    text-align: center;
+    margin-bottom: -30px;
+    margin-top: 20px;
+  }
+
+  .selected h1 {
+    margin-bottom: 0px;
+    /* เพิ่มระยะห่างด้านล่าง */
+  }
+
+  .selected p {
+    margin: 5px 0;
+    padding: 5px;
+    /* เพิ่มระยะห่างด้านบนและด้านล่าง */
+  }
+
+  .selected span {
+    font-weight: bold;
+  }
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .custom-btn {
+    /* รายละเอียดของ .custom-btn คงเดิม */
+    margin-left: 0px;
+    /* ระยะห่างด้านซ้าย */
+    margin-right: 0px;
+    /* ระยะห่างด้านขวา */
+  }
+
+
+  .custom-btn {
+
+    color: #fff;
+    width: 130px;
+    height: 40px;
+    padding: 10px 25px;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-bottom: -25px;
+  }
+
+
+  /* 1 */
+  .btn-1 {
+    border: none;
+    background-color: #333;
+    box-shadow: 0 0 5px #333;
+  }
+
+  .btn-1:hover {
+    box-shadow: 0 0 10px #4c4c4c, 0 0 20px #333, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  /* 1 */
+  .btn-2 {
+    border: none;
+    background-color: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+  }
+
+  .btn-2:hover {
+    box-shadow: 0 0 10px #97efa0, 0 0 20px #4caf50, 0 0 20px #fff inset;
+    transform: translateY(-4px);
+  }
+
+  footer {
+    background-color: #28253700;
+    color: #fff;
+    padding: 7px;
+    text-align: center;
+    font-size: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .page-content {
+    padding: 20px;
+  }
+
+  .row {
+    margin: 0 -10px;
+  }
+
+  .col-md-6 {
+    padding: 10px;
+  }
+
+  .plot-container {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .col-md-6 {
+      width: 100%;
     }
+  }
+
+
+  /* HTML: <div class="loader"></div> */
+  .loader {
+    width: 80px;
+    aspect-ratio: 1;
+    display: grid;
+  }
+
+  .loader::before,
+  .loader::after {
+    content: "";
+    grid-area: 1/1;
+    --c: no-repeat radial-gradient(farthest-side, #25b09b 92%, #0000);
+    background:
+      var(--c) 50% 0,
+      var(--c) 50% 100%,
+      var(--c) 100% 50%,
+      var(--c) 0 50%;
+    background-size: 12px 12px;
+    animation: l12 1s infinite;
+  }
+
+  .loader::before {
+    margin: 4px;
+    filter: hue-rotate(45deg);
+    background-size: 8px 8px;
+    animation-timing-function: linear
+  }
+
+  @keyframes l12 {
+    100% {
+      transform: rotate(.5turn)
+    }
+  }
+
+  #loading-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #ddd;
+    z-index: 9999;
+  }
+
+  #loading-bar {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50;
+    transition: width 0.3s ease-in-out;
+  }
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-</head>
+
 
 <body>
-    <h1>Manual poll</h1>
-
-    <div class="form-container">
-    <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
-
-            <label for="region_dropdown">Region:</label>
-            <select name="region_dropdown" id="region_dropdown">
-                {% for region_option in region_options %}
-                    <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
-                {% endfor %}
-            </select>
-            <label for="tag_dropdown">Site:</label>
-            <select name="tag_dropdown" id="tag_dropdown">
-                {% for tag_option in tag_options %}
-                    <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
-                {% endfor %}
-            </select>
-
-            <input type="submit" class="DB" value="Submit">
-        </form>
+    <div id="loading-bar-container">
+        <div id="loading-bar"></div>
     </div>
-    
-    <form method="POST" >
-        
-        {% if not df.empty %}
-            <table border="1" class="dataframe data"   style="text-align: center;">
-                <thead style="position:relative;">
-                    <tr style="text-align: right;">
-                        
-                        <th style="width: 20px;">checkbox</th>
-                        <th>RUN</th>
-                        <th>Region</th>
-                        <th>Sitename</th>
-                        <th>NoRun</th>
-                        <th>METERID</th>
-                        <th>VCtype</th>
-                        <th>IPAddress</th>
-                        <th>Port</th>
-                        <th style="display:none;"
-                        >evc_type</th>
-                        <th style="display:none;"
-                        >vc_name</th>
-                        <th style="display:none;"
-                        >poll_billing</th>
-                        <th style="display:none;"
-                        >poll_config</th>
-                        <th style="display:none;"
-                        >poll_billing_enable</th>
-                        <th style="display:none;"
-                        >poll_config_enable</th>
-                    </tr>
-                </thead>
-                <tbody style="background-color: #ffffff; position: relative;">
-                    {% for _, row in df.iterrows() %}
-                        <tr >
-                            
-                            <td ></td>
-                                <td >{{ row['RUN'] }}</td>
-                                <td>{{ row['Region'] }}</td>
-                                <td>{{ row['Sitename'] }}</td>
-                                <td>{{ row['NoRun'] }}</td>
-                                <td>{{ row['METERID'] }}</td>
-                                <td>{{ row['VCtype'] }}</td>
-                                <!-- <td>{{ '127.0.0.1' }}</td> -->
-                                <td>{{ row['IPAddress'] }}</td>
-                                <td>{{ row['Port'] }}</td>
-                                <td style="display:none;">{{ row['evc_type'] }}</td>
-                                <td style="display:none;">{{ row['vc_name'] }}</td>
-                                <td style="display:none;">{{ row['poll_billing'] }}</td>
-                                <td style="display:none;">{{ row['poll_config'] }}</td>
-                                <td style="display:none;">{{ row['poll_billing_enable'] }}</td>
-                                <td style="display:none;">{{ row['poll_config_enable'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                
-            </table>
-            
-        
-            
-        {% endif %}
-    </form>
-    
+    <div class="parent-container">
+        <div class="refresh-button">
+            <a href="javascript:location.reload(true)" style="text-decoration: none; color: #fff;">
+                <i style="font-size: large;" class="fas fa-sync"></i>
+            </a>
+        </div>
+        <div class="back-button">
+            <a href="javascript:history.back()" style="text-decoration: none;color: #fff;">
+                <i style="font-size: large;" class="fas fa-arrow-circle-left"></i>
+            </a>
+        </div>
+
+        <div class="forward-button">
+            <a href="javascript:history.forward()" style="text-decoration: none; color: #fff;">
+                <i style="font-size: large;" class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+
+        <a class="logout" href="{{ url_for('home_amr') }}" style="text-decoration: none; color: #fff; font-size: 18px;">
+            <i style="margin-left: 5px;" class="fas fa-home"></i> Home
+        </a>
+    </div>
+    <div class="page-wrapper chiller-theme toggled">
+        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div class="sidebar-brand">
+                    <a href="#">PTT - Automatic Meter Reading</a>
+                    <div id="close-sidebar">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                <div class="sidebar-header">
+                    <div class="user-pic">
+                        <img class="img-responsive img-rounded"
+                            src="https://www.pttplc.com/uploads/About/about-logo.png" alt="User picture">
+                    </div>
+                    <div style="margin-left: 2px; margin-top: 5px;" class="user-info">
+                        <span style="margin-bottom: 4%;" class="user-name">
+                            <strong>{{ username }}</strong>
+                        </span>
+                        <span class="user-role">Server: AMR</span>
+                        <span class="user-status" style="margin-top: 10%;" id="status-container">
+                            <i class="fa fa-circle" id="status-icon"></i>
+                            <span id="status-text">Online</span>
+                            <span style="font-size: 7px;" id="status-last-update">Last Update: <span
+                                    id="last-update-time"></span>
+                            </span>
+                    </div>
+                </div>
+                <!-- sidebar-header -->
+                <div class="sidebar-header">
+
+                    <div class="weather-widget">
+                        <div id="weather-icon" class="weather-icon"></div>
+                        <p id="weather-description"></p>
+                        <p id="temperature"></p>
+                    </div>
+                    <div class="date-time-container">
+                        <p id="date-time"></p>
+                    </div>
+                </div>
+
+                <!-- sidebar-header -->
+
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="header-menu">
+                            <span>General</span>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fa fa-database"></i>
+                                <span>Reports</span>
+                                <!-- <span class="badge badge-pill badge-warning">New</span> -->
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="{{ url_for('billing_data') }}">View Monthly Data
+                                            <!-- <span class="badge badge-pill badge-success">Pro</span> -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">View EVC Status</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Daily Summary</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Monthly Summery</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Site Detail</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span>Manage Users</span>
+                                <!-- <span class="badge badge-pill badge-danger">3</span> -->
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">Add User
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Edit User</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Remove User</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Sites</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="add_site">Add Site</a>
+                                    </li>
+                                    <li>
+                                        <a href="edit_site">Edit Site</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Remove Site</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fas fa-wrench"></i>
+                                <span>Polling Setting</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">EVC Management</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url_for('polling_route') }}">Polling Range Setting</a>
+                                    </li>
+                                    <li>
+                                        <a href="mapping_config">Configuration Mapping</a>
+                                    </li>
+                                    <li>
+                                        <a href="mapping_billing">Daily Billing Mapping</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Hourly Billing Mapping</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fas fa-search"></i>
+                                <span>Polling Actions</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="Manualpoll_data">Manual Poll (EVC Profile)</a>
+                                    </li>
+                                    <li>
+                                        <a href="write_evc">Write Config (SG,Co2,N2)</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="header-menu">
+                            <!-- <span>Extra</span> -->
+                        </li>
+                        <li>
+                            <!-- <a href="#">
+                                <i class="fa fa-book"></i>
+                                <span>Documentation</span>
+                                <span class="badge badge-pill badge-primary">Beta</span>
+                            </a> -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- sidebar-menu  -->
+            </div>
+            <!-- sidebar-content  -->
+            <div class="sidebar-footer">
+                <!-- <a href="#">
+          <i class="fa fa-bell"></i>
+          <span class="badge badge-pill badge-warning notification">3</span>
+        </a> -->
+                <!-- <a href="#">
+          <i class="fa fa-envelope"></i>
+          <span class="badge badge-pill badge-success notification">7</span>
+        </a> -->
+                <!-- <a href="#">
+          <i class="fa fa-cog"></i>
+          <span class="badge-sonar"></span>
+        </a> -->
+                <a href="{{ url_for('logout') }}">
+                    <i class="fa fa-power-off" style="margin-right: 5px;"></i>Logout
+                </a>
+           
+        </nav>
    
-    <div class="checkbox" style="top: 280px;left: 95px; line-height: 35px; position:absolute; width: 26px;">
-        {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list,run,METERID in zipped_data %}
-        <td>
-            <input type="checkbox" name="configCheckbox" style="width: 50%;" value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}},{{run}},{{METERID}}" onclick="changeConfigCheckbox(this)">
-        </td>
-        {% endfor %}
-    </div>
+    <main style="margin-top: -5%;" class="page-content">
+      <div class="container-fluid">
+          <h2>Manual Poll</h2>
+          <hr>
+        
+      <div class="form-options" style="margin-left: 180px; ">
+      <form id="filterForm" action="{{ url_for('Manualpoll_data') }}" method="get">
 
+              <label style="margin-left: 100px;" for="region_dropdown">Region:</label>
+              <select name="region_dropdown" id="region_dropdown" style="margin-left: 100px;">
+                  <option value="" style="color: gray;"> select.... </option>
+                  {% for region_option in region_options %}
+                      <option value="{{ region_option }}" {% if region_option == selected_region %}selected{% endif %}>{{ region_option }}</option>
+                  {% endfor %}
+              </select>
+              <label style="margin-left: 350px; margin-top: -89px; position: absolute;" for="tag_dropdown">Site:</label>
+              <select name="tag_dropdown" id="tag_dropdown" style="margin-left: 350px; margin-top: -45px; position: absolute;">
+                  <option value="" style="color: gray;"> select.... </option>
+                  {% for tag_option in tag_options %}
+                  
+                      <option value="{{ tag_option }}" {% if tag_option == selected_tag %}selected{% endif %}>{{ tag_option }}</option>
+                  {% endfor %}
+              </select>
+
+              <input class="custom-btn btn-2"  style="width: 8%; height: 35px; color: #ffffff; margin-left:605px; margin-top: -45px; position: absolute;border-radius: 0.5rem;" type="submit" class="DB" value="Submit ">
+          </form>
+      </div>
+    
+      <form method="POST" >
+          
+          {% if not df.empty %}
+              <table border="1" class="dataframe data"   style="text-align: center; width: 85%;  margin-left: 90px; margin-top: 40px; ">
+                  <thead style="position:relative;" >
+                      <tr style="text-align: right;" >
+                          
+                          <th style="width: 20px;"></th>
+                          <th>RUN</th>
+                          <th>Region</th>
+                          <th>Sitename</th>
+                          <th>NoRun</th>
+                          <th>METERID</th>
+                          <th>VCtype</th>
+                          <th>IPAddress</th>
+                          <th>Port</th>
+                          <th style="display:none;"
+                          >evc_type</th>
+                          <th style="display:none;"
+                          >vc_name</th>
+                          <th style="display:none;"
+                          >poll_billing</th>
+                          <th style="display:none;"
+                          >poll_config</th>
+                          <th style="display:none;"
+                          >poll_billing_enable</th>
+                          <th style="display:none;"
+                          >poll_config_enable</th>
+                      </tr>
+                  </thead>
+                  <tbody style="background-color: #ffffff; position: relative; ">
+                      {% for _, row in df.iterrows() %}
+                          <tr >
+                              
+                              <td ></td>
+                                  <td >{{ row['RUN'] }}</td>
+                                  <td>{{ row['Region'] }}</td>
+                                  <td>{{ row['Sitename'] }}</td>
+                                  <td>{{ row['NoRun'] }}</td>
+                                  <td>{{ row['METERID'] }}</td>
+                                  <td>{{ row['VCtype'] }}</td>
+                                  <!-- <td>{{ '127.0.0.1' }}</td> -->
+                                  <td>{{ row['IPAddress'] }}</td>
+                                  <td>{{ row['Port'] }}</td>
+                                  <td style="display:none;">{{ row['evc_type'] }}</td>
+                                  <td style="display:none;">{{ row['vc_name'] }}</td>
+                                  <td style="display:none;">{{ row['poll_billing'] }}</td>
+                                  <td style="display:none;">{{ row['poll_config'] }}</td>
+                                  <td style="display:none;">{{ row['poll_billing_enable'] }}</td>
+                                  <td style="display:none;">{{ row['poll_config_enable'] }}</td>
+                          </tr>
+                      {% endfor %}
+                  </tbody>
+                  
+              </table>
+              
+          
+              
+          {% endif %}
+      </form>
+      
+    
+      <div class="checkbox" style="top: 250px;margin-left: 105px; line-height: 40px; position:absolute; width: 26px;">
+          {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list,run,METERID in zipped_data %}
+          <td>
+              <input type="checkbox" name="configCheckbox" style="width: 50%; "  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}},{{run}},{{METERID}}" onclick="changeConfigCheckbox(this)">
+          </td>
+          {% endfor %}
+      </div>
+    </main> 
     
 
-    <script>
-        
-        
-        // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
-        var checkboxes = document.getElementsByName('configCheckbox');
-        
-        checkboxes.forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    var pollConfigListParts = this.value.split(',');
-                    
-                    for (var i = 0; i < pollConfigListParts.length; i += 2) {
-                        var startingAddress = pollConfigListParts[i].replace(/[\[\]']/g, '');
-                        var quantity = pollConfigListParts[i + 1].replace(/[\[\]']/g, '');
-    
-                        document.getElementById(`starting_address_${i / 2 + 1}`).value = startingAddress;
-                        document.getElementById(`quantity_${i / 2 + 1}`).value = quantity;
-                    }
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        var pollConfigListParts = this.value.split(',');
-                        
-                        var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
-                        var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
-                        var evc_type = pollConfigListParts[47].replace(/[\[\]']/g, ''); // Assuming evc_type_list is at index 6 in pollConfigListParts
-                        var run = pollConfigListParts[48].replace(/[\[\]']/g, '');
-                        var METERID = pollConfigListParts[49].replace(/[\[\]']/g, '');
-                        
-                        var poll_config_enable_list = pollConfigListParts.slice(32, 37).map(function(item) {
-                            return item.replace(/[\[\]']/g, '');
-                        }).join('');
-                        var poll_billing_enable_list = pollConfigListParts.slice(37, 47).map(function(item) {
-                            return item.replace(/[\[\]']/g, '');
-                        }).join('');
-                        // Set the value of tcp_ip, tcp_port, and evc_type input fields
-                        document.getElementById('tcp_ip').value = tcp_ip;
-                        document.getElementById('tcp_port').value = tcp_port;
-                        document.getElementById('evc_type').value = evc_type;
-                        document.getElementById('run').value = run;
-                        document.getElementById('METERID').value = METERID;
-                        document.getElementById('poll_config_enable_list').value = poll_config_enable_list;
-                        document.getElementById('poll_billing_enable_list').value = poll_billing_enable_list;
-
-                    }
-                });
-            });
-        });
-
-    </script>
- 
-
-
-
-
-
-
-
-
-
-    
-
-<script>
-    function changeConfigCheckbox(checkbox) {
-        var checkboxes = document.getElementsByName("configCheckbox");
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i] !== checkbox) {
-                checkboxes[i].checked = false;
-            }
-        }
-    }
-</script>
-
-
- 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('input[name="configCheckbox"]').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                updateSelectedRows();
-            });
-        });
-    });
-
-    function updateSelectedRows() {
-        var pollConfigEnableCells = document.querySelectorAll('td:nth-child(15)');
-        var pollBillingEnableCells = document.querySelectorAll('td:nth-child(14)');
-        var selectedRowsData = [];
-
-        document.querySelectorAll('input[name="configCheckbox"]').forEach(function(checkbox, index) {
-            if (checkbox.checked) {
-                var configData = pollConfigEnableCells[index].innerText.trim();
-                var billingData = pollBillingEnableCells[index].innerText.trim();
-                var configArray = configData.split(',');
-                var billingArray = billingData.split(',');
-
-                // Combine the two arrays
-                var rowArray = configArray.concat(billingArray);
-                selectedRowsData.push(rowArray);
-            }
-        });
-
-        selectedRowsData.forEach(function(row, rowIndex) {
-            row.forEach(function(value, valueIndex) {
-                var startingAddressName = 'starting_address_' + (valueIndex + 1);
-                var quantityName = 'quantity_' + (valueIndex + 1);
-
-                if (value === '1') {
-                    enableField(startingAddressName);
-                    enableField(quantityName);
-                } else {
-                    disableField(startingAddressName, '0');
-                    disableField(quantityName, '0');
-                }
-            });
-        });
-    }
-
-    function enableField(fieldName) {
-        var field = document.getElementById(fieldName);
-        if (field) {
-            field.classList.remove('disabled');
-            field.removeAttribute('disabled');
-        }
-    }
-
-    function disableField(fieldName, value) {
-        var field = document.getElementById(fieldName);
-        if (field) {
-            field.classList.add('disabled'); 
-            field.value = value; 
-            field.removeAttribute('disabled'); 
-        }
-    }
-</script>
-
-    <script>
-        
-        $(document).ready(function () {
-            // Event listener for region dropdown change
-            $('#region_dropdown').change(function () {
-                console.log('Region dropdown changed');
-                var selectedRegion = $(this).val();
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/get_tags',
-                    data: { 'selected_region': selectedRegion },
-                    success: function (response) {
-                        console.log('Ajax request successful', response);
-
-                        // Sort tag options alphabetically
-                        response.tag_options.sort();
-
-                        // Update tag dropdown options based on the sorted response
-                        var tagDropdown = $('#tag_dropdown');
-                        tagDropdown.empty(); // Clear existing options
-
-                        // Add new options based on the sorted response
-                        for (var i = 0; i < response.tag_options.length; i++) {
-                            var tagOption = response.tag_options[i];
-                            tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
-                        }
-                    },
-                    error: function (error) {
-                        console.log('Error fetching tag options:', error);
-                    }
-                });
-            });
-        });
-        
-    </script>
    
     
 
@@ -601,16 +1468,39 @@
                         
                         
                             {% if not df.empty %}
-                            <div class="btn-buttonActaris" style="margin-top: 30px; margin-left: -480px;">
+                            <div class="btn-buttonActaris" style="margin-top: -235px; margin-left: -237px;">
                                 <form id="myForm" method="POST">
-                                    <button id="popupButton" type="submit" onclick="openPopup()" style="height: 34px; width: 185px; font-size: x-small; border: none; border-radius: 0.5rem; background-image: -webkit-linear-gradient(#f9aa5b, #d6c43a);">Submit</button>
+                                    <button  class="custom-btn btn-2"  id="popupButton" type="submit" onclick="openPopup()" style="height: 34px; width: 170px; font-size: x-small; ">Submit_to_poll</button>
                                 </form>
                             </div>
+                           
+                            
+                            
+                            <div style="margin-top: 70px; margin-left: -292px; position: absolute;" >
+                                <!-- <table style="display: none;">
+   
+                                    {{ df_Modbus_html | safe }}
+                                    
+                                    
+                                </table> -->
+                                
+                               
+                                <table >
+                                    {{ result_config_html | safe }}
+                                </table>
+                                
+                               
+                                <table >
+                                    {{ result_billing_html | safe }}
+                                </table>
+                            </div>
+                            
                         {% endif %}
                                         
-                             <!-- Add a button to download the "Communication Traffic" table as an Excel file -->
+                           
                          </div>
                      </form>
+                    
                      <div id="datePickerContainer"></div>
                  </div>
                  <div class="col-sm-3 t pt-2">
@@ -626,24 +1516,193 @@
 
      </div>
  </div>
- 
- <button id="fetchDataButton">save_to_oracle</button>
+
+ <button style="margin-left: 620px; margin-top: -216px; position: absolute;height: 35px; " class="btn btn-primary" id="fetchDataButton">SAVEDATABASE</button>
  </div>
 </div>
 </div>
-<table>
-   
-    {{ df_Modbus_html | safe }}
-    
-    
-</table>
-<table>
-    {{ result_config_html | safe }}
-</table>
-<table>
-    {{ result_billing_html | safe }}
-</table>
+
 </body>
+
+<script>
+        
+        
+  // Assuming you have a unique identifier for each checkbox, e.g., checkbox_1, checkbox_2, ...
+  var checkboxes = document.getElementsByName('configCheckbox');
+  
+  checkboxes.forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+          if (this.checked) {
+              var pollConfigListParts = this.value.split(',');
+              
+              for (var i = 0; i < pollConfigListParts.length; i += 2) {
+                  var startingAddress = pollConfigListParts[i].replace(/[\[\]']/g, '');
+                  var quantity = pollConfigListParts[i + 1].replace(/[\[\]']/g, '');
+
+                  document.getElementById(`starting_address_${i / 2 + 1}`).value = startingAddress;
+                  document.getElementById(`quantity_${i / 2 + 1}`).value = quantity;
+              }
+          }
+      });
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+      var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      
+      checkboxes.forEach(function(checkbox) {
+          checkbox.addEventListener('change', function() {
+              if (this.checked) {
+                  var pollConfigListParts = this.value.split(',');
+                  
+                  var tcp_ip = pollConfigListParts[30].replace(/[\[\]']/g, '');
+                  var tcp_port = pollConfigListParts[31].replace(/[\[\]']/g, '');
+                  var evc_type = pollConfigListParts[47].replace(/[\[\]']/g, ''); // Assuming evc_type_list is at index 6 in pollConfigListParts
+                  var run = pollConfigListParts[48].replace(/[\[\]']/g, '');
+                  var METERID = pollConfigListParts[49].replace(/[\[\]']/g, '');
+                  
+                  var poll_config_enable_list = pollConfigListParts.slice(32, 37).map(function(item) {
+                      return item.replace(/[\[\]']/g, '');
+                  }).join('');
+                  var poll_billing_enable_list = pollConfigListParts.slice(37, 47).map(function(item) {
+                      return item.replace(/[\[\]']/g, '');
+                  }).join('');
+                  // Set the value of tcp_ip, tcp_port, and evc_type input fields
+                  document.getElementById('tcp_ip').value = tcp_ip;
+                  document.getElementById('tcp_port').value = tcp_port;
+                  document.getElementById('evc_type').value = evc_type;
+                  document.getElementById('run').value = run;
+                  document.getElementById('METERID').value = METERID;
+                  document.getElementById('poll_config_enable_list').value = poll_config_enable_list;
+                  document.getElementById('poll_billing_enable_list').value = poll_billing_enable_list;
+
+              }
+          });
+      });
+  });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+function changeConfigCheckbox(checkbox) {
+  var checkboxes = document.getElementsByName("configCheckbox");
+
+  for (var i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i] !== checkbox) {
+          checkboxes[i].checked = false;
+      }
+  }
+}
+</script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[name="configCheckbox"]').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+          updateSelectedRows();
+      });
+  });
+});
+
+function updateSelectedRows() {
+  var pollConfigEnableCells = document.querySelectorAll('td:nth-child(15)');
+  var pollBillingEnableCells = document.querySelectorAll('td:nth-child(14)');
+  var selectedRowsData = [];
+
+  document.querySelectorAll('input[name="configCheckbox"]').forEach(function(checkbox, index) {
+      if (checkbox.checked) {
+          var configData = pollConfigEnableCells[index].innerText.trim();
+          var billingData = pollBillingEnableCells[index].innerText.trim();
+          var configArray = configData.split(',');
+          var billingArray = billingData.split(',');
+
+          // Combine the two arrays
+          var rowArray = configArray.concat(billingArray);
+          selectedRowsData.push(rowArray);
+      }
+  });
+
+  selectedRowsData.forEach(function(row, rowIndex) {
+      row.forEach(function(value, valueIndex) {
+          var startingAddressName = 'starting_address_' + (valueIndex + 1);
+          var quantityName = 'quantity_' + (valueIndex + 1);
+
+          if (value === '1') {
+              enableField(startingAddressName);
+              enableField(quantityName);
+          } else {
+              disableField(startingAddressName, '0');
+              disableField(quantityName, '0');
+          }
+      });
+  });
+}
+
+function enableField(fieldName) {
+  var field = document.getElementById(fieldName);
+  if (field) {
+      field.classList.remove('disabled');
+      field.removeAttribute('disabled');
+  }
+}
+
+function disableField(fieldName, value) {
+  var field = document.getElementById(fieldName);
+  if (field) {
+      field.classList.add('disabled'); 
+      field.value = value; 
+      field.removeAttribute('disabled'); 
+  }
+}
+</script>
+
+<script>
+  
+  $(document).ready(function () {
+      // Event listener for region dropdown change
+      $('#region_dropdown').change(function () {
+          console.log('Region dropdown changed');
+          var selectedRegion = $(this).val();
+
+          $.ajax({
+              type: 'GET',
+              url: '/get_tags',
+              data: { 'selected_region': selectedRegion },
+              success: function (response) {
+                  console.log('Ajax request successful', response);
+
+                  // Sort tag options alphabetically
+                  response.tag_options.sort();
+
+                  // Update tag dropdown options based on the sorted response
+                  var tagDropdown = $('#tag_dropdown');
+                  tagDropdown.empty(); // Clear existing options
+
+                  // Add new options based on the sorted response
+                  for (var i = 0; i < response.tag_options.length; i++) {
+                      var tagOption = response.tag_options[i];
+                      tagDropdown.append('<option value="' + tagOption + '">' + tagOption + '</option>');
+                  }
+              },
+              error: function (error) {
+                  console.log('Error fetching tag options:', error);
+              }
+          });
+      });
+  });
+  
+</script>
 
 <script>
     document.getElementById("fetchDataButton").onclick = function() {
@@ -697,5 +1756,194 @@
 
         xhr.send(data);
     };
+</script>
+<script>
+    // Function to show the loading bar
+    function showLoadingBar() {
+        document.getElementById('loading-bar').style.width = '100%';
+    }
+
+    // Function to hide the loading bar
+    function hideLoadingBar() {
+        document.getElementById('loading-bar').style.width = '0';
+    }
+
+    // Event listener for page load
+    window.addEventListener('load', function () {
+        hideLoadingBar(); // Hide the loading bar initially
+    });
+
+    // Event listener for beforeunload (when the page is about to be reloaded)
+    window.addEventListener('beforeunload', function () {
+        showLoadingBar(); // Show the loading bar before the page reloads
+    });
+
+</script>
+<script>
+    function checkInternetConnection() {
+        // ตรวจสอบสถานะเชื่อมต่ออินเทอร์เน็ต
+        // ตรวจสอบได้ว่ามีการเชื่อมต่อหรือไม่ โดยใช้ navigator.onLine
+        return navigator.onLine;
+    }
+
+    // JavaScript
+    function updateStatus() {
+        var statusContainer = document.getElementById('status-container');
+        var statusIcon = document.getElementById('status-icon');
+        var statusText = document.getElementById('status-text');
+        var lastUpdate = document.getElementById('last-update-time');
+
+        var now = new Date();
+        var timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+
+        if (checkInternetConnection()) {
+            // ถ้าเชื่อมต่ออินเทอร์เน็ต
+            statusIcon.style.color = 'green'; // สีเขียว
+            statusText.textContent = 'Online';
+            statusText.classList.remove('offline'); // ลบ class 'offline' ถ้ามี
+        } else {
+            // ถ้าไม่เชื่อมต่ออินเทอร์เน็ต
+            statusIcon.style.color = 'red'; // สีแดง
+            statusText.textContent = 'Offline';
+            statusText.classList.add('offline'); // เพิ่ม class 'offline'
+        }
+
+        lastUpdate.textContent = timeString;
+    }
+    // JavaScript
+    setInterval(updateStatus, 10000); // อัปเดตทุก 1 วินาที (1000 มิลลิวินาที)
+
+</script>
+<script>
+    // Function to update weather icon
+    function updateWeatherIcon(weatherCondition) {
+        var iconClass;
+
+        // Add logic to determine the appropriate weather icon based on the condition
+        switch (weatherCondition.toLowerCase()) {
+            case 'clear':
+                iconClass = 'fas fa-sun'; // Font Awesome sun icon
+                break;
+            case 'clouds':
+                iconClass = 'fas fa-cloud'; // Font Awesome cloud icon
+                break;
+            case 'rain':
+                iconClass = 'fas fa-cloud-showers-heavy'; // Font Awesome rain icon
+                break;
+            case 'thunderstorm':
+                iconClass = 'fas fa-bolt'; // Font Awesome thunderstorm icon
+                break;
+            case 'snow':
+                iconClass = 'fas fa-snowflake'; // Font Awesome snow icon
+                break;
+            default:
+                iconClass = 'fas fa-question-circle'; // Default to a question mark icon for unknown conditions
+        }
+
+        // Set the appropriate icon class
+        document.getElementById('weather-icon').innerHTML = '<i class="' + iconClass + '"></i>';
+    }
+
+</script>
+<script>
+    // Function to update date and time
+    function updateDateTime() {
+        var now = new Date();
+        var dateTimeString = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        document.getElementById('date-time').textContent = dateTimeString;
+    }
+
+    // Function to update weather data from OpenWeatherMap API
+    function updateWeatherData() {
+        // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+        var apiKey = 'fbae867d03fc9892a7469d2f562ce558';
+        var city = 'Bangkok'; // Replace with your city name
+        var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extract relevant weather data
+                var weatherCondition = data.weather[0].main;
+                var weatherDescription = data.weather[0].description;
+                var temperatureKelvin = data.main.temp;
+
+                // Convert temperature from Kelvin to Celsius
+                var temperatureCelsius = temperatureKelvin - 273.15;
+
+                // Update weather icon, description, and temperature
+                updateWeatherIcon(weatherCondition);
+                document.getElementById('weather-description').textContent = 'Weather: ' + weatherDescription;
+                document.getElementById('temperature').textContent = 'Temperature: ' + temperatureCelsius.toFixed(2) + '°C';
+            })
+            .catch(error => console.error('Error fetching weather data:', error));
+    }
+
+
+    // Function to update weather icon
+    function updateWeatherIcon(weatherCondition) {
+        var iconClass;
+
+        // Add logic to determine the appropriate weather icon based on the condition
+        switch (weatherCondition.toLowerCase()) {
+            case 'clear':
+                iconClass = 'fa-sun';
+                break;
+            case 'clouds':
+                iconClass = 'fa-cloud';
+                break;
+            case 'rain':
+                iconClass = 'fa-cloud-showers-heavy';
+                break;
+            default:
+                iconClass = 'fa-question-circle'; // Default to a question mark icon for unknown conditions
+        }
+
+        // Set the appropriate icon class
+        document.getElementById('weather-icon').innerHTML = '<i class="fa ' + iconClass + '" aria-hidden="true"></i>';
+    }
+
+    // Call the functions initially
+    updateDateTime();
+    updateWeatherData();
+
+    // Update date and time every second
+    setInterval(updateDateTime, 1000);
+
+    // Update weather data every 10 minutes (adjust as needed)
+    setInterval(updateWeatherData, 600000);
+</script>
+<script>
+    $(".sidebar-dropdown > a").click(function () {
+        $(".sidebar-submenu").slideUp(200);
+        if (
+            $(this)
+                .parent()
+                .hasClass("active")
+        ) {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+                .parent()
+                .removeClass("active");
+        } else {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+                .next(".sidebar-submenu")
+                .slideDown(200);
+            $(this)
+                .parent()
+                .addClass("active");
+        }
+    });
+
+    $("#close-sidebar").click(function () {
+        $(".page-wrapper").removeClass("toggled");
+    });
+    $("#show-sidebar").click(function () {
+        $(".page-wrapper").addClass("toggled");
+    });
+
+
+
 </script>
 </html>
