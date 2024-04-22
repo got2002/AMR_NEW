@@ -1,0 +1,156 @@
+2024-04-17 08:59:55,692 - ERROR: Error occurred at 2024-04-17 08:59:55 - TCP IP: 10.68.111.195, Port: 2402, Run: 1, METERID: MET0333. Error:timed out
+2024-04-17 09:00:53,486 - ERROR: Error occurred at 2024-04-17 09:00:53 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-17 09:01:13,563 - ERROR: Error occurred at 2024-04-17 09:01:13 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-17 09:01:33,568 - ERROR: Error occurred at 2024-04-17 09:01:33 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-17 09:01:53,575 - ERROR: Error occurred at 2024-04-17 09:01:53 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-17 09:06:29,973 - ERROR: Error occurred at 2024-04-17 09:06:29 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-17 09:06:49,979 - ERROR: Error occurred at 2024-04-17 09:06:49 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-17 09:08:23,964 - ERROR: Error occurred at 2024-04-17 09:08:23 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-17 09:08:44,125 - ERROR: Error occurred at 2024-04-17 09:08:44 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-17 09:11:08,083 - ERROR: Error occurred at 2024-04-17 09:11:08 - TCP IP: 10.68.110.208, Port: 2402, Run: 1, METERID: MET0528. Error:[WinError 10054] An existing connection was forcibly closed by the remote host
+2024-04-17 09:11:28,089 - ERROR: Error occurred at 2024-04-17 09:11:28 - TCP IP: 10.68.110.208, Port: 2404, Run: 2, METERID: MET0528. Error:timed out
+2024-04-17 09:12:32,963 - ERROR: Error occurred at 2024-04-17 09:12:32 - TCP IP: 10.68.110.138, Port: 2402, Run: 1, METERID: MET0313. Error:timed out
+2024-04-17 09:15:43,344 - ERROR: Error occurred at 2024-04-17 09:15:43 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f101033c661f932441be6c8b421a8f5c3f81ff2e43905ae100000000005b1338005b133800189f37000000043f7f6d333f75ff823f800000474350000000000042be!
+2024-04-17 09:16:03,353 - ERROR: Error occurred at 2024-04-17 09:16:03 - TCP IP: 10.68.110.18, Port: 2101, Run: 1, METERID: MET0454. Error:timed out
+2024-04-17 09:16:23,361 - ERROR: Error occurred at 2024-04-17 09:16:23 - TCP IP: 10.68.110.18, Port: 2102, Run: 2, METERID: MET0454. Error:timed out
+2024-04-17 09:31:37,141 - ERROR: Error occurred at 2024-04-17 09:31:37 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-17 09:43:20,065 - ERROR: Error occurred at 2024-04-17 09:43:20 - TCP IP: 10.68.111.118, Port: 2402, Run: 1, METERID: MET0125. Error:timed out
+2024-04-17 09:48:00,921 - ERROR: Error occurred at 2024-04-17 09:48:00 - TCP IP: 10.72.191.209, Port: 4002, Run: 2, METERID: MET0607. Error:timed out
+2024-04-17 09:57:22,636 - ERROR: Error occurred at 2024-04-17 09:57:22 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-17 15:02:26,108 - ERROR: Error occurred at 2024-04-17 15:02:26 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-17 15:02:46,113 - ERROR: Error occurred at 2024-04-17 15:02:46 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-17 15:03:06,118 - ERROR: Error occurred at 2024-04-17 15:03:06 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-17 15:03:26,124 - ERROR: Error occurred at 2024-04-17 15:03:26 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-17 15:08:21,513 - ERROR: Error occurred at 2024-04-17 15:08:21 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-17 15:08:41,640 - ERROR: Error occurred at 2024-04-17 15:08:41 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-17 15:10:18,121 - ERROR: Error occurred at 2024-04-17 15:10:18 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-17 15:10:38,127 - ERROR: Error occurred at 2024-04-17 15:10:38 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-17 15:13:36,781 - ERROR: Error occurred at 2024-04-17 15:13:36 - TCP IP: 10.68.110.208, Port: 2404, Run: 2, METERID: MET0528. Error:invalid literal for int() with base 16: ''
+2024-04-17 15:18:11,041 - ERROR: Error occurred at 2024-04-17 15:18:11 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-17 15:18:31,136 - ERROR: Error occurred at 2024-04-17 15:18:31 - TCP IP: 10.68.110.18, Port: 2101, Run: 1, METERID: MET0454. Error:timed out
+2024-04-17 15:18:33,301 - ERROR: Error occurred at 2024-04-17 15:18:33 - TCP IP: 10.68.110.18, Port: 2102, Run: 2, METERID: MET0454. Error:[WinError 10061] No connection could be made because the target machine actively refused it
+2024-04-17 15:18:38,928 - ERROR: Error occurred at 2024-04-17 15:18:38 - TCP IP: 10.68.110.18, Port: 2103, Run: 3, METERID: MET0454. Error:[WinError 10061] No connection could be made because the target machine actively refused it
+2024-04-17 15:34:42,766 - ERROR: Error occurred at 2024-04-17 15:34:42 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-17 15:47:09,648 - ERROR: Error occurred at 2024-04-17 15:47:09 - TCP IP: 10.68.111.118, Port: 2402, Run: 1, METERID: MET0125. Error:timed out
+2024-04-17 16:01:30,771 - ERROR: Error occurred at 2024-04-17 16:01:30 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-18 06:11:37,427 - ERROR: Error occurred at 2024-04-18 06:11:37 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-18 06:11:57,435 - ERROR: Error occurred at 2024-04-18 06:11:57 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-18 06:14:25,522 - ERROR: Error occurred at 2024-04-18 06:14:25 - TCP IP: 10.68.110.208, Port: 2402, Run: 1, METERID: MET0528. Error:[WinError 10054] An existing connection was forcibly closed by the remote host
+2024-04-18 06:15:13,644 - ERROR: Error occurred at 2024-04-18 06:15:13 - TCP IP: 10.68.110.208, Port: 2404, Run: 2, METERID: MET0528. Error:invalid literal for int() with base 16: ''
+2024-04-18 06:19:47,376 - ERROR: Error occurred at 2024-04-18 06:19:47 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-18 06:20:07,434 - ERROR: Error occurred at 2024-04-18 06:20:07 - TCP IP: 10.68.110.18, Port: 2101, Run: 1, METERID: MET0454. Error:timed out
+2024-04-18 06:20:27,470 - ERROR: Error occurred at 2024-04-18 06:20:27 - TCP IP: 10.68.110.18, Port: 2102, Run: 2, METERID: MET0454. Error:timed out
+2024-04-18 06:20:47,482 - ERROR: Error occurred at 2024-04-18 06:20:47 - TCP IP: 10.68.110.18, Port: 2103, Run: 3, METERID: MET0454. Error:timed out
+2024-04-18 06:21:07,489 - ERROR: Error occurred at 2024-04-18 06:21:07 - TCP IP: 10.68.110.18, Port: 2104, Run: 4, METERID: MET0454. Error:timed out
+2024-04-18 06:34:34,880 - ERROR: Error occurred at 2024-04-18 06:34:34 - TCP IP: 10.68.110.73, Port: 4002, Run: 2, METERID: MET0712. Error:400 Bad Request: Error: Unexpected response code from device 800000f7cf0103083f80000000010002874a!
+2024-04-18 06:34:41,353 - ERROR: Error occurred at 2024-04-18 06:34:41 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-18 07:00:40,340 - ERROR: Error occurred at 2024-04-18 07:00:40 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-18 15:00:10,657 - ERROR: Error occurred at 2024-04-18 15:00:10 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-18 15:01:50,168 - ERROR: Error occurred at 2024-04-18 15:01:50 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-18 15:02:10,176 - ERROR: Error occurred at 2024-04-18 15:02:10 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-18 15:02:30,185 - ERROR: Error occurred at 2024-04-18 15:02:30 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-18 15:02:50,193 - ERROR: Error occurred at 2024-04-18 15:02:50 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-18 15:06:33,700 - ERROR: Error occurred at 2024-04-18 15:06:33 - TCP IP: 10.68.110.227, Port: 2402, Run: 1, METERID: MET0336. Error:timed out
+2024-04-18 15:07:31,431 - ERROR: Error occurred at 2024-04-18 15:07:31 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-18 15:07:51,439 - ERROR: Error occurred at 2024-04-18 15:07:51 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-18 15:09:28,994 - ERROR: Error occurred at 2024-04-18 15:09:28 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-18 15:09:49,005 - ERROR: Error occurred at 2024-04-18 15:09:49 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-18 15:17:46,627 - ERROR: Error occurred at 2024-04-18 15:17:46 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-18 15:34:46,749 - ERROR: Error occurred at 2024-04-18 15:34:46 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-18 15:45:34,678 - ERROR: Error occurred at 2024-04-18 15:45:34 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-18 15:45:54,683 - ERROR: Error occurred at 2024-04-18 15:45:54 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-18 15:57:44,040 - ERROR: Error occurred at 2024-04-18 15:57:44 - TCP IP: 10.68.110.115, Port: 2404, Run: 2, METERID: MET0361. Error:timed out
+2024-04-18 16:00:15,364 - ERROR: Error occurred at 2024-04-18 16:00:15 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-19 06:00:09,090 - ERROR: Error occurred at 2024-04-19 06:00:09 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 06:08:45,189 - ERROR: Error occurred at 2024-04-19 06:08:45 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-19 06:09:05,197 - ERROR: Error occurred at 2024-04-19 06:09:05 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-19 06:10:40,565 - ERROR: Error occurred at 2024-04-19 06:10:40 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-19 06:11:00,572 - ERROR: Error occurred at 2024-04-19 06:11:00 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-19 06:18:58,108 - ERROR: Error occurred at 2024-04-19 06:18:58 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 06:35:42,515 - ERROR: Error occurred at 2024-04-19 06:35:42 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 06:46:15,935 - ERROR: Error occurred at 2024-04-19 06:46:15 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-19 06:46:35,941 - ERROR: Error occurred at 2024-04-19 06:46:35 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-19 07:01:04,290 - ERROR: Error occurred at 2024-04-19 07:01:04 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-19 15:00:08,606 - ERROR: Error occurred at 2024-04-19 15:00:08 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 15:01:47,734 - ERROR: Error occurred at 2024-04-19 15:01:47 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-19 15:02:07,854 - ERROR: Error occurred at 2024-04-19 15:02:07 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-19 15:02:27,876 - ERROR: Error occurred at 2024-04-19 15:02:27 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-19 15:02:48,017 - ERROR: Error occurred at 2024-04-19 15:02:48 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-19 15:07:35,913 - ERROR: Error occurred at 2024-04-19 15:07:35 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-19 15:07:56,044 - ERROR: Error occurred at 2024-04-19 15:07:56 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-19 15:09:33,519 - ERROR: Error occurred at 2024-04-19 15:09:33 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-19 15:09:53,588 - ERROR: Error occurred at 2024-04-19 15:09:53 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-19 15:12:25,001 - ERROR: Error occurred at 2024-04-19 15:12:25 - TCP IP: 10.68.110.208, Port: 2402, Run: 1, METERID: MET0528. Error:invalid literal for int() with base 16: ''
+2024-04-19 15:12:37,578 - ERROR: Error occurred at 2024-04-19 15:12:37 - TCP IP: 10.68.110.208, Port: 2404, Run: 2, METERID: MET0528. Error:400 Bad Request: Error: Unexpected response code from device 445a1d3f8000003dd7010308662289e502bd0190d338!
+2024-04-19 15:17:14,389 - ERROR: Error occurred at 2024-04-19 15:17:14 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 15:34:04,673 - ERROR: Error occurred at 2024-04-19 15:34:04 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-19 15:44:48,531 - ERROR: Error occurred at 2024-04-19 15:44:48 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-19 15:45:08,634 - ERROR: Error occurred at 2024-04-19 15:45:08 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-19 16:00:04,308 - ERROR: Error occurred at 2024-04-19 16:00:04 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-20 06:00:09,253 - ERROR: Error occurred at 2024-04-20 06:00:09 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-20 06:08:43,537 - ERROR: Error occurred at 2024-04-20 06:08:43 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-20 06:09:03,545 - ERROR: Error occurred at 2024-04-20 06:09:03 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-20 06:10:39,606 - ERROR: Error occurred at 2024-04-20 06:10:39 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-20 06:10:59,613 - ERROR: Error occurred at 2024-04-20 06:10:59 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-20 06:18:51,312 - ERROR: Error occurred at 2024-04-20 06:18:51 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-20 06:35:32,032 - ERROR: Error occurred at 2024-04-20 06:35:32 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-20 06:46:11,363 - ERROR: Error occurred at 2024-04-20 06:46:11 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-20 06:46:31,368 - ERROR: Error occurred at 2024-04-20 06:46:31 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-20 06:59:44,052 - ERROR: Error occurred at 2024-04-20 06:59:44 - TCP IP: 10.68.111.117, Port: 2402, Run: 1, METERID: MET0455. Error:timed out
+2024-04-20 07:01:01,094 - ERROR: Error occurred at 2024-04-20 07:01:01 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-20 15:00:09,199 - ERROR: Error occurred at 2024-04-20 15:00:09 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-20 15:01:50,853 - ERROR: Error occurred at 2024-04-20 15:01:50 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-20 15:02:10,861 - ERROR: Error occurred at 2024-04-20 15:02:10 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-20 15:02:30,869 - ERROR: Error occurred at 2024-04-20 15:02:30 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-20 15:02:50,876 - ERROR: Error occurred at 2024-04-20 15:02:50 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-20 15:07:41,270 - ERROR: Error occurred at 2024-04-20 15:07:41 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-20 15:08:01,277 - ERROR: Error occurred at 2024-04-20 15:08:01 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-20 15:09:37,736 - ERROR: Error occurred at 2024-04-20 15:09:37 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-20 15:09:57,745 - ERROR: Error occurred at 2024-04-20 15:09:57 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-20 15:10:17,753 - ERROR: Error occurred at 2024-04-20 15:10:17 - TCP IP: 10.72.191.149, Port: 2402, Run: 1, METERID: MET0306. Error:timed out
+2024-04-20 15:12:33,305 - ERROR: Error occurred at 2024-04-20 15:12:33 - TCP IP: 10.68.110.208, Port: 2402, Run: 1, METERID: MET0528. Error:timed out
+2024-04-20 15:17:47,280 - ERROR: Error occurred at 2024-04-20 15:17:47 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-20 15:31:02,541 - ERROR: Error occurred at 2024-04-20 15:31:02 - TCP IP: 10.72.191.91, Port: 2402, Run: 1, METERID: MET0511. Error:timed out
+2024-04-20 15:31:22,547 - ERROR: Error occurred at 2024-04-20 15:31:22 - TCP IP: 10.72.191.91, Port: 2404, Run: 2, METERID: MET0511. Error:timed out
+2024-04-20 15:34:15,588 - ERROR: Error occurred at 2024-04-20 15:34:15 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:timed out
+2024-04-20 15:44:59,082 - ERROR: Error occurred at 2024-04-20 15:44:59 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-20 15:45:19,087 - ERROR: Error occurred at 2024-04-20 15:45:19 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-20 15:50:30,401 - ERROR: Error occurred at 2024-04-20 15:50:30 - TCP IP: 10.72.191.209, Port: 4002, Run: 2, METERID: MET0607. Error:timed out
+2024-04-20 15:58:25,140 - ERROR: Error occurred at 2024-04-20 15:58:25 - TCP IP: 10.68.111.117, Port: 2402, Run: 1, METERID: MET0455. Error:400 Bad Request: Error: Unexpected response code from device 686c3f1c3c9f3f81ff2e4134cccd3f81ff2e43905ae13f80000043905ae1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003ffc0831000000003fb0e5603f800000f708!
+2024-04-20 15:59:43,216 - ERROR: Error occurred at 2024-04-20 15:59:43 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-21 06:00:12,434 - ERROR: Error occurred at 2024-04-21 06:00:12 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 06:08:52,591 - ERROR: Error occurred at 2024-04-21 06:08:52 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-21 06:09:12,600 - ERROR: Error occurred at 2024-04-21 06:09:12 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-21 06:10:48,433 - ERROR: Error occurred at 2024-04-21 06:10:48 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-21 06:11:08,440 - ERROR: Error occurred at 2024-04-21 06:11:08 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-21 06:13:28,357 - ERROR: Error occurred at 2024-04-21 06:13:28 - TCP IP: 10.68.110.208, Port: 2402, Run: 1, METERID: MET0528. Error:timed out
+2024-04-21 06:13:48,364 - ERROR: Error occurred at 2024-04-21 06:13:48 - TCP IP: 10.68.110.208, Port: 2404, Run: 2, METERID: MET0528. Error:timed out
+2024-04-21 06:18:22,485 - ERROR: Error occurred at 2024-04-21 06:18:22 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 06:27:35,747 - ERROR: Error occurred at 2024-04-21 06:27:35 - TCP IP: 10.68.111.75, Port: 2402, Run: 1, METERID: MET0758. Error:timed out
+2024-04-21 06:27:55,764 - ERROR: Error occurred at 2024-04-21 06:27:55 - TCP IP: 10.68.111.75, Port: 2404, Run: 2, METERID: MET0758. Error:timed out
+2024-04-21 06:33:47,699 - ERROR: Error occurred at 2024-04-21 06:33:47 - TCP IP: 10.68.110.73, Port: 4002, Run: 2, METERID: MET0712. Error:400 Bad Request: Error: Unexpected response code from device f7cf0103083f80000000010002874a!
+2024-04-21 06:33:54,438 - ERROR: Error occurred at 2024-04-21 06:33:54 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 06:44:29,171 - ERROR: Error occurred at 2024-04-21 06:44:29 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-21 06:44:49,340 - ERROR: Error occurred at 2024-04-21 06:44:49 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-21 06:57:58,149 - ERROR: Error occurred at 2024-04-21 06:57:58 - TCP IP: 10.68.111.117, Port: 2402, Run: 1, METERID: MET0455. Error:timed out
+2024-04-21 06:59:15,541 - ERROR: Error occurred at 2024-04-21 06:59:15 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-21 15:00:08,028 - ERROR: Error occurred at 2024-04-21 15:00:08 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 15:01:46,864 - ERROR: Error occurred at 2024-04-21 15:01:46 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-21 15:02:06,873 - ERROR: Error occurred at 2024-04-21 15:02:06 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-21 15:02:26,881 - ERROR: Error occurred at 2024-04-21 15:02:26 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-21 15:02:46,889 - ERROR: Error occurred at 2024-04-21 15:02:46 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
+2024-04-21 15:07:38,426 - ERROR: Error occurred at 2024-04-21 15:07:38 - TCP IP: 10.68.111.168, Port: 2402, Run: 1, METERID: MET0337. Error:timed out
+2024-04-21 15:07:58,435 - ERROR: Error occurred at 2024-04-21 15:07:58 - TCP IP: 10.68.111.168, Port: 2404, Run: 2, METERID: MET0337. Error:timed out
+2024-04-21 15:09:35,040 - ERROR: Error occurred at 2024-04-21 15:09:35 - TCP IP: 10.68.110.109, Port: 2402, Run: 1, METERID: MET0772. Error:timed out
+2024-04-21 15:09:55,053 - ERROR: Error occurred at 2024-04-21 15:09:55 - TCP IP: 10.68.110.109, Port: 2404, Run: 2, METERID: MET0772. Error:timed out
+2024-04-21 15:17:46,100 - ERROR: Error occurred at 2024-04-21 15:17:46 - TCP IP: 10.72.191.108, Port: 4002, Run: 2, METERID: MET0400. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 15:34:36,479 - ERROR: Error occurred at 2024-04-21 15:34:36 - TCP IP: 10.68.111.217, Port: 2402, Run: 1, METERID: MET0314. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-21 15:45:22,800 - ERROR: Error occurred at 2024-04-21 15:45:22 - TCP IP: 10.72.191.206, Port: 4001, Run: 1, METERID: MET0563. Error:timed out
+2024-04-21 15:45:42,875 - ERROR: Error occurred at 2024-04-21 15:45:42 - TCP IP: 10.72.191.206, Port: 4002, Run: 2, METERID: MET0563. Error:timed out
+2024-04-21 15:59:04,319 - ERROR: Error occurred at 2024-04-21 15:59:04 - TCP IP: 10.68.111.117, Port: 2402, Run: 1, METERID: MET0455. Error:timed out
+2024-04-21 16:00:21,870 - ERROR: Error occurred at 2024-04-21 16:00:21 - TCP IP: 10.115.16.116, Port: 2402, Run: 1, METERID: MET0538. Error:[WinError 10053] An established connection was aborted by the software in your host machine
+2024-04-22 08:22:07,133 - ERROR: Error occurred at 2024-04-22 08:22:07 - TCP IP: 10.68.110.26, Port: 2402, Run: 1, METERID: MET0644. Error:400 Bad Request: Error: Unexpected response code from device 018302c0f1!
+2024-04-22 08:23:43,615 - ERROR: Error occurred at 2024-04-22 08:23:43 - TCP IP: 10.68.111.181, Port: 2402, Run: 1, METERID: MET0405. Error:timed out
+2024-04-22 08:24:03,623 - ERROR: Error occurred at 2024-04-22 08:24:03 - TCP IP: 10.68.111.181, Port: 2404, Run: 2, METERID: MET0405. Error:timed out
+2024-04-22 08:24:23,628 - ERROR: Error occurred at 2024-04-22 08:24:23 - TCP IP: 10.68.111.181, Port: 4001, Run: 1, METERID: MET0406. Error:timed out
+2024-04-22 08:24:43,634 - ERROR: Error occurred at 2024-04-22 08:24:43 - TCP IP: 10.68.111.181, Port: 4002, Run: 2, METERID: MET0406. Error:timed out
