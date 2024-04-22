@@ -1043,546 +1043,513 @@
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <form method="GET" action="{{ url_for('edit_site') }}">
-                            <div class="container">
-                                <label for="region_dropdown">Select Region:</label>
-                                <select id="region_dropdown" name="region_dropdown">
-                                    <option value {% if not selected_region %}selected{% endif %}>All</option>
-                                    {% for region in region_options %}
-                                    <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{
-                                        region
-                                        }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <button type="submit" class="btn btn-primary">View</button>
-                                <label for="tag_dropdown">Select Site:</label>
-                                <select id="tag_dropdown" name="tag_dropdown">
-                                    <option value {% if not selected_tag %}selected{% endif %}>All</option>
-                                    {% for tag in tag_options %}
-                                    <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
+    <form method="GET" action="{{ url_for('edit_site') }}">
+        <div class="container">
+            <label for="region_dropdown">Select Region:</label>
+            <select id="region_dropdown" name="region_dropdown" >
+                <option value {% if not selected_region %}selected{% endif %}>All</option>
+                {% for region in region_options %}
+                <option value="{{ region }}" {% if selected_region==region %}selected{% endif %}>{{ region
+                    }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">View</button>
+            <label for="tag_dropdown">Select Site:</label>
+            <select id="tag_dropdown" name="tag_dropdown">
+                <option value {% if not selected_tag %}selected{% endif %}>All</option>
+                {% for tag in tag_options %}
+                <option value="{{ tag }}" {% if selected_tag==tag %}selected{% endif %}>{{ tag }}</option>
+                {% endfor %}
+            </select>
 
-                                <button type="submit" class="btn btn-primary">Edit</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
 
-                        </form>
+        </form>
 
 
-                        <!-- Display tag_id -->
-                        {% if selected_tag %}
-
-                        <!-- Display HTML table -->
-                        <!-- {% if html_table %}
+        <!-- Display tag_id -->
+        {% if selected_tag %}
+    
+        <!-- Display HTML table -->
+        <!-- {% if html_table %}
         {{ html_table|safe }}
         {% endif %} -->
-                        <br><br>
-
-                        <form method="POST" action="/update_edit_site_route">
-
-                            <label style="display: none;" for="id">Tag ID:</label>
-                            <input style="display: none;" type="text" id="id" name="id" value="{{ list_id }}" required
-                                class="input-select"><br>
-
-                            <label for="tag_id">Site Name:</label>
-                            <input type="text" id="tag_id" name="tag_id" value="{{ list_tag_id }}" required
-                                class="input-select"><br>
-
-                            <label for="cust_factory_name">Cust factory name:</label>
-                            <input type="text" id="cust_factory_name" name="cust_factory_name"
-                                value="{{ list_cust_factory_name }}" required class="input-select"><br>
-
-                            <label for="amr_phase">PHASE:</label>
-                            <input type="text" id="amr_phase" name="amr_phase" value="{{ list_amr_phase }}" required
-                                class="input-select"><br>
-
-                            <label for="rtu_modbus_id">RTU MODBUSE:</label>
-                            <input type="text" id="rtu_modbus_id" name="rtu_modbus_id" value="{{ list_rtu_modbus_id }}"
-                                required class="input-select"><br>
-
-                            <label for="sim_ip">IP ADDRESS:</label>
-                            <input type="text" id="sim_ip" name="sim_ip" value="{{ list_sim_ip }}" required
-                                class="input-select"><br>
-
-                            <label for="user_name">USERNAME:</label>
-                            <input type="text" id="user_name" name="user_name" value="{{ list_user_name }}"
-                                class="input-select"><br>
-
-                            <label for="password">PASSWORD:</label>
-                            <input type="text" id="password" name="password" value="{{ list_password }}"
-                                class="input-select"><br>
-
-                            <label style="display: none;" for="meter_stream_no">Meter_stream_no:</label>
-                            <input style="display: none;" type="text" id="meter_stream_no" name="meter_stream_no"
-                                value="{{ list_meter_stream_no }}" class="input-select"><br>
-
-
-                            <br>
-                            <table border="1" align="">
-                                <thead>
-                                    <tr>
-                                        <th>NO.</th>
-                                        <th>TYPE</th>
-                                        <th>PORT</th>
-                                        <th>AUTO</th>
-                                        <th>WRITE</th>
-                                        <th>PROFILE</th>
-                                    </tr>
-
-                                    <tr>
-                                        <td>0</td>
-                                        <td>RMIU</td>
-                                        <td>&nbsp;</td>
-                                        <td> <input type="checkbox" name="enable0" value="1" checked="CHECKED">
-                                        </td>
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                </thead>
-
-
-                                <tbody>
-                                    {% if list_meter_stream_no is not none %}
-                                    {% for index in range(0, list_meter_stream_no|length) %}
-                                    <tr>
-                                        <td>{{ list_meter_stream_no[index] }}</td>
-                                        <td>
-                                            <!-- <select name="meterType{{ index }}"> -->
-                                            <select id="text" name="list_meter_stream_type">
-
-                                                <option value="7" {% if list_meter_stream_type[index]=='Elster EK-220'
-                                                    %} selected {% endif %}>
-                                                    Elster EK-220
-                                                </option>
-
-                                                <option value="1" {% if list_meter_stream_type[index]=='Instromet 999'
-                                                    %} selected {% endif %}>
-                                                    Instromet 999</option>
-
-                                                <option value="2" {% if list_meter_stream_type[index]=='Instromet 555'
-                                                    %} selected {% endif %}>
-                                                    Instromet 555
-                                                </option>
-
-                                                <option value="3" {% if list_meter_stream_type[index]=='Gas Micro' %}
-                                                    selected {% endif %}>
-                                                    Gas Micro</option>
-
-                                                <option value="4" {% if list_meter_stream_type[index]=='Rockwell' %}
-                                                    selected {% endif %}>
-                                                    Rockwell
-                                                </option>
-
-                                                <option value="5" {% if list_meter_stream_type[index]=='Actaris(G1)' %}
-                                                    selected {% endif %}>
-                                                    Actaris(G1)</option>
-
-                                                <option value="6" {% if list_meter_stream_type[index]=='Mercury' %}
-                                                    selected {% endif %}>
-                                                    Mercury
-                                                </option>
-
-                                                <option value="8" {% if list_meter_stream_type[index]=='Actaris(G2)' %}
-                                                    selected {% endif %}>
-                                                    Actaris(G2)</option>
-
-                                                <option value="9" {% if list_meter_stream_type[index]=='Actaris(G3)' %}
-                                                    selected {% endif %}>
-                                                    Actaris(G3)
-                                                </option>
-
-                                                <option value="10" {% if list_meter_stream_type[index]=='Actaris(G4)' %}
-                                                    selected {% endif %}>
-                                                    Actaris(G4)</option>
-
-                                                <option value="11" {% if
-                                                    list_meter_stream_type[index]=='Elster EK-220(u)' %} selected {%
-                                                    endif %}>
-                                                    Elster EK-220(u)
-                                                </option>
-
-                                                <option value="12" {% if list_meter_stream_type[index]=='Actaris(u)' %}
-                                                    selected {% endif %}>
-                                                    Actaris(u)</option>
-
-                                                <option value="13" {% if list_meter_stream_type[index]=='Elster EK-280'
-                                                    %} selected {% endif %}>
-                                                    Elster EK-280
-                                                </option>
-
-                                                <option value="14" {% if
-                                                    list_meter_stream_type[index]=='Elster EK-280(u)' %} selected {%
-                                                    endif %}>
-                                                    Elster EK-280(u)</option>
-
-                                            </select>
-                                        </td>
-
-                                        <td>
-                                            <!-- <select name="port{{ index }}"> -->
-                                            <select id="text" name="list_meter_port_no">
-
-                                                <!-- <option value="1" selected>{{ list_meter_port_no[index] }}
+        <br><br>
+    
+        <form method="POST" action="/update_edit_site_route">
+    
+            <label style="display: none;" for="id">Tag ID:</label>
+            <input style="display: none;" type="text" id="id" name="id" value="{{ list_id }}" required
+                class="input-select"><br>
+    
+            <label for="tag_id">Site Name:</label>
+            <input type="text" id="tag_id" name="tag_id" value="{{ list_tag_id }}" required class="input-select"><br>
+    
+            <label for="cust_factory_name">Cust factory name:</label>
+            <input type="text" id="cust_factory_name" name="cust_factory_name" value="{{ list_cust_factory_name }}" required
+                class="input-select"><br>
+    
+            <label for="amr_phase">PHASE:</label>
+            <input type="text" id="amr_phase" name="amr_phase" value="{{ list_amr_phase }}" required
+                class="input-select"><br>
+    
+            <label for="rtu_modbus_id">RTU MODBUSE:</label>
+            <input type="text" id="rtu_modbus_id" name="rtu_modbus_id" value="{{ list_rtu_modbus_id }}" required
+                class="input-select"><br>
+    
+            <label for="sim_ip">IP ADDRESS:</label>
+            <input type="text" id="sim_ip" name="sim_ip" value="{{ list_sim_ip }}" required class="input-select"><br>
+    
+            <label for="user_name">USERNAME:</label>
+            <input type="text" id="user_name" name="user_name" value="{{ list_user_name }}" class="input-select"><br>
+    
+            <label for="password">PASSWORD:</label>
+            <input type="text" id="password" name="password" value="{{ list_password }}" class="input-select"><br>
+    
+            <label style="display: none;" for="meter_stream_no">Meter_stream_no:</label>
+            <input style="display: none;" type="text" id="meter_stream_no" name="meter_stream_no"
+                value="{{ list_meter_stream_no }}" class="input-select"><br>
+    
+    
+            <br>
+            <table border="1" align="">
+                <thead>
+                    <tr>
+                        <th>NO.</th>
+                        <th>TYPE</th>
+                        <th>PORT</th>
+                        <th>AUTO</th>
+                        <th>WRITE</th>
+                        <th>PROFILE</th>
+                    </tr>
+    
+                    <tr>
+                        <td>0</td>
+                        <td>RMIU</td>
+                        <td>&nbsp;</td>
+                        <td> <input type="checkbox" name="enable0" value="1" checked="CHECKED">
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </thead>
+    
+    
+                <tbody>
+                    {% if list_meter_stream_no is not none %}
+                    {% for index in range(0, list_meter_stream_no|length) %}
+                    <tr>
+                        <td>{{ list_meter_stream_no[index] }}</td>
+                        <td>
+                            <!-- <select name="meterType{{ index }}"> -->
+                            <select id="text" name="list_meter_stream_type">
+    
+                                <option value="7" {% if list_meter_stream_type[index]=='Elster EK-220' %} selected {% endif
+                                    %}>
+                                    Elster EK-220
+                                </option>
+    
+                                <option value="1" {% if list_meter_stream_type[index]=='Instromet 999' %} selected {% endif
+                                    %}>
+                                    Instromet 999</option>
+    
+                                <option value="2" {% if list_meter_stream_type[index]=='Instromet 555' %} selected {% endif
+                                    %}>
+                                    Instromet 555
+                                </option>
+    
+                                <option value="3" {% if list_meter_stream_type[index]=='Gas Micro' %} selected {% endif %}>
+                                    Gas Micro</option>
+    
+                                <option value="4" {% if list_meter_stream_type[index]=='Rockwell' %} selected {% endif %}>
+                                    Rockwell
+                                </option>
+    
+                                <option value="5" {% if list_meter_stream_type[index]=='Actaris(G1)' %} selected {% endif
+                                    %}>
+                                    Actaris(G1)</option>
+    
+                                <option value="6" {% if list_meter_stream_type[index]=='Mercury' %} selected {% endif %}>
+                                    Mercury
+                                </option>
+    
+                                <option value="8" {% if list_meter_stream_type[index]=='Actaris(G2)' %} selected {% endif
+                                    %}>
+                                    Actaris(G2)</option>
+    
+                                <option value="9" {% if list_meter_stream_type[index]=='Actaris(G3)' %} selected {% endif
+                                    %}>
+                                    Actaris(G3)
+                                </option>
+    
+                                <option value="10" {% if list_meter_stream_type[index]=='Actaris(G4)' %} selected {% endif
+                                    %}>
+                                    Actaris(G4)</option>
+    
+                                <option value="11" {% if list_meter_stream_type[index]=='Elster EK-220(u)' %} selected {%
+                                    endif %}>
+                                    Elster EK-220(u)
+                                </option>
+    
+                                <option value="12" {% if list_meter_stream_type[index]=='Actaris(u)' %} selected {% endif
+                                    %}>
+                                    Actaris(u)</option>
+    
+                                <option value="13" {% if list_meter_stream_type[index]=='Elster EK-280' %} selected {% endif
+                                    %}>
+                                    Elster EK-280
+                                </option>
+    
+                                <option value="14" {% if list_meter_stream_type[index]=='Elster EK-280(u)' %} selected {%
+                                    endif %}>
+                                    Elster EK-280(u)</option>
+    
+                            </select>
+                        </td>
+    
+                        <td>
+                            <!-- <select name="port{{ index }}"> -->
+                            <select id="text" name="list_meter_port_no">
+    
+                                <!-- <option value="1" selected>{{ list_meter_port_no[index] }}
                                     </option> -->
-
-                                                <option value="1" {% if list_meter_port_no[index]=='2402' %} selected {%
-                                                    endif %}>
-                                                    Viola Port no.1</option>
-
-                                                <option value="2" {% if list_meter_port_no[index]=='2404' %} selected {%
-                                                    endif %}>
-                                                    Viola Port no.2</option>
-
-                                                <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {%
-                                                    endif %}>
-                                                    Viola + Digi Port no. 1</option>
-
-                                                <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {%
-                                                    endif %}>
-                                                    Viola + Digi Port no. 2</option>
-
-                                                <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {%
-                                                    endif %}>
-                                                    Viola + Digi Port no. 3</option>
-
-                                                <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {%
-                                                    endif %}>
-                                                    Viola + Digi Port no. 4</option>
-
-                                                <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {%
-                                                    endif %}>
-                                                    Tbox + Digi Port no. 1</option>
-
-                                                <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {%
-                                                    endif %}>
-                                                    Tbox + Digi Port no. 2</option>
-
-                                                <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {%
-                                                    endif %}>
-                                                    Tbox + Digi Port no. 3</option>
-
-                                                <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {%
-                                                    endif %}>
-                                                    Tbox + Digi Port no. 4</option>
-
-                                                <option value="7" {% if list_meter_port_no[index]=='4001' %} selected {%
-                                                    endif %}>
-                                                    Viola + Moxa Port no. 1</option>
-
-                                                <option value="8" {% if list_meter_port_no[index]=='4002' %} selected {%
-                                                    endif %}>
-                                                    Viola + Moxa Port no. 2</option>
-
-                                                <option value="9" {% if list_meter_port_no[index]=='4003' %} selected {%
-                                                    endif %}>
-                                                    Viola + Moxa Port no. 3</option>
-
-                                                <option value="10" {% if list_meter_port_no[index]=='4004' %} selected
-                                                    {% endif %}>
-                                                    Viola + Moxa Port no. 4</option>
-
-                                                <option value="11" {% if list_meter_port_no[index]=='4101' %} selected
-                                                    {% endif %}>
-                                                    Tbox + Moxa Port no. 1</option>
-
-                                                <option value="12" {% if list_meter_port_no[index]=='4102' %} selected
-                                                    {% endif %}>
-                                                    Tbox + Moxa Port no. 2</option>
-
-                                                <option value="13" {% if list_meter_port_no[index]=='4103' %} selected
-                                                    {% endif %}>
-                                                    Tbox + Moxa Port no. 3</option>
-
-                                                <option value="14" {% if list_meter_port_no[index]=='4104' %} selected
-                                                    {% endif %}>
-                                                    Tbox + Moxa Port no. 4</option>
-
-                                                <option value="15" {% if list_meter_port_no[index]=='1' %} selected {%
-                                                    endif %}>
-                                                    Micro AMR Port no. 1</option>
-
-                                                <option value="16" {% if list_meter_port_no[index]=='2' %} selected {%
-                                                    endif %}>
-                                                    Micro AMR Port no. 2</option>
-
-                                                <option value="17" {% if list_meter_port_no[index]=='3' %} selected {%
-                                                    endif %}>
-                                                    Micro AMR Port no. 3</option>
-
-                                                <option value="18" {% if list_meter_port_no[index]=='4' %} selected {%
-                                                    endif %}>
-                                                    Micro AMR Port no. 4</option>
-
-
-
-                                            </select>
-                                        </td>
-
-                                        <td>
-                                            <input name="enable{{ index }}" type="checkbox" value="1" checked="CHECKED">
-
-                                        </td>
-                                        <td>
-                                            <input name="writeenable{{ index }}" type="checkbox" value="1">
-                                        </td>
-                                        <td>
-                                            <select name="profile{{ index }}">
-                                                <option value="0">-----none-----</option>
-                                                <option value="0" selected="">PROFILE_NAME</option>
-                                                <option value="1">QC740</option>
-                                                <option value="2">QC741</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% endif %}
-                                </tbody>
-
-                            </table>
-
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-
-                            {% endif %}
+    
+                                <option value="1" {% if list_meter_port_no[index]=='2402' %} selected {% endif %}>
+                                    Viola Port no.1</option>
+    
+                                <option value="2" {% if list_meter_port_no[index]=='2404' %} selected {% endif %}>
+                                    Viola Port no.2</option>
+    
+                                <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {% endif %}>
+                                    Viola + Digi Port no. 1</option>
+    
+                                <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {% endif %}>
+                                    Viola + Digi Port no. 2</option>
+    
+                                <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {% endif %}>
+                                    Viola + Digi Port no. 3</option>
+    
+                                <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {% endif %}>
+                                    Viola + Digi Port no. 4</option>
+    
+                                <option value="3" {% if list_meter_port_no[index]=='2101' %} selected {% endif %}>
+                                    Tbox + Digi Port no. 1</option>
+    
+                                <option value="4" {% if list_meter_port_no[index]=='2102' %} selected {% endif %}>
+                                    Tbox + Digi Port no. 2</option>
+    
+                                <option value="5" {% if list_meter_port_no[index]=='2103' %} selected {% endif %}>
+                                    Tbox + Digi Port no. 3</option>
+    
+                                <option value="6" {% if list_meter_port_no[index]=='2104' %} selected {% endif %}>
+                                    Tbox + Digi Port no. 4</option>
+    
+                                <option value="7" {% if list_meter_port_no[index]=='4001' %} selected {% endif %}>
+                                    Viola + Moxa Port no. 1</option>
+    
+                                <option value="8" {% if list_meter_port_no[index]=='4002' %} selected {% endif %}>
+                                    Viola + Moxa Port no. 2</option>
+    
+                                <option value="9" {% if list_meter_port_no[index]=='4003' %} selected {% endif %}>
+                                    Viola + Moxa Port no. 3</option>
+    
+                                <option value="10" {% if list_meter_port_no[index]=='4004' %} selected {% endif %}>
+                                    Viola + Moxa Port no. 4</option>
+    
+                                <option value="11" {% if list_meter_port_no[index]=='4101' %} selected {% endif %}>
+                                    Tbox + Moxa Port no. 1</option>
+    
+                                <option value="12" {% if list_meter_port_no[index]=='4102' %} selected {% endif %}>
+                                    Tbox + Moxa Port no. 2</option>
+    
+                                <option value="13" {% if list_meter_port_no[index]=='4103' %} selected {% endif %}>
+                                    Tbox + Moxa Port no. 3</option>
+    
+                                <option value="14" {% if list_meter_port_no[index]=='4104' %} selected {% endif %}>
+                                    Tbox + Moxa Port no. 4</option>
+    
+                                <option value="15" {% if list_meter_port_no[index]=='1' %} selected {% endif %}>
+                                    Micro AMR Port no. 1</option>
+    
+                                <option value="16" {% if list_meter_port_no[index]=='2' %} selected {% endif %}>
+                                    Micro AMR Port no. 2</option>
+    
+                                <option value="17" {% if list_meter_port_no[index]=='3' %} selected {% endif %}>
+                                    Micro AMR Port no. 3</option>
+    
+                                <option value="18" {% if list_meter_port_no[index]=='4' %} selected {% endif %}>
+                                    Micro AMR Port no. 4</option>
+    
+    
+    
+                            </select>
+                        </td>
+    
+                        <td>
+                            <input name="enable{{ index }}" type="checkbox" value="1" checked="CHECKED">
+    
+                        </td>
+                        <td>
+                            <input name="writeenable{{ index }}" type="checkbox" value="1">
+                        </td>
+                        <td>
+                            <select name="profile{{ index }}">
+                                <option value="0">-----none-----</option>
+                                <option value="0" selected="">PROFILE_NAME</option>
+                                <option value="1">QC740</option>
+                                <option value="2">QC741</option>
+                            </select>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+    
+            </table>
+    
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+    
+            {% endif %}
+    
+    
+    
+    
+    
+            </div>
+        </form>
 
 
-
-
-
-                    </div>
-                    </form>
-
-
-                    <script>
-                        $(document).ready(function () {
-                            $('#region_dropdown').change(function () {
-                                var region_id = $(this).val();
-                                $.ajax({
-                                    url: '/get_tags', // เปลี่ยนเป็น URL ที่เรียกใช้งานฟังก์ชันใน Flask ที่สร้างขึ้นสำหรับการดึง TAGs
-                                    data: { 'region_id': region_id },
-                                    success: function (data) {
-                                        $('#tag_dropdown').empty();
-                                        $.each(data.tags, function (index, tag) {
-                                            $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
-                                        });
-                                    }
-                                });
-                            });
+    <script>
+        $(document).ready(function () {
+            $('#region_dropdown').change(function () {
+                var region_id = $(this).val();
+                $.ajax({
+                    url: '/get_tags', // เปลี่ยนเป็น URL ที่เรียกใช้งานฟังก์ชันใน Flask ที่สร้างขึ้นสำหรับการดึง TAGs
+                    data: { 'region_id': region_id },
+                    success: function (data) {
+                        $('#tag_dropdown').empty();
+                        $.each(data.tags, function (index, tag) {
+                            $('#tag_dropdown').append('<option value="' + tag + '">' + tag + '</option>');
                         });
-                    </script>
+                    }
+                });
+            });
+        });
+    </script>
 
-                    <script>
-                        function submitForm() {
-                            // Trigger the form submission
-                            document.getElementById("mapping_billingForm").submit();
-                        }
+<script>
+    function submitForm() {
+        // Trigger the form submission
+        document.getElementById("mapping_billingForm").submit();
+    }
 
-                        // Add an event listener to dynamically update the dropdown options
-                        document.getElementById("type_dropdown").addEventListener("change", function () {
-                            // Get the selected value
-                            var selectedtype = this.value;
+    // Add an event listener to dynamically update the dropdown options
+    document.getElementById("type_dropdown").addEventListener("change", function () {
+        // Get the selected value
+        var selectedtype = this.value;
 
-                            // Hide the "All" option if no type is selected
-                            var allOption = this.options[0];
-                            if (selectedtype) {
-                                allOption.style.display = "none";
-                            } else {
-                                allOption.style.display = "block";
-                            }
+        // Hide the "All" option if no type is selected
+        var allOption = this.options[0];
+        if (selectedtype) {
+            allOption.style.display = "none";
+        } else {
+            allOption.style.display = "block";
+        }
 
-                        });
-                    </script>
-                    <script>
-                        // Function to show the loading bar
-                        function showLoadingBar() {
-                            document.getElementById('loading-bar').style.width = '100%';
-                        }
+    });
+</script>
+<script>
+    // Function to show the loading bar
+    function showLoadingBar() {
+        document.getElementById('loading-bar').style.width = '100%';
+    }
 
-                        // Function to hide the loading bar
-                        function hideLoadingBar() {
-                            document.getElementById('loading-bar').style.width = '0';
-                        }
+    // Function to hide the loading bar
+    function hideLoadingBar() {
+        document.getElementById('loading-bar').style.width = '0';
+    }
 
-                        // Event listener for page load
-                        window.addEventListener('load', function () {
-                            hideLoadingBar(); // Hide the loading bar initially
-                        });
+    // Event listener for page load
+    window.addEventListener('load', function () {
+        hideLoadingBar(); // Hide the loading bar initially
+    });
 
-                        // Event listener for beforeunload (when the page is about to be reloaded)
-                        window.addEventListener('beforeunload', function () {
-                            showLoadingBar(); // Show the loading bar before the page reloads
-                        });
+    // Event listener for beforeunload (when the page is about to be reloaded)
+    window.addEventListener('beforeunload', function () {
+        showLoadingBar(); // Show the loading bar before the page reloads
+    });
 
-                    </script>
-                    <script>
-                        function checkInternetConnection() {
-                            // ตรวจสอบสถานะเชื่อมต่ออินเทอร์เน็ต
-                            // ตรวจสอบได้ว่ามีการเชื่อมต่อหรือไม่ โดยใช้ navigator.onLine
-                            return navigator.onLine;
-                        }
+</script>
+<script>
+    function checkInternetConnection() {
+        // ตรวจสอบสถานะเชื่อมต่ออินเทอร์เน็ต
+        // ตรวจสอบได้ว่ามีการเชื่อมต่อหรือไม่ โดยใช้ navigator.onLine
+        return navigator.onLine;
+    }
 
-                        // JavaScript
-                        function updateStatus() {
-                            var statusContainer = document.getElementById('status-container');
-                            var statusIcon = document.getElementById('status-icon');
-                            var statusText = document.getElementById('status-text');
-                            var lastUpdate = document.getElementById('last-update-time');
+    // JavaScript
+    function updateStatus() {
+        var statusContainer = document.getElementById('status-container');
+        var statusIcon = document.getElementById('status-icon');
+        var statusText = document.getElementById('status-text');
+        var lastUpdate = document.getElementById('last-update-time');
 
-                            var now = new Date();
-                            var timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+        var now = new Date();
+        var timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 
-                            if (checkInternetConnection()) {
-                                // ถ้าเชื่อมต่ออินเทอร์เน็ต
-                                statusIcon.style.color = 'green'; // สีเขียว
-                                statusText.textContent = 'Online';
-                                statusText.classList.remove('offline'); // ลบ class 'offline' ถ้ามี
-                            } else {
-                                // ถ้าไม่เชื่อมต่ออินเทอร์เน็ต
-                                statusIcon.style.color = 'red'; // สีแดง
-                                statusText.textContent = 'Offline';
-                                statusText.classList.add('offline'); // เพิ่ม class 'offline'
-                            }
+        if (checkInternetConnection()) {
+            // ถ้าเชื่อมต่ออินเทอร์เน็ต
+            statusIcon.style.color = 'green'; // สีเขียว
+            statusText.textContent = 'Online';
+            statusText.classList.remove('offline'); // ลบ class 'offline' ถ้ามี
+        } else {
+            // ถ้าไม่เชื่อมต่ออินเทอร์เน็ต
+            statusIcon.style.color = 'red'; // สีแดง
+            statusText.textContent = 'Offline';
+            statusText.classList.add('offline'); // เพิ่ม class 'offline'
+        }
 
-                            lastUpdate.textContent = timeString;
-                        }
-                        // JavaScript
-                        setInterval(updateStatus, 10000); // อัปเดตทุก 1 วินาที (1000 มิลลิวินาที)
+        lastUpdate.textContent = timeString;
+    }
+    // JavaScript
+    setInterval(updateStatus, 10000); // อัปเดตทุก 1 วินาที (1000 มิลลิวินาที)
 
-                    </script>
-                    <script>
-                        // Function to update weather icon
-                        function updateWeatherIcon(weatherCondition) {
-                            var iconClass;
+</script>
+<script>
+    // Function to update weather icon
+    function updateWeatherIcon(weatherCondition) {
+        var iconClass;
 
-                            // Add logic to determine the appropriate weather icon based on the condition
-                            switch (weatherCondition.toLowerCase()) {
-                                case 'clear':
-                                    iconClass = 'fas fa-sun'; // Font Awesome sun icon
-                                    break;
-                                case 'clouds':
-                                    iconClass = 'fas fa-cloud'; // Font Awesome cloud icon
-                                    break;
-                                case 'rain':
-                                    iconClass = 'fas fa-cloud-showers-heavy'; // Font Awesome rain icon
-                                    break;
-                                case 'thunderstorm':
-                                    iconClass = 'fas fa-bolt'; // Font Awesome thunderstorm icon
-                                    break;
-                                case 'snow':
-                                    iconClass = 'fas fa-snowflake'; // Font Awesome snow icon
-                                    break;
-                                default:
-                                    iconClass = 'fas fa-question-circle'; // Default to a question mark icon for unknown conditions
-                            }
+        // Add logic to determine the appropriate weather icon based on the condition
+        switch (weatherCondition.toLowerCase()) {
+            case 'clear':
+                iconClass = 'fas fa-sun'; // Font Awesome sun icon
+                break;
+            case 'clouds':
+                iconClass = 'fas fa-cloud'; // Font Awesome cloud icon
+                break;
+            case 'rain':
+                iconClass = 'fas fa-cloud-showers-heavy'; // Font Awesome rain icon
+                break;
+            case 'thunderstorm':
+                iconClass = 'fas fa-bolt'; // Font Awesome thunderstorm icon
+                break;
+            case 'snow':
+                iconClass = 'fas fa-snowflake'; // Font Awesome snow icon
+                break;
+            default:
+                iconClass = 'fas fa-question-circle'; // Default to a question mark icon for unknown conditions
+        }
 
-                            // Set the appropriate icon class
-                            document.getElementById('weather-icon').innerHTML = '<i class="' + iconClass + '"></i>';
-                        }
+        // Set the appropriate icon class
+        document.getElementById('weather-icon').innerHTML = '<i class="' + iconClass + '"></i>';
+    }
 
-                    </script>
-                    <script>
-                        // Function to update date and time
-                        function updateDateTime() {
-                            var now = new Date();
-                            var dateTimeString = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
-                            document.getElementById('date-time').textContent = dateTimeString;
-                        }
+</script>
+<script>
+    // Function to update date and time
+    function updateDateTime() {
+        var now = new Date();
+        var dateTimeString = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        document.getElementById('date-time').textContent = dateTimeString;
+    }
 
-                        // Function to update weather data from OpenWeatherMap API
-                        function updateWeatherData() {
-                            // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
-                            var apiKey = 'fbae867d03fc9892a7469d2f562ce558';
-                            var city = 'Bangkok'; // Replace with your city name
-                            var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey;
+    // Function to update weather data from OpenWeatherMap API
+    function updateWeatherData() {
+        // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+        var apiKey = 'fbae867d03fc9892a7469d2f562ce558';
+        var city = 'Bangkok'; // Replace with your city name
+        var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey;
 
-                            fetch(apiUrl)
-                                .then(response => response.json())
-                                .then(data => {
-                                    // Extract relevant weather data
-                                    var weatherCondition = data.weather[0].main;
-                                    var weatherDescription = data.weather[0].description;
-                                    var temperatureKelvin = data.main.temp;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extract relevant weather data
+                var weatherCondition = data.weather[0].main;
+                var weatherDescription = data.weather[0].description;
+                var temperatureKelvin = data.main.temp;
 
-                                    // Convert temperature from Kelvin to Celsius
-                                    var temperatureCelsius = temperatureKelvin - 273.15;
+                // Convert temperature from Kelvin to Celsius
+                var temperatureCelsius = temperatureKelvin - 273.15;
 
-                                    // Update weather icon, description, and temperature
-                                    updateWeatherIcon(weatherCondition);
-                                    document.getElementById('weather-description').textContent = 'Weather: ' + weatherDescription;
-                                    document.getElementById('temperature').textContent = 'Temperature: ' + temperatureCelsius.toFixed(2) + '°C';
-                                })
-                                .catch(error => console.error('Error fetching weather data:', error));
-                        }
-
-
-                        // Function to update weather icon
-                        function updateWeatherIcon(weatherCondition) {
-                            var iconClass;
-
-                            // Add logic to determine the appropriate weather icon based on the condition
-                            switch (weatherCondition.toLowerCase()) {
-                                case 'clear':
-                                    iconClass = 'fa-sun';
-                                    break;
-                                case 'clouds':
-                                    iconClass = 'fa-cloud';
-                                    break;
-                                case 'rain':
-                                    iconClass = 'fa-cloud-showers-heavy';
-                                    break;
-                                default:
-                                    iconClass = 'fa-question-circle'; // Default to a question mark icon for unknown conditions
-                            }
-
-                            // Set the appropriate icon class
-                            document.getElementById('weather-icon').innerHTML = '<i class="fa ' + iconClass + '" aria-hidden="true"></i>';
-                        }
-
-                        // Call the functions initially
-                        updateDateTime();
-                        updateWeatherData();
-
-                        // Update date and time every second
-                        setInterval(updateDateTime, 1000);
-
-                        // Update weather data every 10 minutes (adjust as needed)
-                        setInterval(updateWeatherData, 600000);
-                    </script>
-                    <script>
-                        $(".sidebar-dropdown > a").click(function () {
-                            $(".sidebar-submenu").slideUp(200);
-                            if (
-                                $(this)
-                                    .parent()
-                                    .hasClass("active")
-                            ) {
-                                $(".sidebar-dropdown").removeClass("active");
-                                $(this)
-                                    .parent()
-                                    .removeClass("active");
-                            } else {
-                                $(".sidebar-dropdown").removeClass("active");
-                                $(this)
-                                    .next(".sidebar-submenu")
-                                    .slideDown(200);
-                                $(this)
-                                    .parent()
-                                    .addClass("active");
-                            }
-                        });
-
-                        $("#close-sidebar").click(function () {
-                            $(".page-wrapper").removeClass("toggled");
-                        });
-                        $("#show-sidebar").click(function () {
-                            $(".page-wrapper").addClass("toggled");
-                        });
+                // Update weather icon, description, and temperature
+                updateWeatherIcon(weatherCondition);
+                document.getElementById('weather-description').textContent = 'Weather: ' + weatherDescription;
+                document.getElementById('temperature').textContent = 'Temperature: ' + temperatureCelsius.toFixed(2) + '°C';
+            })
+            .catch(error => console.error('Error fetching weather data:', error));
+    }
 
 
+    // Function to update weather icon
+    function updateWeatherIcon(weatherCondition) {
+        var iconClass;
 
-                    </script>
+        // Add logic to determine the appropriate weather icon based on the condition
+        switch (weatherCondition.toLowerCase()) {
+            case 'clear':
+                iconClass = 'fa-sun';
+                break;
+            case 'clouds':
+                iconClass = 'fa-cloud';
+                break;
+            case 'rain':
+                iconClass = 'fa-cloud-showers-heavy';
+                break;
+            default:
+                iconClass = 'fa-question-circle'; // Default to a question mark icon for unknown conditions
+        }
+
+        // Set the appropriate icon class
+        document.getElementById('weather-icon').innerHTML = '<i class="fa ' + iconClass + '" aria-hidden="true"></i>';
+    }
+
+    // Call the functions initially
+    updateDateTime();
+    updateWeatherData();
+
+    // Update date and time every second
+    setInterval(updateDateTime, 1000);
+
+    // Update weather data every 10 minutes (adjust as needed)
+    setInterval(updateWeatherData, 600000);
+</script>
+<script>
+    $(".sidebar-dropdown > a").click(function () {
+        $(".sidebar-submenu").slideUp(200);
+        if (
+            $(this)
+                .parent()
+                .hasClass("active")
+        ) {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+                .parent()
+                .removeClass("active");
+        } else {
+            $(".sidebar-dropdown").removeClass("active");
+            $(this)
+                .next(".sidebar-submenu")
+                .slideDown(200);
+            $(this)
+                .parent()
+                .addClass("active");
+        }
+    });
+
+    $("#close-sidebar").click(function () {
+        $(".page-wrapper").removeClass("toggled");
+    });
+    $("#show-sidebar").click(function () {
+        $(".page-wrapper").addClass("toggled");
+    });
+
+
+
+</script>
 
 </body>
 
