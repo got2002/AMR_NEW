@@ -1,0 +1,67 @@
+2024-04-17 09:07:05,260 - ERROR: Error occurred at 2024-04-17 09:07:05 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-17 09:13:53,444 - ERROR: Error occurred at 2024-04-17 09:13:53 - TCP IP: 10.72.191.102, Port: 2402, Run: 1, METERID: MET0487. Error: TimeoutError: timed out
+2024-04-17 09:14:08,451 - ERROR: Error occurred at 2024-04-17 09:14:08 - TCP IP: 10.72.191.102, Port: 2404, Run: 2, METERID: MET0487. Error: TimeoutError: timed out
+2024-04-17 09:20:44,450 - ERROR: Error occurred at 2024-04-17 09:20:44 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-17 09:20:59,516 - ERROR: Error occurred at 2024-04-17 09:20:59 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-17 09:25:24,369 - ERROR: Error occurred at 2024-04-17 09:25:24 - TCP IP: 10.68.110.100, Port: 2404, Run: 1, METERID: MET0479. Error: ValueError: invalid literal for int() with base 16: ''
+2024-04-17 09:36:13,072 - ERROR: Error occurred at 2024-04-17 09:36:13 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdffff!
+2024-04-17 09:39:53,450 - ERROR: Error occurred at 2024-04-17 09:39:53 - TCP IP: 10.68.111.105, Port: 2404, Run: 2, METERID: MET0469. Error: ValueError: invalid literal for int() with base 16: ''
+2024-04-17 15:07:40,145 - ERROR: Error occurred at 2024-04-17 15:07:40 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-17 15:22:15,800 - ERROR: Error occurred at 2024-04-17 15:22:15 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-17 15:22:30,806 - ERROR: Error occurred at 2024-04-17 15:22:30 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-17 15:35:31,500 - ERROR: Error occurred at 2024-04-17 15:35:31 - TCP IP: 10.68.111.145, Port: 2402, Run: 1, METERID: MET0107. Error: TimeoutError: timed out
+2024-04-17 15:36:28,469 - ERROR: Error occurred at 2024-04-17 15:36:28 - TCP IP: 10.72.191.166, Port: 2402, Run: 1, METERID: MET0403. Error: TimeoutError: timed out
+2024-04-17 15:38:41,062 - ERROR: Error occurred at 2024-04-17 15:38:41 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdfffd!
+2024-04-18 06:11:35,728 - ERROR: Error occurred at 2024-04-18 06:11:35 - TCP IP: 10.68.110.159, Port: 2404, Run: 2, METERID: MET0485. Error: TimeoutError: timed out
+2024-04-18 06:22:14,483 - ERROR: Error occurred at 2024-04-18 06:22:14 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-18 06:22:29,490 - ERROR: Error occurred at 2024-04-18 06:22:29 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-18 06:37:55,553 - ERROR: Error occurred at 2024-04-18 06:37:55 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdff!
+2024-04-18 15:06:49,431 - ERROR: Error occurred at 2024-04-18 15:06:49 - TCP IP: 10.68.110.130, Port: 2402, Run: 1, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-18 15:07:04,443 - ERROR: Error occurred at 2024-04-18 15:07:04 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-18 15:15:15,266 - ERROR: Error occurred at 2024-04-18 15:15:15 - TCP IP: 10.68.111.47, Port: 2402, Run: 1, METERID: MET0478. Error: TimeoutError: timed out
+2024-04-18 15:21:26,927 - ERROR: Error occurred at 2024-04-18 15:21:26 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-18 15:21:41,933 - ERROR: Error occurred at 2024-04-18 15:21:41 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-18 15:33:41,180 - ERROR: Error occurred at 2024-04-18 15:33:41 - TCP IP: 10.68.111.145, Port: 2402, Run: 1, METERID: MET0107. Error: TimeoutError: timed out
+2024-04-18 15:34:37,442 - ERROR: Error occurred at 2024-04-18 15:34:37 - TCP IP: 10.72.191.166, Port: 2402, Run: 1, METERID: MET0403. Error: TimeoutError: timed out
+2024-04-18 15:36:34,966 - ERROR: Error occurred at 2024-04-18 15:36:34 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdbffd!
+2024-04-18 15:40:23,147 - ERROR: Error occurred at 2024-04-18 15:40:23 - TCP IP: 10.68.111.105, Port: 2404, Run: 2, METERID: MET0469. Error: ValueError: invalid literal for int() with base 16: ''
+2024-04-19 06:03:21,879 - ERROR: Error occurred at 2024-04-19 06:03:21 - TCP IP: 10.68.110.117, Port: 2404, Run: 2, METERID: MET0475. Error: TimeoutError: timed out
+2024-04-19 06:10:53,787 - ERROR: Error occurred at 2024-04-19 06:10:53 - TCP IP: 10.68.110.159, Port: 2402, Run: 1, METERID: MET0485. Error: TimeoutError: timed out
+2024-04-19 06:22:00,436 - ERROR: Error occurred at 2024-04-19 06:22:00 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-19 06:22:15,482 - ERROR: Error occurred at 2024-04-19 06:22:15 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-19 06:29:00,280 - ERROR: Error occurred at 2024-04-19 06:29:00 - TCP IP: 10.68.111.227, Port: 2404, Run: 2, METERID: MET0260. Error: TimeoutError: timed out
+2024-04-19 06:37:16,393 - ERROR: Error occurred at 2024-04-19 06:37:16 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdff!
+2024-04-19 06:40:41,288 - ERROR: Error occurred at 2024-04-19 06:40:41 - TCP IP: 10.68.111.105, Port: 2404, Run: 2, METERID: MET0469. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device 80000043905ae1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003f1eb852000000003f451eb83f8000000a3301030866221206034c03205a1e!
+2024-04-19 15:07:33,958 - ERROR: Error occurred at 2024-04-19 15:07:33 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-19 15:22:11,822 - ERROR: Error occurred at 2024-04-19 15:22:11 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-19 15:22:26,837 - ERROR: Error occurred at 2024-04-19 15:22:26 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-19 15:34:23,837 - ERROR: Error occurred at 2024-04-19 15:34:23 - TCP IP: 10.68.111.145, Port: 2402, Run: 1, METERID: MET0107. Error: TimeoutError: timed out
+2024-04-19 15:35:21,339 - ERROR: Error occurred at 2024-04-19 15:35:21 - TCP IP: 10.72.191.166, Port: 2402, Run: 1, METERID: MET0403. Error: TimeoutError: timed out
+2024-04-19 15:37:20,732 - ERROR: Error occurred at 2024-04-19 15:37:20 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdfffd!
+2024-04-19 15:40:50,760 - ERROR: Error occurred at 2024-04-19 15:40:50 - TCP IP: 10.68.111.105, Port: 2404, Run: 2, METERID: MET0469. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003f1eb852000000003f451eb83f8000000a330103086622909f034c03205820!
+2024-04-20 06:07:29,586 - ERROR: Error occurred at 2024-04-20 06:07:29 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: error: unpack requires a buffer of 4 bytes
+2024-04-20 06:22:03,510 - ERROR: Error occurred at 2024-04-20 06:22:03 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-20 06:22:18,515 - ERROR: Error occurred at 2024-04-20 06:22:18 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-20 06:36:49,086 - ERROR: Error occurred at 2024-04-20 06:36:49 - TCP IP: 10.68.110.123, Port: 2402, Run: 1, METERID: MET0262. Error: TimeoutError: timed out
+2024-04-20 06:37:31,450 - ERROR: Error occurred at 2024-04-20 06:37:31 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdff!
+2024-04-20 06:41:04,780 - ERROR: Error occurred at 2024-04-20 06:41:04 - TCP IP: 10.68.111.105, Port: 2404, Run: 2, METERID: MET0469. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device 6c13de41fc3aa5416c13de41620d983f78dda73f835c930000000038750103d86623058042003d71416bc28f42ec999a44d300004134cccd000ffb760000000000e2c5f4000000006621b400ffffffffffffffffffffffff05a000006621b40041ffd70a416bc6a842de999a44c5e6674134cccd000ff17d0000000000e239850000000066206280ffffffffffffffffffffffff05a000006620628042007ae1416bef9d4329e667451460004134cccd000fe7ad0000000000e1af4900000000661f1100ffffffffffffffffffffffff05a00000661f11004201b852416c28f6424866674433accd4134cccd000fe0e80000000000e14ff42739!
+2024-04-20 15:07:33,607 - ERROR: Error occurred at 2024-04-20 15:07:33 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-20 15:21:00,799 - ERROR: Error occurred at 2024-04-20 15:21:00 - TCP IP: 10.68.111.22, Port: 2402, Run: 1, METERID: MET0483. Error: TimeoutError: timed out
+2024-04-20 15:21:15,806 - ERROR: Error occurred at 2024-04-20 15:21:15 - TCP IP: 10.68.111.22, Port: 2404, Run: 2, METERID: MET0483. Error: TimeoutError: timed out
+2024-04-20 15:21:30,853 - ERROR: Error occurred at 2024-04-20 15:21:30 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-20 15:21:45,861 - ERROR: Error occurred at 2024-04-20 15:21:45 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-20 15:33:41,232 - ERROR: Error occurred at 2024-04-20 15:33:41 - TCP IP: 10.68.111.145, Port: 2402, Run: 1, METERID: MET0107. Error: TimeoutError: timed out
+2024-04-20 15:34:38,115 - ERROR: Error occurred at 2024-04-20 15:34:38 - TCP IP: 10.72.191.166, Port: 2402, Run: 1, METERID: MET0403. Error: TimeoutError: timed out
+2024-04-20 15:36:38,649 - ERROR: Error occurred at 2024-04-20 15:36:38 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdbf7fdf!
+2024-04-21 06:07:32,315 - ERROR: Error occurred at 2024-04-21 06:07:32 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: error: unpack requires a buffer of 4 bytes
+2024-04-21 06:12:30,215 - ERROR: Error occurred at 2024-04-21 06:12:30 - TCP IP: 10.68.111.60, Port: 2404, Run: 2, METERID: MET0436. Error: TimeoutError: timed out
+2024-04-21 06:18:55,963 - ERROR: Error occurred at 2024-04-21 06:18:55 - TCP IP: 10.68.110.45, Port: 2404, Run: 2, METERID: MET0688. Error: TimeoutError: timed out
+2024-04-21 06:21:49,111 - ERROR: Error occurred at 2024-04-21 06:21:49 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-21 06:22:04,127 - ERROR: Error occurred at 2024-04-21 06:22:04 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-21 06:37:31,668 - ERROR: Error occurred at 2024-04-21 06:37:31 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdff!
+2024-04-21 15:07:34,350 - ERROR: Error occurred at 2024-04-21 15:07:34 - TCP IP: 10.68.110.130, Port: 2404, Run: 2, METERID: MET0517. Error: TimeoutError: timed out
+2024-04-21 15:22:16,415 - ERROR: Error occurred at 2024-04-21 15:22:16 - TCP IP: 10.68.110.99, Port: 2402, Run: 1, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-21 15:22:31,426 - ERROR: Error occurred at 2024-04-21 15:22:31 - TCP IP: 10.68.110.99, Port: 2404, Run: 2, METERID: MET0267. Error: TimeoutError: timed out
+2024-04-21 15:34:27,710 - ERROR: Error occurred at 2024-04-21 15:34:27 - TCP IP: 10.68.111.145, Port: 2402, Run: 1, METERID: MET0107. Error: TimeoutError: timed out
+2024-04-21 15:35:24,626 - ERROR: Error occurred at 2024-04-21 15:35:24 - TCP IP: 10.72.191.166, Port: 2402, Run: 1, METERID: MET0403. Error: TimeoutError: timed out
+2024-04-21 15:37:25,194 - ERROR: Error occurred at 2024-04-21 15:37:25 - TCP IP: 10.68.111.67, Port: 2404, Run: 2, METERID: MET0252. Error: BadRequest: 400 Bad Request: Error: Unexpected response code from device fdbfff7fdf!
