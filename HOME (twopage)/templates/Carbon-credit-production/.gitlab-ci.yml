@@ -1,0 +1,28 @@
+image: docker:latest
+services:
+  - docker:dind
+stages:
+  - build
+  - deploy
+before_script : 
+  - sudo chmod 777 -R .
+  - sudo chown -R gitlab-runner:gitlab-runner .
+
+variables:
+  GIT_CLEAN_FLAGS: none # disable git clean
+
+deploy:
+  stage: deploy
+  only:
+    - production
+  tags:
+    - "production"
+  script:
+    - cp .env.example .env
+    - echo "NPM_COMMAND=start" >> .env
+    - echo "BASE_URL=http://caat-register-client.optemis.space" >> .env
+    - echo "NODE_ENV=production" >> .env
+
+    - docker-compose up -d
+    # - docker-compose exec -T app npm run build
+    - docker-compose restart app

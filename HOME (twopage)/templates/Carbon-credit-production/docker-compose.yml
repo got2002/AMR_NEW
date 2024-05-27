@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile.dev
+    image: node:16.14.2-alpine3.14
+    container_name: nuxt-app-carbon-credit
+    restart: unless-stopped
+    working_dir: /usr/src/app
+    env_file: .env
+    ports:
+      - '${NUXT_PORT}:3000'
+    volumes:
+      - ./:/usr/src/app
+    stdin_open: true
+    tty: true
+    command: sh -c "yarn install && yarn run build && yarn run ${NPM_COMMAND}"

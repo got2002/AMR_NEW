@@ -1,0 +1,17 @@
+export default {
+	title: "TGO Carbon Registry System",
+	testSystem: "System is under testing",
+	dashboard: "Dashboard",
+	project: "Project",
+	credit_management: "Credit Management",
+	statistic: "Statistics",
+	transaction: "Transaction",
+	user: "Users",
+	log: "Activity Logs",
+	home: "Home Page",
+	accounts: "Credit Accounts",
+	api: "API Credentials",
+	logout: "Logout",
+	organization: "Organization",
+	buffer:'Buffer Data',
+};

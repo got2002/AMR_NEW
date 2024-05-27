@@ -1,0 +1,31 @@
+export default {
+    filter:{
+        search:'ช่องค้นหา',
+        availability:'ปริมาณคาร์บอนเครดิต',
+        project_type:'ประเภทโครงการ',
+        vintage_year:'ปีวินเทจ',
+        price:'ช่วงราคา',
+        co_benefit:{
+            label:'ผลประโยชน์ร่วม',
+            env:'ด้านสิ่งแวดล้อม',
+            social:'ด้านสังคม',
+            eco:'ด้านเศรษฐกิจ'
+        },
+
+    },
+    project_card:{
+        project_id:'หมายเลขโครงการ',
+        availability:'ปริมาณคาร์บอนเครดิต',
+        price_range:'ช่วงราคา',
+        unit:'',
+    },
+    vintage_card:{
+        block_number:'หมายเลขบล็อค',
+        availability:'ปริมาณคาร์บอนเครดิต',
+        price:'ราคา',
+        update:'อัพเดตล่าสุด',
+        unit:'',
+        total:'ทั้งหมด',
+        total_availability:'ปริมาณคาร์บอนเครดิตทั้งหมด'
+    }
+}
