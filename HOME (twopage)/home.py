@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for,send_from_directory,Response
+
 import numpy as np
 import pandas as pd
 import cx_Oracle
 from flask import flash
-
+import logging
 from datetime import datetime
 import pandas as pd
 import sqlite3
@@ -39,10 +40,16 @@ import datetime
 import traceback
 from flask import abort
 from flask import g, session
+import tkinter as tk
+from tkinter import messagebox
 app = Flask(__name__)
 
 
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_secret_key")
 
+
+def md5_hash(input_string):
+    return hashlib.md5(input_string.encode()).hexdigest()
 app.secret_key = "your_secret_key_here"
 
 
@@ -138,7 +145,12 @@ def connect_to_amr_db():
         return None
     
     
-    
+username = "PTT_PIVOT"
+password = "PTT_PIVOT"
+hostname = "10.100.56.3"
+port = "1521"
+service_name = "PTTAMR_MST"
+   
 def connect_to_ptt_pivot_db():
     global active_connection
     username = "PTT_PIVOT"
@@ -173,6 +185,76 @@ def fetch_data(connection, query, params=None):
         return []
 
 
+def execute_query(connection, query, params=None):
+    try:
+        with connection.cursor() as cursor:
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            connection.commit()
+        return True
+    except cx_Oracle.Error as e:
+        print("Oracle Error:", e)
+        return False
+    finally:
+        connection.close()
+
+
+def get_data(username, password, hostname, port, service_name, filter_text=None, sort_column=None):
+    try:
+        connection = cx_Oracle.connect(user=username, password=password, dsn=f"{hostname}:{port}/{service_name}")
+        cursor = connection.cursor()
+
+        # Base query
+        query = (
+            "SELECT description, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_USER"
+        )
+
+        # Apply filtering
+        if filter_text:
+            query += f" WHERE USER_NAME LIKE '%{filter_text}%'"
+
+        # Apply sorting
+        if sort_column:
+            query += f" ORDER BY {sort_column}"
+
+        cursor.execute(query)
+
+        # Fetch data in chunks (e.g., 100 rows at a time)
+        chunk_size = 100
+        data = []
+        while True:
+            rows = cursor.fetchmany(chunk_size)
+            if not rows:
+                break
+            data.extend(
+                [
+                    {
+                        "description": row[0],
+                        "user_name": row[1],
+                        "password": row[2],
+                        "user_level": row[3],
+                    }
+                    for row in rows
+                ]
+            )
+
+        return data
+    except cx_Oracle.Error as e:
+        (error,) = e.args
+        print("Oracle Error:", error)
+        return []
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+# Example usage with filtering and sorting
+filter_text = "example"  # Replace with your filter text or None for no filtering
+sort_column = "USER_NAME"  # Replace with your desired column or None for no sorting
+filtered_and_sorted_data = get_data(username, password, hostname, port, service_name, filter_text=filter_text, sort_column=sort_column)
 
 
 ############  /connect database  #####################
@@ -194,6 +276,134 @@ def fetch_user_data(username):
             return {'password': password, 'description': description, 'user_level': int(user_level), 'user_group': user_group}
         
         return None
+
+
+
+@app.route("/add_user", methods=["GET", "POST"])
+def add_user_route():
+    if request.method == "POST":
+        description = request.form["description"]
+        user_name = request.form["user_name"]
+        password = request.form["password"]
+        user_level = request.form["user_level"]
+
+        # Hash the password using MD5
+        hashed_password = md5_hash(password)
+
+        # Convert to RAWTOHEX before storing in Oracle
+        hashed_password_hex = "RAWTOHEX(DBMS_OBFUSCATION_TOOLKIT.MD5(input_string => UTL_I18N.STRING_TO_RAW('{}', 'AL32UTF8')))".format(
+            hashed_password
+        )
+
+        query = "INSERT INTO AMR_USER (description, user_name, password, user_level) VALUES (:1, :2, {}, :4)".format(
+            hashed_password_hex
+        )
+        params = (description, user_name, user_level)
+        
+        # Call execute_query with the database connection object
+        if execute_query(connect_to_ptt_pivot_db(), query, params):
+            flash('User added successfully', 'success') 
+            print("User added successfully', 'success'") # Show success message
+            return redirect(url_for("add_user_route"))  # Redirect to the route endpoint
+        else:
+            flash('Failed to add user', 'error')  # Show error message
+
+    return render_template("add_user.html")
+
+@app.route("/get_data")
+def get_data_route():
+    username = "PTT_PIVOT"
+    password = "PTT_PIVOT"
+    hostname = "10.100.56.3"
+    port = "1521"
+    service_name = "PTTAMR_MST"
+        
+    filter_text = request.args.get("filter_text")  # You can get filter text from request
+    sort_column = request.args.get("sort_column")  # You can get sort column from request
+
+    data = get_data(username, password, hostname, port, service_name, filter_text=filter_text, sort_column=sort_column)
+    return jsonify(data)
+
+
+@app.route("/edit_user", methods=["GET", "POST"])
+def edit_user_route():
+    # ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+        query = "SELECT DESCRIPTION, USER_NAME, PASSWORD, USER_LEVEL FROM AMR_USER"
+        user_data = fetch_data(ptt_pivot_connection,query)
+        print(user_data)
+
+    if not user_data:
+        flash("User not found!", "error")
+        return render_template("edit_user.html")
+
+    # ถ้ามีการส่งค่า POST (คือการบันทึกการแก้ไข)
+    if request.method == "POST":
+        # ดึงข้อมูลจากฟอร์มแก้ไข
+        description = request.form["description"]
+        user_name = request.form["user_name"]
+        password = request.form["password"]
+        user_level = request.form["user_level"]
+
+        # เข้ารหัสรหัสผ่านโดยใช้ MD5
+        hashed_password = md5_hash(password)
+        
+
+        
+        # สร้างคำสั่ง SQL สำหรับการแก้ไขข้อมูลผู้ใช้
+        update_query = "UPDATE AMR_USER SET description = :1, user_name = :2, password = :3, user_level = :4 WHERE description = :5"
+        update_params = (
+            description,
+            user_name,
+            hashed_password,
+            user_level,
+            description,
+        )
+        print(update_params)
+
+        # ทำการ execute คำสั่ง SQL และ commit การแก้ไข user_name
+        if execute_query(connect_to_ptt_pivot_db(),update_query, update_params):
+            flash("User updated successfully!", "success")
+            return render_template("edit_user.html", user_data=user_data)
+        else:
+            flash("Failed to update user. Please try again.", "error")
+
+    # กรณีไม่ใช่การส่งค่า POST ให้ส่งข้อมูลผู้ใช้ไปยัง HTML template หรือทำอย่างอื่นตามที่ต้องการ
+    return render_template("edit_user.html", user_data=user_data)
+
+
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user_route():
+    query = "SELECT DESCRIPTION, USER_NAME, USER_LEVEL, USER_ENABLE FROM AMR_USER"
+    user_data = fetch_data(connect_to_ptt_pivot_db(),query)
+
+    if not user_data:
+        flash("Users not found!", "error")
+        return redirect(url_for("index"))
+
+    if request.method == "POST":
+        new_status = request.form.get("status")
+        user_name = request.form.get("user_name")
+
+        if new_status not in ["active", "inactive"]:
+            flash("Invalid status selected.", "error")
+            return redirect(url_for("remove_user_route"))
+
+        status_mapping = {"active": 1, "inactive": 0}
+        new_status_numeric = status_mapping[new_status]
+
+        update_query = "UPDATE AMR_USER SET USER_ENABLE = :1 WHERE USER_NAME = :2"
+        update_params = (new_status_numeric, user_name)
+
+        if execute_query(connect_to_ptt_pivot_db(),update_query, update_params):
+            flash("User status updated successfully!", "success")
+            return redirect(url_for("remove_user_route"))
+
+        else:
+            flash("Failed to update user status. Please try again.", "error")
+
+    return render_template("remove_user.html", user_data=user_data)
 
 
 users = {}
@@ -359,13 +569,13 @@ def billing_data():
     if 'username' not in session:
         return redirect(url_for('login'))
     # connect_to_amr_db
-    with connect_to_amr_db() as ptt_pivot_connection:
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
     #with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        connect_to_ptt_pivot_db
+        
         print("Active Connection:", active_connection)
 
         query_type = request.args.get("query_type")
-
+       
 
         # SQL query to fetch unique PL_REGION_ID values
         region_query = """
@@ -378,6 +588,8 @@ def billing_data():
         FROM AMR_FIELD_ID
         JOIN AMR_PL_GROUP ON AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID 
         WHERE AMR_PL_GROUP.PL_REGION_ID = :region_id
+        and AMR_FIELD_ID.tag_id NOT like '%.remove%'
+
         """
 
         # Fetch unique region values
@@ -387,7 +599,7 @@ def billing_data():
         
 
         query = ""
-        print(query)
+        
         if query_type == "daily_data":
             # SQL query for main data
             query = """
@@ -401,7 +613,7 @@ def billing_data():
                 AMR_BILLING_DATA.UNCORRECTED_VOL as UNCORRECTED,
                 AMR_BILLING_DATA.AVR_PF as Pressure,
                 AMR_BILLING_DATA.AVR_TF as Temperature,
-                AMR_BILLING_DATA.METER_STREAM_NO  -- Add this line to include METER_STREAM_NO in the SELECT clause
+                AMR_BILLING_DATA.METER_STREAM_NO  
             FROM
                 AMR_FIELD_ID, AMR_PL_group, AMR_BILLING_DATA
             WHERE
@@ -412,7 +624,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-            print(query)
+            print("billing",query)
 
             # Return the template with the DataFrame
 
@@ -480,7 +692,7 @@ def billing_data():
                 {tag_condition}
                 {region_condition}
             """
-            print(query)
+            # print(query)
         # Get selected values from the dropdowns
         billing_date_condition = "AND AMR_BILLING_DATA.DATA_DATE IS NOT NULL"
         configured_date_condition = "AND AMR_CONFIGURED_DATA.DATA_DATE IS NOT NULL"
@@ -503,9 +715,11 @@ def billing_data():
             billing_date_condition = (
                 f"AND TO_CHAR(AMR_BILLING_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
             )
+            
             configured_date_condition = (
                 f"AND TO_CHAR(AMR_CONFIGURED_DATA.DATA_DATE, 'MM/YYYY') = '{selected_date}'"
             )
+            
         if selected_tag:
             tag_condition = f"AND AMR_FIELD_ID.TAG_ID = '{selected_tag}'"
 
@@ -545,7 +759,10 @@ def billing_data():
     
                 df["Pressure"] = df["Pressure"].round(4)
                 df["Temperature"] = df["Temperature"].round(4)
-                print("dffff:", df)
+                df["CORRECTED"] = df["CORRECTED"].astype(int)
+                df["UNCORRECTED"] = df["UNCORRECTED"].astype(int)
+                df["METER_STREAM_NO"] = df["METER_STREAM_NO"].astype(int)
+                
                 # Get the selected Meter ID before removing it from the DataFrame
                 # selected_meter_id = df["METER_ID"].iloc[0]
                 selected_meter_id = None
@@ -559,22 +776,24 @@ def billing_data():
 
                 # Now, remove the "METER_ID" column from the DataFrame
                 df = df.drop(["PL_REGION_ID", "TAG_ID", "METER_ID"], axis=1)
-
+                
                 # Remove newline characters
                 df = df.apply(lambda x: x.str.replace("\n", "") if x.dtype == "object" else x)
 
                 df = df.drop_duplicates(subset=["DATA_DATE", "METER_STREAM_NO"], keep="first")
                 # Sort DataFrame by 'DATA_DATE'
                 df = df.sort_values(by="DATA_DATE")
-
+                print("df",df)
                 # Assuming 'df' is the DataFrame created from the query results
                 num_streams = 6
                 df_runs = {}
 
                 # Loop to create DataFrames for each METER_STREAM_NO
                 for i in range(1, num_streams + 1):
-                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == int(i)]
 
+                print("df_runs",df_runs)
+                    
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
                     "config_data": None,
@@ -588,23 +807,23 @@ def billing_data():
                 }
                 
                 selected_date = request.args.get("date_dropdown")
-                print("date1:", selected_date)
+                
 
                 # Initialize df_month_list outside the if statement
                 df_month_list = pd.DataFrame(columns=['DATA_DATE'])
-
+                
                 # Check if 'selected_date' is available
                 if selected_date:
                     # Convert selected_date to 'YYYY-MM' format for consistency
                     selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
-                    print("date2:", selected_date_formatted)
+                    # print("date2:", selected_date_formatted)
 
                     # Get the current month and year
                     current_month_year = datetime.datetime.now().strftime('%Y-%m')
 
                     # Determine if the selected date is in the current month
                     is_current_month = selected_date_formatted == current_month_year
-
+                    
                     # Update the query to use the selected date
                     if is_current_month:
                         # If the selected date is in the current month, show all days up to the current date
@@ -613,6 +832,8 @@ def billing_data():
                             FROM DUAL
                             CONNECT BY LEVEL <= TO_DATE('{datetime.datetime.now().strftime('%Y-%m-%d')}', 'YYYY-MM-DD') - TO_DATE('{current_month_year}-01', 'YYYY-MM-DD') + 1
                         """
+
+                        
                     else:
                         # If the selected date is in a previous month, show all days of the selected month
                         query_day = f"""
@@ -620,31 +841,42 @@ def billing_data():
                             FROM DUAL
                             CONNECT BY LEVEL <= LAST_DAY(TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD')) - TO_DATE('{selected_date_formatted}-01', 'YYYY-MM-DD') + 1
                         """
+                        
 
                     # Fetch data for the month list
                     query_day_result = fetch_data(ptt_pivot_connection, query_day)
                     df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
+                 
                 
                 # Merge DataFrames using a loop
                 for i in range(1, num_streams + 1):
                     df_run = df_runs[f'df_run{i}']
                     
+                    
+
+                   
                     if not df_run.empty:
                         merged_df = pd.merge(df_month_list, df_run, on='DATA_DATE', how='outer')
+                        # print(merged_df)
                         df_runs[f'df_run{i}'] = merged_df
 
                 for i in range(1, num_streams + 1):
                     df_run = df_runs[f'df_run{i}']
+                    
+                    print(df_run)
+
                     if not df_run.empty:
                         df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
+                        
                         df_run = df_run.fillna("N/A")
+                        
                         tables[f"daily_data_run{i}"] = df_run.to_html(classes="data", index=False, na_rep="N/A")
-                                
+                    
                 # common_table_properties = {"classes": "data", "index": False,"header":None}
                 
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
+                    df_run = df[df['METER_STREAM_NO'] == int(i)]
 
                     # Create traces for each graph
                     trace_corrected = go.Scatter(
@@ -902,8 +1134,9 @@ def billing_data():
 
                     # Fetch data for the month list
                     query_day_result = fetch_data(ptt_pivot_connection, query_day)
+                    
                     df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
-
+                    
                 
 
                 # Merge DataFrames using a loop
@@ -915,15 +1148,16 @@ def billing_data():
                         df_runs[f'df_run{i}'] = merged_df
                     
                 common_table_properties = {"classes": "data", "index": False, "header": None, "na_rep": "N/A"}
-
+                
 
                 for i in range(1, num_streams + 1):
                     df_run = df_runs[f'df_run{i}']
                     if not df_run.empty:
                         df_run = df_run.drop('METER_STREAM_NO', axis=1, errors='ignore')
                         df_run = df_run.fillna("N/A")
+                       
                         tables[f"config_data_run{i}"] = df_run.to_html(**common_table_properties)
-            
+                
                 return render_template(
                     "billingdata.html",
                     tables=tables,
@@ -953,7 +1187,7 @@ def billing_data():
 def billing_data_user_group():
     if 'username' not in session:
         return redirect(url_for('login'))
-    with connect_to_amr_db() as ptt_pivot_connection:
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
     #with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
         query_type = request.args.get("query_type")
@@ -1174,7 +1408,7 @@ def billing_data_user_group():
                 # Check if 'METER_ID' column exists and the DataFrame is not empty
                 if not df.empty and 'METER_ID' in df.columns and len(df['METER_ID']) > 0:
                     selected_meter_id = df['METER_ID'].iloc[0]
-                    print(f"Selected Meter ID: {selected_meter_id}")
+                    # print(f"Selected Meter ID: {selected_meter_id}")
                 else:
                     print("DataFrame is empty or 'METER_ID' column doesn't exist.")
 
@@ -1194,7 +1428,7 @@ def billing_data_user_group():
 
                 # Loop to create DataFrames for each METER_STREAM_NO
                 for i in range(1, num_streams + 1):
-                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == int(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
@@ -1209,7 +1443,7 @@ def billing_data_user_group():
                 }
                 
                 selected_date = request.args.get("date_dropdown")
-                print("date1:", selected_date)
+                # print("date1:", selected_date)
 
                 # Initialize df_month_list outside the if statement
                 df_month_list = pd.DataFrame(columns=['DATA_DATE'])
@@ -1218,7 +1452,7 @@ def billing_data_user_group():
                 if selected_date:
                     # Convert selected_date to 'YYYY-MM' format for consistency
                     selected_date_formatted = pd.to_datetime(selected_date, format='%m/%Y').strftime('%Y-%m')
-                    print("date2:", selected_date_formatted)
+                    # print("date2:", selected_date_formatted)
 
                     # Get the current month and year
                     current_month_year = datetime.datetime.now().strftime('%Y-%m')
@@ -1265,7 +1499,7 @@ def billing_data_user_group():
                 
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
+                    df_run = df[df['METER_STREAM_NO'] == int(i)]
 
                     # Create traces for each graph
                     trace_corrected = go.Scatter(
@@ -1524,7 +1758,7 @@ def billing_data_user_group():
                     # Fetch data for the month list
                     query_day_result = fetch_data(ptt_pivot_connection, query_day)
                     df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
-
+                    
                 
 
                 # Merge DataFrames using a loop
@@ -1582,7 +1816,7 @@ def billing_data_user_group():
 def billing_data_user():
     if 'username' not in session:
         return redirect(url_for('login'))
-    with connect_to_amr_db() as ptt_pivot_connection:
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
     #with connect_to_ptt_pivot_db() as ptt_pivot_connection:
         print("Active Connection:", active_connection)
 
@@ -1594,6 +1828,7 @@ def billing_data_user():
         
         user_info = users[logged_in_user]
         user_level = user_info.get('user_level')
+        print("user_level",user_level)
         description = user_info.get('description')
         print("description", description)
         
@@ -1821,7 +2056,7 @@ def billing_data_user():
 
                 # Loop to create DataFrames for each METER_STREAM_NO
                 for i in range(1, num_streams + 1):
-                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == str(i)]
+                    df_runs[f'df_run{i}'] = df[df['METER_STREAM_NO'] == int(i)]
 
                 # Check if each DataFrame has data before including in the tables dictionary
                 tables = {
@@ -1872,7 +2107,7 @@ def billing_data_user():
                     # Fetch data for the month list
                     query_day_result = fetch_data(ptt_pivot_connection, query_day)
                     df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
-                
+                    
                 # Merge DataFrames using a loop
                 for i in range(1, num_streams + 1):
                     df_run = df_runs[f'df_run{i}']
@@ -1892,7 +2127,7 @@ def billing_data_user():
                 
                 # Create graphs for each METER_STREAM_NO
                 for i in range(1, 7):
-                    df_run = df[df['METER_STREAM_NO'] == str(i)]
+                    df_run = df[df['METER_STREAM_NO'] == int(i)]
 
                     # Create traces for each graph
                     trace_corrected = go.Scatter(
@@ -2151,7 +2386,7 @@ def billing_data_user():
                     # Fetch data for the month list
                     query_day_result = fetch_data(ptt_pivot_connection, query_day)
                     df_month_list = pd.DataFrame(query_day_result, columns=['DATA_DATE'])
-
+                
                 
 
                 # Merge DataFrames using a loop
@@ -2282,6 +2517,12 @@ def Daily_summary():
 
 ############ /Daily summary  #####################
 
+@app.route('/file')
+def serve_file():
+    file_path = r'C:\Users\Administrator\Desktop\AutopollPM\test.txt'
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = file.read()  # อ่านเนื้อหาของไฟล์ทั้งหมด
+    return data
 
 ############ sitedetail_data  #####################
 
@@ -2528,13 +2769,16 @@ def Manualpoll_data():
             # ,list_config=list_config,list_billing=list_billing,list_billing_enable=list_billing_enable,list_config_enable=list_config_enable
         )
 
+
 @app.route("/Manualpoll_data", methods=["POST"])
 def read_data():
+
     # if 'username' not in session:
     #     return redirect(url_for('login'))
     try:
         with connect_to_ptt_pivot_db() as ptt_pivot_connection:
             print("Active Connection:", active_connection)
+            
             global change_to_32bit_counter  # Use the global variable
             slave_id = int(request.form["slave_id"])
             function_code = int(request.form["function_code"])
@@ -2626,7 +2870,7 @@ def read_data():
                 abort(400, f"Error: {e}")
             
 
-            if int(evc_type) in [5, 8, 9, 10, 12]:
+            if int(evc_type) in [5, 8, 9, 10]:
                     #send wa
                 slave_id_1 = 0x01
                 function_code_1 = 0x03
@@ -2654,8 +2898,16 @@ def read_data():
                 response = sock_i.recv(4096)
                 
                 
-                
-                
+            logger_info = logging.getLogger('info_logger')
+            logger_info.setLevel(logging.INFO)
+            log_file_info = 'C:\\Users\\Administrator\\Desktop\\AutopollPM\\test.txt'
+            file_handler_info = logging.FileHandler(log_file_info)
+
+            # Set formatter to only log the message without any additional metadata
+            formatter = logging.Formatter('%(message)s')
+            file_handler_info.setFormatter(formatter)
+            logger_info.addHandler(file_handler_info)
+            
             for i in range(0, len(df_pollRange)):
                 
                 
@@ -2676,8 +2928,15 @@ def read_data():
             
                 
                 communication_traffic_i.append(request_message_i.hex())
+                config_safe_tx = f"config_TX: {communication_traffic_i[0]}"
+                print("tx.config",communication_traffic_i[0])
+                
+                
+                logger_info.info(config_safe_tx)
                 try:
+                    
                     sock_i.send(request_message_i)
+                    
                     time.sleep(0.5)
                     response_i = sock_i.recv(1024)
                         
@@ -2686,11 +2945,14 @@ def read_data():
                     
                     communication_traffic_i.append(response_i.hex())
                     
-                    config_safe = f"config: {communication_traffic_i}"
+                    config_safe_RX = f"config_RX: {communication_traffic_i[1]}"
+                   
+                    print("RX.config",communication_traffic_i[1])
+                    logger_info.info(config_safe_RX)
                 # sock_i.close()
                 # print("config :",communication_traffic_i)
                 # print(communication_traffic_i)
-                
+                    
                 except TimeoutError:
                     abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
                 except Exception as e:
@@ -2712,12 +2974,13 @@ def read_data():
 
                 
                 
-                print("config",df_Modbus)
+                # print("config",df_Modbus)
                 
             
                 
             
-                
+            
+
             
             ##############   billing
             for i in range(0, len(df_pollBilling)):
@@ -2741,6 +3004,9 @@ def read_data():
             
                 
                 communication_traffic_i.append(request_message_i.hex())
+                billing_safe_tx = f"billing_TX: {communication_traffic_i[0]}"
+                print("tx.billing",communication_traffic_i[0])
+                logger_info.info(billing_safe_tx)
                 try:
                     sock_i.send(request_message_i)
                     time.sleep(0.5)
@@ -2749,9 +3015,12 @@ def read_data():
                     
                     
                     
+                    
                     communication_traffic_i.append(response_i.hex())
                     
-                    billing_safe = f"billing: {communication_traffic_i}"
+                    billing_safe = f"billing_RX: {communication_traffic_i[1]}"
+                    print("rx.billing",communication_traffic_i[1])
+                    logger_info.info(billing_safe)
                 
                 except TimeoutError:
                     abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
@@ -2777,7 +3046,7 @@ def read_data():
                 df_Modbusbilling = pd.concat([df_Modbusbilling, df_2], ignore_index=True)
             
                 
-                print("billing",df_Modbusbilling)
+                # print("billing",df_Modbusbilling)
                 
                 
                 
@@ -2831,7 +3100,7 @@ def read_data():
                 # print(value_config)
                 result_config = pd.concat([df_mapping['desc'], value_config], axis=1)
                 result_config = result_config.transpose()
-                print(result_config)
+                # print(result_config)
                 result_config_html = "<h2>config</h2>" + result_config.to_html(classes="data", index=False, header=False)
 
 
@@ -2914,9 +3183,15 @@ def read_data():
 
 
 
+            # file_path = r'C:\Users\Administrator\Desktop\AutopollPM\test.txt'
 
+            #     # เปิดไฟล์ txt ในโหมดอ่าน ('r' mode)
+            # with open(file_path, 'r', encoding='utf-8') as file:
+            #         # อ่านข้อมูลทั้งหมดจากไฟล์และเก็บไว้ในตัวแปร data
+            #                     # อ่านข้อมูลทั้งหมดจากไฟล์และเก็บไว้ในตัวแปร data
+            #     data = file.readlines()
 
-                print(result_billing_html)
+            #     print("test",data)
                 
 
             
@@ -3103,9 +3378,11 @@ def read_data():
         selected_tag=selected_tag,
         selected_region=selected_region,
         region_options=region_options,
-        tag_options=tag_options
+        tag_options=tag_options,
+        billing_safe=billing_safe,billing_safe_tx=billing_safe_tx,config_safe_RX=config_safe_RX
     )
-    
+
+
 def convert_raw_to_value(data_type, raw_data):
     if data_type == "Date":
         raw_data_as_int = int(raw_data, 16)
@@ -3162,8 +3439,35 @@ def get_type_value_from_database(address):
 
 
 
-
-
+@app.route("/pingdata", methods=["POST"])
+def pingdata():
+    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
+        print("Active Connection:", active_connection)
+        try:
+            data = request.get_json()
+            
+            tcp_ip = data.get("tcp_ip")
+            tcp_port = int(data.get("tcp_port"))
+            
+            
+            sock_i = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock_i.settimeout(10)  
+            sock_i.connect((tcp_ip, tcp_port))
+            print(sock_i)
+            sock_i.close()
+            response = {
+                "status": "success",
+                "message": "Ping successful",
+                
+            }
+        except Exception as e:
+            print(f"Error: {e}")
+            response = {
+            "status": "error",
+            "message": f"An error occurred while pinging: {str(e)}"
+        }
+            
+    return jsonify(response)
 
 @app.route("/save_to_oracle_manualpoll", methods=["POST"])
 def save_to_oracle_manualpoll():
@@ -3253,7 +3557,7 @@ def save_to_oracle_manualpoll():
             print("Connected successfully.")
             
 
-            if int(evc_type) in [5, 8, 9, 10, 12]:
+            if int(evc_type) in [5, 8, 9, 10]:
                     #send wa
                 slave_id_1 = 0x01
                 function_code_1 = 0x03
@@ -3271,12 +3575,13 @@ def save_to_oracle_manualpoll():
 
                 crc_1 = computeCRC(request_Actaris)
                 request_Actaris += crc_1
-                # print(request_Actaris)
+
                 for _ in range(2):  
                     sock_i.send(request_Actaris)
-                    
+                    print(sock_i)
                     time.sleep(0.5)
                 
+            
                 response = sock_i.recv(4096)
                 
             for i in range(0, len(df_pollRange)):
@@ -4136,169 +4441,133 @@ def index():
 @app.route('/Manualpoll', methods=['POST'])
 def read_data_old():
     
-    # if 'username' not in session:
-    #     return redirect(url_for('login'))
-    with connect_to_ptt_pivot_db() as ptt_pivot_connection:
-        print("Active Connection:", active_connection)
-        global change_to_32bit_counter  # Use the global variable
+    
+    
+    global change_to_32bit_counter  
+    
+    blockchain_checkbox_value = request.form.get('blockchainCheckbox', '0')
+    
+    slave_id = int(request.form['slave_id'])
+    function_code = int(request.form['function_code'])
+    starting_address = int(request.form['starting_address'])
+    quantity = int(request.form['quantity'])
+    tcp_ip = request.form['tcp_ip']
+    print("tcp_ip",tcp_ip)
+    tcp_port = int(request.form['tcp_port'])
+    print("tcp_port",tcp_port)
+
+    bytes_per_value = 4
         
-        
-
-        slave_id = int(request.form['slave_id'])
-        function_code = int(request.form['function_code'])
-        starting_address = int(request.form['starting_address'])
-        quantity = int(request.form['quantity'])
-        tcp_ip = request.form['tcp_ip']
-        tcp_port = int(request.form['tcp_port'])
-
-        query = f"""SELECT
-                    
-                        AMR_VC_TYPE.id as VCtype
-                    
-                    FROM
-                        AMR_FIELD_ID,
-                        AMR_USER,
-                        AMR_FIELD_CUSTOMER,
-                        AMR_FIELD_METER,
-                        AMR_PL_GROUP,
-                        AMR_VC_TYPE,
-                        AMR_PORT_INFO
-                    WHERE
-                        AMR_FIELD_METER.METER_AUTO_ENABLE=1 AND
-                        AMR_FIELD_ID.FIELD_ID = AMR_PL_GROUP.FIELD_ID AND
-                        AMR_FIELD_ID.METER_ID = AMR_USER.USER_GROUP AND
-                        AMR_FIELD_ID.CUST_ID = AMR_FIELD_CUSTOMER.CUST_ID AND
-                        AMR_FIELD_ID.METER_ID = AMR_FIELD_METER.METER_ID AND
-                        AMR_VC_TYPE.ID = AMR_FIELD_METER.METER_STREAM_TYPE AND
-                        AMR_FIELD_METER.METER_PORT_NO = AMR_PORT_INFO.ID AND
-                        -- and AMR_FIELD_ID.SIM_IP like '10.72.191.%'
-                        -- and AMR_PORT_INFO.port_no LIKE '400%'
-                        -- and AMR_VC_TYPE.ID like '5'
-                    --and AMR_FIELD_ID.TAG_ID like '%NSBS%'
-                        amr_field_id.sim_ip = '{tcp_ip}' AND
-                        amr_port_info.port_no = '{tcp_port}'
-                        
-    ORDER BY
-                        -- AMR_FIELD_ID.SIM_IP
-                        --AMR_PL_GROUP.PL_REGION_ID ASC,
-                        AMR_FIELD_ID.TAG_ID ASC, AMR_PORT_INFO.PORT_NO
-                        --AMR_FIELD_METER.METER_STREAM_NO ASC
-    """
-        vc_type = fetch_data(ptt_pivot_connection,query)
-        
-        vc_type_all = vc_type[0][0]
-        print(vc_type_all)
-        bytes_per_value = 4
-            
-        # Build the request message
-        request_message = bytearray(
-            [
-                slave_id,
-                function_code,
-                starting_address >> 8,
-                starting_address & 0xFF,
-                quantity >> 8,
-                quantity & 0xFF,
-            ]
-        )
-
-
-
-        slave_id_1 = 0x01
-        function_code_1 = 0x03
-        starting_address_1 = 0x0004
-        quantity_1 = 0x0002
-
-        request_Actaris= bytearray([
-            slave_id_1,
-            function_code_1,
-            (starting_address_1 >> 8) & 0xFF,
-            starting_address_1 & 0xFF,
-            (quantity_1 >> 8) & 0xFF,
-            quantity_1 & 0xFF,
-        ])
-
-        crc = computeCRC(request_message)
-        request_message += crc 
-        crc_1 = computeCRC(request_Actaris)
-        request_Actaris += crc_1 
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(20)  
-            sock.connect((tcp_ip, tcp_port))
-            print("Connected successfully.")
-        except ConnectionRefusedError:
-            abort(400, f"Error: Connection refused to {tcp_ip}:{tcp_port}!")
-        except TimeoutError:
-            abort(400, f"Error: Connection timed out to {tcp_ip}:{tcp_port}!")
-        except Exception as e:
-            abort(400, f"Error: {e}")
-
-        
-        if int(vc_type_all) in [5, 8, 9, 10, 12]:
-            
-            for _ in range(2):  # วนลูป 3 ครั้ง
-                sock.send(request_Actaris)
-                print(sock)
-                time.sleep(1)
-            
-            response = sock.recv(4096)
-            print(response)
-           
-            
-        communication_traffic.append({"direction": "TX", "data": request_message.hex()})
-
-        try:
-            
-            sock.send(request_message)
-            print(sock)
-            
-            response = sock.recv(4096)
-            print(response)
-            
-            communication_traffic.append({"direction": "RX", "data": response.hex()})
-            
-            sock.close()
-
-        except TimeoutError:
-            abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
-        except Exception as e:
-            abort(400, f"Error: {e}")
-        if response[1:2] != b'\x03':
-            
-            abort(400, f"Error: Unexpected response code from device {communication_traffic[1]} ,{response[1:2]}!")
-        else:
-            pass
-        data = response[3:]
-
-        values = [
-            int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
-            for i in range(0, len(data), bytes_per_value)
+    # Build the request message
+    request_message = bytearray(
+        [
+            slave_id,
+            function_code,
+            starting_address >> 8,
+            starting_address & 0xFF,
+            quantity >> 8,
+            quantity & 0xFF,
         ]
-        data_list = []
-        values = values[:-1]
+    )
+
+
+
+    slave_id_1 = 0x01
+    function_code_1 = 0x03
+    starting_address_1 = 0x0004
+    quantity_1 = 0x0002
+
+    request_Actaris= bytearray([
+        slave_id_1,
+        function_code_1,
+        (starting_address_1 >> 8) & 0xFF,
+        starting_address_1 & 0xFF,
+        (quantity_1 >> 8) & 0xFF,
+        quantity_1 & 0xFF,
+    ])
+
+    crc = computeCRC(request_message)
+    request_message += crc 
+    crc_1 = computeCRC(request_Actaris)
+    request_Actaris += crc_1 
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(20)  
+        sock.connect((tcp_ip, tcp_port))
+        print("Connected successfully.")
+    except ConnectionRefusedError:
+        abort(400, f"Error: Connection refused to {tcp_ip}:{tcp_port}!")
+    except TimeoutError:
+        abort(400, f"Error: Connection timed out to {tcp_ip}:{tcp_port}!")
+    except Exception as e:
+        abort(400, f"Error: {e}")
+
+    
+    if blockchain_checkbox_value == "on":
         
-        address = starting_address
-        for i, value in enumerate(values):
-            address = starting_address + i * 2
-            hex_value = hex(value)  # Convert the decimal value to HEX
-            binary_value = convert_to_binary_string(value, bytes_per_value)  # Convert the decimal value to Binary
-
-            # Calculate the 32-bit Float Decimal Representation
-            float_value = struct.unpack('!f', struct.pack('!I', value))[0]
-            
-            data_list.append({
-                'address': address,
-                'value': value,
-                'hex_value': hex_value,
-                'binary_value': binary_value,
-                'float_value': float_value  # Add the Decimal Representation to the data list
-            })
-            
-        # Store the RX message in communication_traffic
-
+        for _ in range(2):  # วนลูป 3 ครั้ง
+            sock.send(request_Actaris)
+            print(sock)
+            time.sleep(1)
+        
+        response = sock.recv(4096)
+        
+        print(response)
     
+        
+    communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+
+    try:
+        
+        sock.send(request_message)
+        print(sock)
+        
+        response = sock.recv(4096)
+        print(response)
+        
+        communication_traffic.append({"direction": "RX", "data": response.hex()})
+        
+        sock.close()
+
+    except TimeoutError:
+        abort(400, f"Error: Connection timed out while waiting for response from {tcp_ip}:{tcp_port}!")
+    except Exception as e:
+        abort(400, f"Error: {e}")
+    if response[1:2] != b'\x03':
+        
+        abort(400, f"Error: Unexpected response code from device {communication_traffic[1]} ,{response[1:2]}!")
+    else:
+        pass
+    data = response[3:]
+
+    values = [
+        int.from_bytes(data[i : i + bytes_per_value], byteorder="big", signed=False)
+        for i in range(0, len(data), bytes_per_value)
+    ]
+    data_list = []
+    values = values[:-1]
     
+    address = starting_address
+    for i, value in enumerate(values):
+        address = starting_address + i * 2
+        hex_value = hex(value)  # Convert the decimal value to HEX
+        binary_value = convert_to_binary_string(value, bytes_per_value)  # Convert the decimal value to Binary
+
+        # Calculate the 32-bit Float Decimal Representation
+        float_value = struct.unpack('!f', struct.pack('!I', value))[0]
+        
+        data_list.append({
+            'address': address,
+            'value': value,
+            'hex_value': hex_value,
+            'binary_value': binary_value,
+            'float_value': float_value  # Add the Decimal Representation to the data list
+        })
+        
+    # Store the RX message in communication_traffic
+
+
+
 
     return render_template('index.html', data_list=data_list, slave_id=slave_id, function_code=function_code,
                            starting_address=starting_address, quantity=quantity,  communication_traffic=communication_traffic)
@@ -4664,7 +4933,7 @@ def Manualpoll_data_write_evc():
         """
         region_results = fetch_data(ptt_pivot_connection,region_query)
         region_options = [str(region[0]) for region in region_results]
-
+      
         query = """
             SELECT
                 AMR_FIELD_METER.METER_STREAM_NO as RunNo,
@@ -4673,6 +4942,7 @@ def Manualpoll_data_write_evc():
                 AMR_FIELD_METER.METER_NO_STREAM as NoRun,
                 AMR_FIELD_METER.METER_ID as METERID,
                 AMR_VC_TYPE.VC_NAME as VCtype,
+                AMR_VC_TYPE.id as EVCtype,
                 AMR_FIELD_ID.SIM_IP as IPAddress,
                 AMR_PORT_INFO.PORT_NO as port
             FROM
@@ -4729,6 +4999,7 @@ def Manualpoll_data_write_evc():
         query = query.format(tag_condition=tag_condition, region_condition=region_condition, run_condition=run_condition)
 
         results = fetch_data(ptt_pivot_connection,query)
+       
         
         df = pd.DataFrame(
             results,
@@ -4739,14 +5010,22 @@ def Manualpoll_data_write_evc():
                 "NoRun",
                 "METERID",
                 "VCtype",
+                "EVCtype",
                 "IPAddress",
                 "Port",
             ],
         )
+    evc_type = df.get(["VCtype"]).values.tolist()
+    if evc_type:
+        type_str = str(evc_type).strip("['']")
+       
+    else:
+        type_str = [''] 
+    print(type_str)
     tcp_ip = df.get(["IPAddress"]).values.tolist()
     if tcp_ip:
         ip_str = str(tcp_ip).strip("['']")
-        print(ip_str)
+       
     else:
         ip_str = [''] 
 
@@ -4767,12 +5046,13 @@ def Manualpoll_data_write_evc():
         region_options=region_options,
         tag_options=tag_options,
         run_options=run_options,
-        df=df,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip
+        df=df,ip_str=ip_str,tcp_port=tcp_port,Port_str=Port_str,tcp_ip=tcp_ip,type_str=type_str
     )
 
 
 @app.route('/write_evc', methods=['POST'])
 def read_data_write_evc():
+        
         if 'username' not in session:
             return redirect(url_for('login'))
         try:
@@ -4782,11 +5062,13 @@ def read_data_write_evc():
             slave_id = int(request.form['slave_id'])
             function_code = int(request.form['function_code'])
             starting_address = int(request.form['starting_address'])
+            print("starting_address",starting_address)
             quantity = int(request.form['quantity'])
             tcp_ip = request.form['tcp_ip']
             tcp_port = int(request.form['tcp_port'])
             is_16bit = request.form.get('is_16bit') == 'true'
-
+            evc_type = request.form['evc_type']
+            print(evc_type)
             # Adjust quantity based on data format
             if not is_16bit and change_to_32bit_counter > 0:
                 quantity *= 2
@@ -4795,38 +5077,62 @@ def read_data_write_evc():
             
             request_data = bytearray()
             for i in range(quantity // 2):
-                data_i = float(request.form.get(f'data_{i}'))  
+                data_i = float(request.form.get(f'data_{i}'))
+                print("data_i",data_i)  
                 request_data.extend(struct.pack('>f', data_i)) 
 
             
             request_message = format_tx_message(slave_id, function_code, starting_address, quantity, request_data)
             print(request_message)
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(20) 
+            sock.connect((tcp_ip, tcp_port))
+            # slave_id_1 = 0x01
+            # function_code_1 = 0x03
+            # starting_address_1 = 0x0004
+            # quantity_1 = 0x0002
+
+            # request_Actaris= bytearray([
+            #     slave_id_1,
+            #     function_code_1,
+            #     (starting_address_1 >> 8) & 0xFF,
+            #     starting_address_1 & 0xFF,
+            #     (quantity_1 >> 8) & 0xFF,
+            #     quantity_1 & 0xFF,
+            # ])
+
+            
+            # crc_1 = computeCRC(request_Actaris)
+            # request_Actaris += crc_1
+            # for _ in range(2):  
+            #     sock.send(request_Actaris)
+            #     print(sock)
+            #     time.sleep(1)
+            
             # Connect to Modbus TCP server
         
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                sock.settimeout(20) 
-                sock.connect((tcp_ip, tcp_port))
-                communication_traffic = []
-
-                communication_traffic.append({"direction": "TX", "data": request_message.hex()})
-                sock.send(request_message)
-                response = sock.recv(1024)
-
-                communication_traffic.append({"direction": "RX", "data": response.hex()})
-                if response[1:2] != b'\x10':
-                        
-                        abort(400, f"Error: Unexpected response code from device {communication_traffic[1]} ,{response[1:2]}!")
-                else:
-                        pass
-
-                data = response[3:]
-                
-                
             
-                
-                
-                session['tcp_ip'] = tcp_ip
-                session['tcp_port'] = tcp_port
+
+            communication_traffic = []
+        
+            communication_traffic.append({"direction": "TX", "data": request_message.hex()})
+            print("TX",communication_traffic)
+            for _ in range(2):
+                sock.send(request_message)
+                time.sleep(1)
+            response = sock.recv(1024)
+
+            communication_traffic.append({"direction": "RX", "data": response.hex()})
+            print("RX",communication_traffic)
+            
+            data = response[3:]
+            
+            
+        
+            
+            
+            session['tcp_ip'] = tcp_ip
+            session['tcp_port'] = tcp_port
 
         
             with connect_to_ptt_pivot_db() as ptt_pivot_connection:
@@ -4880,7 +5186,7 @@ def read_data_write_evc():
                         {region_condition}
                         {run_condition}
                 """
-
+                
                 tag_condition = "AND AMR_FIELD_ID.TAG_ID IS NOT NULL"
                 region_condition = "AND amr_pl_group.pl_region_id = 'default_region_id'"
                 run_condition = "AND AMR_FIELD_METER.METER_STREAM_NO IS NOT NULL"
@@ -5611,9 +5917,10 @@ def update_mapping_config():
                 
             ]
             df = pd.DataFrame(results, columns=columns)
-
+            
             
             poll_config_list = df.get(["poll_config"]).values.tolist()
+            print(poll_config_list)
             list_config = str(poll_config_list[0]).strip("[]'").split(",")
             print("start:", list_config)     
 
@@ -6559,6 +6866,12 @@ def update_edit_site():
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+# @app.route('/popup')
+# def popup():
+#     print("test")
+#     return render_template('popup.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
