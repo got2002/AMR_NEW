@@ -1043,6 +1043,20 @@
     background-color: #4caf50;
     transition: width 0.3s ease-in-out;
   }
+  .checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 14px;
+    border: 2px solid #3e3e3e; /* เพิ่มเส้นขอบสำหรับ checkbox */
+    background-color: #fefefe;
+}
+
+.checkbox input[type="checkbox"]:checked {
+    background-color: #004cff; /* ตั้งสีพื้นหลังเมื่อ checkbox ถูกเลือก */
+}
 
     </style>
 
@@ -1161,17 +1175,17 @@
                             </a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li>
-                                        <a href="#">Add User
+                                  <li>
+                                    <a href="add_user">Add User
 
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Edit User</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Remove User</a>
-                                    </li>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="edit_user">Edit User</a>
+                                </li>
+                                <li>
+                                    <a href="remove_user">Remove User</a>
+                                </li>
                                 </ul>
                             </div>
                         </li>
@@ -1362,7 +1376,7 @@
       <div class="checkbox" style="top: 250px;margin-left: 105px; line-height: 40px; position:absolute; width: 26px;">
           {% for poll_config_list, poll_billing_list, tcp_ip, tcp_port, poll_config_enable_list, poll_billing_enable_list, evc_type_list,run,METERID in zipped_data %}
           <td>
-              <input type="checkbox" name="configCheckbox" style="width: 50%; "  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}},{{run}},{{METERID}}" onclick="changeConfigCheckbox(this)">
+              <input type="checkbox" name="configCheckbox" style="width: 50%;  "  value="{{ poll_config_list }},{{ poll_billing_list }},{{ tcp_ip }},{{ tcp_port }},{{poll_config_enable_list}},{{poll_billing_enable_list}},{{evc_type_list}},{{run}},{{METERID}}" onclick="changeConfigCheckbox(this)">
           </td>
           {% endfor %}
       </div>
@@ -1370,7 +1384,7 @@
     
 
    
-    
+   
 
  <canvas id="orbcanvas" class="orb-canvas"></canvas>
  
@@ -1470,7 +1484,7 @@
                             {% if not df.empty %}
                             <div class="btn-buttonActaris" style="margin-top: -235px; margin-left: -237px;">
                                 <form id="myForm" method="POST">
-                                    <button  class="custom-btn btn-2"  id="popupButton" type="submit" onclick="openPopup()" style="height: 34px; width: 170px; font-size: x-small; ">Submit_to_poll</button>
+                                    <button  class="custom-btn btn-2"  id="popupButton" type="submit" onclick="openPopup('{{ config_safe_RX }}')" style="height: 34px; width: 170px; font-size: x-small; ">Submit_to_poll</button>
                                 </form>
                             </div>
                            
@@ -1518,12 +1532,35 @@
  </div>
 
  <button style="margin-left: 620px; margin-top: -216px; position: absolute;height: 35px; " class="btn btn-primary" id="fetchDataButton">SAVEDATABASE</button>
- </div>
+ <button style="margin-left: 780px; margin-top: -216px; position: absolute;height: 35px; " class="btn btn-primary" id="pingData">PING</button>
+
+</div>
 </div>
 </div>
 
+<!-- <button onclick="openPopup()">Open Popup</button> -->
 </body>
-
+<!-- <script>
+  function openPopup() {
+      const popupWindow = window.open('', 'popupWindow', 'width=600,height=400,scrollbars=yes');
+      fetch('http://10.100.56.2/file')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.text();
+          })
+          .then(data => {
+              popupWindow.document.write('<html><head><title>Text File Content</title></head><body>');
+              popupWindow.document.write('<p> test </p>');
+              popupWindow.document.write('<pre>' + data + '</pre>');
+              popupWindow.document.write('</body></html>');
+          })
+          .catch(error => {
+              console.error('There has been a problem with your fetch operation:', error);
+          });
+  }
+</script> -->
 <script>
         
         
@@ -1757,6 +1794,64 @@ function disableField(fieldName, value) {
         xhr.send(data);
     };
 </script>
+
+<script>
+  document.getElementById("pingData").onclick = function() {
+      
+      var xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "/pingdata");
+
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function() {
+          if (xhr.status == 200) {
+              var response = JSON.parse(xhr.responseText);
+              alert(response.message); 
+          } else {
+              alert("Error: " + xhr.status);
+          }
+      };
+
+      var evcTypeValue = document.getElementById("evc_type").value;
+      var slaveIdValue = document.getElementById("slave_id").value; 
+      var functioncodeValue = document.getElementById("function_code").value;
+      var tcpipValue = document.getElementById("tcp_ip").value;
+      var tcpportValue = document.getElementById("tcp_port").value;
+      var runValue = document.getElementById("run").value;
+      var METERIDValue = document.getElementById("METERID").value;
+      var pollconfigenablelistValue = document.getElementById("poll_config_enable_list").value;
+      var pollbillingenablelistValue = document.getElementById("poll_billing_enable_list").value;
+      
+      // Add starting address and quantity values
+      var startingAddressValues = {};
+      var quantityValues = {};
+      for (var i = 1; i <= 15; i++) {
+          startingAddressValues["starting_address_" + i] = document.getElementById("starting_address_" + i).value;
+          quantityValues["quantity_" + i] = document.getElementById("quantity_" + i).value;
+      }
+     
+      var data = JSON.stringify({ 
+          "evc_type": evcTypeValue, 
+          "slave_id": slaveIdValue , 
+          "function_code": functioncodeValue,
+          "tcp_ip": tcpipValue, 
+          "tcp_port": tcpportValue, 
+          "run": runValue, 
+          "METERID": METERIDValue, 
+          "poll_config_enable_list": pollconfigenablelistValue, 
+          "poll_billing_enable_list": pollbillingenablelistValue,
+          "starting_address_values": startingAddressValues,
+          "quantity_values": quantityValues
+      }); 
+
+      xhr.send(data);
+  };
+</script>
+
+
+
+
 <script>
     // Function to show the loading bar
     function showLoadingBar() {
