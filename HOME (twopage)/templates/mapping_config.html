@@ -56,98 +56,18 @@
     }
 
     body {
-        background: rgb(35, 50, 70);
-        background: -moz-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
-        background: -webkit-gradient(radial, top left, 0px, top left, 100%, color-stop(0%, rgba(35, 50, 70, 1)), color-stop(57%, rgba(90, 113, 132, 1)));
-        background: -webkit-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
-        background: -o-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
-        background: -ms-radial-gradient(top left, ellipse cover, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
-        background: radial-gradient(ellipse at top left, rgba(35, 50, 70, 1) 0%, rgba(90, 113, 132, 1) 57%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#233246', endColorstr='#5a7184', GradientType=1);
-    }
 
-    body {
-        margin: 0;
-        padding: 0;
-        line-height: 1;
-        font-family: "PTT45Pride-Bold", sans-serif;
-        font-weight: 400;
-        font-size: 1rem;
-        color: #cbcbcb;
-    }
+background-color: #525965;
+margin: 0;
+padding: 0;
+line-height: 1;
+font-family: "PTT45Pride-Regular", sans-serif;
+color: #ffffff;
 
-    @keyframes swing {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        10% {
-            transform: rotate(10deg);
-        }
-
-        30% {
-            transform: rotate(0deg);
-        }
-
-        40% {
-            transform: rotate(-10deg);
-        }
-
-        50% {
-            transform: rotate(0deg);
-        }
-
-        60% {
-            transform: rotate(5deg);
-        }
-
-        70% {
-            transform: rotate(0deg);
-        }
-
-        80% {
-            transform: rotate(-5deg);
-        }
-
-        100% {
-            transform: rotate(0deg);
-        }
-    }
-
-    @keyframes sonar {
-        0% {
-            transform: scale(0.9);
-            opacity: 1;
-        }
-
-        100% {
-            transform: scale(2);
-            opacity: 0;
-        }
-    }
-
-    body {
-        font-size: 0.9rem;
-    }
-
-    .page-wrapper .sidebar-wrapper,
-    .sidebar-wrapper .sidebar-brand>a,
-    .sidebar-wrapper .sidebar-dropdown>a:after,
-    .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
-    .sidebar-wrapper ul li a i,
-    .page-wrapper .page-content,
-    .sidebar-wrapper .sidebar-search input.search-menu,
-    .sidebar-wrapper .sidebar-search .input-group-text,
-    .sidebar-wrapper .sidebar-menu ul li a,
-    #show-sidebar,
-    #close-sidebar {
-        -webkit-transition: all 0.3s ease;
-        -moz-transition: all 0.3s ease;
-        -ms-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-        transition: all 0.3s ease;
-    }
-
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
     /*----------------page-wrapper----------------*/
 
     .page-wrapper {
@@ -718,7 +638,32 @@
     }
 
 
+    .textbox-pair {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .textbox-pair label,
+    .textbox-pair input,
+    .textbox-pair select {
+        flex: 1;
+        margin: 3px;
+
+    }
+
+    @media screen and (max-width: 768px) {
+
+        .textbox-pair label,
+        .textbox-pair input,
+        .textbox-pair select {
+            flex: 100%;
+            margin: 5px 0;
+        }
+    }
+
     .custom-btn {
+
         color: #fff;
         width: 130px;
         height: 40px;
@@ -744,7 +689,7 @@
 
     }
 
-
+    /* 1 */
     .btn-1 {
         border: none;
         background-color: #007bff;
@@ -786,10 +731,29 @@
 
     #max_day,
     #interval {
-        width: 25%;
+        width: 7%;
         margin-bottom: 2%;
         margin-top: 1%;
     }
+    
+    .page-wrapper .sidebar-wrapper,
+  .sidebar-wrapper .sidebar-brand>a,
+  .sidebar-wrapper .sidebar-dropdown>a:after,
+  .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+  .sidebar-wrapper ul li a i,
+  .page-wrapper .page-content,
+  .sidebar-wrapper .sidebar-search input.search-menu,
+  .sidebar-wrapper .sidebar-search .input-group-text,
+  .sidebar-wrapper .sidebar-menu ul li a,
+  #show-sidebar,
+  #close-sidebar {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
 </style>
 
 <body>
@@ -905,15 +869,15 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">Add User
+                                        <a href="add_user">Add User
 
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">Edit User</a>
+                                        <a href="edit_user">Edit User</a>
                                     </li>
                                     <li>
-                                        <a href="#">Remove User</a>
+                                        <a href="remove_user">Remove User</a>
                                     </li>
                                 </ul>
                             </div>
@@ -1020,7 +984,7 @@
                     <div class=" col-md-12">
                         <form id="mapping_configForm" method="get" action="{{ url_for('mapping_config_route') }}"
                             class="form-inline">
-                            <label style="font-size: large;" for="type_dropdown">Select Type:</label>
+                            <label style="font-size: large; margin-left: 300px;" for="type_dropdown">Select Type:</label>
 
                             <select id="type_dropdown" name="type_dropdown" class="form-control">
                                 <option value="" {% if selected_type=="" %}selected{% endif %}>-- Select Type --
@@ -1048,7 +1012,7 @@
                     <input type="hidden" name="selected_type" value="{{ selected_type }}">
 
                     {% for i in range(0, list_address|length) %}
-                    <div class="textbox-pair">
+                    <div class="textbox-pair" style="margin-top: 10px;">
                         <label for="address{{ '{:02d}'.format(i) }}">Address {{ '{:02d}'.format(i + 1)
                             }}</label>
                         <input type="text" id="list_address{{ '{:02d}'.format(i) }}"
