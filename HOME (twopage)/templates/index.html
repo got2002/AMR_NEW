@@ -50,6 +50,14 @@
   <label for="tcp_port">TCP Port</label>
                 <input type="number" class="form-control" id="tcp_port" name="tcp_port" value="" required>
 </div>
+
+
+<input type="checkbox" id="blockchainCheckbox" name="blockchainCheckbox">
+<label for="blockchainCheckbox">Wake up EVC (G1,G2,G3,G4)</label>
+
+
+
+
 <input type="hidden" name="tcp_ip_filled" value="{{ tcp_ip_filled }}">
 <input type="hidden" name="tcp_port_filled" value="{{ tcp_port_filled }}">
         <!-- เพิ่มปุ่มสำหรับเปลี่ยนเป็น 16-bit -->
@@ -118,7 +126,43 @@
     </div>
   {% endif %}
 
+
+
+
+
+
+
+
+
+
+  
+    
+
   <script>
+document.getElementById("blockchainCheckbox").addEventListener("change", function() {
+    var isChecked = this.checked ? 1 : 0; // ถ้า checkbox ถูกติ๊กให้เป็น 1 ไม่ติ๊กให้เป็น 0
+    sendDataToServer(isChecked); // เรียกฟังก์ชันส่งข้อมูลไปยังเซิร์ฟเวอร์
+});
+
+function sendDataToServer(value) {
+    // ส่งข้อมูลไปยังเซิร์ฟเวอร์ด้วย Ajax
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/Manualpoll", true); // เปลี่ยน URL ตามความเหมาะสม
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            // การตอบกลับจากเซิร์ฟเวอร์ (ถ้ามี)
+            console.log("Data sent successfully");
+        }
+    };
+    xhr.send("blockchainCheckbox=" + (isChecked ? "1" : "0"));
+ // ส่งค่า checkbox ไปยังเซิร์ฟเวอร์
+}
+
+
+
+
+
 
     function clearForm() {
       document.getElementById("slave_id").value = "";
