@@ -1084,6 +1084,9 @@
   .container-menu{
     margin-top: 50px;
   }
+  .hidden {
+            display: none;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -1199,17 +1202,17 @@
                             </a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li>
-                                        <a href="#">Add User
+                                  <li>
+                                    <a href="add_user">Add User
 
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Edit User</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Remove User</a>
-                                    </li>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="edit_user">Edit User</a>
+                                </li>
+                                <li>
+                                    <a href="remove_user">Remove User</a>
+                                </li>
                                 </ul>
                             </div>
                         </li>
@@ -1364,6 +1367,7 @@
                               <th>NoRun</th>
                               <th>METERID</th>
                               <th>VCtype</th>
+                              <th>EVCtype</th>
                               <th>IPAddress</th>
                               <th>Port</th>
                   
@@ -1383,6 +1387,7 @@
                               <td>{{ row['NoRun'] }}</td>
                               <td>{{ row['METERID'] }}</td>
                               <td>{{ row['VCtype'] }}</td>
+                              <td >{{row['EVCtype']}}</td>
                               <!-- <td>{{ '127.0.0.1' }}</td> -->
                               <td>{{ row['IPAddress'] }}</td>
                               <td>{{ row['Port'] }}</td>
@@ -1412,17 +1417,32 @@
                               <label for="function_code">Function Code</label>
                               <input type="number" class="form-control" id="function_code" name="function_code" value="16" required>
                             </div>
+                            <div class="form-group" style="display: none;">
+                              <label for="evc_type">Function Code</label>
+                              <input type="text" class="form-control" id="evc_type" name="evc_type" value="{{type_str}}" required>
+                            </div>
                             {% if not df.empty %}
-                            <div class="form-group">
+                            <div id="starting_address_1" class="form-group hidden">
                               <label style="margin-bottom: 5px;" for="starting_address">Starting Address</label>
                               <select type="number" class="form-control" id="starting_address" name="starting_address" required>
-                                <option value="">Select</option>
-                                <option value="1003">SG</option>
-                                <option value="1005">Co2</option>
-                                <option value="1007">N2</option>
+                                  <option value="">Select</option>
+                                  <option value="32">SG33</option>
+                                  <option value="78">Co2</option>
+                                  <option value="82">N2</option>
                               </select>
                             </div>
-
+                            <div id="starting_address_2" class="form-group hidden">
+                              <label style="margin-bottom: 5px;" for="starting_address">Starting Address</label>
+                              <select type="number" class="form-control" id="starting_address" name="starting_address" required>
+                                  <option value="">Select</option>
+                                  <option value="1003">SG1003</option>
+                                  <option value="1005">Co2</option>
+                                  <option value="1007">N2</option>
+                              </select>
+                            </div>
+                            
+                            
+                            
                             <div class="form-group" style="display: none;">
                               <label style="margin-bottom: 5px;" for="quantity">Quantity</label>
                               <input type="number" class="form-control" id="quantity" name="quantity" value="2" required>
@@ -1523,49 +1543,52 @@
 
 </body>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-   
-    var startingAddressSelect = document.getElementById("starting_address"); // เปลี่ยนชื่อตัวแปรจาก startingaddressSelect เป็น startingAddressSelect
-
+ document.addEventListener("DOMContentLoaded", function () {
+    var startingAddressSelect = document.getElementById("starting_address");
+    var startingAddressSelect_2 = document.getElementById("starting_address_2");
     var dataInputs = document.querySelectorAll('[id^="data_"]');
-   
-
-   
+    
     function hideAllDataInputs() {
       dataInputs.forEach(function (input) {
         input.style.display = "none";
       });
     }
 
-    
     startingAddressSelect.addEventListener("change", function () {
-      
-      hideAllDataInputs();
-
-      
-      var selectedStartingAddress = parseInt(this.value); 
-
-      
-      if (selectedStartingAddress === 1003) { 
+    hideAllDataInputs();
+    var selectedStartingAddress = parseInt(this.value);
+  
+    if (selectedStartingAddress === 32 || selectedStartingAddress === 1003) {
+        dataInputs[0].style.display = "block"; 
+    }
+    if (selectedStartingAddress === 78 || selectedStartingAddress === 1005) {
         dataInputs[0].style.display = "block";
-        
-      }
-      if (selectedStartingAddress === 1007) { 
-        dataInputs[0].style.display = "block";
-       
-        
-      }
-      if (selectedStartingAddress === 1005) {
-        dataInputs[0].style.display = "block";
-       
-        
-      }
-     
-    });
+    }
+    if (selectedStartingAddress === 82 || selectedStartingAddress === 1007) {
+        dataInputs[0].style.display = "block"; 
+    }
+});
 
     
+startingAddressSelect_2.addEventListener("change", function () {
     hideAllDataInputs();
-  });
+    var selectedStartingAddress_2 = parseInt(this.value);
+  
+    if (selectedStartingAddress_2 === 1003) {
+        dataInputs[0].style.display = "block"; 
+    }
+    if (selectedStartingAddress_2 === 1005) {
+        dataInputs[1].style.display = "block"; 
+    }
+    if (selectedStartingAddress_2 === 1007) {
+        dataInputs[2].style.display = "block"; 
+    }
+});
+
+
+    hideAllDataInputs();
+});
+
 </script>
 
 
@@ -1885,5 +1908,40 @@
     });
 
 
+
+</script>
+<script>
+function checkEVCtype() {
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const evctype = parseInt(row.querySelector('td:nth-child(7)').textContent, 10);
+        const startingAddress1 = document.getElementById('starting_address_1');
+        const startingAddress2 = document.getElementById('starting_address_2');
+
+        if ([5, 8, 9, 10, 12].includes(evctype)) {
+            startingAddress1.classList.remove('hidden');
+            startingAddress1.querySelector('select').disabled = false;
+
+            startingAddress2.classList.add('hidden');
+            startingAddress2.querySelector('select').disabled = true;
+        } else if (evctype === 13) {
+            startingAddress1.classList.add('hidden');
+            startingAddress1.querySelector('select').disabled = true;
+
+            startingAddress2.classList.remove('hidden');
+            startingAddress2.querySelector('select').disabled = false;
+        } else {
+            startingAddress1.classList.add('hidden');
+            startingAddress1.querySelector('select').disabled = true;
+
+            startingAddress2.classList.add('hidden');
+            startingAddress2.querySelector('select').disabled = true;
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    checkEVCtype();
+});
 
 </script>
